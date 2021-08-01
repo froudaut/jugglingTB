@@ -1,0 +1,40 @@
+digraph LADDER_DIAGRAM{
+node [color=black, shape=point]
+edge [color=blue, dir=none]
+Start [label="", shape=none]
+label="test"
+
+
+
+subgraph diag {
+rank=same;
+"N0" [label="",  shape=circle, width=.1] // node N0
+"N1" [label="",  shape=circle, width=.1] // node N1
+"N2" [label="",  shape=circle, width=.1] // node N1
+"N3" [label="",  shape=circle, width=.1] // node N3
+"N4" [label="",  shape=circle, width=.1] // node N4
+"N5" [label="",  shape=circle, width=.1] // node N5
+"N6" [label="",  shape=circle, width=.1] // node N5
+"N7" [label="",  shape=circle, width=.1] // node N5
+
+Start -> N0 [style=invis]
+N0 -> N1  -> N2 -> N3  -> N4 -> N5  -> N6 -> N7 [style=invis]
+}
+
+
+
+
+"N0"->"N2" [dir=forward, fontcolor=red, fontname="Times-Bold" , label="2", color="dodgerblue"]
+"N0"->"N2" [dir=forward, fontcolor=red, fontname="Times-Bold" , label="2", color="red"]
+"N0"->"N2" [dir=forward, fontcolor=red, fontname="Times-Bold" , label="2", color="springgreen"]
+"N2"->"N4" [dir=forward, fontcolor=red, fontname="Times-Bold" , label="2", color="dodgerblue"]
+"N2"->"N4" [dir=forward, fontcolor=red, fontname="Times-Bold" , label="2", color="red"]
+"N2"->"N4" [dir=forward, fontcolor=red, fontname="Times-Bold" , label="2", color="springgreen"]
+"N4"->"N6" [dir=forward, fontcolor=red, fontname="Times-Bold" , label="2", color="dodgerblue"]
+"N4"->"N6" [dir=forward, fontcolor=red, fontname="Times-Bold" , label="2", color="red"]
+"N4"->"N6" [dir=forward, fontcolor=red, fontname="Times-Bold" , label="2", color="springgreen"]
+
+
+#C:\Perl\jugglingTB\jugglingTB_1.4.3.6>"C:/Program Files (x86)/Graphviz/bin/\dot.exe" -Tpng -Nfontsize="12" -Efontsize="12" -v -oresults/test.png tmp\test.png.graphviz
+
+}

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<script src="VanillaSiteswapStateDiagramGenerator_fichiers/d3.js" charset="utf-8"></script>
+<script src="VanillaSiteswapStateDiagramGenerator_fichiers/statediagram.js"></script>
+<script src="VanillaSiteswapStateDiagramGenerator_fichiers/actions.js"></script>
+<script src="VanillaSiteswapStateDiagramGenerator_fichiers/utils.js"></script>
+<script src="VanillaSiteswapStateDiagramGenerator_fichiers/siteswap.js"></script>
+<link rel="stylesheet" href="VanillaSiteswapStateDiagramGenerator_fichiers/bootstrap.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+</head>
+
+<body>
+
+<div class="container">
+  <div class="row justify-content-md-center"> <!-- heading -->
+    <div class="col-sm">
+      <div class="jumbotron">
+        <h1 class="display-4">Vanilla Siteswap State Diagram Generator</h1>
+      </div>
+    </div></div>
+  <div class="row justify-content-md-center"> <!-- inputs -->
+    <div class="col-sm">
+      <label for="basic-url">Highlight Siteswap</label>
+      <div class="input-group mb-3"><!-- Siteswap input -->
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="5551" id="highlightSiteswapInput">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" id="highlightSiteswapButton">Enter</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm">
+      <label for="basic-url">Generate Graph (number of balls,max throw)</label>
+      <div class="input-group mb-3"><!-- graph gen input -->
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="3,5" id="graphInput">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" id="graphInputButton">Enter</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm">
+      <label for="basic-url">Shortest transition from siteswap</label>
+      <div class="input-group mb-3"><!-- graph gen input -->
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="714" id="transitionFromSiteswapInput">
+        <!-- div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" id="graphInputButton">Enter</button>
+        </div> -->
+      </div>
+      <label for="basic-url">to siteswap</label>
+      <div class="input-group mb-3"><!-- graph gen input -->
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="741" id="transitionToSiteswapInput">
+      </div>
+      <p class="text-danger" style="display:none">
+        The number of balls don't match.
+      </p>
+      <div>
+       <button class="btn btn-outline-secondary" type="button" id="transitionCleanButton">Clean layout (faster)</button>
+       <button class="btn btn-outline-secondary" type="button" id="transitionButton">Full graph (slow)</button>
+        </div>
+    </div>
+  </div><!-- div row -->
+</div><!-- div container -->
+
+<style>
+/*http://bl.ocks.org/lgersman/5311202*/
+/*http://bl.ocks.org/rkirsling/5001347*/
+/*http://bl.ocks.org/jose187/4733747*/
+/*https://bl.ocks.org/mbostock/950642*/
+/*https://ialab.it.monash.edu/webcola/ addition to d3 for deciding charge 
+for minimal separationg and improving readability*/
+/*curved lines and auto highlighting https://bl.ocks.org/martinjc/e4c013dab1fabb2e02e2ee3bc6e1b49d*/
+/*scroll to zoom https://bl.ocks.org/jrladd/c76799aa63efd7176bd9006f403e854d*/
+/*labeled edges http://bl.ocks.org/jhb/5955887*/
+
+.link {
+  stroke: #aaa;
+}
+
+.node text {
+stroke:#333;
+cursos:pointer;
+}
+
+.node circle{
+stroke:#fff;
+stroke-width:3px;
+fill:#555;
+}
+
+path.transition,
+path.dragline {
+    fill        : none;
+    stroke      : #000;
+    stroke-width: 1px;
+    cursor      : default;
+    marker-end  : url(#end-arrow);
+}
+
+</style>
+
+<script>
+</script>
+
+
+<svg width="960" height="500" id="svg"><defs><marker id="end-arrow" viewBox="0 -5 10 10" refX="27" markerWidth="4" markerHeight="5" orient="auto"><path d="M0,-5L10,0L0,5" fill="#e8e8e8"></path></marker></defs><defs><marker id="end-arrow-siteswap" viewBox="0 -5 10 10" refX="22" markerWidth="6" markerHeight="7" orient="auto"><path d="M0,-5L10,0L0,5" fill="#f403fc"></path></marker></defs><defs><marker id="end-arrow-siteswap2" viewBox="0 -5 10 10" refX="22" markerWidth="6" markerHeight="7" orient="auto"><path d="M0,-5L10,0L0,5" fill="#35f2f2"></path></marker></defs><defs><marker id="end-arrow-transition" viewBox="0 -5 10 10" refX="22" markerWidth="6" markerHeight="7" orient="auto"><path d="M0,-5L10,0L0,5" fill="#4dab00"></path></marker></defs><defs><marker id="start-arrow" viewBox="0 -5 10 10" refX="-3" markerWidth="8" markerHeight="8" orient="auto"><path d="M10,-5L0,0L10,5" fill="#000"></path></marker></defs></svg></body></html>

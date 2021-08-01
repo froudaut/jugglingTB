@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="JuggleSpyro HELP">
+  <meta name="keywords" content="Juggling, Juggler, Spin, Antispin, Isolation, Spyrograph">
+  <meta name="author" content="Frederic Roudaut">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <style type="text/css">
+    h1 {fontSize:40; color:#FF0000;}
+    h2 {fontSize:30; color:#0000FF}
+    h3 {fontSize:25; color:#0000FF}
+    a:link {color:#0000CC; textDecoration:none}
+    a:hover {color:#0000FF; textDecoration:underline}
+    strong {fontWeight:'bold'; color:#0000FF}
+    p {margin:30px}
+    ul {margin-left:50px}
+    em {fontWeight:'bold'}
+    b {fontWeight:'bold'}
+    body {
+	padding-top:20px;
+	padding-right:1px;
+	padding-left:50px;
+	mso-ignore:padding;
+	font-size:12.0pt;
+	font-weight:500;
+	font-style:normal;
+	text-decoration:none;
+	font-family:Calibri, sans-serif;
+	mso-font-charset:0;
+	mso-number-format:General;
+	vertical-align:middle;
+	border:.5pt solid windowtext;
+	background:#00C1F0;
+	mso-pattern:black none;
+    }
+  </style>
+</head>
+
+
+<body>
+  <title>JuggleSpyro HELP</title>
+  
+  <h1>JuggleSpyro HELP</h1>
+  <p>
+    JuggleSpyro is a kind of Spyrograph for jugglers.  
+    The goal is to model Spins, Antispins, Hybrids, Extensions, Isolations in a single plane ...
+  </p>
+  
+  <h2>Modeling</h2>
+  <p>
+    The model used is the following:
+    <br/>
+    <table>
+      <tr>
+	<td>
+	  <img src="./graph-small.png" width="450" alt="graph.png"/>
+	</td>
+	<td>
+	  <ul>
+	    <li>A: Arm length</li>
+	    <li>P: Prop length</li>
+	    <li>&#952;: Current Arm Rotation Angle</li>
+	    <li>&#952;<SUB>0</SUB>: Initial Arm Rotation Angle</li>
+	    <li>&#969;: Current Prop Rotation Angle</li>
+	    <li>&#969;<SUB>0</SUB>: Initial Prop Rotation Angle</li>
+	  </ul>
+	</td>
+      </tr>
+    </table>
+  </p>
+  
+  <p>
+    The Prop is moving, the Arm also. If V is the circular speed, we have the following equations for both current angles at time t.
+    <br/>
+    <img src="./speed-small.png" alt="speed.png"/>
+  </p>
+  
+  <p>
+    We then have the following equations for coordinates:
+    <br/>
+    <img src="./equation-small.png" alt="equation.png"/>
+  </p>
+  
+  <h2>Menus</h2>
+  <p>
+    This tool offer 2 modes: one for a Single Hand View and one for Both Hands view. These are accessed through:
+    <br/>
+    <br/>
+    <img src="./view_modes_panel.png" width="250" alt="view_modes_panel.png"/>
+    <br/>
+  </p>
+  
+  <p>
+    In the "Both Hands" View mode, only a single Main Clock is used for both hands. However hands Clock Beats are not necessarly synchronized. A full Clock represents 360° of rotation for each hand and basically on each Interrupt in Main Clock we draw the next degree of rotation. We then do a full tour in 360 Beats of Main Clock. The Hand Clock Speed indicates a deviation of degrees in animation for the given hand. We then may draw a hand with a higher/lower degree rotation on each interrupt. The more the Hand Clock Speed is, the less fluid the path will be. 
+  </p>
+  
+  <p>
+    The Following Prop Panel (one for each hand) is used to interact on the figure:
+    <br/>
+    <br/>
+    <img src="./anim_panel.png" width="600" alt="anim_panel.png"/>
+  </p>
+
+  <p>Beautiful Shapes, in general will need to set blurring and Color Filter. Unfortunatly it may take a lot of ressources and then slow down the whole animation.
+    You will probably have to play with the clock, but the best solution will be to generate a resulting Animated GIF. This last one will not suffer from such issue since the animation computation is not in real time.
+  </p>
+  
+  <p>
+    If the Ratio is negative, we then have an antispin, otherwise this is a spin. Mathematically Spins are Epicycloid curves (Ratio = 1=&gt;Cardioid ...) and Antispins are Hypocycloid curves (Ratio = -3=&gt;Deltoid ...).
+    <br/>
+    <br/>
+    <img src="./spin_synth.png"  width="1000" alt="spin_synth.png"/>
+    <br/>
+  </p>
+  
+  <p>
+    With some specific ratio between Arm size and Prop size we have some interesting curves. For example when the Arm Length is 3 times longer than the Prop, with ratio -4 we have an Astroid and with ratio 2, a Nephroid drawn by the end of the prop:
+    <br/>
+    <br/>
+    <img src="./nephroid_astroid.png"  width="400" alt="nephroid_astroid.png"/>
+  </p>
+  
+  <p>
+    Another Panel at the left bottom will permit to operate on some global settings:
+    <br/>
+    <br/>
+    <img src="./global_settings_panel.png" width="600" alt="global_settings_panel.png"/>
+    <ul>
+      <li>
+	The Clock Speed Ratio Menu may be used to facilitate to set a fixed ratio between both Hand Clock Speeds. A Ratio of 2 par example will give the left hand (right side) going twice more speed than right hand (left side). A 0.5 Ration will give the Reverse. You however have to fix the Hand Speed Clock with the left panel. 
+      </li>
+      <li>
+	Speed Percentage for the Main Clock Usage.  Slider handles values between 0 and 100. 
+      </li>
+      
+    </ul>
+    
+  </p>
+
+  <p>
+    Hereafter we have the Action Panel. This may be slightly different for both View Modes:
+    <br/>
+    In "Both Hands" View Mode, this looks like: 
+    <br/>
+    <br/>
+    <img src="./action_panel.png" width="700" alt="action_panel.png"/>
+  </p>
+  
+  <p>
+    After, classical "Start", "Pause", "Stop", "Clean", "Reset", buttons we have a Random Mode Button.
+    This button will run a Random Animation forever playing on Ratio, Arm Angle, Prop Angle and Arm Way Nb Loops. It will also random on Nb Loops using however the same value on both hands. You still have a hand on other aspects of Animation, such as prop, colors ...
+  </p>
+  <p>
+    The Pic button will generate a PNG image of the current animation. The Axis Button will recenter Both axis. 
+  </p>
+  <p>  
+    Next 3 buttons will concern the "XML Animation" Mode. This mode allow the sequencing of several configurations. We will name these different configurations "Animations" and "Scenarios" and "Scenes". First button permits to choose an "XML Animation" File; second runs the Animation, third gives XML related configuration for the whole animation (if it's in "Animation Running" otherwise the current configuration is delivered).
+  </p>  
+  <p>
+    The Videos buttons permit to generate an animated GIF. Just Record and Render when finished. The Grain gives how many Main Clock Beats will be done between 2 Consecutives Snapshot for building the Animated GIF. The Viewing framerate has not impact on the Video. Between every GIF Snapshot a delay of 60ms is applied per default according to the default setting in the application. Use it by yourself if you want to interact on this.
+    It also means that pause, stop have no impact on the resulting framerate.
+  </p>
+  
+  
+  <h2>XML Animation/Scénarios</h2>
+  <p>    
+    An XML Animation may be used to describe and store a Spinning Flow. It thus permits to visualize and replay it very easily.     
+    An Animation is a combination of one or several Scenarios that is itself a combination of one or several scenes. 
+    All the configuration has to be defined in an XML File according to the following syntax:
+    <br/>
+    <br/>
+    <img src="./example.png" width="450" alt="example.png"/>
+  </p>
+  
+  <p>
+    For each hand in each Scene, you may set different parameters that correspond to the ones you may find in both Props Panels.
+    
+    <ul>
+      <li><strong>propChoice="INTEGER"</strong>: Prop choice among 0 (None), 1 (Stick), 2 (Staff), 3 (Poï), 4 (Club), 5 (Hoop).  </li>
+      <li><strong>armWay="in" or "out"</strong>: Arm Way.  </li>
+      <li><strong>ratio="FLOAT"</strong>:  Ratio between the Arm Speed Rotation and the Prop Speed Rotation.</li>
+      <li><strong>nbloops="INTEGER" </strong>: Number of loops (-1: infinity).  </li>
+      <li><strong>armAngle="FLOAT"</strong>: Initial Rotation Angle for the Arm in degrees. </li>
+      <li><strong>propAngle="FLOAT"</strong>: Initial Rotation Angle for the Prop in degrees.</li> 
+      <li><strong>colorHandPath="rgba(A,B,C,D)" or "#AABBCC" </strong>: Hand Path Color.</li>
+      <li><strong>handPathViewMode="INTEGER"</strong>: Hand View Mode among 0 (None), 1(Comet), 2(Path). </li>
+      <li><strong>propPathViewMode="INTEGER"</strong>: Prop View Mode among 0 (None), 1(Comet), 2(Path) , 3(Path+CometProp), 4(Path+Prop). </li>
+      <li><strong>colorPropPath="rgba(A,B,C,D)" or "#AABBCC"</strong>: Prop Color.</li>
+      <li><strong>shadow="BOOLEAN"</strong>: Add Shadows.  </li>
+      <li><strong>blurring="BOOLEAN"</strong>: A Blurring Mode.</li>
+      <li><strong>showAxis="BOOLEAN"</strong>: Show Axis or not.</li>      
+      <li><strong>cleaning="BOOLEAN"</strong>: Clean after each loop.</li>
+      <li><strong>axisDx="FLOAT"</strong>: X coordinate value for Axis. </li>
+      <li><strong>axisDy="FLOAT"</strong>: Y coordinate value for Axis. </li>
+      <li><strong>clockSpeed="FLOAT"</strong>: Hand Clock Speed. Hand Clock Speed Increment used at every draw.</li>
+      <li><strong>armLength="FLOAT"</strong>: Arm length. </li>
+      <li><strong>propLength="FLOAT"</strong>: Prop length.</li>
+      <li><strong>setColorFilter="BOOLEAN"</strong>: Set Color Filter. High CPU Usage.</li>
+      <li><strong>colorFilter="rgba(A,B,C,D)"</strong>: Color Filter.</li>
+    </ul>
+  </p>
+
+  <p>
+    Some special parameters not available in the interface are also provided:
+    <ul>  
+      <li><strong>handPathStart="FLOAT"</strong>: It sets the initial rotation angle in degrees for the related hand. It is different from propAngle since propAngle will consider only the start, and not for each loop. </li>
+      <li><strong>handPathEnd="FLOAT"</strong>: It limits the rotation angle in degrees for the related hand. handPathStart and handPathEnd values are set to 0 and 360 after each Scene. You then have to reset it if needed.</li>
+      <li><strong>objHandleSize="FLOAT"</strong>: Size of the Object handle (Clubs, Stick, Staff).</li>
+      <li><strong>colorObjHandle=rgba(A,B,C,D)" or "#AABBCC"</strong>: Color of the object handle (Club handle, Stick, Staff).</li>
+      <li><strong>propPathSize="FLOAT"</strong>: Prop size.</li>
+      <li><strong>poiStringSize="FLOAT"</strong>: Poï string size.</li>
+      <li><strong>poiRadius="FLOAT"</strong>: Poi Radius.</li>
+      <li><strong>handPathSize="FLOAT"</strong>: width of the hand path.</li>
+      <li><strong>objStrokeSize="FLOAT"</strong>: stroke size of the object. </li>      
+    </ul>
+  </p>
+
+  <p>
+    You also have a global Setting for both hands with:
+    <ul>
+
+      <li><strong>setClockSpeedRatio="BOOLEAN"</strong>: Set it to "true" to set Clock Speed Ratio between both hands.  
+      <li><strong>clockSpeedRatio="FLOAT"</strong>: The Clock Speed Ratio Menu may be used to facilitate to set a fixed ratio between both Speed Clocks. A Ratio of 2 par example will give the left hand (right side) going twice more speed than right hand (left side). A 0.5 Ration will give the Reversed. You however have to fix the Speed Ratio with the left panel. 	
+      <li><strong>speed="FLOAT"</strong>Speed Percentage for the Main Clock Usage. </li>
+      <li><strong>scale="FLOAT" </strong>: Scale for the whole Animation.</li>
+      <li><strong>colorBackground="rgba(A,B,C,D)" or "#AABBCC" </strong>: Background Color </li>
+      <li><strong>cleaning="BOOLEAN"</strong>Cleaning for the Animation. It is different from cleaning in right/left panel that clean after every loops. This one permits to clean after each Scene. </li>
+    </ul>
+  </p>
+  
+  <p>
+    Again, some special parameters not available in the interface are also provided:
+    <ul>
+      <li><strong>GIFQuality="INTEGER"</strong>: Quality of the Animated GIF Encoding.</li>
+      <li><strong>GIFWorkers="INTEGER"</strong>: Number of worker for the Animated GIF Rendering.</li>
+      <li><strong>GIFWidth="INTEGER"</strong>: Witdh of the Animated GIF in pixels.</li>
+      <li><strong>GIFHeight="INTEGER"</strong>: Height of the Animated GIF in pixels.</li>
+      <li><strong>GIFFrameDelay="FLOAT"</strong>: Delay in ms between each Frame in the Animated GIF.</li>
+      <li><strong>GIFGrain="INTEGER"</strong>: It gives how many Main Clock Beats will be done between 2 Consecutives Snapshot for building the Animated GIF.</li>
+      <li><strong>NbColorTransform="INTEGER"</strong>: Number of Beats in Main Clock between 2 Color Filter Computation. Idea is to speed off the drawing when Color Filter is used. As a consequence, with higher value the redering will be less nice.</li>
+    </ul>
+  </p>
+
+  <p>
+    You may also define the Number of Loops for:
+    <ul>
+      <li>Animation: Set it to any Integer or -1 for infinite. Per default it is set to infinite.</li>
+      <li>Scenario: Set it to any integer or -1 for infinite. Per default it is set to 1.</li>
+      <li>Scene: Set it to any integer or -1 for infinite. Per default it is set to 1.</li>
+    </ul>
+  </p>
+  
+  <p>
+    If needed, it may be defined as hereafter:
+    <br/>
+    <br/>
+
+    <img src="./example2.png" width="300" alt="example2.png"/>
+  </p>
+    
+  <p>
+    With XML Animation files you also may inject specific values not handled in Gui for parameters. We especially think to limitations in sliders ranges for example.
+  </p>
+  
+  <p>
+    If a parameter is not defined in a Scene, the previous value is used; or the default one if none has been defined previously.
+    Nevertheless you have to fill at least "nbloops" for both hands in any scene. A file "demo.xml" is provided by default as an example.
+    You can get the current scene configuration by clicking on the floppy icon or the Animation configuration one if XML Animation is running.
+  </p>
+  
+  <p>
+    Here are some examples generated in Animated GIF:
+    <br/>
+    <br/>
+    <img src="./animJSpyro1.gif" alt="animJSpyro1.gif"/>
+    <img src="./animJSpyro2.gif" alt="animJSpyro2.gif"/>
+
+  </p>
+  
+  
+  <p>
+    Here are some XML Files for Demonstration purpose:
+    <ul>
+      <li><a href="../samples/demo.xml" target=_blank>demo.xml</a></li>
+      <li><a href="../samples/demo2.xml" target=_blank>demo2.xml</a></li>
+      <li><a href="../samples/flowers.xml" target=_blank>flowers.xml</a></li>
+      <li><a href="../samples/flowers2.xml" target=_blank>flowers2.xml</a></li>
+    </ul>
+  </p>
+
+  
+  <p>
+    <br/>
+    Enjoy !
+    <br/>
+    <br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Frédéric Roudaut
+    <br/>
+  </p>
+  
+</body>

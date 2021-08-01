@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)https://shawnpinciara.tumblr.com/htnmaker -->
+<html lang=""><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# blog: http://ogp.me/ns/blog#"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTN Partition Maker</title>
+  <style>figure{margin:0}.tmblr-iframe{position:absolute}.tmblr-iframe.hide{display:none}.tmblr-iframe--amp-cta-button{visibility:hidden;position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:100}.tmblr-iframe--amp-cta-button.tmblr-iframe--loaded{visibility:visible;animation:iframe-app-cta-transition .2s ease-out}</style><link rel="preconnect" href="https://fonts.gstatic.com/">
+  <link href="./HTNMaker_files/css2" rel="stylesheet">
+  <script src="./HTNMaker_files/popper.min.js.télécharger"></script>
+  <link rel="stylesheet" href="./HTNMaker_files/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="./HTNMaker_files/jquery.min.js.télécharger"></script>
+  <script src="./HTNMaker_files/p5.js.télécharger"></script>
+  <!--<script src="p5.sound.js"></script>-->
+  
+  <!--<script src="script.js"></script>-->
+  <style>
+    a:link {
+      color: #d9534f;
+      text-decoration: none;
+      font-family: "BenchNine";
+    }
+
+    a {
+      font-size: 22px;
+      color: #d9534f;
+      text-decoration: none;
+      font-family: "BenchNine";
+    }
+
+    h1{
+      font-family: 'BenchNine', sans-serif;
+    }
+
+    p{
+      font-size: 22px;
+      font-family: 'BenchNine', sans-serif;
+      padding-top: 10px;
+    }
+
+    #add-page {
+  position: absolute;
+  top: 50%;
+}
+
+.modal {
+  transition: opacity 0.25s ease;
+}
+</style>
+<script src="./HTNMaker_files/tumblelog_post_message_queue.js.télécharger"></script><link rel="stylesheet" type="text/css" href="./HTNMaker_files/stylesheet.css"><!-- BEGIN TUMBLR FACEBOOK OPENGRAPH TAGS --><!-- If you'd like to specify your own Open Graph tags, define the og:url and og:title tags in your theme's HTML. --><!-- Read more: http://ogp.me/ --><meta property="fb:app_id" content="48119224995"><meta property="og:site_name" content="Tumblr"><meta property="og:title" content="Tumblr"><meta property="og:url" content="https://shawnpinciara.tumblr.com/htnmaker"><meta property="og:type" content="article"><meta property="og:determiner" content="a"><meta property="al:ios:url" content="tumblr://x-callback-url/blog?blogName=shawnpinciara&amp;postID="><meta property="al:ios:app_name" content="Tumblr"><meta property="al:ios:app_store_id" content="305343404"><meta property="al:android:url" content="tumblr://x-callback-url/blog?blogName=shawnpinciara&amp;postID="><meta property="al:android:app_name" content="Tumblr"><meta property="al:android:package" content="com.tumblr"><!-- END TUMBLR FACEBOOK OPENGRAPH TAGS --><!-- TWITTER TAGS --><meta name="twitter:site" content="tumblr"><meta name="twitter:card" content="summary"><meta name="twitter:description" content="shawnpinciara"><meta name="twitter:title" content="shawnpinciara"><meta name="twitter:app:name:iphone" content="Tumblr"><meta name="twitter:app:name:ipad" content="Tumblr"><meta name="twitter:app:name:googleplay" content="Tumblr"><meta name="twitter:app:id:iphone" content="305343404"><meta name="twitter:app:id:ipad" content="305343404"><meta name="twitter:app:id:googleplay" content="com.tumblr"><meta name="twitter:app:url:iphone" content="tumblr://x-callback-url/blog?blogName=shawnpinciara&amp;referrer=twitter-cards"><meta name="twitter:app:url:ipad" content="tumblr://x-callback-url/blog?blogName=shawnpinciara&amp;referrer=twitter-cards"><meta name="twitter:app:url:googleplay" content="tumblr://x-callback-url/blog?blogName=shawnpinciara&amp;referrer=twitter-cards"><link rel="canonical" href="https://shawnpinciara.tumblr.com/htnmaker"><script async="" src="./HTNMaker_files/showads.js.télécharger"></script><style type="text/css">.knight-rider-loader{line-height:0;white-space:nowrap;width:78px}.knight-rider-loader.small{width:39px}.knight-rider-loader.centered{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}.knight-rider-loader.h-centered{position:absolute;top:0;left:50%;transform:translateX(-50%)}.knight-rider-bar{display:none;width:20px;height:20px;margin:0 3px;border-radius:5px;opacity:.5;background-color:#d0d0d0}.small>.knight-rider-bar{width:10px;height:10px;margin-left:2px;margin-right:1px;border-radius:2px}.animate>.knight-rider-bar{display:inline-block;animation:knight-rider-oscillate ease-in-out .3s infinite alternate}.knight-rider-bar:first-child{animation-delay:-.2s}.knight-rider-bar:nth-child(2){animation-delay:-.1s}@keyframes knight-rider-oscillate{0%{opacity:.5;transform:scaleY(1)}to{opacity:1;transform:scaleY(1.4)}}.tmblr-iframe{position:absolute}.tmblr-iframe.hide{display:none}.tmblr-pano-lightbox-container .tmblr-iframe--pano-lightbox{z-index:8675309;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;display:none}.tmblr-pano-lightbox-container .tmblr-iframe-preloader-container{z-index:8675310;position:fixed;bottom:0;width:100%;height:100%;background:rgba(0,0,0,.92)}.tmblr-pano-lightbox-container .tmblr-pano-lightbox{display:block}.tmblr-pano-lightbox-container .tmblr-pano-lightbox--preloading{display:none}.tmblr-iframe--controls-phone-container{padding-top:43px}.tmblr-iframe--controls-phone-container .t-logo{display:none}.tmblr-iframe--controls,.tmblr-iframe--mobile-logged-in-controls{position:fixed}.tmblr-iframe--controls.iframe-controls--desktop,.tmblr-iframe--mobile-logged-in-controls.iframe-controls--desktop{top:0;right:0;width:40%;min-width:200px;height:36px;z-index:100}.tmblr-iframe--controls.iframe-controls--phone-mobile,.tmblr-iframe--mobile-logged-in-controls.iframe-controls--phone-mobile{top:0;left:0;width:100%;height:44px;padding-right:8px;z-index:10}.tmblr-iframe--controls.iframe-controls--tablet-mobile,.tmblr-iframe--mobile-logged-in-controls.iframe-controls--tablet-mobile{top:0;right:0;width:235px;height:36px;z-index:2147483646}.tmblr-iframe--desktop-logged-in-controls{position:fixed}.tmblr-iframe--desktop-logged-in-controls.iframe-controls--desktop{right:0;top:0;z-index:100}.tmblr-iframe--unified-controls{position:fixed;top:0;right:0;left:0;width:100%;height:0;z-index:100}.tmblr-iframe-compact .tmblr-iframe--unified-controls{left:auto}@media screen and (max-device-width:568px){.tmblr-iframe-overlay.tmblr-iframe-full-width .no-image:not(.avatar-hidden) #header{padding-top:140px}}.tmblr-iframe-overlay.tmblr-iframe-full-width:not(.tmblr-iframe-themed) .top-blog-header .header-image.cover.loaded:after{display:none}.tmblr-iframe-overlay.tmblr-iframe-full-width:not(.tmblr-iframe-themed) .tmblr-iframe--unified-controls{background-image:linear-gradient(180deg,rgba(0,0,0,.4) 0,transparent);padding-bottom:10px;transition:padding-bottom .1s linear}.tmblr-iframe-overlay.tmblr-iframe-full-width:not(.tmblr-iframe-themed) .tmblr-iframe--unified-controls.tmblr-iframe--below-header{padding-bottom:0}.tmblr-iframe--follow-teaser{position:fixed;bottom:0;right:0;z-index:100;display:none}.tmblr-iframe--follow-teaser.open{display:block}.tmblr-iframe--follow-teaser.sticky-ad-visible{bottom:310px}@keyframes iframe-app-cta-transition{0%{opacity:0;bottom:-2em}to{opacity:1}}@keyframes iframe-app-cta-dismiss-transition{0%{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(2em)}}.tmblr-iframe--app-cta-button{position:fixed;bottom:0;left:0;width:100%;visibility:hidden;z-index:100}.tmblr-iframe--app-cta-button body,.tmblr-iframe--app-cta-button html{margin:0}.tmblr-iframe--app-cta-button.tmblr-iframe--loaded{visibility:visible;animation:iframe-app-cta-transition .2s ease-out}@keyframes iframe-gdpr-banner-transition{0%{opacity:0!important;bottom:-2em!important}to{opacity:1!important}}@keyframes iframe-gdpr-banner-dismiss-transition{0%{opacity:1!important;transform:translateY(0)!important}to{opacity:0!important;transform:translateY(2em)!important}}body.android,body.ios{padding-bottom:50px!important}iframe.tmblr-iframe--gdpr-banner{position:fixed!important;bottom:0!important;left:50%!important;width:100%!important;transform:translateX(-50%)!important;border-right:1px solid #001935;z-index:100!important}iframe.tmblr-iframe--gdpr-banner.tmblr-iframe--loaded{animation:iframe-gdpr-banner-transition .2s ease-out!important}body.ios iframe.tmblr-iframe--gdpr-banner{bottom:30px!important}.tmblr-lightbox{position:fixed;top:0;bottom:0;left:0;right:0;z-index:8675309;overflow:hidden;background-color:hsla(0,0%,7%,.92)}.tmblr-lightbox .vignette{position:absolute;width:100%;height:100%;left:0;top:0;right:0;bottom:0;z-index:8675308;background-size:100% 100%}.tmblr-lightbox .lightbox-image-container{position:absolute;z-index:8675310;cursor:pointer}.tmblr-lightbox .lightbox-image-container.single-image{cursor:default}.tmblr-lightbox .lightbox-image{border-radius:3px;box-shadow:0 4px 30px #000;border-width:0;background-color:transparent}.tmblr-lightbox .lightbox-image.hide{display:none}.tmblr-lightbox .lightbox-image.placeholder{background-color:hsla(0,0%,100%,.05)}.tmblr-lightbox .lightbox-caption{position:absolute;text-align:center;font-family:Helvetica Neue,HelveticaNeue,Helvetica,Arial,sans-serif;font-size:17px;font-weight:700;color:#fff;padding-top:20px;text-shadow:0 4px 30px #000;display:inline-block;text-rendering:optimizeLegibility}.tmblr-lightbox .lightbox-caption.hide{display:none}.hidden-body{position:relative;left:-99999px;overflow:hidden;background-color:#000}.hidden-body .show-mobile-lightbox{position:fixed;overflow:hidden;width:100%;top:0;left:0;right:0;bottom:0;z-index:8675309}.sticky-ad-wrapper{position:fixed;right:20px;bottom:-330px;border:1px solid #9da6af;border-radius:5px 0 0;background-color:#fff;z-index:100;transition:all .5s ease}.sticky-ad-wrapper .tmblr-iframe--sticky-ad{position:relative;margin-top:10px}.sticky-ad-wrapper.show{bottom:0}.sticky-ad-wrapper .ad-header{line-height:1;margin:5px;text-transform:uppercase;top:4px}.sticky-ad-wrapper .ad-footer,.sticky-ad-wrapper .ad-header{font-size:10px;text-align:center;color:#9da6af;position:relative}.sticky-ad-wrapper .ad-footer{bottom:12px;line-height:100%}.sticky-ad-wrapper .ad-footer a{color:#444;text-decoration:none;border-bottom:0}.sticky-darla-ad{position:fixed;bottom:-315px;right:20px;z-index:100;border-radius:5px 0 0;border:1px solid #9da6af;transition:all .5s ease;padding:10px}.sticky-darla-ad.show{bottom:0}.sticky-darla-ad .ad-close-btn{position:relative;font-weight:900;margin-left:auto;margin-right:-11px;margin-top:-26px;cursor:pointer;width:20px;height:15px;text-align:center;border-radius:5px 5px 0 0;font-size:12px;line-height:1.5;border-top:1px solid #9da6af;border-left:1px solid #9da6af;border-right:1px solid #9da6af}.sticky-darla-ad .ad-close-btn .icon-x{display:none;position:relative;font-size:12px;content:"\D7";color:#9da6af}.sticky-darla-ad .ad-footer{font-size:10px;line-height:1;text-align:center;color:#9da6af}.sticky-darla-ad .ad-footer a{color:#444;padding-left:5px;border-bottom:0;text-decoration:none}.sticky-darla-ad .ad-header{font-size:10px;line-height:1;text-align:center;margin:5px;text-transform:uppercase;color:#9da6af}.nu-optica-sticky-darla-ad{display:none;z-index:100;transition:all .5s ease}.nu-optica-sticky-darla-ad.show{display:block}.nu-optica-sticky-darla-ad.fixed{position:fixed;margin-top:0}.nu-optica-sticky-darla-ad.parked{position:absolute;margin-top:0}.nu-optica-sticky-darla-ad .ad-header{font-size:10px;text-align:center;margin:5px;text-transform:uppercase;color:#9da6af}.nu-optica-sticky-darla-ad .ad-footer,.nu-optica-sticky-darla-ad .ad-header{line-height:1;text-align:left;font-size:12px;font-weight:700}.nu-optica-sticky-darla-ad .ad-footer a{padding-left:5px;border-bottom:0;text-decoration:none}.nu-optica-sticky-darla-ad .ad-footer a:after{content:"\276F";padding-left:4px}.tmblr-iframe--init{width:0;height:0;opacity:0;z-index:-1;pointer-events:none}</style><style type="text/css">.live-photo {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer; }
+  .live-photo video,
+  .live-photo img {
+    display: block;
+    max-width: 100%;
+    pointer-events: none;
+    -ms-touch-action: none;
+        touch-action: none; }
+  .live-photo video {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; }
+    .live-photo video::-webkit-media-controls-start-playback-button {
+      display: none; }
+  .live-photo .live-photo-icon {
+    display: block;
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 24px;
+    height: 24px;
+    background: url("data:image/svg+xml;charset=utf-8,%3Csvg width='48' height='48' viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg' fill='%23fff'%3E%3Ctitle%3ELive Photo%3C/title%3E%3Cg fill-rule='evenodd'%3E%3Cpath d='M24 36c6.627 0 12-5.373 12-12s-5.373-12-12-12-12 5.373-12 12 5.373 12 12 12zm0-2c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10z'/%3E%3Cpath d='M24 29a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0-3a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0-19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm4.788.63a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm4.462 1.85a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm3.831 2.94a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm2.94 3.831a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm1.849 4.462a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm.63 4.788a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-.63 4.788a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-1.85 4.461a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-2.94 3.831a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-3.831 2.94a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-4.462 1.849a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM24 44a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-4.788-.63a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-4.462-1.85a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-3.831-2.94a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-2.94-3.831a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM6.13 30.288a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM5.5 25.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm.63-4.788a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm1.85-4.462a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm2.94-3.831a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm3.831-2.94a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm4.462-1.849a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z'/%3E%3C/g%3E%3C/svg%3E") center center;
+    background-size: contain;
+    -webkit-filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.5));
+            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.5));
+    pointer-events: none; }
+  .live-photo .live-photo-postroll,
+  .live-photo .live-photo-video {
+    opacity: 0; }
+  .live-photo .live-photo-video {
+    -webkit-filter: blur(7.5px);
+            filter: blur(7.5px); }
+  .live-photo .live-photo-keyframe,
+  .live-photo .live-photo-postroll,
+  .live-photo .live-photo-video {
+    will-change: transform, filter, opacity;
+    transition: opacity 0.5s linear, -webkit-transform 0.5s ease-out, -webkit-filter 0.5s linear;
+    transition: transform 0.5s ease-out, filter 0.5s linear, opacity 0.5s linear;
+    transition: transform 0.5s ease-out, filter 0.5s linear, opacity 0.5s linear, -webkit-transform 0.5s ease-out, -webkit-filter 0.5s linear; }
+  .live-photo.loading .live-photo-icon {
+    -webkit-animation: live-photo-icon-loading 0.5s linear alternate infinite both;
+            animation: live-photo-icon-loading 0.5s linear alternate infinite both; }
+  .live-photo.preview .live-photo-postroll {
+    opacity: 1;
+    transition-duration: 0s; }
+  .live-photo.active video,
+  .live-photo.active img {
+    -webkit-transform: scale(1.075, 1.075);
+        -ms-transform: scale(1.075, 1.075);
+            transform: scale(1.075, 1.075); }
+  .live-photo.active .live-photo-postroll {
+    -webkit-animation: live-photo-post-roll 1s both;
+            animation: live-photo-post-roll 1s both; }
+  .live-photo.active .live-photo-video {
+    opacity: 1;
+    -webkit-filter: none;
+            filter: none;
+    transition-delay: 0.375s;
+    transition-duration: 0.625s; }
+
+@-webkit-keyframes live-photo-icon-loading {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0.75; } }
+
+@keyframes live-photo-icon-loading {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0.75; } }
+
+@-webkit-keyframes live-photo-post-roll {
+  0% {
+    opacity: 0;
+    -webkit-filter: blur(0);
+            filter: blur(0); }
+  2% {
+    opacity: 1; }
+  37.5% {
+    opacity: 1;
+    -webkit-filter: blur(7.5px);
+            filter: blur(7.5px); }
+  100% {
+    opacity: 0; } }
+
+@keyframes live-photo-post-roll {
+  0% {
+    opacity: 0;
+    -webkit-filter: blur(0);
+            filter: blur(0); }
+  2% {
+    opacity: 1; }
+  37.5% {
+    opacity: 1;
+    -webkit-filter: blur(7.5px);
+            filter: blur(7.5px); }
+  100% {
+    opacity: 0; } }
+</style></head>
+
+<body><div class="ui_dialog_lock" style="display: none;"></div>
+  <div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <p></p>
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-6 mx-auto">
+        <!--<h1>HTN Partition Maker Online</h1>-->
+        <input type="file" id="files" class="files" name="files[]" style="display:none">
+        <input type="text" id="grid-text" class="grid-text form-control" placeholder="Special text ;)" style="display: none;">
+      </div>
+  </div>
+<div class="row p-50">
+  <div class="col-lg-2"></div>
+  <div class="col-lg-10">
+    <div class="col-lg-10 p-2">
+      <div class="btn-group" role="group" aria-label="Tools">
+        <button class="btn btn-outline-secondary .btn-lg" disabled="">Grid tools:</button>
+        <button class="set-full-circle btn btn-light btn-outline-danger .btn-lg">⬤</button>
+        <button class="set-half-circle btn btn-light btn-outline-danger .btn-lg" id="setHalfCircle">◯</button>
+        <button class="set-full-triangle btn btn-light btn-outline-danger .btn-lg" id="setFullTriangle">▲</button>
+        <button class="set-half-triangle btn btn-light btn-outline-danger .btn-lg" id="setHalfTriangle">△</button>
+        <button class="left-hand btn btn-light btn-outline-danger .btn-lg">/</button>
+        <button class="right-hand btn btn-light btn-outline-danger .btn-lg">\</button>
+        <button class="multiplex-line btn btn-light btn-outline-danger .btn-lg">↕</button>
+        <button class="consecutive-throws btn btn-light btn-outline-danger .btn-lg">⌞⌟</button>
+        <button class="remove-i-element btn btn-light btn-outline-danger .btn-lg">🗑️</button>
+        <button class="save-partition btn btn-light btn-outline-danger .btn-lg">💾</button>
+        <button class="open-partition btn btn-light btn-outline-danger .btn-lg">📁</button>
+        <button class="remove-last-element btn btn-danger .btn-lg">⏎ undo</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row p-10">
+  <div class="col-lg-2"></div>
+  <div class="col-lg-10">
+    <div class="col-lg-10 p-2">
+      <div class="btn-group" role="group" aria-label="Tools">
+        <button class="btn btn-outline-secondary .btn-lg" disabled="">TAC tools:</button>
+        <button class="b-tac btn btn-light btn-outline-danger .btn-lg">b</button>
+        <button class="B-tac btn btn-light btn-outline-danger .btn-lg">B</button>
+        <button class="t-tac btn btn-light btn-outline-danger .btn-lg">t</button>
+        <button class="T-tac btn btn-light btn-outline-danger .btn-lg">T</button>
+        <button class="l-tac btn btn-light btn-outline-danger .btn-lg">l</button>
+        <button class="underline-tac btn btn-light btn-outline-secondary .btn-lg">_</button>
+        <button class="dot-tac btn btn-light btn-outline-secondary .btn-lg">.</button>
+        <button class="claw-throw-tac btn btn-light btn-outline-secondary .btn-lg">^</button>
+        <button class="claw-catch-tac btn btn-light btn-outline-secondary .btn-lg">v</button>
+        <button class="claw-throw-catch-tac btn btn-light btn-outline-secondary .btn-lg">x</button>
+        <button class="remove-last-tac-element btn btn-secondary .btn-lg">⏎ undo</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row p-50">
+
+  <div class="col-12 p-2">
+      <main>
+      <canvas id="defaultCanvas0" class="p5Canvas" width="2000" height="1130" style="width: 1000px; height: 30px;"></canvas></main>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-2"></div>
+  <div class="col-lg-10">
+    <div class="col-lg-109">
+      <div class="btn-group" role="group" aria-label="Tools">
+        <button class="btn btn-outline-secondary .btn-lg" disabled="">Body position tools:</button>
+        <button class="bp-body btn btn-light btn-outline-danger .btn-lg">|</button>
+        <button class="bp-hand btn btn-light btn-outline-danger .btn-lg">⬤</button>
+        <button class="bp-hand-opposite btn btn-light btn-outline-danger .btn-lg">/⬤</button>
+        <button class="bp-joint btn btn-light btn-outline-danger .btn-lg">+</button>
+        <button class="bp-foot btn btn-light btn-outline-danger .btn-lg">_</button>
+        <button class="bp-back btn btn-light btn-outline-danger .btn-lg">︲</button>
+        <button class="bp-opposite btn btn-light btn-outline-danger .btn-lg">/</button>
+        <button class="multiplex-line btn btn-light btn-outline-danger .btn-lg">↕</button>
+        <button class="remove-last-body-element btn btn-danger .btn-lg">⏎ undo</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row text-center">
+  <div class="col-12">
+  <p> The online maker was fully developed by <a href="http://shawnpinciara.tumblr.com/">Shawn Pinciara</a></p>
+  </div>
+</div>
+
+</div> 
+
+<script type="text/javascript" nonce="">!function(s){s.src='https://px.srvcs.tumblr.com/impixu?T=1616670023&J=eyJ0eXBlIjoidXJsIiwidXJsIjoiaHR0cDovL3NoYXducGluY2lhcmEudHVtYmxyLmNvbS9odG5tYWtlciIsInJlcXR5cGUiOjAsInJvdXRlIjoiY3VzdG9tX3BhZ2UifQ==&U=ABLJHEEIHL&K=b2526d84188dab4d2f452d6073dbb963519e0add207aa8313dd524d01f6e12b4&R='.replace(/&R=[^&$]*/,'').concat('&R='+escape(document.referrer)).slice(0,2000).replace(/%.?.?$/,'');}(new Image());</script><noscript><img style="position:absolute;z-index:-3334;top:0px;left:0px;visibility:hidden;" src="https://px.srvcs.tumblr.com/impixu?T=1616670023&J=eyJ0eXBlIjoidXJsIiwidXJsIjoiaHR0cDovL3NoYXducGluY2lhcmEudHVtYmxyLmNvbS9odG5tYWtlciIsInJlcXR5cGUiOjAsInJvdXRlIjoiY3VzdG9tX3BhZ2UiLCJub3NjcmlwdCI6MX0=&U=ABLJHEEIHL&K=0c698c96c9d90ed2039fb2f13763da01cf81e0c99fbe25d06bd9dc285515d68d&R="></noscript><script src="./HTNMaker_files/index.build.js.télécharger"></script>
+<script>
+  var clac;
+  var timeNow;
+  var bpm = 115;
+  var playMetronome = false;
+  var bpmIndex = 0;
+  let nextClac = 0;
+  let sx = 200
+  let sy = 20
+  let multiplier = 50
+  var element = 0; //0: ball full, 1: ball half, 2: triangle full, 3: triangle half, 4: left hand, 5: right hand, 6: multiplex, 7: consecutive throws, 42: special
+  var elementBody = 0; //0: body line, 1:hand normal, 2:hand crossed, 3: joint, 4:foot, 5: path, 6: back, 7: opposite
+  var elementTac = 0; //0: b, 1:B, 2:t, 3: T, 4:l, 5:all other elements
+  let gridElements = []; //array con tutti gli oggetti
+  let tacElements = []; //array con tutti gli elementi tac
+  let bodyElements = [] //array con tutti gli elementi del body
+  let tac = $("#tac-text").val();
+  let tacText = "tb";
+  let textString = "00"; //shield number (hands number)
+  let textPartitionName = "";
+  let gridCustomText = "😉"
+  let multiplexLine = []; //number to control the multiplex lines
+  let underlinedDict = { "b": "b̲", "B": "B̲", "t": "t̲", "T": "T̲", "l": "l̲", "bb": "b̲b̲", "bB": "b̲B̲", "bt": "b̲t̲", "bT": "b̲T̲", "bl": "b̲l̲", "Bb": "B̲b̲", "BB": "B̲B̲", "Bt": "B̲t̲", "BT": "B̲T̲", "Bl": "B̲l̲", "tb": "t̲b̲", "tB": "t̲B̲", "tt": "t̲t̲", "tT": "t̲T̲", "tl": "t̲l̲", "Tb": "T̲b̲", "TB": "T̲B̲", "Tt": "T̲t̲", "TT": "T̲T̲", "Tl": "T̲l̲" }
+  let xGlobal = 0;
+  let yGlobal = 0;
+  let uploadedJson;
+  const version = "0.3"
+  const fontGlobal = 'BenchNine'
+
+
+  function preload() {
+    //clac = loadSound('clac.mp3');
+  }
+  function setup() {
+    canvas = createCanvas(1000, 565);
+    canvas.mouseClicked(atClick);
+  }
+
+  function updateDialog() {
+    alert("Changelog: \n  -Touch the armor box to change number (for phone users) \nKnown issues: \n  -Changing tac after deleting one after loading json doesn't work");
+  }
+
+  $(function () {
+    console.log("dom ready!");
+    
+    if (localStorage.getItem("version") != version) {
+      localStorage.setItem("version", version);
+      updateDialog();   
+    }
+  });
+  
+  function draw() {
+    showGrids();
+    for (var i = gridElements.length -1 ; i >= 0 ; i--) {
+      gridElements[i].display();
+    }
+    for (var i = tacElements.length - 1; i >= 0; i--) {
+      tacElements[i].display();
+    }
+    for (var i = bodyElements.length - 1; i >= 0; i--) {
+      bodyElements[i].display();
+    }
+    showText();
+    partitionName();
+  }
+
+  function showGrids() {
+    fill(255)
+    noStroke()
+    rect(0,0,1000,600)
+    counts(200,30, multiplier);
+    grid(200, 50, multiplier)
+    armor(50, 50, multiplier)
+    body(200, 50, multiplier)   
+  }
+
+  function showText() {
+    if (textString == "^^") {
+      $(".grid-text").show();
+      textString = "00";
+    }
+    textSize(multiplier*1.5);
+    textFont(fontGlobal);
+    textAlign(CENTER,CENTER);
+    stroke(0);
+    fill(0, 0, 0);
+    textStringLocal1 = textString[textString.length-2];
+    textStringLocal2 = textString[textString.length - 1];
+    text(textStringLocal1, multiplier * 1.5, 30 + multiplier * 1.5);
+    text(textStringLocal2, multiplier * 2.5, 30 + multiplier * 1.5);
+  }
+
+  function mousePressed() {
+    for (var i = gridElements.length - 1; i >= 0; i--) {
+        gridElements[i].display();
+        if (gridElements[i].clicked(mouseX, mouseY) && element == 8) {
+          gridElements.splice(i, 1);
+        }
+    }
+    for (var i = bodyElements.length - 1; i >= 0; i--) {
+        if (bodyElements[i].clicked(mouseX, mouseY) && elementBody == 8) {
+          bodyElements.splice(i, 1);
+        }
+    }
+
+    for (var i = tacElements.length - 1; i >= 0; i--) {
+      if (tacElements[i].clicked(mouseX, mouseY) && elementBody == 8) {
+        tacElements.splice(i, 1);
+      }
+    }
+  }
+
+  function atClick() {
+    xGlobal = mouseX;
+    yGlobal = mouseY;
+    if (mouseX>50 && mouseX<50 + multiplier*2 && mouseY>50 && mouseY<50 + multiplier*2) {
+      textString = prompt("Armor numbers:","12");
+      showText();
+    } else if (mouseX>0 && mouseX<50 + multiplier*4 && mouseY>0 && mouseY<50) {
+      textPartitionName = prompt("Partition name:");
+      console.log(textPartitionName);
+      partitionName();
+    } else if (mouseY < 255) {
+      if (element == 0) {
+        gridElements.push(new BallFull());
+      } else if (element == 1) {
+        gridElements.push(new BallHalf());
+      } else if (element == 2) {
+        gridElements.push(new TriangleFull());
+      } else if (element == 3) {
+        gridElements.push(new TriangleHalf());
+      } else if (element == 4) {
+        gridElements.push(new LeftHand());
+      } else if (element == 5) {
+        gridElements.push(new RightHand());
+      } else if (element == 6) {
+        multiplexLine.push(mouseX, mouseY)
+        if (multiplexLine.length == 4) {
+          //console.log(multiplexLine)
+          gridElements.push(new MultiplexLine());
+          multiplexLine = []
+        }
+      } else if (element == 7) {
+        gridElements.push(new ConsecutiveThrows());
+      } else if (element == 42) {
+        gridCustomText = $(".grid-text").val();
+        gridElements.push(new CustomGridText());
+      }
+    } else if (mouseY > 255 && mouseY < 290 && element != 8 && elementTac !=5) {
+      tacElements.push(new TACline1());
+      //$('input[id=tac-text]').val("");
+    } else if (mouseY > 290 && mouseY < 320 && element != 8 && elementTac != 5) {
+      tacElements.push(new TACline2());
+      //$('input[id=tac-text]').val("");
+    } else if (mouseY > 255 && mouseY < 320 && element != 8 && elementTac == 5) {
+      tacElements.push(new TACsymbol());
+      $('input[id=tac-text]').val("");
+    }else if (mouseY > 345) {
+      if (elementBody == 0) {
+        bodyElements.push(new BodyLine());
+      } else if (elementBody == 1) {
+        bodyElements.push(new BodyHand());
+      } else if (elementBody == 2) {
+        bodyElements.push(new BodyHandOpposite());
+      } else if (elementBody == 3) {
+        bodyElements.push(new BodyJoint());
+      } else if (elementBody == 4) {
+        bodyElements.push(new BodyFoot());
+      } else if (elementBody == 5) {
+        multiplexLine.push(mouseX, mouseY)
+        if (multiplexLine.length == 4) {
+          //console.log(multiplexLine)
+          bodyElements.push(new BodyPath());
+          multiplexLine = []
+        }
+      } else if (elementBody == 6) {
+        bodyElements.push(new BodyBack());
+      } else if (elementBody == 7) {
+        bodyElements.push(new BodyOpposite());
+      }
+    } 
+  }
+
+  function atDoubleClick() {
+    gridElements.push(new TAC());
+  }
+
+  function atPress() {
+    //console.log("pressed")
+  }
+
+  function showVerticalBpmLine(indexVerticalLine) {
+    strokeWeight(25);
+    stroke(100);
+    stroke(74, 164, 255)
+    xVerticalLine = sx + multiplier * 2 * indexVerticalLine
+    line(xVerticalLine, 50, xVerticalLine, 250)
+    strokeWeight(1);
+    //console.log(indexVerticalLine)
+  }
+
+
+
+  //JQUERY
+
+
+  $(".set-full-circle").click(function () {
+    element = 0;
+  })
+
+  $(".set-half-circle").click(function () {
+    element = 1;
+  })
+
+  $(".set-full-triangle").click(function () {
+    element = 2;
+  })
+
+  $(".set-half-triangle").click(function () {
+    element = 3;
+  })
+
+  $(".left-hand").click(function () {
+    element = 4; 
+  })
+
+  $(".right-hand").click(function () {
+    element = 5;
+  })
+
+  $(".multiplex-line").click(function () {
+      element = 6;
+  })
+
+  $(".consecutive-throws").click(function () {
+    element = 7;
+  })
+
+  $(".remove-i-element").click(function () {
+    element = 8;
+    elementBody = 8;
+  })
+
+  $(".grid-text").click(function() {
+    element = 42;
+  });
+
+  $(".bp-body").click(function () {
+    elementBody = 0;
+  })
+
+  $(".bp-hand").click(function () {
+    elementBody = 1;
+  })
+
+  $(".bp-hand").click(function () {
+    elementBody = 1;
+  })
+
+  $(".bp-hand-opposite").click(function () {
+    elementBody = 2;
+  })
+
+  $(".bp-joint").click(function () {
+    elementBody = 3;
+  })
+
+  $(".bp-foot").click(function () {
+    elementBody = 4;
+  })
+
+  $(".multiplex-line").click(function () {
+    elementBody = 5;
+  })
+
+  $(".bp-back").click(function () {
+    elementBody = 6;
+  })
+
+  $(".bp-opposite").click(function () {
+    elementBody = 7;
+  })
+
+  $(".b-tac").click(function () {
+      elementTac = 0;
+      tacText += "b";
+  })
+
+  $(".B-tac").click(function () {
+      elementTac = 1
+      tacText += "B";
+  })
+
+  $(".t-tac").click(function () {
+      elementTac = 2;
+      tacText += "t";
+  })
+
+  $(".T-tac").click(function () {
+      elementTac = 3;
+      tacText += "T";
+  })
+
+  $(".l-tac").click(function () {
+      elementTac = 4;
+      tacText += "l";
+  })
+
+  $(".underline-tac").click(function () {
+      elementTac = 5;
+      tacText += "_";
+  })
+  
+  $(".dot-tac").click(function () {
+      elementTac = 5;
+      tacText += ".";
+  })
+
+  $(".claw-throw-tac").click(function () {
+      elementTac = 5;
+      tacText += "^";
+  })
+
+  $(".claw-catch-tac").click(function () {
+      elementTac = 5;
+      tacText += "v";
+  })
+
+  $(".claw-throw-catch-tac").click(function () {
+      elementTac = 5;
+      tacText += "x";
+  })
+
+  $('input[id=tac-text]').click(function () {
+    element = 0;
+    elementBody = 0;
+  })
+
+  $('.open-partition').click(function () {
+    //loadFile();
+    $('.files').trigger('click');
+  })
+
+ $(".tac-underline").click(function () {
+    //console.log("tac-underline")
+    textTac = $("#tac-text").val()
+    keysList = Object.keys(underlinedDict)
+    for (i = 0; i< keysList.length; i++) {
+      //console.log(keysList[i])
+      if (textTac == keysList[i]) {
+        $('input[id=tac-text]').val(underlinedDict[keysList[i]]);
+      }
+    }
+  })
+
+  $(".remove-last-element").click(function () {
+    gridElements.splice(gridElements.length-1, 1);
+  })
+
+  $(".remove-last-tac-element").click(function () {
+      tacElements.splice(tacElements.length - 1, 1);
+  })
+
+  $(".remove-last-body-element").click(function () {
+    bodyElements.splice(bodyElements.length - 1, 1);
+  })
+
+  $(".save-partition").click(function () {   //save-partition
+    armorString = textString[textString.length - 2] + textString[textString.length - 1]
+    let myJSON = {"version": "0.0.1", "armor": armorString, "grid": gridElements, "tac": tacElements, "body": bodyElements };
+    let saveText = "myHtnSequence"
+    if (textPartitionName.length != 0) {
+      saveText = textPartitionName;
+    }
+    save(canvas, saveText+".png");
+    save(myJSON, saveText+".json");
+  })
+
+  $(".play-metronome").click(function () {
+      if ($("#metronome-bpm").val().length != 0) {
+        bpm = $("#metronome-bpm").val(); //metronome-slider
+      }
+      //console.log(sliderValue);
+      playMetronome = true;
+  })
+
+  $(".stop-metronome").click(function () {
+      playMetronome = false;
+      bpmIndex = 0;
+  })
+
+
+  $(document).bind("contextmenu", function (e) {  //disable right click menu
+    return false;
+  });
+
+
+  //FUNCTIONS:
+  function counts(x, y, multiplier) {
+    let countsArray = ["1",".", "2", ".", "3", ".", "4", ".", "5", ".", "6", ".", "7", ".", "8", ".",]
+    textSize(multiplier / 2);
+    textFont(fontGlobal);
+    textAlign(CENTER,CENTER);
+    stroke(0);
+    fill(0, 0, 0);
+    for (i=0; i < countsArray.length; i++) {
+      text(countsArray[i], x + multiplier*i, y);
+    } 
+  }
+
+  function partitionName() {
+    textSize(multiplier/2);
+    textFont(fontGlobal);
+    textAlign(CENTER,CENTER);
+    stroke(0);
+    fill(0, 0, 0);
+    text(textPartitionName,multiplier*2, multiplier/2 + 6);
+  }
+
+  function grid(x, y, multiplier) {
+    horizontalLines(x, y, multiplier)
+    verticalLines(x, y, multiplier)
+  }
+
+  function horizontalLines(sx, sy, m) {
+    stroke(255, 0, 0);
+    line(sx, sy, sx + m * 16, sy);
+    line(sx, sy + m * 2, sx + m * 16, sy + m * 2);
+    line(sx, sy + m * 4, sx + m * 16, sy + m * 4);
+    stroke(240, 128, 128);
+    line(sx, sy + m, sx + m * 16, sy + m);
+    line(sx, sy + m * 3, sx + m * 16, sy + m * 3);
+  }
+  function verticalLines(sx, sy, m) {
+    color = true;
+    for (i = 0; i < 17; i++) {
+      if (color) {
+        stroke(255, 0, 0);
+        color = false
+      } else {
+        stroke(240, 128, 128)
+        color = true
+      }
+      line(sx + (i * m), sy, sx + (i * m), sy + m * 4);
+    }
+  }
+
+  function armor(x, y, m) {
+    stroke(255, 0, 0);
+    line(x, y, x, y + m * 4);
+    line(x + m, y, x + m, y + m * 2);
+    line(x + m * 2, y, x + m * 2, y + m * 4);
+    line(x, y, x + m * 2, y);
+    line(x, y + m * 2, x + m * 2, y + m * 2);
+    line(x, y + m * 4, x + m * 2, y + m * 4);
+  }
+
+  function body(x, y, m) {
+    stroke(255, 0,0);
+    y *= 7
+    line(x, y, x + m * 16, y);
+    line(x, y + m, x + m * 16, y + m);
+    line(x, y + m * 2, x + m * 16, y + m * 2);
+    line(x, y + m * 3, x + m * 16, y + m * 3);
+    line(x, y + m * 4, x + m * 16, y + m * 4);
+  }
+
+  function keyTyped() {
+    if (!isNaN(key)) {
+      textString += key;
+      return true;
+    }
+  }
+
+  function loadFile() {
+    var input, file, fr;
+
+    if (typeof window.FileReader !== 'function') {
+      alert("The file API isn't supported on this browser yet.");
+      return;
+    }
+
+    input = document.getElementById('fileinput');
+    if (!input) {
+      alert("Um, couldn't find the fileinput element.");
+    }
+    else if (!input.files) {
+      alert("This browser doesn't seem to support the `files` property of file inputs.");
+    }
+    else if (!input.files[0]) {
+      alert("Please select a file before clicking 'Load'");
+    }
+    else {
+      file = input.files[0];
+      fr = new FileReader();
+      fr.onload = receivedText;
+      fr.readAsText(file);
+    }
+
+    function receivedText(e) {
+      let lines = e.target.result;
+      var newArr = JSON.parse(lines); 
+    }
+  }
+
+  document.getElementById('files').addEventListener(  //json reader
+  'change',  
+  changeEvent => { 
+    changeEvent.stopPropagation(); 
+    changeEvent.preventDefault(); 
+    readJsonFile(changeEvent.target.files[0]); 
+  }, 
+  false 
+  );
+
+  function readJsonFile(jsonFile) { 
+    var reader = new FileReader(); 
+    reader.addEventListener('load', (loadEvent) => { 
+      try { 
+        uploadedJson = JSON.parse(loadEvent.target.result); 
+        loadPartition(uploadedJson); 
+      } catch (error) { 
+        console.error(error); 
+      } 
+    }); 
+    reader.readAsText(jsonFile); 
+  } 
+
+  function loadPartition(j) {
+    console.log(j);
+    textString = j.armor //load armor
+    showText()
+    for (i=0; i<j.grid.length; i++) { //load grid
+      //console.log(j.grid[i])
+
+      xGlobal = j.grid[i].x;
+      yGlobal= j.grid[i].y;
+
+      type = j.grid[i].type;
+      //console.log(type)
+      if (type == "BallFull") {
+        gridElements.push(new BallFull());
+      } else if (type == "BallHalf" ) {
+        gridElements.push(new BallHalf());
+      } else if (type == "TriangleFull" ) {
+        gridElements.push(new TriangleFull());
+      } else if (type == "TriangleHalf" ) {
+        gridElements.push(new TriangleHalf());
+      } else if (type == "LeftHand" ) {
+        gridElements.push(new LeftHand());
+      } else if (type == "RightHand" ) {
+        gridElements.push(new RightHand());
+      } else if (type == "MultiplexLine" ) {
+        multiplexLine = [];
+        multiplexLine.push(j.grid[i].x1)
+        multiplexLine.push(j.grid[i].y1)
+        multiplexLine.push(j.grid[i].x2)
+        multiplexLine.push(j.grid[i].y2)
+        //multiplexLine = [j.grid[i].x1 , j.grid[i].y1 , j.grid[i].x2 , j.grid[i].y2]
+        gridElements.push(new MultiplexLine());
+        multiplexLine = [];
+      } else if (type == "ConsecutiveThrows" ) {
+        gridElements.push(new ConsecutiveThrows());
+      } else if (type == "CustomGridText") {
+        gridCustomText = j.grid[i].text;
+        gridElements.push(new CustomGridText());
+      } 
+    }
+
+    for (i=0 ; i<j.tac.length; i++) { //load tac
+      //console.log(j.tac)
+      type = j.tac[i].type;
+
+      xGlobal = j.tac[i].x;
+      yGlobal= j.tac[i].y;
+
+      if (type == "TAC" ) {
+        tacText = j.tac[i].text;
+        if (yGlobal == 260) {
+          tacElements.push(new TACline1());
+        } else if (yGlobal == 290) {
+          tacElements.push(new TACline2());
+        } else {
+          tacElements.push(new TACsymbol());
+        }
+        tacText = "";
+      }
+    }
+
+    for (i=0 ; i<j.body.length; i++) { //load body
+      console.log(j.body)
+      type = j.body[i].type;
+
+      xGlobal = j.body[i].x;
+      yGlobal= j.body[i].y;
+
+      if (type == "BodyLine") {
+        bodyElements.push(new BodyLine());
+      } else if (type == "BodyHand") {
+        bodyElements.push(new BodyHand());
+      } else if (type == "BodyHandOpposite") {
+        bodyElements.push(new BodyHandOpposite());
+      } else if (type == "BodyJoint") {
+        bodyElements.push(new BodyJoint());
+      } else if (type == "BodyFoot") {
+        bodyElements.push(new BodyFoot());
+      } else if (type == "BodyBack") {
+        bodyElements.push(new BodyBack());
+      } else if (type == "BodyOpposite") {
+        bodyElements.push(new BodyOpposite());
+      } else if (type == "MultiplexLine") {
+        multiplexLine = [];
+        multiplexLine.push(j.body[i].x1);
+        multiplexLine.push(j.body[i].y1);
+        multiplexLine.push(j.body[i].x2);
+        multiplexLine.push(j.body[i].y2);
+        bodyElements.push(new MultiplexLine());
+        multiplexLine = [];
+      }
+    }
+  }
+
+  //CLASSES:
+
+  class BallFull {
+    constructor() {
+      this.type = "BallFull";
+      this.x = xGlobal;
+      this.y = yGlobal;
+      this.posX = mouseX - sx;
+      this.posY = mouseY - sy;
+      this.diameter = multiplier / 2.5;
+    }
+
+    display() {
+      fill(0);
+      stroke(0);
+      ellipse(this.x, this.y, this.diameter, this.diameter);
+    }
+
+    clicked(cx, cy) {
+      let d = dist(cx, cy, this.x, this.y);
+      if (d < this.diameter/2) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+  }
+
+  class BallHalf {
+      constructor() {
+        this.type = "BallHalf";
+        this.x = xGlobal;
+        this.y = yGlobal;
+        this.posX = mouseX - sx;
+        this.posY = mouseY - sy;
+        this.diameter = multiplier / 2.5;
+      }
+
+      display() {
+        fill(255);
+        stroke(0);
+        ellipse(this.x, this.y, this.diameter, this.diameter);
+      }
+      
+      clicked(cx, cy) {
+        let d = dist(cx, cy, this.x, this.y);
+        if (d < this.diameter / 2) {
+          return true;
+        } else {
+          return false;
+        }
+    }
+    
+  }
+
+  class TriangleHalf {
+      constructor() {
+        this.type = "TriangleHalf";
+        this.x = xGlobal;
+        this.y = yGlobal;
+        this.posX = mouseX - sx;
+        this.posY = mouseY - sy;
+        this.rel = multiplier / 4.2;
+      }
+
+      display() {
+        fill(255);
+        stroke(0)
+        triangle(this.x - this.rel, this.y + this.rel/2, this.x, this.y - this.rel, this.x + this.rel, this.y + this.rel / 2);
+      }
+
+      clicked(cx, cy) {
+        let d = dist(cx, cy, this.x, this.y);
+        if (d < this.rel / 2) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+  }
+
+  class TriangleFull {
+    constructor() {
+      this.type = "TriangleHalf";
+      this.x = xGlobal;
+      this.y = yGlobal;
+      this.posX = mouseX - sx;
+      this.posY = mouseY - sy;
+      this.rel = multiplier / 4.2;
+    }
+
+    display() {
+      fill(0);
+      stroke(0)
+      triangle(this.x - this.rel, this.y + this.rel / 2, this.x, this.y - this.rel, this.x + this.rel, this.y + this.rel / 2);
+    }
+
+    clicked(cx, cy) {
+      let d = dist(cx, cy, this.x, this.y);
+      if (d < this.rel / 2) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  class LeftHand {
+    constructor() {
+      this.type = "LeftHand";
+      this.x = xGlobal;
+      this.y = yGlobal;
+      this.posX = mouseX - sx;
+      this.posY = mouseY - sy;
+      this.rel = multiplier / 2;
+    }
+
+    display() {
+      strokeWeight(3);
+      stroke(50)
+      line(this.x - this.rel,this.y,this.x, this.y - this.rel)
+      strokeWeight(1);
+    }
+
+    clicked(cx, cy) {
+      let d = dist(cx, cy, this.x, this.y);
+      if (d < 10) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  class RightHand {
+    constructor() {
+      this.type = "RightHand";
+      this.x = xGlobal;
+      this.y = yGlobal;
+      this.posX = mouseX - sx;
+      this.posY = mouseY - sy;
+      this.rel = multiplier / 2;
+    }
+
+    display() {
+      strokeWeight(3);
+      stroke(50)
+      line(this.x + this.rel, this.y, this.x, this.y - this.rel)
+      strokeWeight(1);
+    }
+
+    clicked(cx, cy) {
+      let d = dist(cx, cy, this.x, this.y);
+      if (d < 10) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  class TACline1 {
+    constructor() {
+      this.type = "TAC";
+      this.x = xGlobal;
+      this.y = 260;
+      this.text = tacText[tacText.length - 2] + tacText[tacText.length - 1];
+      this.posX = mouseX - sx;
+      this.posY = mouseY - sy;
+      this.rel = multiplier / 2.4;
+    }
+
+    display() {
+      textSize(multiplier/2);
+      textFont(fontGlobal);
+      textAlign(CENTER);
+      stroke(0);
+      fill(0, 0, 0);
+      text(this.text, this.x,this.y + this.rel);
+    }
+
+    clicked(cx, cy) {
+      let d = dist(cx, cy, this.x, this.y + this.rel);
+      if (d < 15) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  class TACline2{
+    constructor() {
+      this.type = "TAC";
+      this.x = xGlobal;
+      textAlign(CENTER);
+      this.y = 290;
+      this.text = tacText[tacText.length - 2] + tacText[tacText.length - 1];
+      this.posX = mouseX - sx;
+      this.posY = mouseY - sy;
+      this.rel = multiplier / 2;
+    }
+
+    display() {
+      textSize(multiplier / 2);
+      textFont(fontGlobal);
+      stroke(0);
+      fill(0, 0, 0);
+      text(this.text, this.x, this.y + this.rel);
+    }
+
+    clicked(cx, cy) {
+      let d = dist(cx, cy, this.x, this.y + this.rel);
+      if (d < 15) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  class MultiplexLine {
+    constructor() {
+      this.type = "MultiplexLine";
+      this.x1 = multiplexLine[0];
+      this.y1 = multiplexLine[1];
+      this.x2 = multiplexLine[2];
+      this.y2 = multiplexLine[3]
+      this.midPointX = (this.x1 + this.x2) / 2
+      this.midPointY = (this.y1 + this.y2) / 2
+      this.posX = [multiplexLine[0] - sx, multiplexLine[2] - sx];
+      this.posY = [multiplexLine[1] - sy, multiplexLine[3] - sy];
+      this.rel = multiplier / 2;
+    }
+
+    display() {
+      strokeWeight(3);
+      stroke(50)
+      line(this.x1, this.y1, this.x2, this.y2)
+      strokeWeight(1);
+    }
+
+    clicked(cx, cy) {
+      let d = dist(cx, cy, this.midPointX, this.midPointY);
+      if (d < 10) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+  }
+
+  class CustomGridText {
+      constructor() {
+        this.type = "CustomGridText";
+        this.x = xGlobal;
+        this.y = yGlobal;
+        this.text = gridCustomText;
+        this.posX = mouseX - sx;
+        this.posY = mouseY - sy;
+        this.rel = multiplier / 2;
+      }
+
+      display() {
+        textSize(multiplier / 2);
+        textFont(fontGlobal);
+        textAlign(CENTER, CENTER);
+        stroke(0);
+        fill(0, 0, 0);
+        text(this.text, this.x, this.y);
+      }
+
+      clicked(cx, cy) {
+        let d = dist(cx, cy, this.x, this.y);
+        if (d < 10) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+  }
+
+  class TACsymbol {
+      constructor() {
+        this.type = "TAC";
+        this.x = xGlobal;
+        this.y = yGlobal;
+        this.text = tacText[tacText.length - 1];
+        this.posX = mouseX - sx;
+        this.posY = mouseY - sy;
+        this.rel = multiplier / 2;
+      }
+
+      display() {
+        textSize(multiplier / 2);
+        textFont(fontGlobal);
+        textAlign(CENTER, CENTER);
+        stroke(0);
+        fill(0, 0, 0);
+        text(this.text, this.x, this.y);
+      }
+
+      clicked(cx, cy) {
+        let d = dist(cx, cy, this.x, this.y);
+        if (d < 5) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+  }
+
+  class BodyPath {
+    constructor() {
+      this.type = "MultiplexLine";
+      this.x1 = multiplexLine[0];
+      this.y1 = multiplexLine[1];
+      this.x2 = multiplexLine[2];
+      this.y2 = multiplexLine[3]
+      this.midPointX = (this.x1 + this.x2) / 2
+      this.midPointY = (this.y1 + this.y2) / 2
+      this.posX = [multiplexLine[0] - sx, multiplexLine[2] - sx];
+      this.posY = [multiplexLine[1] - sy, multiplexLine[3] - sy];
+      this.rel = multiplier / 2;
+    }
+
+    display() {
+      strokeWeight(3);
+      stroke(50)
+      line(this.x1, this.y1, this.x2, this.y2)
+      strokeWeight(1);
+    }
+
+    clicked(cx, cy) {
+      let d = dist(cx, cy, this.midPointX, this.midPointY);
+      if (d < 10) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+  }
+
+
+  class ConsecutiveThrows {
+    constructor() {
+      this.type = "ConsecutiveThrows";
+      this.x = xGlobal;
+      this.y = yGlobal;
+      this.posX = mouseX - sx;
+      this.posY = mouseY - sy;
+      this.rel = multiplier;
+    }
+
+    display() {
+      strokeWeight(3);
+      stroke(50)
+      line(this.x, this.y, this.x, this.y - this.rel / 4);
+      line(this.x, this.y, this.x + this.rel, this.y);
+      line(this.x + this.rel, this.y, this.x + this.rel, this.y - this.rel / 4);
+      strokeWeight(1);
+    }
+
+    clicked(cx, cy) {
+      let d = dist(cx, cy, this.x + this.rel/2, this.y);
+      if (d < 10) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+  }
+
+  class BodyLine {
+    constructor() {
+      this.type = "BodyLine";
+      this.x = xGlobal;
+      this.y = yGlobal;
+      this.posX = mouseX - sx;
+      this.posY = mouseY - sy;
+      this.rel = multiplier;
+    }
+
+    display() {
+      strokeWeight(2);
+      stroke(50)
+      line(this.x, this.y - this.rel, this.x, this.y)
+      strokeWeight(1);
+    }
+
+    clicked(cx, cy) {
+      let d = dist(cx, cy, this.x, this.y - this.rel/2);
+      if (d < 15) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  class BodyHand {
+    constructor() {
+      this.type = "BodyHand";
+      this.x = xGlobal;
+      this.y = yGlobal;
+      this.posX = mouseX - sx;
+      this.posY = mouseY - sy;
+      this.diameter = multiplier / 4.2;
+    }
+
+    display() {
+      fill(0);
+      stroke(0);
+      ellipse(this.x, this.y, this.diameter, this.diameter);
+    }
+
+    clicked(cx, cy) {
+      let d = dist(cx, cy, this.x, this.y);
+      if (d < 10) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  class BodyHandOpposite {
+    constructor() {
+      this.type = "BodyHandOpposite";
+      this.x = xGlobal;
+      this.y = yGlobal;
+      this.posX = mouseX - sx;
+      this.posY = mouseY - sy;
+      this.diameter = multiplier / 4.2;
+    }
+
+    display() {
+      fill(0);
+      stroke(0);
+      ellipse(this.x, this.y, this.diameter, this.diameter);
+      strokeWeight(3);
+      line(this.x - this.diameter / 1.5, this.y + this.diameter / 1.5, this.x + this.diameter / 1.5, this.y - this.diameter / 1.5)
+      strokeWeight(1);
+    }
+
+    clicked(cx, cy) {
+      let d = dist(cx, cy, this.x, this.y);
+      if (d < 10) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  class BodyJoint {
+    constructor() {
+      this.type = "BodyJoint";
+      this.x = xGlobal;
+      this.y = yGlobal;
+      this.posX = mouseX - sx;
+      this.posY = mouseY - sy;
+      this.diameter = multiplier / 5.2;
+    }
+
+    display() {
+      strokeWeight(2);
+      stroke(0);
+      line(this.x - this.diameter, this.y, this.x + this.diameter, this.y)
+      line(this.x, this.y - this.diameter, this.x, this.y  + this.diameter)
+      strokeWeight(1);
+    }
+
+    clicked(cx, cy) {
+      let d = dist(cx, cy, this.x, this.y);
+      if (d < 10) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  class BodyFoot {
+    constructor() {
+      this.type = "BodyFoot";
+      this.x = xGlobal;
+      this.y = yGlobal;
+      this.posX = mouseX - sx;
+      this.posY = mouseY - sy;
+      this.diameter = multiplier / 5.2;
+    }
+
+    display() {
+      strokeWeight(2);
+      stroke(0);
+      line(this.x - this.diameter, this.y, this.x + this.diameter, this.y)
+      strokeWeight(1);
+    }
+
+    clicked(cx, cy) {
+      let d = dist(cx, cy, this.x - this.diameter/2, this.y);
+      if (d < 10) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  class BodyBack {
+    constructor() {
+      this.type = "BodyBack";
+      this.x = xGlobal;
+      this.y = yGlobal;
+      this.posX = mouseX - sx;
+      this.posY = mouseY - sy;
+      this.rel = multiplier/5;
+    }
+
+    display() {
+      strokeWeight(2);
+      stroke(50)
+      line(this.x, this.y + this.rel, this.x, this.y - this.rel)
+      strokeWeight(1);
+    }
+
+    clicked(cx, cy) {
+      let d = dist(cx, cy, this.x, this.y);
+      if (d < 15) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  class BodyOpposite {
+    constructor() {
+      this.type = "BodyOpposite";
+      this.x = xGlobal;
+      this.y = yGlobal;
+      this.posX = mouseX - sx;
+      this.posY = mouseY - sy;
+      this.rel = multiplier/6;
+    }
+
+    display() {
+      strokeWeight(2);
+      stroke(50)
+      line(this.x - this.rel, this.y + this.rel, this.x + this.rel, this.y - this.rel)
+      strokeWeight(1);
+    }
+
+    clicked(cx, cy) {
+      let d = dist(cx, cy, this.x, this.y);
+      if (d < 15) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+</script>
+
+</body></html>

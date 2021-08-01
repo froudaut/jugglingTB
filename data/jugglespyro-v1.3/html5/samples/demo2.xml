@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<animation name="demo2.xml">
+
+<scenario name="Sc1">
+
+
+<scene name="scene1">
+<right axisDx="390" axisDy="300" propChoice="4" armWay="in" ratio="0" clockSpeed="2" nbloops="1" armAngle="-90" propAngle="0" armLength="100" propLength="50" colorHandPath="rgba(0,255,0,1)" colorPropPath="rgba(255,204,0,1)" handPathViewMode="0" propPathViewMode="3" setColorFilter="false" blurring="true" shadow="false" showAxis="true" cleaning="false" handPathEnd="90"/>
+<left axisDx="410" axisDy="300" propChoice="4" armWay="out" ratio="0" clockSpeed="2" nbloops="1" armAngle="0" propAngle="0" armLength="100" propLength="50" colorHandPath="rgba(0,255,0,1)" colorPropPath="rgba(255,204,0,1)" handPathViewMode="0" propPathViewMode="3" setColorFilter="false" blurring="true" shadow="false" showAxis="true" cleaning="false" handPathEnd="90"/>
+<both scale="1" speed="100" colorBackground="rgba(247,245,126,255)"/>
+</scene>
+
+<scene name="scene2">
+<right ratio="0" armAngle="0" armWay="out" nbloops="1" handPathEnd="90"/>
+<left ratio="-2" armAngle="90" armWay="out" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene3">
+<right ratio="-2" armAngle="90" armWay="out" nbloops="1" handPathEnd="90"/>
+<left ratio="-2" armAngle="180" propAngle="180" armWay="in" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene4">
+<right ratio="0" armAngle="180" propAngle="180" armWay="out" nbloops="1" handPathEnd="90"/>
+<left ratio="0" armAngle="90" propAngle="0" armWay="out" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene5">
+<right ratio="0" armAngle="-90" propAngle="180" armWay="out" nbloops="1" handPathEnd="90"/>
+<left ratio="-2" armAngle="180" propAngle="0" armWay="in" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene6">
+<right ratio="-2" armAngle="0" propAngle="180" armWay="out" nbloops="1" handPathEnd="90"/>
+<left ratio="0" armAngle="90" propAngle="180" armWay="out" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene7">
+<right ratio="0" armAngle="90" propAngle="0" armWay="out" nbloops="1" handPathEnd="90"/>
+<left ratio="0" armAngle="180" propAngle="180" armWay="in" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene8">
+<right ratio="-2" armAngle="180" propAngle="0" armWay="in" nbloops="1" handPathEnd="90"/>
+<left ratio="-2" armAngle="-90" propAngle="180" armWay="in" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene9">
+<right ratio="-2" armAngle="-90" propAngle="180" armWay="in" nbloops="1" handPathEnd="90"/>
+<left ratio="0" armAngle="0" propAngle="0" armWay="out" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene10">
+<right ratio="0" armAngle="0" propAngle="0" armWay="out" nbloops="1" handPathEnd="90"/>
+<left ratio="0" armAngle="90" propAngle="0" armWay="out" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene11">
+<right ratio="-2" armAngle="90" propAngle="0" armWay="out" nbloops="1" handPathEnd="90"/>
+<left ratio="-2" armAngle="180" propAngle="0" armWay="in" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene12">
+<right ratio="0" armAngle="180" propAngle="180" armWay="out" nbloops="1" handPathEnd="90"/>
+<left ratio="0" armAngle="90" propAngle="180" armWay="out" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene13">
+<right ratio="-2" armAngle="-90" propAngle="180" armWay="out" nbloops="1" handPathEnd="90"/>
+<left ratio="0" armAngle="180" propAngle="180" armWay="out" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene14">
+<right ratio="-2" armAngle="0" propAngle="0" armWay="in" nbloops="1" handPathEnd="90"/>
+<left ratio="-2" armAngle="-90" propAngle="180" armWay="out" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene15">
+<right ratio="-2" armAngle="-90" propAngle="180" armWay="out" nbloops="1" handPathEnd="90"/>
+<left ratio="0" armAngle="0" propAngle="0" armWay="out" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene16">
+<right ratio="0" armAngle="0" propAngle="0" armWay="out" nbloops="1" handPathEnd="90"/>
+<left ratio="-2" armAngle="-90" propAngle="0" armWay="in" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene17">
+<right ratio="-2" armAngle="90" propAngle="0" armWay="out" nbloops="1" handPathEnd="90"/>
+<left ratio="-2" armAngle="0" propAngle="180" armWay="out" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene18">
+<right ratio="0" armAngle="180" propAngle="180" armWay="in" nbloops="1" handPathEnd="90"/>
+<left ratio="-2" armAngle="90" propAngle="0" armWay="out" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene19">
+<right ratio="0" armAngle="90" propAngle="180" armWay="out" nbloops="1" handPathEnd="90"/>
+<left ratio="0" armAngle="180" propAngle="180" armWay="in" nbloops="1" handPathEnd="90"/>
+</scene>
+
+<scene name="scene20">
+<right ratio="-2" armAngle="180" propAngle="180" armWay="in" nbloops="1" handPathEnd="90"/>
+<left ratio="-2" armAngle="-90" propAngle="180" armWay="in" nbloops="1" handPathEnd="90"/>
+</scene>
+
+</scenario>
+
+</animation>

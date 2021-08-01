@@ -1,0 +1,97 @@
+%%
+
+input: #empty
+| pattern 
+  {
+	my @res = @main::PATTERN;  
+	@main::PATTERN = ();
+	$main::idxPattern=0;
+  	return \@res;
+  }	       	
+| pattern '*' 
+  {
+	my @res = @main::PATTERN;  	    
+	@main::PATTERN = ();
+	$main::idxPattern=0;
+	return \@res;
+  }
+    ;
+
+pattern: '(' throws ',' throws ')' { $main::PATTERN[$main::idxPattern] = "($_[2], $_[4])"; $main::idxPattern++; }
+| pattern '(' throws ',' throws ')' { $main::PATTERN[$main::idxPattern] = "($_[3], $_[5])"; $main::idxPattern++; }
+| throws { $main::PATTERN[$main::idxPattern] = "$_[1]"; $main::idxPattern++; }
+| pattern throw { $main::PATTERN[$main::idxPattern] = "$_[2]"; $main::idxPattern++; }
+| '[' throws ']' { $main::PATTERN[$main::idxPattern] = "[$_[2]]"; $main::idxPattern++; }
+| pattern '[' throws ']' { $main::PATTERN[$main::idxPattern] = "[$_[3]]"; $main::idxPattern++; } 
+    ;    
+
+throws:  
+ throw { "$_[1]S<IN>"; }
+| throw SOUState exchange { "$_[1]$_[2]$_[3]"; }
+| throw SOUState { "$_[1]$_[2]<IN>"; }
+| throw exchange { "$_[1]S$_[2]"; }
+| throw throws { "$_[1]S<IN>"; }
+| throw SOUState exchange throws { "$_[1]$_[2]$_[3]"; }
+| throw SOUState throws { "$_[1]$_[2]<IN>"; }
+| throw exchange throws { "$_[1]S$_[2]"; }
+| '[' throws ']' { "[$_[2]]"; }
+     ;
+
+%%
+
+my $Input = "";
+my @PATTERN = ();
+my $idxPattern = 0;
+
+sub parse 
+{
+    $idxPattern = 0;
+    $Input="$_[0]";        
+    my $p = new SOU_GRAMMAR();
+    my $res = $p->YYParse( yylex => \&yylex, yyerror => \&yyerror);
+    return $res;
+}
+
+sub yyerror {
+    if ($_[0]->YYCurtok) {
+	printf STDERR ('Error: a "%s" (%s) was found where %s was expected'."\n", $_[0]->YYCurtok, $_[0]->YYCurval, $_[0]->YYExpect)
+    }
+    
+    else {
+        print STDERR "Expecting one of ",join(", ",$_[0]->YYExpect),"\n";
+    }
+}
+
+
+sub init_lexical_file{
+    my $file = shift;
+    local $/;
+    undef $/;
+    if ($file) {
+	open F, $file or die "$!";
+	$Input = <F>;
+	close F;
+    } else {
+	$Input = <>
+    }
+}
+
+sub yylex{
+    for($Input){
+	# Advance spaces
+	1 while (s!^(\s+|\n)!!g);
+	# EOF
+	return ("","") if $_ eq "";
+	# Tokens
+	s!^(\dx)!! and return ("throw", $1);
+	s!^(\dX)!! and return ("throw", $1);
+	s!^(\d)!! and return ("throw", $1);
+	s!^("sb" | "ob" | "ub" | "SB" | "OB" | "UB" | "Sb" | "Ob" | "Ub")!! and return ("SOUState", $1);	
+	s!^([souSOU])!! and return ("SOUState", $1);	
+	s!^(<in>)!! and return ("exchange", $1);	
+	s!^(<IN>)!! and return ("exchange", $1);	
+
+	s!([\()\[\],*])!! and return ($1,$1);
+	print STDERR "Unexpected symbols: ’$Input’\n" ;
+    }
+}

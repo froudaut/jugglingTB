@@ -1,0 +1,1059 @@
+<html><head>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Generator of Transitions</title>
+<!-- base href="http://cursomalabarismo.no.sapo.pt/jdb/ultrasitions.html" -->
+<script language="JavaScript" type="text/javascript">
+<!--
+
+var n1=0;				//Number of cycles of SS1 to be repeat in SSprint
+var n2=0;				//Number of cycles of SS2 to be repeat in SSprint
+
+function generate() {
+
+	/********************************************************************************
+ 	* Program done by: Pedro Teodoro - Portugal MAY-2006									*
+  	*																				*	
+ 	* http://cursomalabarismo.no.sapo.pt											*
+  	********************************************************************************/
+
+	/********************************************************************************
+	*																				*
+	*	Generation of Transitions (main Algorithm):									*				
+	*																				*	
+	*	:: (1) Get SiteSwap 1,2 (SS 1,2) => State Patern 1,2 (SP 1,2)				*			
+	*																				*	
+	*		SS1 = [76]20		=>		SP1 = 21011									*
+	*		SS2 = 960			=>		SP2 = 1101101								*
+	*																				*
+	*	:: (2) If SP2!=SP1 (else there is no need of transitions)					*
+	*			Put SP2 under SP1 and move SP2 to the right until each element 		*
+	*			of SP2 is equal or higher than each element of SP1.					*
+	*																				*
+	*		Timebeat = 0123456789													*
+	*		  SP1aux = 2101100000													*
+	*		  SP2aux = 0001101101													*
+	*																				*
+	*	:: (3) a = elements of SP1aux higher than SP2aux => a = 0,1,2				*
+	*	:: (4) b = elements of SP2aux higher than SP1aux => b = 6,7,9				*
+	*	:: (5) TT = transitions throws given by:									*
+	*																				*
+	*		   TT =	b-a																*
+	*		TT[0] = 6-0 = 6; (SP1aux = 2 when a=0, so we can use a=0 twice)			*
+	*						 (SP2aux = 1 when b=6, so we can use b=0 once)			*
+	*		TT[1] = 7-0 = 7; 														*
+	*		TT[2] = 9-1 = 7; 														*
+	*		TT[3] = 0	= 0; (whenever SP1aux = 0, for each a)						*	
+	*																				*
+	*		TT = [67]80 (transitions throws from to go fo from SS1 to SS2)			*
+	*																				*
+	*	:: (6) Get another permut of b and repeat (5) to obtain another solution. 	*
+	*		   Do it for each permut of b 											*
+	*																				*
+	*	:: (7) Repeat (1) changing now SS1 to SS2									*
+	*																				*
+	*********************************************************************************/
+	
+	/********************************************************************************
+ 	*     				             V A R I A B L E S  							*
+ 	*********************************************************************************/
+	
+	var ss1=document.generateGO.SS1.value; // string of SiteSwap1
+	var ss2=document.generateGO.SS2.value; // string of SiteSwap2
+	var Period1=document.generateGO.Period1.options[document.generateGO.Period1.selectedIndex].value;
+	var Period2=document.generateGO.Period2.options[document.generateGO.Period2.selectedIndex].value;
+	var Hmax1=document.generateGO.Hmax1.options[document.generateGO.Hmax1.selectedIndex].value;
+	var Hmax2=document.generateGO.Hmax2.options[document.generateGO.Hmax2.selectedIndex].value;
+	
+	//Strings-----------------------------------------------------------------------
+	var ss="";				//string of SS
+	var ssaux="";			//string aux
+	var tts="";				//string of transitions throws
+	
+	
+	//Arrays------------------------------------------------------------------------
+	var SS=new Array();			//SiteSwap used in Properties() 
+	var SP=new Array();			//State Patern used in Properties()
+	var SS1=new Array();		//SiteSwap 1
+	var SS2=new Array();		//SiteSwap 2
+	var SP1=new Array();		//State Patern of SiteSwap 1
+	var SP2=new Array();		//State Patern of SiteSwap 2
+	var SP1copy=SP1;			//Copy of SP1
+	var SP2copy=SP2;			//Copy of SP2
+	var SP1aux=new Array(); 	//State Patern of SiteSwap 1 modefied
+	var SP2aux=new Array(); 	//State Patern of SiteSwap 2 modefied
+	var SP1time=new Array();	//Timebeat in the Patern of SP1aux
+	var SP2time=new Array();	//Timebeat in the Patern of SP2aux
+	var a=new Array(); 			//Timebeat elements belonging solo to SP1aux
+	var b=new Array(); 			//Timebeat elements belonging solo to SP2aux
+	var TT=new Array();			//Array with the Transitions Throws
+	var TTaux = new Array();	//List of Transitions Throws
+	var SSprint = new Array();   	//SiteSwap: SS1 + TT12 + SS2 + TT21
+	var Tbeat = new Array();	 	//	Timebeat of SS
+	var Timebeat = new Array();	 	//	Ideal Timebeat of SS
+	//------------------------------------------------------------------------------
+		
+	//Logicals----------------------------------------------------------------------
+	var stop_program=false; //Stop the program
+	var async=false;		//Check if Siteswaps are asynchronous
+	var async1=false; 		//Check if SS1 is asynchronous
+	var async2=false; 		//Check if SS2 is asynchronous
+	var Transitions1=false;
+	var Transitions2=false;
+	//------------------------------------------------------------------------------
+	
+	//Integeres---------------------------------------------------------------------
+	var Balls=0; 			//Number of Balls of SS
+	var Balls1=0;			//Number of Balls of SS1
+	var Balls2=0;			//Number of Balls of SS2
+	var zeros=0;			//Number of zeros in the left of SP
+	var zeros1=0;			//Number of zeros in the left of SP1
+	var zeros2=0;			//Number of zeros in the left of SP2
+	var lenTime=0;			//Number of beats of SS
+	var Sum=0;				//Sum of throws of SS
+	var LSP=0;				//Length of SP1
+	var twos=0;
+	var Period=0;
+	var Hmax=0;
+	//------------------------------------------------------------------------------
+	var plus=0
+	var top=false;
+	var aux="";
+	var ht12=false;
+	var ht21=false; 
+	var htOk=true;
+	
+	/********************************************************************************
+ 	*     		             C H E C K   S I T E S W A P S  						*
+ 	*********************************************************************************/
+	
+	if(ss1.indexOf("(")!=-1) {async1=true;Period1=Period1*2}
+	if(ss2.indexOf("(")!=-1) {async2=true;Period2=Period2*2}
+
+	if((async1 && !async2) || (!async1 && async2)){ht=true; ss=ss1;async=async1;duplicate();ss1=ss;ss=ss2;async=async2;duplicate();ss2=ss}
+	if(!async1 && async2) ht12=true;
+	if(async1 && !async2) ht21=true;
+	
+//alert(ss1+"  "+ss2)
+	
+	if(!stop_program) {
+		ss=ss1; Hmax=Hmax1;
+		Properties(); SS1=SS; SP1=SP; Balls1=Balls; zeros1=zeros; Hmax1=Hmax;
+		n1=Math.ceil(Balls/lenTime)*2;
+		//alert(ss1+"  "+Timebeat+"  "+Tbeat)
+		if(Timebeat+"a"!=Tbeat+"a") {alert("SiteSwap 1 is not valid"); stop_program=true;}
+		ss=""; SS=new Array(); SP=new Array(); Timebeat=new Array(); Tbeat=new Array(); lenTime=0; Balls=0; zeros=0; Sum=0; //RESET
+	}
+	
+	if(!stop_program) {
+		ss=ss2; Hmax=Hmax2; 
+		Properties(); SS2=SS; SP2=SP; Balls2=Balls; zeros2=zeros; Hmax2=Hmax;
+		n2=Math.ceil(Balls/lenTime)*2;
+		if(Timebeat+"a"!=Tbeat+"a") {alert("SiteSwap 2 is not valid"); stop_program=true;}
+		ss=""; SS=new Array(); SP=new Array(); Timebeat=new Array(); Tbeat=new Array(); lenTime=0; Balls=0; zeros=0; Sum=0; //RESET
+	}
+	
+	if(!stop_program && Balls2!=Balls1) {alert("Number of balls of SiteSwap 2 is not equal to the Number of balls of SiteSwap 1"); stop_program=true;}
+	
+	/********************************************************************************
+ 	*     		             G E T   T R A N S I T I O N S  						*
+ 	*********************************************************************************/	
+	
+	if(!stop_program) {
+	
+		document.forms['generateGO'].TT12.options.length = 0;
+		document.forms['generateGO'].TT21.options.length = 0;
+		
+		var ti=new Date()
+		
+		Period=Period1;
+		Hmax=Hmax1;
+		SP1aux=SP1;
+		SP2aux=SP2;
+	
+		Transitions1=true;
+		Transitions2=false;
+		rearangeSPaux();
+		generateSPaux();
+		document.forms['generateGO'].TT12.options[0].selected = true
+		var Qt1=plus;
+		var tf=new Date()
+		document.generateGO.Dados1.value=Qt1;
+		
+		var ti=new Date()
+		ss=ss2; 
+		Properties(); SS1=SS; SP1=SP; Balls1=Balls; zeros1=zeros;	
+		ss=""; SS=new Array(); SP=new Array(); Timebeat=new Array(); Tbeat=new Array(); lenTime=0; Balls=0; zeros=0; Sum=0; //RESET
+
+		ss=ss1; 
+		Properties(); SS2=SS; SP2=SP; Balls2=Balls; zeros2=zeros;
+		ss=""; SS=new Array(); SP=new Array(); Timebeat=new Array(); Tbeat=new Array(); lenTime=0; Balls=0; zeros=0; Sum=0; //RESET
+	
+		Transitions2=true;
+		Transitions1=false;
+		Period=Period2;
+		Hmax=Hmax2;
+		SP1aux=SP1;
+		SP2aux=SP2;	
+
+		rearangeSPaux();
+		generateSPaux();
+		document.forms['generateGO'].TT21.options[0].selected = true
+		var Qt2=plus;
+		var tf=new Date()
+		
+		document.generateGO.Dados2.value=Qt2;
+	}
+
+	
+	
+	/********************************************************************************
+ 	*     		             F U N C:   P R O P E R T I E S  						*
+ 	*********************************************************************************/		
+	
+	function Properties() {
+		if(ss.charAt(ss.length*1-1)=="*") mirrow();
+		if(ss.indexOf("(")!=-1) {if(Hmax%2==0) Hmax++}
+		var j=0; var k=0; var l=0; var m=0; var n=0; var p=0; 
+		var LCurve=false; var LSquare=false; var X=false;
+		for(i=0;i<ss.length;i++) {
+			X=false;
+			if(ss.charAt(i)=="(") {LCurve=true; async=true;}
+			if(ss.charAt(i)==",") LCurve=false;
+			if(ss.charAt(i+1)=="x" && i<ss.length-1) X=true;
+			if(ss.charAt(i)=="[") { LSquare=true; k=l;	}
+			if(ss.charAt(i)=="]") { LSquare=false; l=k+1; }
+			if(ss.charAt(i)!="(" && ss.charAt(i)!="," && ss.charAt(i)!=")" && ss.charAt(i)!="[" && ss.charAt(i)!="]" && ss.charAt(i)!="x") {	
+				if (!LSquare) {if(j==0) {k=-1}; Timebeat[j++]=++k; l=k+1; }
+				if (LSquare) {Timebeat[j++]=l; k=l;	}
+				if(X && LCurve) SS[m++]=ss.charAt(i)+"U";
+				else if(X && !LCurve) SS[m++]=ss.charAt(i)+"D";
+				else SS[m++]=ss.charAt(i);
+			}
+		}
+		for(i=0;i<SS.length;i++) {
+			if(SS[i].charAt(0)=="a") { if(SS[i].length==1) {SS[i]=10} else if(SS[i].charAt(1)=="U") {SS[i]=11} else {SS[i]=9} }
+			else if(SS[i].charAt(0)=="b") { if(SS[i].length==1) {SS[i]=11} else if(SS[i].charAt(1)=="U") {SS[i]=12} else {SS[i]=10} }
+			else if(SS[i].charAt(0)=="c") { if(SS[i].length==1) {SS[i]=12} else if(SS[i].charAt(1)=="U") {SS[i]=13} else {SS[i]=11} }
+			else if(SS[i].charAt(0)=="d") { if(SS[i].length==1) {SS[i]=13} else if(SS[i].charAt(1)=="U") {SS[i]=14} else {SS[i]=12} }
+			else if(SS[i].charAt(0)=="e") { if(SS[i].length==1) {SS[i]=14} else if(SS[i].charAt(1)=="U") {SS[i]=15} else {SS[i]=13} }
+			else if(SS[i].charAt(0)=="f") { if(SS[i].length==1) {SS[i]=15} else if(SS[i].charAt(1)=="U") {SS[i]=16} else {SS[i]=14} }
+			else if(SS[i].charAt(0)=="g") { if(SS[i].length==1) {SS[i]=16} else if(SS[i].charAt(1)=="U") {SS[i]=17} else {SS[i]=15} }
+			else if(SS[i].charAt(0)=="h") { if(SS[i].length==1) {SS[i]=17} else if(SS[i].charAt(1)=="U") {SS[i]=18} else {SS[i]=16} }
+			else if(SS[i].charAt(0)=="i") { if(SS[i].length==1) {SS[i]=18} else if(SS[i].charAt(1)=="U") {SS[i]=19} else {SS[i]=17} }
+			else if(SS[i].charAt(0)=="j") { if(SS[i].length==1) {SS[i]=19} else if(SS[i].charAt(1)=="U") {SS[i]=20} else {SS[i]=18} }
+			else if(SS[i].charAt(0)=="k") { if(SS[i].length==1) {SS[i]=20} else if(SS[i].charAt(1)=="U") {SS[i]=21} else {SS[i]=19} }
+			else if(SS[i].charAt(0)=="l") { if(SS[i].length==1) {SS[i]=21} else if(SS[i].charAt(1)=="U") {SS[i]=22} else {SS[i]=20} }
+			else if(SS[i].charAt(0)=="m") { if(SS[i].length==1) {SS[i]=22} else if(SS[i].charAt(1)=="U") {SS[i]=23} else {SS[i]=21} }
+			else if(SS[i].charAt(0)=="n") { if(SS[i].length==1) {SS[i]=23} else if(SS[i].charAt(1)=="U") {SS[i]=24} else {SS[i]=22} }
+			else if(SS[i].charAt(0)=="o") { if(SS[i].length==1) {SS[i]=24} else if(SS[i].charAt(1)=="U") {SS[i]=25} else {SS[i]=23} }
+			else if(SS[i].charAt(0)=="p") { if(SS[i].length==1) {SS[i]=25} else if(SS[i].charAt(1)=="U") {SS[i]=26} else {SS[i]=24} }
+			else if(SS[i].charAt(0)=="q") { if(SS[i].length==1) {SS[i]=26} else if(SS[i].charAt(1)=="U") {SS[i]=27} else {SS[i]=25} }
+			else if(SS[i].charAt(0)=="r") { if(SS[i].length==1) {SS[i]=27} else if(SS[i].charAt(1)=="U") {SS[i]=28} else {SS[i]=26} }
+			else if(SS[i].charAt(0)=="s") { if(SS[i].length==1) {SS[i]=28} else if(SS[i].charAt(1)=="U") {SS[i]=29} else {SS[i]=27} }
+			else if(SS[i].charAt(0)=="t") { if(SS[i].length==1) {SS[i]=29} else if(SS[i].charAt(1)=="U") {SS[i]=30} else {SS[i]=28} }
+			else if(SS[i].charAt(0)=="u") { if(SS[i].length==1) {SS[i]=30} else if(SS[i].charAt(1)=="U") {SS[i]=31} else {SS[i]=29} }
+			else if(SS[i].charAt(0)=="v") { if(SS[i].length==1) {SS[i]=31} else if(SS[i].charAt(1)=="U") {SS[i]=32} else {SS[i]=30} }
+			else if(SS[i].length>1 && SS[i].charAt(1)=="U") SS[i]=SS[i].charAt(0)*1+1;
+			else if(SS[i].length>1 && SS[i].charAt(1)=="D") SS[i]=SS[i].charAt(0)*1-1;
+		}
+		lenTime=Timebeat[Timebeat.length-1]*1+1;	
+		for (j=0;j<SS.length;j++) { Tbeat[p]=(SS[j]*1+Timebeat[p])%lenTime; p++;	}; p=0; Tbeat=Tbeat.sort(up);
+		for(i=0;i<SS.length;i++) {Sum+=SS[i]*1}; Balls=Sum/lenTime;
+		StatePatern()
+	}	
+	/********************************************************************************
+ 	*     		             F U N C:   S T A T E P A T E R N   					*
+ 	*********************************************************************************/	
+	function StatePatern() {
+		var Time= new Array(); var Pos=new Array();
+		var State=new Array(); var Qtd=new Array();
+		var j=0; var k=0;
+		for(i=0;i<Sum*2;i++) State[i]="";
+		for(i=0;i<Sum*2;i++) {
+			Time[i]=Timebeat[i%Timebeat.length]*1+lenTime*Math.floor(i/Timebeat.length);
+			Pos[i]=Time[i]*1+SS[i%Timebeat.length]*1
+			if(Time[i]==Time[i-1] && i>0) 	Qtd[k]++; 
+			else { if(i>0) {k++} ;Qtd[k]=1 }
+			State[Pos[i]]=State[Pos[i]]+"-";
+			State[Time[i]]=State[Time[i]]+"x";
+		} 	k=0;
+		for(i=0;i<Sum*2;i++) {
+			SP[i]=0;
+			for(j=0;j<Qtd[i];j++) if(State[i].charAt(j)=="x") (SP[i]++)*1
+			k+=SP[i];
+			if(k==Balls) break
+		}	
+		var i=0;	
+		while(SS[i]==0) {zeros++;i++} //count the number of zeros in the beguining
+	}
+
+	/********************************************************************************
+ 	*     		           F U N C:   R E A R A N G E S P A U X  					*
+ 	*********************************************************************************/	
+	
+	function rearangeSPaux() {
+		SP1copy=SP1; SP2copy=SP2;
+		var Gap=SP1copy.length-SP2copy.length;
+		
+		if (Gap>0) { 
+			LSP=SP1copy.length; SP1=SP1copy;
+			for(i=0;i<Gap;i++) SP2aux="0,"+SP2aux; SP2aux=SP2aux.split(",");
+		}
+		else {
+			LSP=SP2copy.length+1;
+			for(i=0;i<Gap*(-1)+1;i++) SP1aux=SP1aux+",0"; SP1aux=SP1aux.split(",");		
+			SP2aux="0,"+SP2aux; SP2aux=SP2aux.split(",")
+		}
+	}
+
+	/********************************************************************************
+ 	*     		       	  F U N C:   G E N E R A T E S P A U X  					*
+ 	*********************************************************************************/	
+
+	function generateSPaux() {
+		var exit=false; var avance=false; var ind=0;
+		while(!exit) {
+			avance=false;
+			for(i=0;i<SP2copy.length;i++) if(SP2aux[LSP-i-1]<SP1aux[LSP-i-1]) avance=true
+			if (avance) {SP1aux=SP1aux+",0"; SP1aux=SP1aux.split(","); SP2aux="0,"+SP2aux; SP2aux=SP2aux.split(",");LSP++}
+			else {
+				ind++
+				if(ind>=Period) {generateTT()}
+				SP1aux[LSP]=0; LSP=LSP+1; SP2aux="0,"+SP2aux; SP2aux=SP2aux.split(",");
+				if(tts!="" && ind>=Period && htOk) exit=true;
+			}
+		}
+		ind=0;
+	}
+
+	/********************************************************************************
+ 	*     		       		  F U N C:   G E N E R A T E T T  						*
+ 	*********************************************************************************/	
+	function generateTT() {
+		var start=false; var Limit=1; var i=0; var u=0; var v=0; var Value=0; var Valueref=0; var Box=0;
+		SP1time=new Array(); SP2time=new Array(); a=new Array(); b=new Array(); plus=0;
+		
+		for(t=0;t<SP2aux.length;t++) {
+			if(SP2aux[t+zeros2]>0) start=true;
+			if(SP1aux[t]>SP2aux[t] || (SP1aux[t]==SP2aux[t] && SP2aux[t]==0 && !start)) a[u++]=t;
+			else if(SP1aux[t]<SP2aux[t]) b[v++]=t;
+		}
+		
+		v=0; for(t=0;t<a.length;t++) for(u=0;u<SP1aux[a[t]];u++) {SP1time[v]=a[t],v++}
+		v=0; for(t=0;t<b.length;t++) for(u=0;u<SP2aux[b[t]]-SP1aux[b[t]];u++) {SP2time[v]=b[t],v++}
+		
+		//alert(SP1time+"  "+SP2time)
+		for(t=0;t<b.length;t++) {Limit=Limit*combination(SP2time.length*1-Box*1,SP2aux[b[t]]-SP1aux[b[t]]);Box+=SP2aux[b[t]]-SP1aux[b[t]]} 
+		//alert(SP1aux+"  "+a+"   "+SP2aux+"   "+b+"   "+Limit)
+		if (Limit>5039) Limit=5040;
+		
+		TTaux=new Array();
+		for(m=0;m<Limit;m++) {
+			TT=new Array(); 
+			repeated=false;
+			i=0;
+			for(t=0;t<a.length;t++) {
+				for(u=0;u<SP1aux[a[t]];u++) {
+					if(u>0) Valueref=SP2time[i-1]-SP1time[i-1];
+					else Valueref=SP2time[i]-SP1time[i];
+					Value=SP2time[i]-SP1time[i];
+					if(Value<Valueref || Value>Hmax) {repeated=true; break}
+					else TT[i]=Value;
+					i++
+				}
+				if(repeated) break
+			}
+			if(!repeated) {
+				construct()
+				//alert(tts)
+				if(tts=="") break
+				if(ht12 || ht21) constructht()
+				if(!htOk) break
+				if(Transitions1 && !top) document.forms['generateGO'].TT12.options[plus] = new Option(tts,tts);
+				if(Transitions2 && !top) document.forms['generateGO'].TT21.options[plus] = new Option(tts,tts);
+				if(!top)plus++
+			}
+			getNext(SP2time, SP2time.length);
+		}
+	}
+
+	/********************************************************************************
+ 	*     		            	F U N C:   C O N S T R U C T						*
+ 	*********************************************************************************/	
+		
+	function construct() {
+			var l=0;
+			var tt=""; tts=""
+			top = false;
+			//alert(a.length)
+			for(i=0;i<a.length;i++) {
+				tt="";
+				if (SP1aux[a[i]]>0) {
+					for(j=0;j<SP1aux[a[i]];j++) {
+						if(async && TT[l]%2!=0 && (a[i])%2!=0) {tt+=(convert(TT[l]*1+1))+"x"; if(convert(TT[l]*1+1)>Hmax) {top=true;break}}
+						else if(async && TT[l]%2!=0 && (a[i])%2==0) {tt+=(convert(TT[l]*1-1))+"x"}
+						else tt+=convert(TT[l]);
+						l++
+					}
+					if(top) {break};
+				}
+				else {
+					tt+="0";
+				}
+				if(async && a.length%2==0 && (a[i]+1)%2!=0 && SP1aux[a[i]]>1) tts+="(["+tt+"]";
+				else if(async && a.length%2==0 && (a[i]+1)%2==0 && SP1aux[a[i]]>1) tts+=",["+tt+"])";
+				else if(async && a.length%2==0 && (a[i]+1)%2!=0 && SP1aux[a[i]]<=1) tts+="("+tt;
+				else if(async && a.length%2==0 && (a[i]+1)%2==0 && SP1aux[a[i]]<=1) tts+=","+tt+")";
+				else if(!async && SP1aux[a[i]]>1) tts+="["+tt+"]";
+				else if(!async && SP1aux[a[i]]<=1) tts+=tt;
+			}
+	}
+
+	/********************************************************************************
+ 	*     		            	F U N C:   C O N S T R U C T H T					*
+ 	*********************************************************************************/	
+		
+	function constructht() {
+		if((Transitions1 && ht12) || (Transitions2 && ht21)){
+			var LCurve=false; var LSquare=false;
+			ssaux=""
+			for(i=0;i<tts.length;i++) {
+				if(tts.charAt(i)!="(" && tts.charAt(i)!="," && tts.charAt(i)!=")") {
+					ssaux+=tts.charAt(i);
+				}
+			}
+			tts=ssaux
+			ssaux=""
+			count=0;
+			for(i=0;i<tts.length;i++) {
+				aux="";
+				if(tts.charAt(i)=="[") {LSquare=true; ssaux+="["}
+				else if(tts.charAt(i)=="]") {LSquare=false; ssaux+="]"}	
+				else if ((count-2)%4!=0 && (count-1)%4!=0 && tts.charAt(i)!="x"){
+					if(tts.charAt(i)=="0") aux="0"
+					else if(tts.charAt(i)=="2" && tts.charAt(i+1)!="x") aux="1x";
+					else if(tts.charAt(i)=="2" && tts.charAt(i+1)=="x") aux="1";
+					else if(tts.charAt(i)=="4" && tts.charAt(i+1)!="x") aux="2";
+					else if(tts.charAt(i)=="4" && tts.charAt(i+1)=="x") aux="2x";
+					else if(tts.charAt(i)=="6" && tts.charAt(i+1)!="x") aux="3x";
+					else if(tts.charAt(i)=="6" && tts.charAt(i+1)=="x") aux="3";
+					else if(tts.charAt(i)=="8" && tts.charAt(i+1)!="x") aux="4";
+					else if(tts.charAt(i)=="8" && tts.charAt(i+1)=="x") aux="4x";
+					else if(tts.charAt(i)=="a" && tts.charAt(i+1)!="x") aux="5x";
+					else if(tts.charAt(i)=="a" && tts.charAt(i+1)=="x") aux="5";
+					else if(tts.charAt(i)=="c" && tts.charAt(i+1)!="x") aux="6";
+					else if(tts.charAt(i)=="c" && tts.charAt(i+1)=="x") aux="6x";
+					else if(tts.charAt(i)=="e" && tts.charAt(i+1)!="x") aux="7x";
+					else if(tts.charAt(i)=="e" && tts.charAt(i+1)=="x") aux="7";
+					else if(tts.charAt(i)=="g" && tts.charAt(i+1)!="x") aux="8";
+					else if(tts.charAt(i)=="g" && tts.charAt(i+1)=="x") aux="8x";
+					else if(tts.charAt(i)=="i" && tts.charAt(i+1)!="x") aux="9x";
+					else if(tts.charAt(i)=="i" && tts.charAt(i+1)=="x") aux="9";
+					else if(tts.charAt(i)=="k" && tts.charAt(i+1)!="x") aux="a";
+					else if(tts.charAt(i)=="k" && tts.charAt(i+1)=="x") aux="ax";
+					else if(tts.charAt(i)=="m" && tts.charAt(i+1)!="x") aux="bx";
+					else if(tts.charAt(i)=="m" && tts.charAt(i+1)=="x") aux="b";
+					else if(tts.charAt(i)=="o" && tts.charAt(i+1)!="x") aux="c";
+					else if(tts.charAt(i)=="o" && tts.charAt(i+1)=="x") aux="cx";
+					else if(tts.charAt(i)=="q" && tts.charAt(i+1)!="x") aux="dx";
+					else if(tts.charAt(i)=="q" && tts.charAt(i+1)=="x") aux="d";
+					else if(tts.charAt(i)=="s" && tts.charAt(i+1)!="x") aux="e";
+					else if(tts.charAt(i)=="s" && tts.charAt(i+1)=="x") aux="ex";
+					else if(tts.charAt(i)=="u" && tts.charAt(i+1)!="x") aux="fx";
+					else if(tts.charAt(i)=="u" && tts.charAt(i+1)=="x") aux="f";
+					else if(tts.charAt(i)=="w" && tts.charAt(i+1)!="x") aux="g";
+					else if(tts.charAt(i)=="w" && tts.charAt(i+1)=="x") aux="gx";
+					ssaux+=aux;
+				}
+				if(!LSquare && tts.charAt(i)!="x") count++
+			}
+			tts=ssaux;
+		}
+		if((Transitions1 && ht21) || (Transitions2 && ht12)){
+			var LCurve=false; var LSquare=false;
+			ssaux=""
+			count=0;
+			for(i=0;i<tts.length;i++) {
+				if (tts.charAt(i)=="(") count++;
+			}
+			//alert(tts +"  "+count)
+			if(a.length%4!=0) {
+				htOk=false;
+			}
+			else htOk=true;
+			
+			if(htOk) {
+				ssaux=""
+				count=0;
+				for(i=0;i<tts.length;i++) {
+					if(tts.charAt(i)=="(") count++
+					if(count%2!=0) ssaux+=tts.charAt(i);
+				}
+				tts=ssaux
+				ssaux=""
+				for(i=0;i<tts.length;i++) {
+				aux="";
+				if(tts.charAt(i)=="(") {ssaux+="("}
+				else if(tts.charAt(i)==",") {ssaux+=","}
+				else if(tts.charAt(i)==")") {ssaux+=")"}
+				else if(tts.charAt(i)=="[") {LSquare=true; ssaux+="["}
+				else if(tts.charAt(i)=="]") {LSquare=false; ssaux+="]"}	
+				else if (tts.charAt(i)!="x"){
+					if(tts.charAt(i)=="0") aux="0"
+					else if(tts.charAt(i)=="2" && tts.charAt(i+1)!="x") aux="1x";
+					else if(tts.charAt(i)=="2" && tts.charAt(i+1)=="x") aux="1";
+					else if(tts.charAt(i)=="4" && tts.charAt(i+1)!="x") aux="2";
+					else if(tts.charAt(i)=="4" && tts.charAt(i+1)=="x") aux="2x";
+					else if(tts.charAt(i)=="6" && tts.charAt(i+1)!="x") aux="3x";
+					else if(tts.charAt(i)=="6" && tts.charAt(i+1)=="x") aux="3";
+					else if(tts.charAt(i)=="8" && tts.charAt(i+1)!="x") aux="4";
+					else if(tts.charAt(i)=="8" && tts.charAt(i+1)=="x") aux="4x";
+					else if(tts.charAt(i)=="a" && tts.charAt(i+1)!="x") aux="5x";
+					else if(tts.charAt(i)=="a" && tts.charAt(i+1)=="x") aux="5";
+					else if(tts.charAt(i)=="c" && tts.charAt(i+1)!="x") aux="6";
+					else if(tts.charAt(i)=="c" && tts.charAt(i+1)=="x") aux="6x";
+					else if(tts.charAt(i)=="e" && tts.charAt(i+1)!="x") aux="7x";
+					else if(tts.charAt(i)=="e" && tts.charAt(i+1)=="x") aux="7";
+					else if(tts.charAt(i)=="g" && tts.charAt(i+1)!="x") aux="8";
+					else if(tts.charAt(i)=="g" && tts.charAt(i+1)=="x") aux="8x";
+					else if(tts.charAt(i)=="i" && tts.charAt(i+1)!="x") aux="9x";
+					else if(tts.charAt(i)=="i" && tts.charAt(i+1)=="x") aux="9";
+					else if(tts.charAt(i)=="k" && tts.charAt(i+1)!="x") aux="a";
+					else if(tts.charAt(i)=="k" && tts.charAt(i+1)=="x") aux="ax";
+					else if(tts.charAt(i)=="m" && tts.charAt(i+1)!="x") aux="bx";
+					else if(tts.charAt(i)=="m" && tts.charAt(i+1)=="x") aux="b";
+					else if(tts.charAt(i)=="o" && tts.charAt(i+1)!="x") aux="c";
+					else if(tts.charAt(i)=="o" && tts.charAt(i+1)=="x") aux="cx";
+					else if(tts.charAt(i)=="q" && tts.charAt(i+1)!="x") aux="dx";
+					else if(tts.charAt(i)=="q" && tts.charAt(i+1)=="x") aux="d";
+					else if(tts.charAt(i)=="s" && tts.charAt(i+1)!="x") aux="e";
+					else if(tts.charAt(i)=="s" && tts.charAt(i+1)=="x") aux="ex";
+					else if(tts.charAt(i)=="u" && tts.charAt(i+1)!="x") aux="fx";
+					else if(tts.charAt(i)=="u" && tts.charAt(i+1)=="x") aux="f";
+					else if(tts.charAt(i)=="w" && tts.charAt(i+1)!="x") aux="g";
+					else if(tts.charAt(i)=="w" && tts.charAt(i+1)=="x") aux="gx";
+					ssaux+=aux;
+				}
+			}
+			tts=ssaux;
+			}
+	
+
+		}
+	}
+
+	/********************************************************************************
+ 	*     		            	 F U N C:   G E T N E X T  							*
+ 	*********************************************************************************/	
+
+	
+	function getNext(CH, N){
+		var aux=0; var f=N-1; var g=N;
+		aux=0
+		f=N-1
+		while(CH[f-1]>=CH[f]) f--;
+		g=N;
+		while(CH[g-1]<=CH[f-1]) g--;
+		aux=CH[f-1]*1; CH[f-1]=CH[g-1]*1; CH[g-1]=aux*1;
+		f++;
+		g=N;
+		while(f<g) {aux=CH[f-1]*1; CH[f-1]=CH[g-1]*1; CH[g-1]=aux*1;f++;g--}
+		return CH;
+	}
+	
+	
+	/********************************************************************************
+ 	*     		            	 F U N C:   C O N V E R T   						*
+ 	*********************************************************************************/	
+	
+	function convert(aux){
+		if(aux==10) aux="a";
+		if(aux==11) aux="b";
+		if(aux==12) aux="c";
+		if(aux==13) aux="d";
+		if(aux==14) aux="e";
+		if(aux==15) aux="f";
+		if(aux==16) aux="g";
+		if(aux==17) aux="h";
+		if(aux==18) aux="i";
+		if(aux==19) aux="j";
+		if(aux==20) aux="k";
+		if(aux==21) aux="l";
+		if(aux==22) aux="m";
+		if(aux==23) aux="n";
+		if(aux==24) aux="o";
+		if(aux==25) aux="p";
+		if(aux==26) aux="q";
+		if(aux==27) aux="r";
+		if(aux==28) aux="s";
+		if(aux==29) aux="t";
+		if(aux==30) aux="u";
+		if(aux==31) aux="v";
+		if(aux==32) aux="w";
+		return aux;
+	}
+
+	/********************************************************************************
+ 	*     		            	 F U N C:  D U P L I C A T E  						*
+ 	*********************************************************************************/	
+	
+	function duplicate(){
+
+		if(ss.charAt(ss.length*1-1)=="*") mirrow();
+		count=0;
+		if(!async){
+		    var LCurve=false; var LSquare=false;
+			ssaux="(";
+			for(i=0;i<ss.length;i++) {
+				aux="";
+				if(ss.charAt(i)=="[") { LSquare=true; ssaux+="["}
+				else if(ss.charAt(i)=="]") { LSquare=false; ssaux+="]"}
+				else if(ss.charAt(i)!="(" && ss.charAt(i)!="," && ss.charAt(i)!=")" && ss.charAt(i)!="[" && ss.charAt(i)!="]"){
+					if(ss.charAt(i)=="0") aux="0";
+					else if(ss.charAt(i)=="1") aux="2x";
+					else if(ss.charAt(i)=="2") aux="4";
+					else if(ss.charAt(i)=="3") aux="6x";
+					else if(ss.charAt(i)=="4") aux="8";
+					else if(ss.charAt(i)=="5") aux="ax";
+					else if(ss.charAt(i)=="6") aux="c";
+					else if(ss.charAt(i)=="7") aux="ex";
+					else if(ss.charAt(i)=="8") aux="g";
+					else if(ss.charAt(i)=="9") aux="ix";
+					else if(ss.charAt(i)=="a") aux="k";
+					else if(ss.charAt(i)=="b") aux="mx";
+					else if(ss.charAt(i)=="c") aux="o";
+					else if(ss.charAt(i)=="d") aux="qx";
+					else if(ss.charAt(i)=="e") aux="s";
+					else if(ss.charAt(i)=="f") aux="ux";
+					else if(ss.charAt(i)=="g") aux="w";
+				}
+				if(!LSquare) count++
+				if(LSquare && aux!="") {ssaux+=aux}
+				else if(!LSquare && count%2!=0 && i<ss.length-1) ssaux+=aux+",0)(0,";
+				else if(!LSquare && count%2!=0 && i==ss.length-1) ssaux+=aux+",0)";
+				else if(!LSquare && count%2==0 && count>0 && i<ss.length-1) ssaux+=aux+")(";
+				else if(!LSquare && count%2==0 && count>0 && i==ss.length-1) ssaux+=aux+")";
+			}
+			ss=ssaux;
+			count=0;
+			for(i=0;i<ss.length;i++) {
+				if(ss.charAt(i)=="(") count++
+			}
+			if(count%2!=0){ss+="*" ; mirrow()}
+			else{ss+=ss} 
+		}
+		count=0;
+		if(async){
+			var LCurve=false; var LSquare=false;
+			ssaux="";
+			for(i=0;i<ss.length;i++) {
+				aux="";
+				if(ss.charAt(i)=="(") {LCurve=true;ssaux+="("}
+				else if(ss.charAt(i)==",") {LCurve=true;ssaux+=","}
+				else if(ss.charAt(i)==")") {LCurve=false;ssaux+=")"}
+				else if(ss.charAt(i)=="[") { LSquare=true; ssaux+="["}
+				else if(ss.charAt(i)=="]") { LSquare=false; ssaux+="]"}
+				else if(ss.charAt(i)!="(" && ss.charAt(i)!="," && ss.charAt(i)!=")" && ss.charAt(i)!="[" && ss.charAt(i)!="]"){
+					if(ss.charAt(i)=="0") aux="0";
+					else if(ss.charAt(i)=="2" && ss.charAt(i+1)!="x") aux="4";
+					else if(ss.charAt(i)=="2" && ss.charAt(i+1)=="x") aux="4x";
+					else if(ss.charAt(i)=="4" && ss.charAt(i+1)!="x") aux="8";
+					else if(ss.charAt(i)=="4" && ss.charAt(i+1)=="x") aux="8x";
+					else if(ss.charAt(i)=="6" && ss.charAt(i+1)!="x") aux="c";
+					else if(ss.charAt(i)=="6" && ss.charAt(i+1)=="x") aux="cx";
+					else if(ss.charAt(i)=="8" && ss.charAt(i+1)!="x") aux="g";
+					else if(ss.charAt(i)=="8" && ss.charAt(i+1)=="x") aux="gx";
+					else if(ss.charAt(i)=="a" && ss.charAt(i+1)!="x") aux="k";
+					else if(ss.charAt(i)=="a" && ss.charAt(i+1)=="x") aux="kx";
+					else if(ss.charAt(i)=="c" && ss.charAt(i+1)!="x") aux="o";
+					else if(ss.charAt(i)=="c" && ss.charAt(i+1)=="x") aux="ox";
+					else if(ss.charAt(i)=="e" && ss.charAt(i+1)!="x") aux="s";
+					else if(ss.charAt(i)=="e" && ss.charAt(i+1)=="x") aux="sx";
+					else if(ss.charAt(i)=="g" && ss.charAt(i+1)!="x") aux="w";
+					else if(ss.charAt(i)=="g" && ss.charAt(i+1)=="x") aux="wx";
+					ssaux+=aux;
+				}
+				if(!LCurve) ssaux+="(0,0)";
+			}
+			ss=ssaux; 
+		}
+	}
+
+
+	/********************************************************************************
+ 	*     		            	 F U N C:   M I R R O W   							*
+ 	*********************************************************************************/	
+	function mirrow() {
+		var SSall=new Array();
+		var Me=new Array(); var Md=new Array(); var Mv=new Array();
+		var pce=0; var pcd=0; var pv=0; var k=0;
+		for(i=0;i<ss.length-1;i++) SSall[i]=ss.charAt(i);
+		for(i=0;i<ss.length-1;i++) {
+			if (SSall[i]=="(") Me[pce++]=i
+			if (SSall[i]==")") Md[pcd++]=i
+			if (SSall[i]==",") Mv[pv++]=i
+		}
+		for(i=0;i<Me.length;i++) {
+			SSall[ss.length-1+Me[i]]="(";
+			SSall[ss.length-1+Md[i]]=")";
+			SSall[ss.length-1+Me[i]*1+Md[i]*1-Mv[i]*1]=",";
+			k=0; for(j=Me[i]*1+1;j<Mv[i];j++){ k++; SSall[ss.length-1+Me[i]*1+Md[i]*1-Mv[i]*1+k]=SSall[j] }
+			k=0; for(j=Mv[i]*1+1;j<Md[i];j++){ k++; SSall[ss.length-1+Me[i]*1+k]=SSall[j] }
+		}
+		ss=""; for(i=0;i<SSall.length;i++) ss+=SSall[i];
+	}
+
+	
+ 	
+	
+	/********************************************************************************
+ 	*     		            	 F U N C:   C O M B I N A T I O N 					*
+ 	*********************************************************************************/	
+
+	function combination(N,p){
+		var fact=factorial(N)/(factorial(N-p)*factorial(p))
+		return fact;
+	}
+	
+	
+	
+	/********************************************************************************
+ 	*     		            	 F U N C:   F A C T O R I A L 						*
+ 	*********************************************************************************/	
+
+	function factorial(val){
+		var fact=1;
+		if (val==0) fact=1;
+		else {
+			for(h=1;h<val+1;h++) {fact=fact*h}
+		}
+		return fact;
+	}
+
+	
+	/********************************************************************************
+ 	*     		            		 F U N C:   U P   								*
+ 	*********************************************************************************/
+	function up(x,y) {
+		return (x<y)?-1:(x>y)?1:0;
+	}
+	
+	
+	
+} // END OF GENERATE -------------------
+
+function swap() {
+	var aux=document.generateGO.SS1.value; 
+	document.generateGO.SS1.value=document.generateGO.SS2.value;
+	document.generateGO.SS2.value=aux;
+}
+
+function show(opt) {
+	
+	if(opt==1) {
+		var async1=false; 		//Check if SS1 is asynchronous
+		var async2=false; 		//Check if SS2 is asynchronous
+		var tt1=document.generateGO.TT12.options[document.generateGO.TT12.selectedIndex].value;
+		var tt2=document.generateGO.TT21.options[document.generateGO.TT21.selectedIndex].value;
+		var ss1=document.generateGO.SS1.value; // string of SiteSwap1
+		var ss2=document.generateGO.SS2.value; // string of SiteSwap2
+		var ss="";
+		
+		if(ss1.indexOf("(")!=-1) {async1=true}
+		if(ss2.indexOf("(")!=-1) {async2=true}
+		
+		if(!async1 && async2) {ss=ss2; invert(); ss2=ss; ss=tt2; invert(); tt2=ss};
+		if(async1 && !async2) {ss=ss1; invert(); ss1=ss; ss=tt1; invert(); tt1=ss};
+
+		
+		
+		
+		var SSout="("+ss1+"^"+n1+")"+tt1+"("+ss2+"^"+n2+")"+tt2;
+		document.generateGO.Notacao.value=SSout;
+	} else {
+		var SSout=document.generateGO.Notacao.value;
+	}
+	
+	var tlps=document.generateGO.tlps.options[document.generateGO.tlps.selectedIndex].value;
+	var tcor=document.generateGO.tcor.options[document.generateGO.tcor.selectedIndex].value;
+	var tvelocidade=document.generateGO.tvelocidade.options[document.generateGO.tvelocidade.selectedIndex].value;
+	var properties="";
+	
+	properties+=";colors="+tcor
+	properties+=";slowdown="+tvelocidade
+	properties+=";bps="+tlps
+	
+	var link="http://jugglinglab.sourceforge.net/siteswap.php?"+";pattern="+SSout+";border=20"+properties;
+	document.forms[0].method="post";
+	document.forms[0].action=link; 
+	document.forms[0].target='contents';
+	document.forms[0].submit();  
+	
+	
+	/********************************************************************************
+ 	*     		            	 F U N C:   I N V E R T   							*
+ 	*********************************************************************************/	
+	function invert() {
+		var SSall=new Array();
+		var SSalaux=new Array();
+		var Me=new Array(); var Md=new Array(); var Mv=new Array();
+		var pce=0; var pcd=0; var pv=0; var k=0;
+		for(i=0;i<ss.length;i++) {SSall[i]=ss.charAt(i); SSalaux[i]=ss.charAt(i)}
+		for(i=0;i<ss.length;i++) {
+			if (SSall[i]=="(") Me[pce++]=i
+			if (SSall[i]==")") Md[pcd++]=i
+			if (SSall[i]==",") Mv[pv++]=i
+		}
+		for(i=0;i<Me.length;i++) {
+			SSall[Me[i]]="(";
+			SSall[Md[i]]=")";
+			SSall[Me[i]*1+Md[i]*1-Mv[i]*1]=",";
+			k=0; for(j=Me[i]*1+1;j<Mv[i];j++){ k++; SSall[Me[i]*1+Md[i]*1-Mv[i]*1+k]=SSalaux[j] }
+			k=0; for(j=Mv[i]*1+1;j<Md[i];j++){ k++; SSall[Me[i]*1+k]=SSalaux[j] }
+		}
+		ss=""; for(i=0;i<SSall.length;i++) ss+=SSall[i];
+	}
+	
+}
+
+//-->
+</script></head>
+
+<body topmargin="0">
+
+<form name="generateGO">
+ <p style="margin-top: 0; margin-bottom: 0" align="left">
+     <b><font color="#333333" face="Verdana" size="2">
+     <img src="ultrasitions_data/transition.bmp" align="right" border="0" height="38" width="38">Generator of Transitions:</font></b></p>
+ <p style="margin-top: 0; margin-bottom: 0" align="left">
+     &nbsp;</p>
+ <table style="border-collapse: collapse" id="AutoNumber11" border="0" bordercolor="#111111" cellpadding="0" cellspacing="0" height="41" width="600">
+   <tbody><tr>
+     <td style="border-style: none; border-width: medium" height="2" width="98">
+     <p style="margin-top: 0; margin-bottom: 0" align="left">
+ <font color="#666666" face="Verdana" size="1">SiteSwap1 (SS1): </font></p>
+     </td>
+     <td style="border-style: none; border-width: medium" height="2" width="212">
+ <p style="margin-top: 0; margin-bottom: 0">
+ <font color="#666666" face="Verdana" size="1">
+ <input name="SS1" size="39" style="font-family: Verdana; font-size: 10px" value="915" type="text"> </font>
+     </p></td>
+     <td colspan="2" rowspan="2" style="border-style: none; border-width: medium" height="3" width="159">
+     <p style="margin-top: 0; margin-bottom: 0" align="center">
+     <input onclick="generate()" value="Generate" name="B4" style="width:100; height:30; font-size: 10px; font-family: Verdana; float:right" type="button"></p></td>
+   </tr>
+   <tr>
+     <td style="border-style: none; border-width: medium" height="1" width="98">
+     <p align="left">
+ <font color="#666666" face="Verdana" size="1">SiteSwap2 (SS2):</font></p></td>
+     <td style="border-style: none; border-width: medium" height="1" width="212">
+     <p style="margin-top: 0; margin-bottom: 0" align="left">
+ <font color="#666666" face="Verdana" size="1">
+ <input name="SS2" size="39" style="font-family: Verdana; font-size: 10px; " value="([4x4],2)*"> </font>
+     </p></td>
+   </tr>
+   <tr>
+     <td style="border-style: none; border-width: medium" height="19" width="98">&nbsp;</td>
+     <td style="border-style: none; border-width: medium" height="19" width="212">&nbsp;</td>
+     <td style="border-style: none; border-width: medium" height="19" width="99">&nbsp;</td>
+     <td style="border-style: none; border-width: medium" height="19" width="60">&nbsp;</td>
+   </tr>
+   <tr>
+     <td colspan="2" style="border-style: none; border-width: medium" height="18" width="310"><b>
+     <font color="#666666" face="Verdana" size="1">Transitions from SS1 to SS2</font></b></td>
+     <td colspan="2" style="border-style: none; border-width: medium" height="18" width="170"><b>
+     <font color="#666666" face="Verdana" size="1">Transitions from SS2 to SS1</font></b></td>
+   </tr>
+   <tr>
+     <td style="border-style: none; border-width: medium" height="19" width="98"><font color="#666666" face="Verdana" size="1">
+     ::Period:</font></td>
+     <td style="border-style: none; border-width: medium" height="19" width="212"><font color="#666666" face="Verdana" size="1"><select size="1" select="" name="Period1" style="padding:0; font-size: 10px; font-family: Verdana; ">
+  <option value="1" selected="selected">Custom (min)</option>
+  <option value="2">Custom + 1</option>
+  <option value="3">Custom + 2</option>
+  <option value="4">Custom + 3</option>
+  <option value="5">Custom + 4</option>
+  <option value="6">Custom + 5</option>
+  <option value="7">Custom + 6</option>
+  <option value="8">Custom + 7</option>
+  </select></font></td>
+     <td style="border-style: none; border-width: medium" height="19" width="99"><font color="#666666" face="Verdana" size="1">::Period:</font></td>
+     <td style="border-style: none; border-width: medium" height="19" width="60"><font color="#666666"><select size="1" select="" name="Period2" style="padding:0; font-size: 10px; font-family: Verdana; ">
+  <option value="1" selected="selected">Custom (min)</option>
+  <option value="2">Custom + 1</option>
+  <option value="3">Custom + 2</option>
+  <option value="4">Custom + 3</option>
+  <option value="5">Custom + 4</option>
+  <option value="6">Custom + 5</option>
+  <option value="7">Custom + 6</option>
+  <option value="8">Custom + 7</option>
+  </select></font></td>
+   </tr>
+   <tr>
+     <td style="border-style: none; border-width: medium" height="19" width="98"><font color="#666666" face="Verdana" size="1">
+     ::Maximun High:</font></td>
+     <td style="border-style: none; border-width: medium" height="19" width="212"><font color="#666666" face="Verdana" size="1">
+     <select size="1" select="" name="Hmax1" style="padding:0; font-size: 10px; font-family: Verdana; ">
+  <option selected="selected" value="31">No Restricions</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">a</option>
+  <option value="11">b</option>
+  <option value="12">c</option>
+  <option value="13">d</option>
+  <option value="14">e</option>
+  <option value="15">f</option>
+  <option value="16">g</option>
+  <option value="17">h</option>
+  <option value="18">i</option>
+  <option value="19">j</option>
+  <option value="20">k</option>
+  <option value="21">l</option>
+  <option value="22">m</option>
+  <option value="23">n</option>
+  <option value="24">o</option>
+  <option value="25">p</option>
+  <option value="26">q</option>
+  <option value="27">r</option>
+  <option value="28">s</option>
+  <option value="29">t</option>
+  <option value="30">u</option>
+  <option value="31">v</option>
+  </select></font></td>
+     <td style="border-style: none; border-width: medium" height="19" width="99"><font color="#666666" face="Verdana" size="1">::Maximun 
+     High:</font></td>
+     <td style="border-style: none; border-width: medium" height="19" width="60"><font color="#666666" face="Verdana" size="1">
+     <select size="1" select="" name="Hmax2" style="padding:0; font-size: 10px; font-family: Verdana; ">
+  <option selected="selected" value="31">No Restricions</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">a</option>
+  <option value="11">b</option>
+  <option value="12">c</option>
+  <option value="13">d</option>
+  <option value="14">e</option>
+  <option value="15">f</option>
+  <option value="16">g</option>
+  <option value="17">h</option>
+  <option value="18">i</option>
+  <option value="19">j</option>
+  <option value="20">k</option>
+  <option value="21">l</option>
+  <option value="22">m</option>
+  <option value="23">n</option>
+  <option value="24">o</option>
+  <option value="25">p</option>
+  <option value="26">q</option>
+  <option value="27">r</option>
+  <option value="28">s</option>
+  <option value="29">t</option>
+  <option value="30">u</option>
+  <option value="31">v</option>
+  </select></font></td>
+   </tr>
+ </tbody></table>
+ <p style="margin-top: 0; margin-bottom: 0" align="left">
+     &nbsp;</p>
+ <p style="margin-top: 0; margin-bottom: 0">
+ <b><font color="#333333" face="Verdana" size="2">Results:</font></b></p>
+ <table style="border-collapse: collapse" id="AutoNumber6" bgcolor="#C0C0C0" border="0" bordercolor="#808080" cellpadding="0" cellspacing="0" height="1" width="600">
+   <tbody><tr>
+     <td style="border-left-style: solid; border-left-width: 1; border-top-style: solid; border-top-width: 1" align="center" height="1" width="300">
+     <p style="margin-top: 0; margin-bottom: 0" align="center">
+     <font color="#666666" face="Verdana" size="1">Transitions from SS1 to SS2:</font><input name="Dados1" size="8" style="border: 1px solid #FFFFFF; font-size:10px; font-family:Verdana; color:#666666; background-color:#C0C0C0" type="text"></p></td>
+     <td style="border-right-style: solid; border-right-width: 1; border-top-style: solid; border-top-width: 1" align="center" height="1" width="300">
+     <p style="margin-top: 0; margin-bottom: 0" align="center">
+     <font color="#666666" face="Verdana" size="1">Transitions from SS2 to SS1:</font><input name="Dados2" size="8" style="border: 1px solid #FFFFFF; font-size:10px; font-family:Verdana; color:#666666; background-color:#C0C0C0" type="text"></p></td>
+   </tr>
+   <tr>
+     <td style="border-left-style: solid; border-left-width: 1" align="center" height="1" width="300">
+ <p style="margin-top: 0; margin-bottom: 0">
+ <select name="TT12" size="15" style="width:300; height:200; font-size:10px; font-family:Verdana; color:#CC0000">
+</select></p></td>
+     <td style="border-right-style: solid; border-right-width: 1; border-bottom-style: solid; border-bottom-width: 1" align="center" height="1" width="300">
+ <p style="margin-top: 0; margin-bottom: 0">
+ <select name="TT21" size="15" style="width:300; height:200; font-size:10px; font-family:Verdana; color:#CC0000">
+</select></p></td>
+   </tr>
+   <tr>
+     <td colspan="2" style="border-left-style: solid; border-left-width: 1; border-right-style: solid; border-right-width: 1; border-bottom-style: solid; border-bottom-width: 1" align="center" height="1" width="600">
+     <input onclick="show(1)" value="Watch Animation" name="B3" style="width:200; font-size: 10px; font-family: Verdana; height:30" type="button"></td>
+   </tr>
+   </tbody></table>
+ <p style="margin-top: 0; margin-bottom: 0">
+ &nbsp;</p>
+ <p style="margin-top: 0; margin-bottom: 0">
+ <b><font color="#333333" face="Verdana" size="2">Animation Properties:</font></b></p>
+ <table style="border-collapse: collapse" id="AutoNumber12" bgcolor="#C0C0C0" border="0" cellpadding="0" cellspacing="0" width="600">
+   <tbody><tr>
+     <td style="border-style: none; border-width: medium" width="91">
+     <font color="#333333" face="Verdana" size="1">
+     SiteSwap:</font></td>
+     <td colspan="5" style="border-style: none; border-width: medium" width="400">
+ <input name="Notacao" size="76" style="font-family: Verdana; font-size: 10px; " type="text"></td>
+     <td rowspan="2" style="border-style: none; border-width: medium" width="111">
+     <p align="center">
+     <input onclick="show(2)" value="Animate" name="B5" style="width:100; height:30; font-size: 10px; font-family: Verdana; float:left" type="button"></p></td>
+   </tr>
+   <tr>
+     <td style="border-style: none; border-width: medium" width="91">
+     <font color="#333333" face="Verdana" size="1">Throws / sec:</font></td>
+     <td style="border-style: none; border-width: medium" width="76"><font color="#666666">
+     <select size="1" select="" name="tlps" style="width:80; padding:0; font-size: 10px; font-family: Verdana; font-weight:bold">
+  <option value="2.5">2.5</option>
+  <option value="3">3</option>
+  <option value="3.5">3.5</option>
+  <option value="4">4</option>
+  <option value="4.5" selected="selected">4.5</option>
+  <option value="5">5</option>
+  <option value="5.5">5.5</option>
+  <option value="6">6</option>
+  <option value="6.5">6.5</option>
+  <option value="7">7</option>
+  <option value="7.5">7.5</option>
+  <option value="8">8</option>
+  </select></font></td>
+     <td style="border-style: none; border-width: medium" width="79">
+     <p style="margin-left: 20">
+     <font color="#333333" face="Verdana" size="1">Velocity:</font></p></td>
+     <td style="border-style: none; border-width: medium" width="79"><select size="1" name="tvelocidade" style="width:80; font-family: Verdana; font-size: 9px; border: 1px solid #3366FF; background-color: #FFFFFF; font-weight:bold">
+    <option value="1">real</option>
+    <option value="2" selected="selected">slow 2x</option>
+    <option value="4">slow 4x</option>
+    <option value="8">slow 8x</option>
+    <option value="16">slow 16x</option>
+    <option value="32">slow 32x</option>
+    </select></td>
+     <td style="border-style: none; border-width: medium" width="79">
+     <p style="margin-left: 20">
+     <font color="#333333" face="Verdana" size="1">Color:</font></p></td>
+     <td style="border-style: none; border-width: medium" width="93"> <select size="1" name="tcor" style="width:80; font-family: Verdana; font-size: 10px; border: 1px solid #6699FF; background-color: #FFFFFF; font-weight:bold">
+    <option value="red" selected="selected">red</option>
+    <option value="Green">green</option>
+    <option value="Blue">blue</option>
+    <option value="Yellow">yellow</option>
+    <option value="mixed">mixed</option>
+    </select></td>
+   </tr>
+ </tbody></table>
+     <p>
+ &nbsp;</p>
+</form>
+
+<p>&nbsp;</p>
+
+
+
+</body></html>

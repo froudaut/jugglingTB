@@ -1,0 +1,2 @@
+pp  -o jugglingTB.exe jugglingTB.pl WebServer.pl -M File::Path -M Devel::Symdump -M Win32::OLE -M Set::Scalar -M Parse::Yapp -M Excel::Writer::XLSX -M Perl4::CoreLibs -M Win32::Console::ANSI -M Term::ReadKey -M File::Grep -M File::Copy::Recursive -M Chart::Gnuplot -M HTTP::Server::Simple
+rem perl -e "use Win32::Exe; $exe = Win32::Exe->new('jugglingTB.exe'); $exe->set_single_group_icon('data\pics\avatar.ico'); $exe->write;"

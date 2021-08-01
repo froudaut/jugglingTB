@@ -1,0 +1,1241 @@
+<html><head>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Generator of Transitions</title>
+<!-- base href="http://cursomalabarismo.no.sapo.pt/jdb/ulsiteswaps.html" -->
+<script type="text/javascript">
+<!--
+
+	
+	/********************************************************************************
+ 	* Program done by: Pedro Teodoro - Portugal 									*
+  	*																				*	
+ 	* http://cursomalabarismo.no.sapo.pt											*
+  	********************************************************************************/
+ 	
+function generateSS() {
+
+	/*********************************************************************************
+ 	*	-------------------------------V-A-R-I-A-B-L-E-S---------------------------  *
+ 	**********************************************************************************/
+	
+	var SSi=document.generate.SSi.value;
+	var Exclude=document.generate.exclude.value;
+	var Balls=document.generate.balls.options[document.generate.balls.selectedIndex].value;
+	var Hmin=document.generate.Hmin.options[document.generate.Hmin.selectedIndex].value;
+	var Hmax=document.generate.Hmax.options[document.generate.Hmax.selectedIndex].value;
+	var plus=0;
+	var len=SSi.length
+		
+	//--------------------------L-O-G-I-C-S-------------------------------------
+	var Vanilla=false;
+	var Multiplex=false;
+	var Simultaneous=false;
+	var Hybrid=false;
+	var Mirrow=false;
+	var circle=false;
+	var square=false;
+	var invalidSS=false;
+	var exit=false;
+	var stop=false;
+	if (Exclude!="") var excluding=true;
+	else var excluding=false;
+	var repeteco=false;
+	var Excited=false;
+	//--------------------------A-R-R-A-Y-S-------------------------------------
+	var SS=new Array();
+	var a=new Array();
+	var b=new Array();
+	var c=new Array();
+	var ma=new Array();
+	var Timebeat=new Array(a.length+b.length);
+	var Transpositor=new Array(len);
+	var Mult=new Array(len);
+	var Mirr=new Array();
+	var T=new Array(a.length);
+	var Tbeat= new Array(a.length+b.length);
+	var SSo= new Array(len);
+	var Me=new Array();
+	var Md=new Array();
+	var Mv=new Array();
+	var temp = new Array();
+	
+	//--------------------------B-E-G-U-I-N-------------------------------------
+	var auxSS="";
+	var SSout="";
+	var begin=0;
+	var resto=0;
+	var media=0;
+	var p=0;
+	var sumA=0;
+	var sumB=0;
+	var Zaf=0;
+	var delta=0;
+	var dif=0;
+	var first=0;
+	var cont=0;
+	var count=0;
+	var valid=0;
+	var end=0;
+	var lenTime=0;
+	var Throws=""
+	var Throwsx=""
+	var k=0;
+	var X=0;
+	var color=";colors="
+	/*********************************************************************************
+ 	*	-------------------------------P-R-O-G-R-A-M-------------------------------  *
+ 	**********************************************************************************/
+	
+	invalidthrows();
+	getSS();
+	validsiteswaps();
+	
+	if (Vanilla) vanilla()
+	if (Multiplex) multiplex()
+	if (Simultaneous) simultaneous()
+	if (Hybrid) hybrid()
+	if (Mirrow) mirrow()
+
+	if (!stop){
+		abc();
+		times();
+		lenTime=Timebeat[Timebeat.length-1]*1+1;
+		for (j=0;j<b.length;j++) {
+			sumB=sumB+SS[b[j]]*1;
+		}	
+		conditions();
+		if (!stop) {
+			var ti=new Date()
+			if (Balls!=0) var end=Balls*1+1;
+			else {
+				end=Math.floor((Hmax*a.length+sumB)/lenTime)+1;
+				if (end>12) end=12;
+		
+				Balls=Math.ceil((Hmin*a.length+sumB)/lenTime);
+				if (Balls==0) Balls=1;
+			}
+			document.forms['generate'].TT12.options.length = 0;
+			for (i=Balls;i<end;i++) {
+				initis()
+				exit=false;
+				while(!exit) {
+					gerar()
+					test()
+					if (valid>1999) break
+				}
+				if (valid>1999) break
+			}
+			var tf=new Date()
+			if(valid>0)document.forms['generate'].TT12.options[0].selected = true
+			document.generate.Dados1.value=valid;
+			//parent.result.document.write("<font size='1' color='#999999' face='Verdana'>Existent Tricks: "+valid+"</br>");
+			//parent.result.document.write("<font size='1' color='#999999' face='Verdana'>Running Time: "+(tf-ti)+" ms ");
+		}
+	}
+
+//-----------------------------------------------------------------------------------------\\
+
+
+
+
+	/*********************************************************************************
+ 	*	------------------------------F-U-N-C-T-I-O-N-S----------------------------  *
+ 	**********************************************************************************/
+
+	//Function to sort-------------------------------------------------------------
+	function up(x,y) {
+		return (x<y)?-1:(x>y)?1:0;
+	}
+	
+	function exp(a,b) {
+		x=1
+		if (b!=0) {
+			for (z=0;z<b;z++) {
+				x=x*a
+			}
+		}
+		return x
+	}
+	//********************************************************************************
+
+	//Function that check the invalid throws---------------------------------------
+	function invalidthrows(){
+		if (document.generate.B0.checked) var B0="0"
+		else var B0="";
+		if (document.generate.B1.checked) var B1="1"
+		else var B1="";
+		if (document.generate.B2.checked) var B2="2"
+		else var B2="";
+		if (document.generate.B3.checked) var B3="3"
+		else var B3="";
+		if (document.generate.B4.checked) var B4="4"
+		else var B4="";
+		if (document.generate.B5.checked) var B5="5"
+		else var B5="";
+		if (document.generate.B6.checked) var B6="6"
+		else var B6="";
+		if (document.generate.B7.checked) var B7="7"
+		else var B7="";
+		if (document.generate.B8.checked) var B8="8"
+		else var B8="";
+		if (document.generate.B9.checked) var B9="9"
+		else var B9="";
+		if (document.generate.B10.checked) var B10="10"
+		else var B10="";
+		if (document.generate.B11.checked) var B11="11"
+		else var B11="";
+		if (document.generate.B12.checked) var B12="12"
+		else var B12="";
+		if (document.generate.B13.checked) var B13="13"
+		else var B13="";
+		if (document.generate.B14.checked) var B14="14"
+		else var B14="";
+		if (document.generate.B15.checked) var B15="15"
+		else var B15="";
+		if (document.generate.B16.checked) var B16="16"
+		else var B16="";
+		if (document.generate.Bx.checked) var Bx="x"
+		else var Bx="";
+		if (document.generate.B2x.checked) var B2x="2"
+		else var B2x="";
+		if (document.generate.B4x.checked) var B4x="4"
+		else var B4x="";
+		if (document.generate.B6x.checked) var B6x="6"
+		else var B6x="";
+		if (document.generate.B8x.checked) var B8x="8"
+		else var B8x="";
+		if (document.generate.B10x.checked) var B10x="10"
+		else var B10x="";
+		if (document.generate.B12x.checked) var B12x="12"
+		else var B12x="";
+		if (document.generate.B14x.checked) var B14x="14"
+		else var B14x="";
+		if (document.generate.B16x.checked) var B16x="16"
+		else var B16x="";
+		if (document.generate.Bi.checked) var Bi="0-1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-16"
+		else var Bi="";
+	
+		Throws=	Bi+"-"+B0+"-"+B1+"-"+B2+"-"+B3+"-"+B4+"-"+B5+"-"+B6+"-"+B7+"-"+B8+"-"+B9+"-"+B10+"-"+B11+"-"+B12+"-"+B13+"-"+B14+"-"+B15+"-"+B16;
+		Throwsx=Bx+"-0-"+B2x+"-"+B4x+"-"+B6x+"-"+B8x+"-"+B10x+"-"+B12x+"-"+B14x+"-"+B16x;
+	
+	}
+	
+	//********************************************************************************
+
+
+function getSS() {
+	
+/****************************************
+ *	2º Passo - SSi=>SS		*
+ ****************************************/
+
+	for(i=0;i<len;i++) {
+		if (SSi.charAt(i)=="0") SS[i]="0";
+		else if (SSi.charAt(i)=="1") SS[i]="1";
+		else if (SSi.charAt(i)=="2") SS[i]="2";
+		else if (SSi.charAt(i)=="3") SS[i]="3";
+		else if (SSi.charAt(i)=="4") SS[i]="4";
+		else if (SSi.charAt(i)=="5") SS[i]="5";
+		else if (SSi.charAt(i)=="6") SS[i]="6";
+		else if (SSi.charAt(i)=="7") SS[i]="7";
+		else if (SSi.charAt(i)=="8") SS[i]="8";
+		else if (SSi.charAt(i)=="9") SS[i]="9";
+		else if (SSi.charAt(i)=="a") SS[i]="10";
+		else if (SSi.charAt(i)=="b") SS[i]="11";
+		else if (SSi.charAt(i)=="c") SS[i]="12";
+		else if (SSi.charAt(i)=="d") SS[i]="13";
+		else if (SSi.charAt(i)=="e") SS[i]="14";
+		else if (SSi.charAt(i)=="f") SS[i]="15";
+		else if (SSi.charAt(i)=="g") SS[i]="16";
+		else if (SSi.charAt(i)=="h") SS[i]="17";
+		else if (SSi.charAt(i)=="(") SS[i]="(";
+		else if (SSi.charAt(i)==")") SS[i]=")";
+		else if (SSi.charAt(i)=="[") SS[i]="[";
+		else if (SSi.charAt(i)=="]") SS[i]="]";
+		else if (SSi.charAt(i)==",") SS[i]=",";
+		else if (SSi.charAt(i)=="i") SS[i]="i";		
+		else if (SSi.charAt(i)=="x") SS[i]="x";
+		else if (SSi.charAt(i)=="?") SS[i]="?";
+		else if (SSi.charAt(i)=="*") SS[i]="*";
+		else alert("Invalid String")
+	}
+}
+
+function validsiteswaps() {
+/************************************************************************
+ *	3º Passo - Vannila, Multiplex, Simultaneous, Hibrid		*
+ ************************************************************************/
+	
+	for(i=0;i<len;i++) {
+		if (SS[i]=="(") circle=true;
+		if (SS[i]=="[") square=true;
+		if (SS[len*1-1]=="*" && SSi.indexOf(")*")!=-1) Mirrow=true
+	}
+	if(!Mirrow) {
+		if((!circle) && (!square)) Vanilla=true;
+		if((!circle) && (square))  Multiplex=true;
+		if((circle) && (!square))  Simultaneous=true;
+		if((circle) && (square))   Hybrid=true;
+	}
+}
+
+function vanilla() {
+	for(i=0;i<len;i++) {
+		if (SS[i]=="(" || SS[i]=="," || SS[i]==")" || SS[i]=="i" || SS[i]=="x" || SS[i]=="[" || SS[i]=="]" || SS[i]=="*"){
+			stop=true;
+		}
+	}
+	if (stop) alert("Invalid String")
+}
+
+function multiplex() {
+
+	var Pre=new Array();
+	var Prd=new Array();
+	pre=0;
+	prd=0;
+
+	for(i=0;i<len;i++) {
+		if (SS[i]=="(" || SS[i]=="," || SS[i]==")" || SS[i]=="i" || SS[i]=="x" || SS[i]=="*"){
+			
+			stop=true;
+			break;
+		}
+		if (SS[i]=="[") Pre[pre++]=i
+		if (SS[i]=="]") Prd[prd++]=i
+	}
+	//alert(Pre+"  "+Prd);
+	
+	if(Pre.length!=Prd.length) stop=true;
+	if(SSi.indexOf("[]")!=-1) stop=true;
+	if(SSi.indexOf("[[")!=-1) stop=true;
+	if(SSi.indexOf("]]")!=-1) stop=true;
+	if (stop) alert("Invalid String")
+}
+
+function simultaneous() {
+	//alert(len+"  "+SS)
+	var Pce=new Array();
+	var Pcd=new Array();
+	var Pv=new Array();
+	pce=0;
+	pcd=0;
+	pv=0;
+	
+	if((SS[0]!="(") || (SS[len-1]!=")") || (SSi.indexOf("(,")!=-1) || (SSi.indexOf(",)")!=-1) || (SSi.indexOf("??")!=-1) || (SSi.indexOf("(??")!=-1) || (SSi.indexOf("??x")!=-1) || (SSi.indexOf("??i")!=-1) || (SSi.indexOf("x?")!=-1) || (SSi.indexOf("i?")!=-1)) stop=true;
+	for(i=0;i<len;i++) {
+		if (SS[i]=="[" || SS[i]=="]" || SS[i]=="*") {
+			stop=true;
+			break;
+		}
+		if (SS[i]=="(") Pce[pce++]=i
+		if (SS[i]==")") Pcd[pcd++]=i
+		if (SS[i]==",") Pv[pv++]=i
+	}
+	if(Pce.length!=Pcd.length || Pce.length!=Pv.length || Pcd.length!=Pv.length) stop=true;
+	else {
+		for(i=0;i<Pce.length;i++) {
+			//alert(Pce[i]+"  "+Pv[i]+"  "+Pcd[i])
+			if(Pce[i]>Pcd[i] || Pce[i]>Pv[i] || Pv[i]>Pcd[i]) stop=true;
+			else if(Pce[i+1]>Pcd[i]*1+1) stop=true;
+			else if(Pv[i]>Pce[i]*1+3 || Pcd[i]>Pv[i]*1+3) stop=true;
+			else if(Pv[i]==Pce[i]*1+3 || Pcd[i]==Pv[i]*1+3){
+				if(SS[Pcd[i]*1+1]=="i" || SS[Pcd[i]*1+1]=="x" || SS[Pv[i]*1+1]=="i" || SS[Pv[i]*1+1]=="x" || (SS[Pcd[i]*1+1]=="?" && SS[Pcd[i]*1+2]=="?") || (SS[Pv[i]*1+1]=="?" && SS[Pv[i]*1+2]=="?")) {
+				stop=true;
+				}
+				else if((SS[Pcd[i]*1+2]=="i" || SS[Pcd[i]*1+2]=="x" || SS[Pv[i]*1+2]=="i" || SS[Pv[i]*1+2]=="x")) {
+				stop=false;
+				}
+				else stop=false;
+			}
+			else if(Pv[i]==Pce[i]*1+2 || Pcd[i]==Pv[i]*1+2){
+				if(SS[Pcd[i]*1+1]=="i" || SS[Pcd[i]*1+1]=="x" || SS[Pv[i]*1+1]=="i" || SS[Pv[i]*1+1]=="x") stop=true;
+			}	
+		}
+	}
+	if (stop) alert("Invalid String")
+}
+
+
+function hybrid() {
+
+	var Pce=new Array();
+	var Pcd=new Array();
+	var Pv=new Array();
+	var Pre=new Array();
+	var Prd=new Array();
+	pre=0;
+	prd=0;
+	pce=0;
+	pcd=0;
+	pv=0;
+	if(SS[0]!="(" || SS[len-1]!=")" || SSi.indexOf("(,")!=-1 || SSi.indexOf(",)")!=-1) stop=true;
+	else {
+		for(i=0;i<len;i++) {
+			if (SS[i]=="*") {
+				stop=true;
+				break;
+			}
+			if (SS[i]=="[") Pre[pre++]=i
+			if (SS[i]=="]") Prd[prd++]=i
+			if (SS[i]=="(") Pce[pce++]=i
+			if (SS[i]==")") Pcd[pcd++]=i
+			if (SS[i]==",") Pv[pv++]=i
+		}
+		
+
+		if(Pce.length!=Pcd.length || Pce.length!=Pv.length || Pcd.length!=Pv.length || Pre.length!=Prd.length) stop=true;
+		else {
+		//alert("kgt  "+pce)
+			for (i=0;i<Pcd.length;i++) {	
+				if(Pce[i+1]>Pcd[i]*1+1) stop=true;
+				if(SS[i]!="(" && i==0) {
+						stop=true;
+						break;
+				}
+				for(j=Pce[i];j<Pcd[i];j++) {
+					if(j>Pce[i] && j<Pv[i]) {
+						if(SS[Pce[i]*1+1]=="[") {
+							if(SS[Pce[i]*1+2]=="x" || SS[Pce[i]*1+2]=="i" || SS[Pce[i]*1+2]=="[" || SS[Pce[i]*1+2]=="]") {
+								stop=true;
+								break;
+							}
+							if(SS[Pv[i]*1-1]!="]") {
+								stop=true;
+								break;
+							}
+						}
+					}
+					if(j>Pv[i] && j<Pcd[i]) {
+						if(SS[Pv[i]*1+1]=="[") {
+							if(SS[Pv[i]*1+2]=="x" || SS[Pv[i]*1+2]=="i" || SS[Pv[i]*1+2]=="[" || SS[Pv[i]*1+2]=="]") {
+								stop=true;
+								break;
+							}
+							if(SS[Pcd[i]*1-1]!="]") {
+								stop=true;
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	if (stop) alert("Invalid String")
+}
+function mirrow() {
+
+	pce=0;
+	pcd=0;
+	pv=0;
+	k=0;
+	m=0;
+	u=0;
+	v=0;
+	for(i=0;i<len*1-1;i++) {
+		if (SS[i]=="[" || SS[i]=="]") Hybrid=true
+		else if (SS[i]=="(") Me[pce++]=i
+		else if (SS[i]==")") Md[pcd++]=i
+		else if (SS[i]==",") Mv[pv++]=i
+	}
+	//alert(Me+"  "+Mv+"  "+Md)
+	for(i=0;i<Me.length;i++) {
+		SS[len*1-1+Me[i]]="(";
+		SS[len*1-1+Md[i]]=")";
+		SS[len*1-1+Me[i]*1+Md[i]*1-Mv[i]*1]=",";
+		k=0;
+		//alert(SS)
+		for(j=Me[i]*1+1;j<Mv[i];j++){
+			k++
+			SS[len*1-1+Me[i]*1+Md[i]*1-Mv[i]*1+k]=SS[j]
+			if(SS[j]=="?") ma[m++]=len*1-1+Me[i]*1+Md[i]*1-Mv[i]*1+k;
+		}
+		k=0;
+		//alert(SS)
+		for(j=Mv[i]*1+1;j<Md[i];j++) {
+			k++
+			SS[len*1-1+Me[i]*1+k]=SS[j]
+			if(SS[j]=="?") ma[m++]=len*1-1+Me[i]*1+k;
+		}
+		//alert(SS)
+	}
+	len=SS.length;
+	
+	if (Hybrid) hybrid()
+	else {
+		Simultaneous=true;
+		simultaneous()
+	}
+	//stop=true
+}
+function abc() {
+/****************************************
+ *			4º Passo - a, b, c			*
+ ****************************************/
+
+	var t=0;
+	var u=0;
+	var v=0;
+	
+	for(i=0;i<len;i++) {
+		if (Vanilla) {
+			c[0]=-1;
+			c[0]=len;
+			if (SS[i]=="?") a[t++]=i;
+			else b[u++]=i;
+		}
+		if (Multiplex) {
+			if ((SS[i]=="[") || (SS[i]=="]")) c[v++]=i;
+			else if (SS[i]=="?") a[t++]=i;
+			else b[u++]=i;
+		}
+		if ((Simultaneous) || (Hybrid)) {
+			if ((SS[i]=="(") || (SS[i]==",")) c[v++]=i;
+			else if(i==len-1) c[v++]=len-1;
+			else if (SS[i]=="?") a[t++]=i;
+			else if ((SS[i]!="(") && (SS[i]!=")") && (SS[i]!=",") && (SS[i]!="[") && (SS[i]!="]") && (SS[i]!="i") && (SS[i]!="x")) b[u++]=i;
+			if(Hmin%2==0) Hmin--
+			if(Hmax%2==0) Hmax++
+		}
+	}
+	if ((Multiplex) && (SS[len-1]!="]")) c[v++]=len;
+}
+
+function times() {
+/********************************************************
+ *	5º Passo - Timebeat e Transpositor		*
+ ********************************************************/
+	var m=0;
+	var n=0;
+	var o=0;
+	if (Vanilla) {
+		for (i=0;i<len;i++) {
+			Timebeat[i]=i;
+		}
+	}
+	for (i=0;i<len;i++) {
+		if(SS[i]=="[") {
+			while (SS[i]!="]") {
+				Mult[++i]=1;
+			}
+		}
+		else Mult[i]=0;
+	}
+
+	if (Multiplex) {
+		for (i=0;i<c.length-1;i++) {
+			if(i==0) {
+				for(j=0;j<c[i];j++) {
+					Timebeat[n++]=o++;
+				}
+			}
+			for(j=c[i]+1;j<c[i+1];j++) {
+				if (i%2==0) {
+				Timebeat[n++]=o;
+				}
+				else Timebeat[n++]=o++;
+			}
+			if (i%2==0) o++;
+		}
+	}
+	if ((Simultaneous) || (Hybrid)) {
+		for (i=0;i<c.length-1;i++) {
+			for(j=c[i];j<c[i+1];j++) {
+				Transpositor[m++]=exp(-1,i+2);
+				if ((SS[j]!="(") && (SS[j]!=",") && (SS[j]!=")") && (SS[j]!="[") && (SS[j]!="]") && (SS[j]!="i") && (SS[j]!="x")) Timebeat[n++]=i;
+			}
+		}
+		for (i=0;i<b.length;i++) {
+			if (SS[b[i]+1]=="x") SS[b[i]]=SS[b[i]]*1+Transpositor[b[i]];
+		}
+	}
+}
+
+function conditions() {
+	/************************************************************************
+	 *		 7º Passo - verificar condições									*
+	 ************************************************************************/
+	if (Hmax*1<Hmin*1) {
+		alert("Minimun High is higher than Maximun High") 
+		stop=true
+	}
+	if(Math.ceil((Hmin*a.length+sumB)/lenTime)>Math.floor((Hmax*a.length+sumB)/lenTime)) {
+		alert("Not Possible!!! Minimun solution is lower than High minimun") 
+		stop=true
+	}
+	if((Hmin*a.length+sumB)>Balls*lenTime && Balls!=0) {
+		alert("Not Possible!!! Balls of Minimun solution is lower than Balls") 
+		stop=true
+	}
+	if((Hmax*a.length+sumB)<Balls*lenTime && Balls!=0) {
+		alert("Not Possible!!! Balls of Minimun solution is lower than Balls") 
+		stop=true
+	}
+
+	if(Balls>Hmax*1) {
+		alert("Not Possible!!! Maximun High is lower than Balls") 
+		stop=true
+	}
+}
+
+
+	
+function initis() {
+		Balls=i;
+		X=Balls*lenTime-sumB;
+		if (sumB!=0 || Multiplex || Hybrid) {
+			sumA=Hmin*a.length
+		
+			for (j=0;j<a.length;j++) {
+				SS[a[j]]=Hmin;
+			}
+			dif=Balls*lenTime-(sumA*1+sumB*1);
+			first=Math.floor(dif/(Hmax*1-Hmin*1));
+			SS[a[a.length-1-first]]=Hmin*1+dif%(Hmax*1-Hmin*1)
+			for(j=0;j<first;j++){
+				SS[a[a.length-1-j]]=Hmax*1
+			}
+		}
+		else{
+			sumA=Balls*a.length
+
+			for (j=0;j<a.length;j++) {
+				SS[a[j]]=Balls;
+			}
+		}
+		
+		SS[a[a.length-1]]++
+		SS[a[a.length-2]]--
+}
+
+function gerar() {
+	/************************************************************************
+	 *		 8º Passo - Gerar '?s' e verificar restricoes de lancamentos	*
+	 ************************************************************************/
+	
+	if (a.length<2) {
+		SS[a[0]]--
+		k++
+		if (k>1) {
+			k=0;
+			exit=true;
+		}
+	}
+	else{
+		SS[a[a.length-1]]--
+		SS[a[a.length-2]]++
+		if(SS[a[a.length-1]]<Hmin || SS[a[a.length-2]]>Hmax) {
+			SS[a[a.length-1]]++
+			SS[a[a.length-2]]--
+			for(j=0;j<a.length-2;j++){
+				if(SS[a[a.length-1-j]]!=Hmin && SS[a[a.length-2-j]]!=Hmax) break
+				SS[a[a.length-1-j]]=Hmin
+			}
+			SS[a[a.length-1-j]]=Hmin
+			SS[a[a.length-2-j]]++
+			sumA=0;
+			for (j=0;j<a.length;j++) {
+				sumA=sumA+SS[a[j]]*1;
+			}
+			first=Math.floor((X-sumA)/(Hmax*1-Hmin*1));
+			SS[a[a.length-1-first]]=Hmin*1+(X-sumA)%(Hmax*1-Hmin*1)
+			for(j=0;j<first;j++){
+				SS[a[a.length-1-j]]=Hmax*1
+			}
+		}
+	}	
+}
+function test() {
+		
+		invalidSS=false;
+		if(Mirrow) {
+			for(j=0;j<ma.length;j++) {
+				auxSS=0;
+				if(SS[a[j]]==-1) {
+					invalidSS=true;
+					break;
+				}
+				if(SS[a[j]]==0 && Mult[a[j]]*1!=0){
+					invalidSS=true;
+					break;
+				}
+				if ((Simultaneous) || (Hybrid)) {
+					if ((SS[a[j]]%2!=1) && (SS[a[j]+1]=="x")) {
+						invalidSS=true;
+						break;
+					}
+					else if ((SS[a[j]]%2==1) && (SS[a[j]+1]=="i")) {
+						invalidSS=true;
+						break;
+					}		
+					else if ((SS[a[j]]%2==1) && (Throwsx.indexOf("x")==-1)) {
+						auxSS=SS[a[j]]*1-Transpositor[a[j]];
+						if((Throwsx.indexOf(auxSS)!=-1) ||  (auxSS<Hmin) || (auxSS>Hmax)){
+							invalidSS=true;
+							break;
+						}
+						if(auxSS!=SS[ma[j]]*1-Transpositor[ma[j]]) {
+							invalidSS=true;
+							break;
+						}
+					}
+					else if ((SS[a[j]]%2==1) && (Throwsx.indexOf("x")!=-1)) {
+							invalidSS=true;
+							break;
+					}
+					else if ((Throws.indexOf(SS[a[j]])!=-1) || (SS[a[j]]<Hmin) || (SS[a[j]]>Hmax)) {
+							invalidSS=true;
+							break;
+					}
+					else if(SS[a[j]]!=SS[ma[j]]) {
+						invalidSS=true;
+						break;
+					}
+				}
+			}
+		}
+		else {
+		for (j=0;j<a.length;j++) {
+			auxSS=0;
+			if(SS[a[j]]==-1) {
+				invalidSS=true;
+				break;
+			}
+			if(SS[a[j]]==0 && Mult[a[j]]*1!=0){
+				invalidSS=true;
+				break;
+			}
+			if ((Simultaneous) || (Hybrid)) {
+				if ((SS[a[j]]%2!=1) && (SS[a[j]+1]=="x")) {
+					invalidSS=true;
+					break;
+				}
+				else if ((SS[a[j]]%2==1) && (SS[a[j]+1]=="i")) {
+					invalidSS=true;
+					break;
+				}		
+				else if ((SS[a[j]]%2==1) && (Throwsx.indexOf("x")==-1)) {
+				auxSS=SS[a[j]]*1-Transpositor[a[j]];
+				if((Throwsx.indexOf(auxSS)!=-1) || (auxSS<Hmin) || (auxSS>Hmax)){
+						invalidSS=true;
+						break;
+					}
+				}
+				else if ((SS[a[j]]%2==1) && (Throwsx.indexOf("x")!=-1)) {
+						invalidSS=true;
+						break;
+				}
+				else if ((Throws.indexOf(SS[a[j]])!=-1) || (SS[a[j]]<Hmin) || (SS[a[j]]>Hmax)) {
+						invalidSS=true;
+						break;
+				}
+			}
+			if ((Multiplex) || (Vanilla)) {
+				if (Throws.indexOf(SS[a[j]])!=-1) {
+					invalidSS=true;
+					break;
+				}
+			}
+		}
+		}
+		/********************************************************************************
+		 * 9º Passo - Obter Tbeat comparar com Timebeat	*
+		 ********************************************************************************/
+		if(!invalidSS) {
+			for (j=0;j<len;j++) {
+				if ((SS[j]!="(") && (SS[j]!=",") && (SS[j]!=")") && (SS[j]!="[") && (SS[j]!="]") && (SS[j]!="i") && (SS[j]!="x")){
+					if(SS[j]*1+Timebeat[p]*1<Balls) Excited=true;
+					Tbeat[p]=(SS[j]*1+Timebeat[p])%lenTime;
+					p++	
+				}		
+			}
+			p=0;
+			
+			Tbeat=Tbeat.sort(up);
+			for (j=0;j<Tbeat.length;j++) {
+				if(Timebeat[j]!=Tbeat[j]) {
+					invalidSS=true;
+					break;
+				}
+			}
+		}
+		if(SS[a[0]]>Hmax*1) exit=true
+		/************************************************************************
+		 * 10º Passo - Se SS verdadeiro, reconstruir e mostrar SS  		*
+		 ************************************************************************/
+		if(!invalidSS && !exit) {
+			SSout="";
+			j=0;
+			while(j<len) {
+				if (SS[j]=="i") {
+					j++
+				}
+				if ((SS[j]%2==1) && (SS[j+1]!="x") && ((Simultaneous) || (Hybrid))){
+					 auxSS=SS[j]*1-Transpositor[j]*1;
+					 if (auxSS==10) auxSS="a"
+					 if (auxSS==11) auxSS="b"
+					 if (auxSS==12) auxSS="c"
+					 if (auxSS==13) auxSS="d"
+					 if (auxSS==14) auxSS="e"
+					 if (auxSS==15) auxSS="f"
+					 if (auxSS==16) auxSS="g"
+					 if (auxSS==17) auxSS="h"
+					 SSout=SSout+auxSS+"x";
+				}					 
+				else if ((SS[j]%2==1) && (SS[j+1]=="x") && ((Simultaneous) || (Hybrid))) {
+					auxSS=SS[j]*1-Transpositor[j]*1;
+					if (auxSS==10) auxSS="a"
+					 if (auxSS==11) auxSS="b"
+					 if (auxSS==12) auxSS="c"
+					 if (auxSS==13) auxSS="d"
+					 if (auxSS==14) auxSS="e"
+					 if (auxSS==15) auxSS="f"
+					 if (auxSS==16) auxSS="g"
+					 if (auxSS==17) auxSS="h"
+					SSout=SSout+auxSS.toString();				
+				}
+				else if (SS[j]=="10") SSout=SSout+"a";
+				else if (SS[j]=="11") SSout=SSout+"b";
+				else if (SS[j]=="12") SSout=SSout+"c";
+				else if (SS[j]=="13") SSout=SSout+"d";
+				else if (SS[j]=="14") SSout=SSout+"e";
+				else if (SS[j]=="15") SSout=SSout+"f";
+				else if (SS[j]=="16") SSout=SSout+"g";
+				else if (SS[j]=="17") SSout=SSout+"h";
+				else SSout=SSout+SS[j];
+				j++
+			}				
+			if (excluding) {	
+				temp = Exclude.split(';');
+				for (j=0;j<temp.length;j++) {
+					if (SSout.indexOf(temp[j])!=-1) invalidSS=true;
+				}
+			}
+			if(!invalidSS) {
+			valid++
+			color=";colors=mixed"
+			var link="http://jugglinglab.sourceforge.net/siteswap.php?"+";pattern="+SSout+";border=20"+color;
+			var ball="http://cursomalabarismo.no.sapo.pt/imagens/bolas/b"+Balls+".bmp";
+		
+			document.forms['generate'].TT12.options[plus] = new Option(SSout,SSout);
+			plus++
+			}
+			Excited=false;
+		}
+		
+}
+
+}
+
+function show(opt) {
+	
+	if(opt==1) {
+		var SSout=document.generate.TT12.options[document.generate.TT12.selectedIndex].value;
+		document.generate.Notacao.value=SSout;
+	} else {
+		var SSout=document.generate.Notacao.value;
+	}
+	
+	var tlps=document.generate.tlps.options[document.generate.tlps.selectedIndex].value;
+	var tcor=document.generate.tcor.options[document.generate.tcor.selectedIndex].value;
+	var thands=document.generate.Hands.value;
+	var tbody=document.generate.Body.value;
+	var tvelocidade=document.generate.tvelocidade.options[document.generate.tvelocidade.selectedIndex].value;
+	var properties="";
+		
+	properties+=";colors="+tcor
+	properties+=";slowdown="+tvelocidade
+	properties+=";bps="+tlps
+	
+	if (thands.indexOf("{")!=-1)var maos=";mat_style="+thands
+	else var maos=";hands="+thands
+		
+	document.generate.Hands.value=thands;
+	properties+=maos;
+	properties+=";body="+tbody;
+	
+	
+	
+	var link="http://jugglinglab.sourceforge.net/siteswap.php?"+";pattern="+SSout+";border=20"+properties;
+	document.forms[0].method="post";
+	document.forms[0].action=link; 
+	document.forms[0].target='contents';
+	document.forms[0].submit();  
+}
+function getSelectedValues (select, field) {
+  var r = new Array();
+  for (var i = 0; i < select.options.length; i++)
+    if (select.options[i].selected)
+      r[r.length] = select.options[i].value;
+      if (r!="define") {
+      	if (document.all || document.getElementById) {
+			field.disabled = true;
+		}
+  		else {
+    		field.oldOnFocus = field.onfocus;
+    		field.onfocus = skip;
+  		}
+  	    return r;
+      }
+      else {
+      	if (document.all || document.getElementById)
+    		field.disabled = false;
+ 		else 
+ 		{
+    		field.onfocus = field.oldOnFocus;
+    	}
+    	r="use MatStyle or Hands notation";
+    	return r;
+ 	  }
+  
+}
+function disableTextField (field) {
+
+ 
+}
+//-->
+</script></head>
+
+<body topmargin="0">
+
+<form name="generate">
+ <p style="margin-top: 0; margin-bottom: 0" align="left">
+     <b><font color="#333333" face="Verdana" size="2">
+     <img src="ulsiteswaps_data/siteswap.bmp" align="right" border="0" height="38" width="38">Generator of 
+     Siteswaps:</font></b></p>
+ <p style="margin-top: 0; margin-bottom: 0" align="left">
+     &nbsp;</p>
+ <table style="border-collapse: collapse" id="AutoNumber11" border="0" bordercolor="#111111" cellpadding="0" cellspacing="0" height="41" width="600">
+   <tbody><tr>
+     <td style="border-style: none; border-width: medium" height="2" width="98">
+     <p style="margin-top: 0; margin-bottom: 0" align="left">
+ <font color="#666666" face="Verdana" size="1">SiteSwap: </font></p>
+     </td>
+     <td style="border-style: none; border-width: medium" height="2" width="212">
+ <p style="margin-top: 0; margin-bottom: 0">
+ <font face="Verdana" size="1">
+ <input name="SSi" size="39" style="font-family: Verdana; font-size: 10px" value="[??]2?" type="text"></font><font color="#666666" face="Verdana" size="1">
+ </font>
+     </p></td>
+     <td colspan="2" rowspan="2" style="border-style: none; border-width: medium" height="3" width="159">
+     <p style="margin-top: 0; margin-bottom: 0" align="center">
+     <input onclick="generateSS()" value="Generate" name="generate" style="width:100; height:30; font-size: 10px; font-family: Verdana; float:right" type="button"></p></td>
+   </tr>
+   <tr>
+     <td style="border-style: none; border-width: medium" height="1" width="98">
+     </td>
+     <td style="border-style: none; border-width: medium" height="1" width="212">
+     </td>
+   </tr>
+   <tr>
+     <td style="border-style: none; border-width: medium" height="19" width="98">&nbsp;</td>
+     <td style="border-style: none; border-width: medium" height="19" width="212">&nbsp;</td>
+     <td style="border-style: none; border-width: medium" height="19" width="99">&nbsp;</td>
+     <td style="border-style: none; border-width: medium" height="19" width="60">&nbsp;</td>
+   </tr>
+   <tr>
+     <td colspan="2" style="border-style: none; border-width: medium" height="18" width="310">
+     <b><font color="#666666" face="Verdana" size="1">Properties</font></b></td>
+     <td style="border-style: none; border-width: medium" height="18" width="99"><font color="#666666" face="Verdana" size="1">
+     ::Nº of Objects:</font></td>
+     <td style="border-style: none; border-width: medium" height="18" width="85">
+     <select size="1" select="" name="balls" style="padding:0; font-size: 10px; font-family: Verdana; ">
+  <option value="0">No Restrictions</option>
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5" selected="selected">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">10</option>
+  <option value="11">11</option>
+  </select></td>
+   </tr>
+   <tr>
+     <td style="border-style: none; border-width: medium" colspan="2" height="19" width="310">
+ <font color="#666666" face="Verdana" size="1">Expressions to exclude: (separe 
+     them with a ";")</font></td>
+     <td style="border-style: none; border-width: medium" height="19" width="99"><font color="#666666" face="Verdana" size="1">::Minimun 
+     High:</font></td>
+     <td style="border-style: none; border-width: medium" height="19" width="60">
+     <select size="1" select="" name="Hmin" style="padding:0; font-size: 10px; font-family: Verdana; ">
+  <option selected="selected" value="0">No Restrictions</option>
+  <option value="0">0</option>
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">a</option>
+  <option value="11">b</option>
+  <option value="12">c</option>
+  <option value="13">d</option>
+  <option value="14">e</option>
+  <option value="15">f</option>
+  <option value="16">g</option>
+  </select></td>
+   </tr>
+   <tr>
+     <td style="border-style: none; border-width: medium" colspan="2" height="19" width="330">
+ <font face="Verdana" size="1">
+ <input name="exclude" size="60" style="font-family: Verdana; font-size: 10px" type="text"></font></td>
+     <td style="border-style: none; border-width: medium" height="19" width="99"><font color="#666666" face="Verdana" size="1">::Maximun 
+     High:</font></td>
+     <td style="border-style: none; border-width: medium" height="19" width="60">
+     <select size="1" select="" name="Hmax" style="padding:0; font-size: 10px; font-family: Verdana; ">
+  <option value="17">No Restrictions</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7" selected="selected">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">a</option>
+  <option value="11">b</option>
+  <option value="12">c</option>
+  <option value="13">d</option>
+  <option value="14">e</option>
+  <option value="15">f</option>
+  <option value="16">g</option>
+  <option value="17">h</option>
+  </select></td>
+   </tr>
+ </tbody></table>
+ <p style="margin-top: 0; margin-bottom: 0" align="left">
+     &nbsp;</p>
+ <p style="margin-top: 0; margin-bottom: 0">
+ <b><font color="#333333" face="Verdana" size="2">Results:</font></b></p>
+ <table style="border-collapse: collapse" id="AutoNumber6" bgcolor="#C0C0C0" border="0" bordercolor="#808080" cellpadding="0" cellspacing="0" height="1" width="600">
+   <tbody><tr>
+     <td style="border-left-style: solid; border-left-width: 1; border-top-style: solid; border-top-width: 1" align="center" height="1" width="300">
+     <p style="margin-top: 0; margin-bottom: 0" align="center">
+     <font color="#666666" face="Verdana" size="1">Results (Siteswaps): </font><input name="Dados1" size="8" style="border: 1px solid #FFFFFF; font-size:10px; font-family:Verdana; color:#666666; background-color:#C0C0C0" type="text"></p></td>
+     <td style="border-right-style: solid; border-right-width: 1; border-top-style: solid; border-top-width: 1" align="center" height="1" width="300">
+     <p style="margin-top: 0; margin-bottom: 0" align="center">
+     &nbsp;</p></td>
+   </tr>
+   <tr>
+     <td style="border-left-style: solid; border-left-width: 1; border-bottom-style:solid; border-bottom-width:1" align="center" height="1" width="300">
+ <p style="margin-top: 0; margin-bottom: 0">
+ <select name="TT12" size="17" style="width:300; height:200; font-size:10px; font-family:Verdana; color:#CC0000">
+</select></p></td>
+     <td style="border-right-style: solid; border-right-width: 1; " align="center" height="1" width="300">
+
+<p><font color="#666666" size="1"><font face="Verdana">Throws to esclude</font></font></p>
+
+ <table style="border-collapse: collapse" id="AutoNumber5" border="0" bordercolor="#111111" cellpadding="0" cellspacing="0" width="231">
+   <tbody><tr>
+     <td align="center" width="26">
+     <font face="Verdana" size="1">0</font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     1</font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">3</font></td>
+     <td align="center" width="26">
+     <font face="Verdana" size="1">5</font></td>
+     <td align="center" width="26">
+     <font face="Verdana" size="1">7</font></td>
+     <td align="center" width="26">
+     <font face="Verdana" size="1">9</font></td>
+     <td align="center" width="26">
+     <font face="Verdana" size="1">b</font></td>
+     <td align="center" width="27">
+     <font face="Verdana" size="1">d</font></td>
+     <td align="center" width="22">
+     <font face="Verdana" size="1">f</font></td>
+     </tr>
+   <tr>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B0" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B1" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B3" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B5" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B7" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B9" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B11" value="ON" type="checkbox"></font></td>
+     <td align="center" width="27"><font face="Verdana" size="1">
+     <input name="B13" value="ON" type="checkbox"></font></td>
+     <td align="center" width="22"><font face="Verdana" size="1">
+     <input name="B15" value="ON" type="checkbox"></font></td>
+     </tr>
+   <tr>
+     <td align="center" bgcolor="#FF0000" width="26">
+     <font color="#FFFFFF" face="Verdana" size="1">i</font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">2</font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">4</font></td>
+     <td align="center" width="26">
+     <font face="Verdana" size="1">6</font></td>
+     <td align="center" width="26">
+     <font face="Verdana" size="1">8</font></td>
+     <td align="center" width="26">
+     <font face="Verdana" size="1">a</font></td>
+     <td align="center" width="26">
+     <font face="Verdana" size="1">c</font></td>
+     <td align="center" width="27">
+     <font face="Verdana" size="1">e</font></td>
+     <td align="center" width="22">
+     <font face="Verdana" size="1">g</font></td>
+     </tr>
+   <tr>
+     <td align="center" bgcolor="#FF0000" width="26">
+     <font color="#FFFFFF" face="Verdana" size="1">
+     <input name="Bi" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B2" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B4" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B6" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B8" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B10" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B12" value="ON" type="checkbox"></font></td>
+     <td align="center" width="27"><font face="Verdana" size="1">
+     <input name="B14" value="ON" type="checkbox"></font></td>
+     <td align="center" width="22"><font face="Verdana" size="1">
+     <input name="B16" value="ON" type="checkbox"></font></td>
+     </tr>
+   <tr>
+     <td align="center" bgcolor="#FF0000" width="26">
+     <font color="#FFFFFF" face="Verdana" size="1">x</font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">2x</font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">4x</font></td>
+     <td align="center" width="26">
+     <font face="Verdana" size="1">6x</font></td>
+     <td align="center" width="26">
+     <font face="Verdana" size="1">8x</font></td>
+     <td align="center" width="26">
+     <font face="Verdana" size="1">ax</font></td>
+     <td align="center" width="26">
+     <font face="Verdana" size="1">cx</font></td>
+     <td align="center" width="27">
+     <font face="Verdana" size="1">ex</font></td>
+     <td align="center" width="22">
+     <font face="Verdana" size="1">gx</font></td>
+     </tr>
+   <tr>
+     <td align="center" bgcolor="#FF0000" width="26">
+     <font color="#FFFFFF" face="Verdana" size="1">
+     <input name="Bx" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B2x" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B4x" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B6x" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B8x" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B10x" value="ON" type="checkbox"></font></td>
+     <td align="center" width="26"><font face="Verdana" size="1">
+     <input name="B12x" value="ON" type="checkbox"></font></td>
+     <td align="center" width="27"><font face="Verdana" size="1">
+     <input name="B14x" value="ON" type="checkbox"></font></td>
+     <td align="center" width="22"><font face="Verdana" size="1">
+     <input name="B16x" value="ON" type="checkbox"></font></td>
+     </tr>
+ </tbody></table>
+ <p style="margin-top: 0; margin-bottom: 0" align="left">&nbsp;</p>
+ <p style="margin-top: 0; margin-bottom: 0">
+     <input onclick="show(1)" value="Watch Animation" name="watch" style="width:200; font-size: 10px; font-family: Verdana; height:30" type="button"></p></td>
+   </tr>
+   </tbody></table>
+ <p style="margin-top: 0; margin-bottom: 0">
+ &nbsp;</p>
+ <p style="margin-top: 0; margin-bottom: 0">
+ <b><font color="#333333" face="Verdana" size="2">Animation Properties:</font></b></p>
+ <table style="border-collapse: collapse" id="AutoNumber12" bgcolor="#C0C0C0" border="0" cellpadding="0" cellspacing="0" width="600">
+   <tbody><tr>
+     <td style="border-style: none; border-width: medium" width="91">
+     <font color="#333333" face="Verdana" size="1">
+     SiteSwap:</font></td>
+     <td colspan="5" style="border-style: none; border-width: medium" width="400">
+ <input name="Notacao" size="76" style="font-family: Verdana; font-size: 10px; " type="text"></td>
+     <td rowspan="4" style="border-style: none; border-width: medium" width="111">
+     <p align="center">
+     <input onclick="show(2)" value="Animate" name="animate" style="width:100; height:30; font-size: 10px; font-family: Verdana; float:left" type="button"></p></td>
+   </tr>
+   <tr>
+     <td style="border-style: none; border-width: medium" width="91">
+     <font color="#333333" face="Verdana" size="1">Hands:</font></td>
+     <td colspan="5" style="border-style: none; border-width: medium" width="400">
+     <select size="1" select="" name="DHands" onchange="this.form.Hands.value = getSelectedValues(this.form.DHands,this.form.Hands);" style="padding:0; font-size: 10px; font-family: Verdana; ">
+  <option selected="selected" value="">Normal</option>
+  <option value="{5,0}{10,0}">Reverse</option>
+  <option value="{5,0}{10,0}{10,0}{5,0}">Half Shower</option>
+  <option value="{-1,0}{-14,0}{0,0}{14,0}{1,0}{-14,0}">Mill's Mess</option>
+  <option value="{3,1}{13,2}{7,-2}{-10,-3}{3,2}{-12,2}{-1,0}{12,2}{-2,2}{-10,-2}">Rubensteins</option>
+  <option value="{10,0}{10,0}">Box</option>
+  <option value="define">Custom...</option>
+  </select><input name="Hands" size="57" style="font-family: Verdana; font-size: 10px; " type="text"></td>
+   </tr>
+   <tr>
+     <td style="border-style: none; border-width: medium" width="91">
+     <font color="#333333" size="1"><font face="Verdana">Body:</font></font></td>
+     <td colspan="5" style="border-style: none; border-width: medium" width="400">
+     <input name="Body" size="76" style="font-family: Verdana; font-size: 10px; " type="text"></td>
+   </tr>
+   <tr>
+     <td style="border-style: none; border-width: medium" width="91">
+     <font color="#333333" face="Verdana" size="1">Throws / sec:</font></td>
+     <td style="border-style: none; border-width: medium" width="76"><font color="#666666">
+     <select size="1" select="" name="tlps" style="width:80; padding:0; font-size: 10px; font-family: Verdana; font-weight:bold">
+  <option value="2.5">2.5</option>
+  <option value="3">3</option>
+  <option value="3.5">3.5</option>
+  <option value="4">4</option>
+  <option value="4.5" selected="selected">4.5</option>
+  <option value="5">5</option>
+  <option value="5.5">5.5</option>
+  <option value="6">6</option>
+  <option value="6.5">6.5</option>
+  <option value="7">7</option>
+  <option value="7.5">7.5</option>
+  <option value="8">8</option>
+  </select></font></td>
+     <td style="border-style: none; border-width: medium" width="79">
+     <p style="margin-left: 20">
+     <font color="#333333" face="Verdana" size="1">Velocity:</font></p></td>
+     <td style="border-style: none; border-width: medium" width="79"><select size="1" name="tvelocidade" style="width:80; font-family: Verdana; font-size: 9px; border: 1px solid #3366FF; background-color: #FFFFFF; font-weight:bold">
+    <option value="1">real</option>
+    <option value="2" selected="selected">slow 2x</option>
+    <option value="4">slow 4x</option>
+    <option value="8">slow 8x</option>
+    <option value="16">slow 16x</option>
+    <option value="32">slow 32x</option>
+    </select></td>
+     <td style="border-style: none; border-width: medium" width="79">
+     <p style="margin-left: 20">
+     <font color="#333333" face="Verdana" size="1">Color:</font></p></td>
+     <td style="border-style: none; border-width: medium" width="93"> <select size="1" name="tcor" style="width:80; font-family: Verdana; font-size: 10px; border: 1px solid #6699FF; background-color: #FFFFFF; font-weight:bold">
+    <option value="red" selected="selected">red</option>
+    <option value="Green">green</option>
+    <option value="Blue">blue</option>
+    <option value="Yellow">yellow</option>
+    <option value="mixed">mixed</option>
+    </select></td>
+   </tr>
+ </tbody></table>
+</form>
+
+
+
+</body></html>

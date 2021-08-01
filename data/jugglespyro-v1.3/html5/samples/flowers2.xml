@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<animation name="flowers2.xml">
+
+<scenario name="Sc1">
+
+<scene name="scene1">
+<right axisDx="390" axisDy="300" propChoice="3" armWay="out" ratio="1" clockSpeed="2" nbloops="1" armAngle="0" propAngle="0" armLength="100" propLength="50" setColorFilter="false" handPathViewMode="0" propPathViewMode="3" shadow="false" blurring="true" showAxis="true" cleaning="true" />
+<left axisDx="410" axisDy="300" propChoice="3" armWay="in" ratio="1" clockSpeed="2" nbloops="1" armAngle="0" propAngle="0" armLength="100" propLength="50" setColorFilter="false" handPathViewMode="0" propPathViewMode="3" shadow="false" blurring="true" showAxis="true" cleaning="true" />
+<both scale="1" speed="100" colorBackground="rgba(247,245,126,255)"/>
+</scene>
+
+<scene name="scene2">
+<right ratio="2" nbloops="1"/>
+<left ratio="2" nbloops="1"/>
+</scene>
+
+<scene name="scene3">
+<right ratio="2" nbloops="1"/>
+<left ratio="1" nbloops="1"/>
+</scene>
+
+<scene name="scene4">
+<right ratio="1" nbloops="1"/>
+<left ratio="2" nbloops="1"/>
+</scene>
+
+<scene name="scene5">
+<right ratio="3" nbloops="1"/>
+<left ratio="3" nbloops="1"/>
+</scene>
+
+<scene name="scene6">
+<right ratio="3" nbloops="1"/>
+<left ratio="2" nbloops="1"/>
+</scene>
+
+<scene name="scene7">
+<right ratio="2" nbloops="1"/>
+<left ratio="3" nbloops="1"/>
+</scene>
+
+<scene name="scene8">
+<right ratio="3" nbloops="1"/>
+<left ratio="1" nbloops="1"/>
+</scene>
+
+<scene name="scene9">
+<right ratio="1" nbloops="1"/>
+<left ratio="3" nbloops="1"/>
+</scene>
+
+<scene name="scene10">
+<right ratio="4" nbloops="1"/>
+<left ratio="4" nbloops="1"/>
+</scene>
+
+<scene name="scene11">
+<right ratio="4" nbloops="1"/>
+<left ratio="3" nbloops="1"/>
+</scene>
+
+<scene name="scene12">
+<right ratio="3" nbloops="1"/>
+<left ratio="4" nbloops="1"/>
+</scene>
+
+<scene name="scene13">
+<right ratio="4" nbloops="1"/>
+<left ratio="2" nbloops="1"/>
+</scene>
+
+<scene name="scene14">
+<right ratio="2" nbloops="1"/>
+<left ratio="4" nbloops="1"/>
+</scene>
+
+<scene name="scene15">
+<right ratio="4" nbloops="1"/>
+<left ratio="1" nbloops="1"/>
+</scene>
+
+<scene name="scene16">
+<right ratio="1" nbloops="1"/>
+<left ratio="4" nbloops="1"/>
+</scene>
+
+</scenario>
+
+</animation>
+

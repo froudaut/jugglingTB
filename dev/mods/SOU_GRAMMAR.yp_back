@@ -1,0 +1,436 @@
+
+%%
+
+input: #empty
+pattern 
+  {
+	my @res = @main::PATTERN;  
+	@main::PATTERN = ();
+	$main::idxPattern=0;
+
+	my $patternStack = $_[1];
+  	my $semanticTreeRoot = new Tree::Nary("Head");
+  	my $node = new Tree::Nary();
+  	my $cpt = 1;  
+
+	for my $i (@$patternStack)
+  	{	    
+	   $node -> insert($semanticTreeRoot, $cpt, $i);
+	   $cpt ++; 
+	}
+ 	
+	$node -> traverse($semanticTreeRoot,$Tree::Nary::PRE_ORDER, $Tree::Nary::TRAVERSE_ALL,-1,\&extendNotationfromTree);
+	return \@res;
+  }	       	
+| pattern '*' 
+  {
+	my @res = @main::PATTERN;  	    
+	@main::PATTERN = ();
+	$main::idxPattern=0;
+
+	my $patternStack = $_[1];
+  	my $semanticTreeRoot = new Tree::Nary("Head");
+  	my $node = new Tree::Nary();
+  	my $cpt = 1;  
+
+	for my $i (@$patternStack)
+  	{	 
+	   $node -> insert($semanticTreeRoot, $cpt, $i);
+	   $cpt ++; 
+	}  
+
+	for my $i (@$patternStack)
+  	{	
+	   $node -> insert($semanticTreeRoot, $cpt, $i);
+	   $cpt ++; 
+	}
+ 	
+	$node -> traverse($semanticTreeRoot,$Tree::Nary::PRE_ORDER, $Tree::Nary::TRAVERSE_ALL,-1,\&extendNotationfromTree);
+	return \@res;
+  }
+;
+
+pattern: 
+{
+  my @patternStack = ();
+  \@patternStack;
+}
+
+| simplex pattern 
+{
+  my @patternStack = ();
+  push(@patternStack,$_[1]);
+  my $patternStackTmp = $_[2];
+  @patternStack = (@patternStack, @$patternStackTmp);
+ 
+  $main::PATTERN[$main::idxPattern] = "$_[2]"; $main::idxPattern++; 
+  \@patternStack;
+
+}
+| synchronous pattern
+{
+  my @patternStack = ();
+  push(@patternStack,$_[1]);
+  my $patternStackTmp = $_[2];
+  @patternStack = (@patternStack, @$patternStackTmp);
+  $main::PATTERN[$main::idxPattern] = "$_[2]"; $main::idxPattern++; 
+  \@patternStack;
+}
+| multiplex pattern
+{
+  my @patternStack = ();
+  push(@patternStack,$_[1]);
+  my $patternStackTmp = $_[2];
+  @patternStack = (@patternStack, @$patternStackTmp);
+
+  $main::PATTERN[$main::idxPattern] = "$_[2]"; $main::idxPattern++; 
+  \@patternStack;
+}
+;
+
+multiplex: '[' multiplex_in ']' 
+{ 	
+  my $multiplexStack = $_[2];
+  my $semanticTreeRoot = new Tree::Nary("multiplex");
+  my $node = new Tree::Nary();
+  my $cpt = 1;  
+
+  for my $i (@$multiplexStack)
+  {	    
+	$node -> insert_data($semanticTreeRoot, $cpt, $i);
+	$cpt ++;
+  }    	
+ 
+ $semanticTreeRoot;
+}
+;
+
+multiplex_in: throw
+{ 
+  my @multiplexStack = ();
+  push(@multiplexStack,$_[1]);
+  \@multiplexStack;		
+}
+| throw multiplex_in 
+{ 
+  my @multiplexStack = ();
+  push(@multiplexStack,$_[1]);
+  my $multiplexStackTmp = $_[2];
+  @multiplexStack = (@multiplexStack, @$multiplexStackTmp);
+  \@multiplexStack;
+}
+;
+
+
+synchronous:
+'(' throw ',' throw ')' 
+{
+  my $semanticTreeRoot = new Tree::Nary("synchronous");
+  my $node = new Tree::Nary();
+  $node -> insert_data($semanticTreeRoot, 1, $_[2] );
+  $node -> insert_data($semanticTreeRoot, 2, $_[4] );
+  $semanticTreeRoot;	
+}
+|
+ '(' throw ',' multiplex ')' 
+{
+  my $semanticTreeRoot = new Tree::Nary("synchronous");
+  my $node = new Tree::Nary();
+  $node -> insert_data($semanticTreeRoot, 1, $_[2] );
+  $node -> insert($semanticTreeRoot, 2, $_[4]);
+  $semanticTreeRoot;	
+}
+| '(' multiplex ',' throw ')' 
+{
+  my $semanticTreeRoot = new Tree::Nary("synchronous");
+  my $node = new Tree::Nary();
+  $node -> insert($semanticTreeRoot, 1, $_[2]);
+  $node -> insert_data($semanticTreeRoot, 2, $_[4]);
+  $semanticTreeRoot;	
+}
+| '(' multiplex ',' multiplex ')' 
+{
+  my $semanticTreeRoot = new Tree::Nary("synchronous");
+  my $node = new Tree::Nary();
+  $node -> insert($semanticTreeRoot, 1, $_[2]);
+  $node -> insert($semanticTreeRoot, 2, $_[4]);
+  $semanticTreeRoot;	
+}
+;
+
+simplex: throw_simplex
+{
+  my $semanticTreeRoot = new Tree::Nary("simplex");
+  my $node = new Tree::Nary();
+  $node -> insert_data($semanticTreeRoot, 2, $_[1]);
+  $semanticTreeRoot;	
+}
+;
+
+throw_simplex: sswp 
+{
+  "$_[1]:S:<IN>"; 
+}
+| sswp souState exchange 
+{ 
+  "$_[1]:$_[2]:$_[3]";
+}
+| sswp souState 
+{ 
+  "$_[1]:$_[2]:<IN>"; 
+}
+| sswp exchange 
+{ 
+  "$_[1]:S:$_[2]"; 
+}
+;
+
+
+throw: sswp 
+{
+  "$_[1]::"; 
+}
+| sswp souState exchange 
+{ 
+  "$_[1]:$_[2]:$_[3]";
+}
+| sswp souState 
+{ 
+  "$_[1]:$_[2]:"; 
+}
+| sswp exchange 
+{ 
+  "$_[1]::$_[2]"; 
+}
+;
+
+
+%%
+
+sub extendNotationfromTree
+{
+	
+    my $node = shift;
+    print $node ->{data};
+    print "\n";
+    if($node ->{data} eq "synchronous")
+    {
+	$main::semanticSubtreeCtx = "synchronous";	   
+	$main::semanticSubtreePrvExch = "";
+	   $main::semanticSubtreePrvSOUState = "";	
+    }
+    
+    elsif($node ->{data} eq "multiplex")
+    {
+	$main::semanticSubtreeCtx = "multiplex";
+	$main::semanticSubtreePrvExch = "";
+	$main::semanticSubtreePrvSOUState = "";	
+    }
+    
+    elsif($node ->{data} eq "simplex")
+    {
+	$main::semanticSubtreeCtx = "simplex";
+	$main::semanticSubtreePrvExch = "";
+	$main::semanticSubtreePrvSOUState = "";	
+    }
+    
+    else
+    {
+	my @tab = split(/:/, $node ->{data});
+	
+	if ($main::semanticSubtreeCtx eq "synchronous")
+	{		 
+	    #Check SOU State		 
+	    if ($main::semanticSubtreePrvSOUState eq "")
+	    {
+		if ( $tab[1] eq "" )
+		{		   
+		    $main::semanticSubtreePrvSOUState = "S";
+		}	
+
+		else
+		{
+		    $main::semanticSubtreePrvSOUState = $tab[1];		
+		} 
+	    }
+	    
+	    else
+	    {
+		if ( $tab[1] eq "" )
+		{		   
+		    if ($main::semanticSubtreePrvSOUState eq "S")
+		    {
+			$main::semanticSubtreePrvSOUState = "Sb";
+		    }		  
+		    elsif ($main::semanticSubtreePrvSOUState eq "Sb")
+		    {
+			$main::semanticSubtreePrvSOUState = "S";     		   		   
+		    }		  
+		    elsif ($main::semanticSubtreePrvSOUState eq "O")
+		    {
+			$main::semanticSubtreePrvSOUState = "U";     		   		   
+		    }		  
+		    elsif ($main::semanticSubtreePrvSOUState eq "Ob")
+		    {
+			$main::semanticSubtreePrvSOUState = "Ub";      		   		   
+		    }		  
+		    elsif ($main::semanticSubtreePrvSOUState eq "U")
+		    {
+			$main::semanticSubtreePrvSOUState = "O";    		   		   
+		    }		  
+		    elsif ($main::semanticSubtreePrvSOUState eq "Ub")
+		    {
+			$main::semanticSubtreePrvSOUState = "Ob";      		   		   
+		    }
+		    
+		    else 
+		    {
+			print "error\n";
+		    }		  
+		} 
+
+		else
+		{
+		    if (($main::semanticSubtreePrvSOUState eq "S" && $tab[1] eq "Sb") ||  
+			($main::semanticSubtreePrvSOUState eq "Sb" && $tab[1] eq "S") || 
+			($main::semanticSubtreePrvSOUState eq "O" && $tab[1] eq "Ob") || 
+			($main::semanticSubtreePrvSOUState eq "Ob" && $tab[1] eq "O") || 
+			($main::semanticSubtreePrvSOUState eq "U" && $tab[1] eq "Ub") || 
+			($main::semanticSubtreePrvSOUState eq "Ub" && $tab[1] eq "U"))
+		    {
+			$main::semanticSubtreePrvSOUState = $tab[1];
+		    }
+		    
+		    else
+		    {			
+			print "error\n";		    
+		    }
+		}
+	    }
+	    
+	    #check Exchange
+	    if ( $tab[2] eq "" )
+	    {
+		$main::semanticSubtreePrvExch = "<in>";
+	    }
+
+	    else 
+	    {
+		$main::semanticSubtreePrvExch = $tab[2];
+	    }
+
+	    print $tab[0].$main::semanticSubtreePrvSOUState.$main::semanticSubtreePrvExch."\n";	    	    
+	}
+
+
+	elsif($main::semanticSubtreeCtx eq "multiplex")
+	{		 
+	    #Check SOU State		 
+	    if ($main::semanticSubtreePrvSOUState eq "")
+	    {
+		if ( $tab[1] eq "" )
+		{		   
+		    $main::semanticSubtreePrvSOUState = "S";
+		}	
+
+		else
+		{
+		    $main::semanticSubtreePrvSOUState = $tab[1];		
+		} 
+	    }
+
+	    else
+	    {
+		if (!($tab[1] eq "") && !($tab[1] eq $main::semanticSubtreePrvSOUState))
+		{
+		    print "error\n";
+		}	    	    
+	    }
+
+
+	    #check Exchange
+	    if ( $tab[2] eq "" )
+	    {
+		$main::semanticSubtreePrvExch = "<in>";
+	    }
+
+	    else 
+	    {
+		$main::semanticSubtreePrvExch = $tab[2];
+	    }
+
+	    print $tab[0].$main::semanticSubtreePrvSOUState.$main::semanticSubtreePrvExch."\n";	    	    
+	
+	}
+
+    }
+    
+    return ($Tree::Nary::FALSE);
+}
+
+
+use Tree::Nary;
+use vars qw($IN_ORDER $PRE_ORDER);
+
+my $semanticTree =  new Tree::Nary;
+
+my $Input = "";
+
+my $semanticSubtreeCtx = "";
+my $semanticSubtreePrvExch = "";
+my $semanticSubtreePrvSOUState = "";
+
+my @PATTERN = ();
+my $idxPattern = 0;
+my @throwTypeStack = ();
+
+
+sub parse 
+{
+    $idxPattern = 0;
+    $Input="$_[0]";        
+    my $p = new SOU_GRAMMAR();
+    my $res = $p->YYParse( yylex => \&yylex, yyerror => \&yyerror);
+    return $res;
+}
+
+sub yyerror {
+    if ($_[0]->YYCurtok) {
+	printf STDERR ('Error: a "%s" (%s) was found where %s was expected'."\n", $_[0]->YYCurtok, $_[0]->YYCurval, $_[0]->YYExpect)
+    }
+    
+    else {
+        print STDERR "Expecting one of ",join(", ",$_[0]->YYExpect),"\n";
+    }
+}
+
+
+sub init_lexical_file{
+    my $file = shift;
+    local $/;
+    undef $/;
+    if ($file) {
+	open F, $file or die "$!";
+	$Input = <F>;
+	close F;
+    } else {
+	$Input = <>
+    }
+}
+
+sub yylex{
+    for($Input){
+	# Advance spaces
+	1 while (s!^(\s+|\n)!!g);
+	# EOF
+	return ("","") if $_ eq "";
+	# Tokens	
+	s!^(\d[xX])!! and return ("sswp", $1);
+	s!^(\d)!! and return ("sswp", $1);
+	s!^([sSoOuU][bB])!! and return ("souState", $1);		
+	s!^([souSOU])!! and return ("souState", $1);	
+	s!^((<[iI][nN]>)|(<[oO][uU][tT]>))!! and return ("exchange", $1);	
+	s!([\()\[\],*])!! and return ($1,$1);
+	print STDERR "Unexpected symbols: ’$Input’\n" ;
+    }
+}

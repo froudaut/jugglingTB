@@ -1,0 +1,2579 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">	
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN""http://www.w3.org/TR/html4/frameset.dtd">
+
+<html lang="fr">
+  <head>
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="KEYWORDS" content="BTN, SOU, MMSTD, Siteswap, juggling, notation, JugglingTB, Spyrograph, Harmonic, Ladder, 3-Layers" />
+    <meta name="DESCRIPTION" content="Juggling Toolbox - README" />
+    <meta name="Content-language" content="fr" />
+    <meta name="Author" content="Frédéric Roudaut"/>
+    <meta name="verify-v1" content="Y0B1fWKGpBIQkAm7A9Wr8ONkFDHa7+gXGPXVpEjTG1Y=" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />    
+    <link rel="StyleSheet" href="/css/outils/readme.css" type="text/css" />
+    <title>Juggling Toolbox v1.5 - README</title>
+    
+    <style type="text/css">
+      <!--
+      .Style1 {color: #FF0000}	  
+      .windowCode{
+	  font-size: 12px;
+	  font-family: "Courier New", Courier, monospace;
+	  width:90%;
+	  margin-left: 15px;
+	  padding-left: 20px;
+	  padding-right: 15px;
+	  padding-top: 10px;
+	  padding-bottom: 10px;
+	  background-color: #FFFFFF;    
+	  border: 3px;
+	  border-color: #FFFFFF;
+	  border-style: groove;
+      }
+      -->
+    </style>
+
+  </head>
+  
+  <body>    
+    <div id="menu_centre">      
+      <div id="div_contenu">
+	<div class="titre"><h1>Juggling Toolbox v1.5 - README</h1></div>
+	
+	<div class="auteur">
+	  <strong>Frédéric Roudaut</strong>
+	</div>
+	
+	<div class="date">
+	  Creation : 03/2008<br/>
+ 	  Last Update: 04/2021 
+	</div>	  	  
+
+	<div class="index">    
+	  <p>
+	    <a href="#chap1">1 - INTRODUCTION</a><br/>
+	    <a href="#chap2">2 - INSTALLATION &amp; BESOINS</a><br/>
+	    <a href="#chap3">3 - LANCEMENT</a><br/>
+	    <a href="#chap4">4 - JUGGLINGTB</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chap4_1">4.1 - OBTENIR DE L'AIDE</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chap4_2">4.2 - EXECUTER UNE COMMANDE DOS/UNIX</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chap4_3">4.3 - AFFICHAGE DU RESULTAT</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chap4_4">4.4 - PLACER LES RESULTATS DANS UN FICHIER</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chap4_5">4.5 - COMBINER LES MODULES</a><br/>
+	    <a href="#chap5">5 - EXEMPLES</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chap5_1">5.1 - LADDER NOTATION</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chap5_2">5.2 - SITESWAP</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chap5_3">5.3 - HARMONIC THROW NOTATION (NOTATION 3-COUCHES)</a><br/>
+	    <a href="#chap6">6 - ETENDRE JUGGLINGTB</a><br/>
+	    <a href="#chap7">7 - CREDITS &amp; LICENCE</a><br/>
+	    <a href="#chap8">8 - BUGS</a><br/>
+	    <a href="#chapAnnexe">ANNEXE - MODULES</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chapAnnexe1.1">A1 - MAIN</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chapAnnexe1.2">A2 - BTN</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chapAnnexe1.3">A3 - SOU</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chapAnnexe1.4">A4 - MMSTD</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chapAnnexe1.5">A5 - LADDER</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chapAnnexe1.6">A6 - SSWAP</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chapAnnexe1.7">A7 - HTN</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chapAnnexe1.8">A8 - SPYRO</a><br/>
+	    
+	    &nbsp;
+	  </p>
+	</div>
+	
+	<div class="text">    
+	  <h2>1 - INTRODUCTION</h2><a name="chap1" id="chap1"></a>
+	  
+	  <p>
+	    L'objectif principal de jugglingTB est d'offrir une boîte à outil pour
+	    différentes notations jonglistiques. Il est écrit en Perl avec pour
+	    objectif d'être très facilement étendu pour de nouveaux modules ou
+	    de nouvelles commandes. Il a été développé incrémentalement en fonctions des besoins que j'avais pour l'écriture de différents articles. Il ne faut donc pas s'attendre à ce que tout soit vraiment optimisé, à l'origine c'était un besoin personnel uniquement que j'adapte en fonction. ;-/. 
+	    
+	    Actuellement il contient des modules pour les notations : 
+	    <ul>
+	      <li>BTN : Body Trick Notation </li>
+	      <li>SOU Etendue: Side-Over-Under Notation </li>
+	      <li>MMSTD: Mills Mess State Transition Diagram </li>
+	      <li>LADDER: Ladder Notation   </li>
+	      <li>SSWAP: Siteswap Notation </li>
+	      <li>STACK: Stack Notation </li>
+	      <li>HTN: 3-Layers Notation/Harmonic Throws Notation</li>
+	      <li>SPYRO: Spyrograph pour Spin/Antispin/Hybrides/Isolations ...  </li>
+
+	    </ul>
+	  </p>
+	  
+	  <p>
+	    Le module SSWAP utilise le génial <a href="https://jugglinglab.org/" target="_blanc">JugglingLab</a> de Jack Boyce. 
+	    Et pour mes besoins personnel j'y ai intégré d'autres différents outils:
+	    <ul>	      
+	      <li>
+		jdeep de Jack Boyce
+	      </li>
+	      <li>
+		HTNMaker de Shawn Pinciara
+	      </li>
+	      <li>
+		LABInfinite de MCP
+	      </li>
+	      <li>
+		juggleSpyro, un de mes autres projets
+	      </li>
+	      <li>
+		PowerJuggler de Marco Tarini
+	      </li>
+	      <li>
+		realsim de Pedro Teodoro
+	      </li>
+	      <li>
+		Polyrythm-Fountain de Josh Mermelstein
+	      </li>
+	    </ul>
+	    Ils sont tous exécutables depuis jugglingTB dans les Modules correspondants.
+	  </p>
+	  
+	  <h2>2 - INSTALLATION &amp; BESOINS</h2><a name="chap2" id="chap2"></a>
+	  <p>
+	    Pour utiliser cet outil vous avez 2 possibilités :
+	    <ul>
+	      <li>Soit utiliser directement un binaire;</li>
+	      <li>Soit partir des sources, et installer les modules nécessaires.</li>
+	    </ul>
+	  </p>
+
+	  <h3>Binaires</h3>
+	  <p>
+	    Vous trouverez une version binaire pour Windows 64bits (packagée en perl v5.32.1 par pp (PAR::Packer)) 
+	    nommée jugglingTB.exe. 
+	    Dézipper simplement le fichier <strong>jugglingTB_1.5-src.zip</strong>
+	  </p>	  
+	  <p>
+	    Vous aurez ensuite éventuellement besoin de reparamétrer <strong>conf.ini</strong> indispensable pour jugglingTB. 
+	    Ce fichier contient en effet différentes variables utilisées par
+	    l'outil :
+	    <div class="windowCode">
+	      <table>
+		<tbody>
+		  <tr>
+		    <td> 
+		      # Langage<br/>
+		      LANG="FRENCH"<br/>
+		      # Commande pour lancer le Navigateur Web<br/>
+		      HTTP_BROWSER="C:/Program Files/Microsoft/Edge/Application/msedge.exe"<br/>	
+		      # Taille des Colonnes du display<br/>
+		      XSIZE="60"<br/>
+		      <br/>
+		      # Comportement par defaut au lancement de JugglingToolbox. 0 : desactive, 1 active<br/>
+		      # Usage lors du lancement de jugglingTB :<br/>
+		      jtbOptions_u=0;<br/>
+		      # version de JugglingTB  <br/>
+		      jtbOptions_v=0;<br/>
+		      # Colorisation de JugglingTB<br/>
+		      jtbOptions_c=1;<br/>
+		      # Aide de JugglingTB<br/>
+		      jtbOptions_h=0;<br/>
+		      # Aide etendue de JugglingTB <br/>
+		      jtbOptions_H=0;<br/>
+		      # Autocompletion de JugglingTB <br/>
+		      jtbOptions_a=0;<br/>
+		      # Gestion Unicode dans lang.pm<br/>
+		      jtbOptions_s=0;<br/>
+		      <br/>
+		      <br/>
+		      ###  Paramètre des modules ###<br/>
+		      # Répertoire des fichiers résultats<br/>
+		      RESULTS="results"<br/>
+		      # Répertoire des fichiers temporaires<br/>
+		      TMPDIR="tmp"<br/>
+		      # Path de JugglingLab (Commence par [CWD] pour un chemin relatif)<br/>
+		      JUGGLING_LAB_PATH="[CWD]/data/JugglingLab/v1.4.1"<br/>
+		      # JML Version pour JugglingLab<br/>
+		      JUGGLING_LAB_JML_VERSION="1.2"<br/>
+		      # Path Absolu pour Binaires GRAPHVIZ (nécessaire pour dessiner les Diagrammes<br/>
+		      # Etats/Transitions) (Mod LADDER/SSWAP par exemple)<br/>
+		      GRAPHVIZ_BIN="C:\Program Files\Graphviz\bin"<br/> 
+		      # Binaire GNUPLOT (nécessaire pour dessiner les grilles HTN) (Mod HTN)<br/>
+		      GNUPLOT_BIN="C:\Program Files\Gnuplot\bin\gnuplot.exe"<br/>
+		      # Taille des colonnes Excel (Mod SSWAP)<br/>
+		      EXCELCOLSIZE="auto"<br/>			
+		      <br/>			
+		    </td> 
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>	    
+	  </p>
+	  
+	  <p>
+	    Il ne vous restera plus ensuite qu'à lancer l'exécutable. A la première exécution il sera peut-être un peu plus long à démarrer.	  
+	  </p>
+
+	  <h3>Sources</h3>
+	  <p>	    
+	    <ol>	    
+	      <li>
+		<p>
+		  Si vous souhaitez partir des sources, vous devez donc déja disposer d'une version de Perl ... 
+		  chose aisée pour Linux. Sous Windows vous pouvez opter pour <a href="http://www.activestate.com/" target="_blanc">ActivePerl</a> 
+		  (testé avec v5.8, v5.10, v5.12, v5.14, ... ) ou Strawberry Perl (testé avec v5.30, v5.32).<br/>
+		  Pensez ensuite à ajouter le chemin de l'exécutable Perl dans votre Path.
+		</p>
+	      </li>
+	      
+	      <li>
+		<p>
+		  Il vous faudra ensuite bien entendu récupérer <strong>les sources de jugglingTB </strong> 
+		  et les dézipper.
+		</p>
+	      </li>
+
+	      <li>
+		<p>
+		  Certains des modules distribués utilisent des modules perl du <a href="http://www.perl.com/CPAN/" target="_blank">CPAN (Comprehensive Perl Archive Network)</a> :
+		  <ul>
+		    <li><strong>Devel-Symdump</strong></li>
+		    <li><strong>Set-Scalar</strong></li>
+		    <li><strong>Parse-Yapp</strong></li>
+		    <li><strong>Perl4-CoreLibs</strong></li>
+		    <li><strong>Excel-Writer-XLSX</strong></li>
+		    <li><strong>File-Grep</strong></li>
+		    <li><strong>File-Copy-Recursive</strong></li>
+		    <li><strong>Chart-Gnuplot</strong></li>
+		    <li><strong>HTTP-Server-Simple</strong></li>
+		    <li><strong>Win32-Console-ANSI</strong> : indispensable si vous souhaitez avoir des couleurs sur les terminaux Windows "Cmd".</li>
+		    <li><strong>Term-ReadKey</strong> : util pour l'Autocomplétion sur Windows (!! Pensez à répéter 4 fois les pressions sur la touche "ENTER" pour palier un bug Perl sous Windows)</li>
+		  </ul>
+		</p>
+		<p>
+		  Vous aurez donc soit à les installer par vous-même manuellement ou en utilisant le 
+		  script <strong>__internal-install.pl</strong> :  
+		  
+		  <div class="windowCode">
+		    <table>
+		      <tbody>
+			<tr>
+			  <td> 
+			    perl -I. __internal-install.pl
+			    <br/>
+			    
+			  </td> 
+			</tr>
+		      </tbody>
+		    </table>
+		  </div>	    		
+		</p>
+		
+		<p>
+		  Ce script générera et installera les modules perl nécessaires.
+		</p>						
+	      </li>
+	      
+	      <li>
+		<p>
+		  Ce script d'installation configurera également <strong>conf.ini</strong> indispensable pour jugglingTB. 
+		  Ce fichier contient en effet différentes variables utilisées par l'outil.
+		</p>		
+	      	
+		<p>
+		  Par défaut chacune des options de lancement est désactivée. Pour changer ce comportement par défaut vous devrez 
+		  positionner la valeur adéquate à 1.
+		  Dans ce cas la désactivation des options au lancement de jugglingTB est explicitement indiquée 
+		  par l'utilisation du préfix "-no" au lieu de "-".
+		</p>
+		
+	      </li>	    
+	    </ol>	 
+	  </p>
+	  <p>
+	    Les exemples donnés par la suite peuvent être obsolètes selon la version des modules usités mais ils restent cependant des 
+	    exemples concrets concernant la façon générale d'utiliser jugglingTB!
+	  </p>
+	  
+	  
+	  <h2>3 - LANCEMENT</h2><a name="chap3" id="chap3"></a>
+	  <p>
+	    Voici la façon de lancer jugglingTB :
+	    <div class="windowCode">
+	      <table>
+		<tbody>
+		  <tr>
+		    <td> 
+		      
+		      USAGE :  perl -I . [[-|-no][a|c|h|H|i|s|u|v]] ./jugglingTB.pl ou jugglingTB.exe [[-|-no][a|c|h|H|i|s|u|v]]<br/>
+		      <br/>
+		      -a : Active l'autocompletion (C^d et "TAB", C^U pour effacer). 
+		      [Fonctionne mal avec Cmd sur MsWindows ;-(]. <br/>
+		      -c : Colorise jugglingTB. Fonctionne uniquement sur un terminal ANSI 
+		      [ie Cmd sur MsWindows ne fonctionnera pas ;-(]<br/>
+		      -h : Aide de jugglingTB.<br/>
+		      -H : Aide etendue de jugglingTB.<br/>
+		      -i : Fichier de Configuration pour jugglingTB (Défaut:conf.ini).<br/>
+		      -s : Affiche les characteres speciaux (Unicodes) des Menus.<br/>
+		      -u : Usage pour lancer jugglingTB.<br/>
+		      -v : Done la version sans lancer jugglingTB.<br/>
+		      <br/>
+		      Par défaut chacune de ces options est désactivée. Ce comportement peut être 
+		      modifié dans le fichier <strong>conf.ini</strong>. 
+		      Dans ce cas la désactivation des options est explicitement indiquée par l'utilisation du préfix 
+		      "-no" au lieu de "-".<br/><br/>
+		      Différents paramètres de configuration peuvent également être positionnés dans "conf.ini" 
+		      (Tel que le langage usité par exemple).<br/>    
+		      Pour disposer des menus en français : LANG="FRENCH"; <br/>
+		      ou si vous les préférez en anglais : LANG="ENGLISH";		      
+		      <br/>
+		      
+		    </td> 
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>
+	  </p>
+	  
+	  <p>
+	    A l'issue du lancement, vous obtiendrez une invite. Vous pouvez dès à présent entrer dans un Menu de Module 
+	    en entrant son nom, lister les menus/commandes disponibles par <strong>help</strong> et/ou <strong>help2</strong>,
+	    exécuter une commande DOS/Unix préfixée par <strong>!</strong> ...
+	  </p>
+	  <p>
+	    Pour accéder à un menu de Module, entrez simplement son nom ou au moins ses 2 premières lettres, celles-ci seront complétées pour former le nom du premier module 
+	    les incluants selon l'ordre alphabétique. D'où l'intérêt d'éviter au maximum de définir des modules avec des noms proches.
+	    Une fonction d'un module <strong>MOD</strong> peut directement être accédée par son nom dans le Menu MOD ou bien par 
+	    <strong>MOD::LaFonction</strong> depuis n'importe quel Menu. Dans le premier cas on parlera de chemin relatif pour le nommage. 
+	    Dans le second cas il s'agit d'un chemin absolu.
+	  </p>
+	  <p>
+	    Vous obtiendrez de l'aide sur un module en tapant <strong>help("LeModule")</strong>.
+	    Pour obtenir de l'aide sur une commande particulière vous pouvez à partir de son menu de Module taper <strong>help("LaCommande()")</strong>
+	    (Chemin Relatif), ou depuis n'importe où taper <strong>help("LeModule::LaCommande()")</strong> (Chemin Absolu). <br/>
+	    Si vous ne mettez pas d'arguments à la commande <strong>help()</strong> celle-ci vous donnera des informations sur l'ensemble des commandes
+	    disponibles depuis le Module courant.	    	    
+	  </p>
+	  <p>
+	    La commande <strong>help2()</strong> est similaire à la commande <strong>help()</strong> à la différence qu'elle donne plus d'information 
+	    avec en particulier des informations sur les différents paramètres des fonctions.
+	  </p>
+	  <p>
+	    <img src="files_jtb/lsc.png" style="border:none" width="400" 
+		 alt="Commands Overview" />	  	  		
+	  </p>
+	  
+	  <h2>4 - JUGGLINGTB</h2><a name="chap4" id="chap4"></a>
+	  <p>
+	    Voici un exemple d'utilisation de jugglingTB correspondant aux étapes suivantes :
+	    <ul>
+	      <li>Accès au Module <strong>BTN (en v1.2.2)</strong>.</li>
+	      <li>Affichage de l'aide de la commande <strong>gen</strong>.</li>
+	      <li>Exécution de la commande <strong>gen</strong> afin d'obtenir les lancers BTN traversant au maximum 2 trous.</li>	 
+	    </ul>
+	  </p>
+	  
+	  <p>
+	    <img src="files_jtb/example.png" style="border:none" width="600" 
+		 alt="Simple Example" />
+	  </p>
+	  
+	  <p>
+	    l'appel aux différentes commandes des modules se fait de manière similaire à un appel de fonction dans la majeur partie des langages. 
+	    Les paramètres sont entre <span class="Style1"><strong>(</strong></span> et  <span class="Style1"><strong>)</strong></span> 
+	    séparés par des  <span class="Style1"><strong>,</strong></span>. Les paramètres indiqués comme 
+	    optionnels peuvent être omis. Les chaînes de caractères sont encadrées par au choix:  <span class="Style1"><strong>&quot;</strong></span> 
+	    ou  <span class="Style1"><strong>'</strong></span>.
+	  </p>
+	  
+	  <p>
+	    Si l'on reprend l'exemple précédent en utilisant le paramètre optionnel permettant l'écriture fichier on obtient :
+	    
+	    <div class="windowCode">
+	      <table>
+		<tbody>
+		  <tr>
+		    <td> 
+		      gen(2,"toto.txt");
+
+		    </td> 
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>
+	  </p>
+	  
+	  <h3>4.1 - OBTENIR DE L'AIDE </h3><a name="chap4_1" id="chap4_1"></a>
+	  
+	  <p>Les commandes suivantes vous permettront d'obtenir de l'aide :
+	    <ul>
+	      <li><strong>help</strong>, <strong>help2</strong> : Sans paramètre, liste l'ensemble des commandes visibles dans le 
+		Module courant; avec paramètre, donne l'aide associé à la commande (Nommage absolu/relatif) ou au module passée en paramètre</li>
+	      <li><strong>help("LeModule")</strong>, <strong>help2("LeModule")</strong> : 
+		depuis n'importe quel Menu, liste l'ensemble des commandes du module indiqué ainsi que leurs paramètres</li>
+	      
+	    </ul>
+	  </p>
+	  
+	  <p>
+	    Voici un exemple correspondant aux étapes suivantes :
+	    <ul>
+	      <li>Accès au Module <strong>MMSTD (en v1.4)</strong>.</li>
+	      <li>Affichage de l'aide générale du module <strong>MMSTD</strong>.</li>
+	      <li>Affichage de l'aide de la commande <strong>gen</strong>.</li>
+	      <li>Affichage de l'aide de la commande <strong>isSymetric</strong>.</li>
+	    </ul>
+	  </p>
+
+	  <p>
+	    <img src="files_jtb/help.png" style="border:none" width="400" 
+		 alt="Getting Help" />
+	  </p>
+	  
+	  <h3>4.2 - EXECUTER UNE COMMANDE DOS/UNIX </h3><a name="chap4_2" id="chap4_2"></a>
+	  
+	  <p>
+	    L'environnement intéractif de <strong>jugglingTB</strong> vous permet d'accéder au système sous-jacent par préfixage de vos commandes
+	    Shell par le caractère <strong>!</strong>. Ainsi, vous pourrez lire un fichier sauvé au travers de jugglingTB ...
+	  </p>
+	  
+	  <p>
+	    Dans l'exemple ci-dessous, effectué sous Windows, on souhaite lister le répertoire courant  :	  <br/>
+	    <img src="files_jtb/cmdShell.png" style="border:none" width="350" 
+		 alt="Running Shell Command" />
+	  </p>
+	  
+	  <h3>4.3 - AFFICHAGE DU RESULTAT</h3><a name="chap4_3" id="chap4_3"></a>
+	  <p>
+	    Il est parfois intéressant de désactiver l'affichage des résultats d'une commande. 
+	    Ce résultat étant en effet en général retourné par la commande, on peut vouloir le récupérer pour une commande supplémentaire sans l'afficher.
+	  </p>
+	  <p>
+	    Si la commande permet un tel comportement, celui-ci sera indiqué par l'aide de la commande. Il s'agit en général d'utiliser un paramètre 
+	    optionnel (positionné à -1) lors de l'appel à la commande.
+	  </p>
+	  <p>
+	    La commande <strong>isSymetric</strong> du Module <strong>MMSTD</strong> permet un tel comportement :
+	  </p>
+	  
+	  <img src="files_jtb/affichResult2.png" style="border:none" width="300" 
+	       alt="Mixing Modules Commands" />
+	  
+	  <h3>4.4 - PLACER LES RESULTATS DANS UN FICHIER </h3><a name="chap4_4" id="chap4_4"></a>
+	  <p>
+	    Il est parfois intéressant de stocker les résultats d'une commande dans un fichier. 
+	  </p>
+	  <p>
+	    Si la commande permet un tel comportement, celui-ci sera indiqué par l'aide de la commande. Il s'agit en général d'utiliser un paramètre 
+	    optionnel (positionné au nom du fichier) lors de l'appel à la commande.
+	  </p>
+	  <p>
+	    La commande <strong>gen</strong> du Module <strong>MMSTD (en v1.4)</strong> permet un tel comportement :
+	  </p>
+
+	  <img src="files_jtb/affichResult1.png" style="border:none" width="350" 
+	       alt="Mixing Modules Commands" />
+	  
+	  <h3>4.5 - COMBINER LES MODULES </h3><a name="chap4_5" id="chap4_5"></a>
+	  <p>
+	    Les différentes commandes peuvent être combinées entre elles entre modules différents, le résultat rendu par une commande étant un 
+	    paramètre d'une autre commande. Dans ce cas d'utilisation, les commandes doivent être préfixées par leur module respectif 
+	    (création d'un chemin absolu). 	    
+	  </p>
+	  <p>
+	    Afin d'épurer les résultats il peut être intéressant de désactiver les affichages des commandes intermédiaires comme indiqué précédemment.
+	  </p>
+	  <p>
+	    voici à titre d'exemple, les étapes suivantes :
+	    <ul>
+	      <li>Accès au Module <strong>SOU</strong>.</li>
+	      <li>Affichage de l'équivalent MMSTD d'un pattern SOU à l'aide de la commande <strong>toMMSTD</strong>.</li>
+	      <li>Accès au Module <strong>MMSTD</strong>.</li>
+	      <li>Affichage de l'équivalent SOU d'un pattern MMSTD à l'aide de la commande <strong>toSOU</strong>.</li>
+	      <li>Accès au Module <strong>Main</strong>.</li>
+	      <li>Affichage de l'équivalent SOU d'un pattern MMSTD obtenu depuis un pattern SOU (fonction Identité obtenue par combinaison de commandes)
+		.</li>
+	    </ul>
+	  </p>
+	  <p>
+	  </p>
+	  
+	  <img src="files_jtb/MixingModulesCommands.png" style="border:none" width="650" 
+	       alt="Mixing Modules Commands" />	  
+
+	  <p>
+	    Le menu intéractif de jugglingTB permet l'exécution de commandes classiques Perl, permettant ainsi la sauvegarde de résultats 
+	    intermédiaire pour leur éventuel affichage ultérieur.
+	  </p>
+
+	  <p>
+	    voici à titre d'exemple, les étapes suivantes :
+	    <ul>
+	      <li>Accès au Module <strong>BTN</strong>.</li>
+	      <li>Affichage de l'aide pour la commande <strong>isValid</strong>.</li>
+	      <li>Vérification sans affichage de résultat que la trajectoire BTN <strong>OPALAC</strong> est valide et stockage du résultat dans la variable Perl <strong>v</strong>.</li>
+	      <li>Affichage de la variable <strong>v</strong> par la commande Perl <strong>print</strong>.</li>
+	    </ul>
+	  </p>
+	  
+	  <p>
+	    <img src="files_jtb/MixingModulesCommands2.png" style="border:none" width="350" 
+		 alt="Mixing Modules Commands" />
+	  </p>
+	  
+	  <h2>5 - EXEMPLES</h2><a name="chap5" id="chap5"></a>	  
+	  <p>
+	    De nombreux exemples sont normalement disponibles au sein de chaque module par la fonction <em>__test()</em>.
+	  </p>
+	  
+	  <h3>5.1 LADDER NOTATION</h3><a name="chap5_1" id="chap5_1"></a>
+
+	  <p>	  
+	    Le Module <strong>LADDER</strong> vous permet de dessiner un diagramme en échelle à partir d'un Siteswap donné.
+	    Il est nécessaire de disposer au préalable de l'outil <a href="http://www.graphviz.org/">Graphviz</a> et d'avoir correctement renseigné son chemin dans &lt;conf.ini&gt;.
+	    Les 2 commandes ci-dessous vous permettent de tracer 2 colorisations différentes d'un même Siteswap.
+  	    
+	    <div class="windowCode">
+	      <table>
+		<tbody>
+		  <tr>
+		    <td> 
+		      LADDER::draw("24[54]","test1.png")<br/>
+		      LADDER::draw("24[45]","test2.png")<br/>		      
+		    </td> 
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>
+	  </p>
+	  <p>Les diagrammes tracés sont alors :<br/>
+	    <ul>
+	      <li>test1.png :  <br/><img src="files_jtb/test1.png" style="border:none" width="600" alt="test1.png" /></li>
+	      <li>test2.png : <br/><img src="files_jtb/test2.png" style="border:none" width="600" alt="test2.png" /></li>
+	    </ul>
+	  </p>
+	  
+	  <p>Ce module offre différentes opérations possibles sur les diagrammes comme par exemple le tracé Time-Reversed :
+	    <div class="windowCode">
+	      <table>
+		<tbody>
+		  <tr>
+		    <td> 
+		      LADDER::inv("24[54]","test3.png")<br/>
+		    </td> 
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>
+	  </p>
+	  <p>Le résultat obtenu est alors :<br/>
+	    <ul>
+	      <li>test3.png : <br/><img src="files_jtb/test3.png" style="border:none" width="600" alt="test3.png" /></li>
+	    </ul>
+	  </p>
+	  <p>
+	    Le Siteswap résultant est calculé d'après le diagramme et peut éventuellement être au format MultiSynchrone. Pour un résultat plus mathématique on utilisera en complément la fonction <strong>timeRev</strong> du module <strong>SSWAP</strong>.
+	  </p>
+
+	  <h3>5.2 SITESWAP</h3><a name="chap5_2" id="chap5_2"></a>
+	  <p>
+	    Un petit exemple rapide pour récupérer quelques informations sur un Siteswap: 
+	  </p>
+	  <p>
+	    <img src="files_jtb/swp_exmpl.png" style="border:none" width="600" alt="Get Info on a Siteswap" />
+	  </p>
+
+	  <p>	  
+	    Le Module <strong>SSWAP</strong> vous permet également de dessiner les diagrammes Siteswaps Vanilles et Synchrones à partir d'un Siteswap donné. Il est nécessaire de disposer au préalable de l'outil <a href="http://www.graphviz.org/">Graphviz</a> et d'avoir correctement renseigné son chemin dans &lt;conf.ini&gt;.
+	    Les 2 commandes ci-dessous vous permettent de tracer les diagrammes d'un Siteswap Vanille puis d'un Siteswap Synchrone. Le choix de l'un ou l'autre est automatique mais au besoin on peut le forcer.
+  	    
+	    <div class="windowCode">
+	      <table>
+		<tbody>
+		  <tr>
+		    <td> 
+		      SSWAP::draw("423","test4.png")<br/>
+		      SSWAP::draw("(6x,4)*","test5.png")<br/>		      
+		    </td> 
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>
+	  </p>
+	  <p>Les diagrammes tracés sont alors :<br/>
+	    <ul>
+	      <li>test4.png :  <br/><img src="files_jtb/test4.png" style="border:none" width="600" alt="test4.png" /></li>
+	      <li>test5.png : <br/><img src="files_jtb/test5.png" style="border:none" width="600" alt="test5.png" /></li>
+	    </ul>
+	  </p>
+
+	  <p>	  
+	    Il est possible également de tracer des Diagrammes Etats/Transitions ou des Diagrammes Etats/Transitions Réduits ou tout simplement de générer les Matrices associées dans un fichier Excel éventuellement. Pour générer les diagrammes Etats/Transitions il est nécessaire de disposer au préalable de l'outil <a href="http://www.graphviz.org/">Graphviz</a> et d'avoir correctement renseigné son chemin dans &lt;conf.ini&gt;.
+	    La commande ci-dessous vous permet de tracer le diagramme Etats/Transitions Vanille de 3 objets avec une hauteur maximum de lancer de 5.
+  	    
+	    <div class="windowCode">
+	      <table>
+		<tbody>
+		  <tr>
+		    <td> 
+		      SSWAP::drawStates("V",3,5,"test6.png")<br/>
+		    </td> 
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>
+	  </p>
+	  <p>Le diagramme tracé est alors :<br/>
+	    <ul>
+	      <li>test6.png :  <br/><img src="files_jtb/test6.png" style="border:none" width="300" alt="test6.png" /></li>
+	    </ul>
+	  </p>
+
+	  <p>	  
+	    Pour tracer le Diagramme Etats/Transitions Vanille Réduit associé de 3 objets avec une hauteur maximum de lancer de 5 on utilisera la commande ci-dessous:
+  	    
+	    <div class="windowCode">
+	      <table>
+		<tbody>
+		  <tr>
+		    <td> 
+		      SSWAP::drawStatesAggr("V",3,5,"test7.png")<br/>
+		    </td> 
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>
+	  </p>
+	  <p>Le diagramme tracé est alors :<br/>
+	    <ul>
+	      <li>test7.png :  <br/><img src="files_jtb/test7.png" style="border:none" width="150" alt="test7.png" /></li>
+	    </ul>
+	  </p>
+
+
+	  <p>
+	    Pour un autre petit exemple concret, supposons à présent que vous voulez générer tous les Siteswaps Synchrones de 4 objets contenant 2 fois les valeurs 6,4,4,2 parce que vous avez en tête les Siteswaps bien connus à 4 balles (6x,4)(2,4x)*, (6x,4)(4,2x)* ... et que vous en cherchez d'autres assez proches. <br/>
+
+	    <table align="center">
+	      <tr align="center">
+		<td><img src="files_jtb/(4,6x)(4x,2)(6x,4)(2,4x).gif" style="border:none" width="150" alt="(4,6x)(4x,2)(6x,4)(2,4x).gif"/><br/>(6x,4)(2,4x)*</td>
+		<td><img src="files_jtb/(4,6x)(2x,4)(6x,4)(4,2x).gif" style="border:none" width="150" alt="(4,6x)(2x,4)(6x,4)(4,2x).gif"/><br/>(6x,4)(4,2x)*</td>
+		<td><img src="files_jtb/(4x,6)(2,4x)(6,4x)(4x,2).gif" style="border:none" width="150" alt="(4x,6)(2,4x)(6,4x)(4x,2).gif"/><br/>(6,4x)(4x,2)*</td>
+		<td><img src="files_jtb/(4x,6)(4,2x)(6,4x)(2x,4).gif" style="border:none" width="150" alt="(4x,6)(4,2x)(6,4x)(2x,4).gif"/><br/>(6,4x)(2x,4)*</td>
+	      </tr>
+	      <tr align="center">
+		<td><img src="files_jtb/(4,6)(2x,4x)(6,4)(4x,2x).gif" style="border:none" width="150" alt="(4,6)(2x,4x)(6,4)(4x,2x).gif"/><br/>(6,4)(4x,2x)*</td>
+		<td><img src="files_jtb/(4,6)(4,2)(6,4)(2,4).gif" style="border:none" width="150" alt="(4,6)(4,2)(6,4)(2,4).gif"/><br/>(6,4)(2,4)*</td>
+		<td><img src="files_jtb/(4x,6x)(2,4)(6x,4x)(4,2).gif" style="border:none" width="150" alt="(4x,6x)(2,4)(6x,4x)(4,2).gif"/><br/>(6x,4x)(4,2)*</td>
+		<td><img src="files_jtb/(4x,6x)(4x,2x)(6x,4x)(2x,4x).gif" style="border:none" width="150" alt="(4x,6x)(4x,2x)(6x,4x)(2x,4x).gif"/><br/>(6x,4x)(2x,4x)*</td>
+	      </tr>
+	    </table>
+	  </p>
+	  
+	  <p>
+	    La fonction <strong>genSSFromThrows</strong> du module <strong>SSWAP</strong> peut vous aider à générer ces Siteswaps. Dans le cas présent on supprime les équivalences avec <strong>'-r 1'</strong> (mais c'est peut-être à éviter si ça vous semble trop long) et on génère le tout dans un fichier JML pour JugglingLab. La fonction <strong>anim</strong> du module <strong>SSWAP</strong> lance JugglingLab et il ne reste plus qu'à charger les résultats pour pouvoir visualiser ceux-ci. C'est de cette manière que j'ai généré les GIF Animés précédents.
+	  </p>
+	  <p>
+	    <img src="files_jtb/swp_exmpl2.png" style="border:none" width="800" alt="swp_exmpl2.png" />
+	  </p>
+
+	  <p>
+	    Si on voulait uniquement les Siteswaps avec une symétrie, on aurait pu utiliser l'option supplémentaire <strong>'-a y'</strong> et ainsi réduire le nombre de valeurs à considérer dans les permutations et de surcroît le temps de calcul. On aurait ainsi retrouvé uniquement nos 8 Siteswaps connus:
+	  </p>
+	  <p>
+	    <img src="files_jtb/swp_exmpl3.png" style="border:none" width="300" alt="swp_exmpl3.png" />
+	  </p>
+	  
+	  <p>
+	    Le Module <strong>SSWAP</strong> offre ainsi quantité de fonctions différentes de génération ou de manipulation de Siteswaps. Rendez-vous à l'annexe de ce README pour un descriptif de celles-ci!
+	  </p>
+
+	  <h3>5.3 HARMONIC THROWS NOTATION (NOTATION 3-COUCHES)</h3><a name="chap5_3" id="chap5_3"></a>
+	  <p>
+	    Le Module <strong>HTN</strong> s'intéresse à la notation 3-couches ou notation harmonique de Jonathan Lardillier et en particulier aux grilles associées. <a href="https://sourceforge.net/projects/gnuplot/" target="_blank">Gnuplot</a> et éventuellement <a href="https://www.ghostscript.com/download.html" target="_blank">Ghostscript</a> et <a href="https://imagemagick.org/script/download.php" target="_blank">ImageMagick</a> (converter et extension Perl sinon vous aurez une erreur "Invalid Parameter - 90") doivent avoir été installés au préalable et le chemin de Gnuplot renseigné dans &lt;conf.ini&gt;.
+	  </p>
+	  <p>
+	    Par exemple pour tracer la Grille du Siteswap 24[54] à 5 objets on utilise la commande:
+	    
+	    <div class="windowCode">
+	      <table>
+		<tbody>
+		  <tr>
+		    <td> 
+		      HTN::drawGrid("24[54]","test8.png")<br/>
+		    </td> 
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>
+	  </p>
+	  <p>Le diagramme tracé est alors :<br/>
+	    <ul>
+	      <li>test8.png :  <br/><img src="files_jtb/test8.png" style="border:none" width="350" alt="test8.png" /></li>
+	    </ul>
+	  </p>   
+	  <p>
+	    Bien entendu, étant donné que la notation 3-couches s'intéresse plus à des séquences plus courtes et moins périodiques que les Siteswaps Vanilles ou Synchrones, vous serez probablement appelés à créer ces graphes via la notation MultiSynchrone.
+	  </p>
+
+	  
+	  <h2>6 - ETENDRE JUGGLINGTB</h2><a name="chap6" id="chap6"></a>
+	  
+	  <p>
+	    <strong>jugglingTB</strong> est très simple à étendre. 
+	    (cf <strong>modules/MODTEST.pm</strong> pour un exemple de nouveau module).
+	    
+	    En premier vous devez déclarer le package ainsi que les procédures
+	    nécessaires à jugglingTB :
+	  </p>
+	  
+	  <div class="windowCode">
+	    <table>
+	      <tbody>
+		package MODTEST;<br/>
+		use common;<br/>
+		use strict;<br/>
+		use lang;<br/>
+		use Term::ANSIColor;<br/>
+		<br/>
+		$Term::ANSIColor::AUTORESET = 1;<br/>
+		<br/>
+		&amp;lang::initLang();<br/>
+		<br/>
+		print "MODTEST $MODTEST::MODTEST_VERSION loaded\n";<br/>
+		<br/>
+		our $MODTEST_INFO = "MODTEST juggling Notation";<br/>
+		our $MODTEST_HELP = "Module de Test";<br/>
+		our $MODTEST_VERSION = "v1.1";<br/>
+		<tr>
+		  <td> 		    
+		  </td> 
+		</tr>
+	      </tbody>
+	    </table>
+	  </div>
+
+	  <p>Chaque commande du module doit également être déclarée : </p>
+
+	  <div class="windowCode">
+	    <table>
+	      <tbody>
+		<tr>
+		  <td> 
+		    
+		    our %MODTEST_CMDS =<br/>
+		    (<br/>
+		    'cmd1'                  => ["cmd1hlp1","cmd1hlp2"],<br/>
+		    'cmd2'                  => ["cmd1hlp1","cmd1hlp2"]<br/>
+		    );<br/>
+
+		  </td> 
+		</tr>
+	      </tbody>
+	    </table>
+	  </div>
+
+	  <p>
+	    La première chaîne indique le message d'aide à afficher par les commandes help/lsc.
+	    La seconde précise les paramètre de la commande tels qu'ils seront
+	    affichés par help("cmd1") depuis le Menu MODTEST par exemple.  
+	  </p>
+	  <p>
+	    Les commandes doivent bien entendue également être définies:
+	  </p>
+	  
+	  <div class="windowCode">
+	    <table>
+	      <tbody>
+		<tr>
+		  <td> 
+		    
+		    sub cmd1<br/>
+		    {<br/>
+		    print colored [$common::COLOR_RESULT], "This is the Cmd1 Result\n";<br/>
+		    }<br/>
+		    <br/>
+		    <br/>
+		    sub cmd2<br/>
+		    {<br/>
+		    print colored [$common::COLOR_RESULT], "This is the Cmd2 Result\n";<br/>
+		    }<br/>
+		    
+		  </td> 
+		</tr>
+	      </tbody>
+	    </table>
+	  </div>
+
+	  <p>
+	    Si vous souhaitez utiliser plusieurs langages les chaînes de
+	    caractères affichables doivent être déclarées en tant que constante
+	    dans <strong>lang.pm</strong>.
+	  </p>
+	  <p>
+	    Le module MODTEST doit ensuite être ajouté dans jugglingTB.pl :
+	  </p>
+	  <div class="windowCode">
+	    <table>
+	      <tbody>
+		<tr>
+		  <td> 
+		    
+		    use modules::MODTEST;<br/>
+		    <br/>
+		    my @MODULES= ("BTN", "SOU", "MMSTD", "LADDER", "SSWAP", "SPYRO", "HTN", "STACK", "MODTEST");
+
+		  </td> 
+		</tr>
+	      </tbody>
+	    </table>
+	  </div>
+
+	  <p>
+	    Toutes les aides, menus, exécution de commandes seront alors
+	    automatiquement pris en compte par jugglingTB.
+	  </p>
+
+	  <img src="files_jtb/modtest.png" style="border:none" width="720" 
+	       alt="Module Add-on" />
+
+
+	  <h2>7 - CREDITS &amp; LICENCE</h2><a name="chap7" id="chap7"></a>	  
+	  <p>
+	    Cet outil est soumis à la license LGPL :
+	  </p>
+	  <p>
+	    This tool is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	    as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+	  </p>
+	  <p>
+	    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of 
+	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+	  </p>
+	  
+	  <h2>8 - BUGS</h2><a name="chap8" id="chap8"></a>
+	  
+	  <p>
+	    Tout bug trouvé peut être envoyé à l'adresse suivante : <br/>
+	    frederic.roudaut@free.fr
+	  </p>
+	  
+	  <h2>ANNEXE - MODULES</h2><a name="chapAnnexe" id="chapAnnexe"></a>
+	  <p>
+	    Cette annexe présente les modules courants existants en standard, leurs commandes ainsi que leurs paramètres.
+	  </p>
+	  
+	  <h3>MAIN</h3><a name="chapAnnexe1.1" id="chapAnnexe1.1"></a>
+	  <div class="windowCode">
+	    <table>
+	      <tbody>
+		<tr>
+		  <td> 		    
+		    <span class="Style1">=============  COMMANDES PRINCIPALES =============</span><br/>
+		    <br/>
+		    <span class="Style1">!</span>          : Lance une commande Shell.<br/>
+		    <br/>
+		    <span class="Style1">?</span>          : Résultat de la commande précédente.<br/>
+		    &lt;1&gt; pour OK<br/>
+		    <br/>
+		    <span class="Style1">exit</span>       : Quitte le Programme. "bye" ou "quit" peuvent egalement être utilisés.<br/>
+		    <br/>
+		    <span class="Style1">help</span>       : Utile dans le Menu des modules pour une aide générique ou
+		    spécialisée. &lt;help&gt;, &lt;help("command")&gt; ou encore
+		    &lt;help("module")&gt;. 
+		    Utilisez : <br/>
+		    - &lt;help&gt; pour obtenir l'Aide courante dans le Menu
+		    Principal ou le Menu d'un Module; <br/>
+		    - &lt;help("command")&gt; pour obtenir une Aide
+		    spécifique sur une commande du module courant; <br/>
+		    - &lt;help("module")&gt; pour obtenir une Aide spécifique
+		    sur un Module; <br/>
+		    - &lt;help("command::module")&gt; pour obtenir une Aide
+		    spécifique sur une commande d'un module donné.  <br/>
+		    <br/>
+		    <span class="Style1">help2</span>      :   Utile pour obtenir les paramètres des commandes. 
+		    Utilisez : <br/>
+		    - &lt;help2&gt; pour obtenir l'ensemble des commandes
+		    disponibles du module courant ainsi que leur
+		    paramètres; <br/>
+		    - &lt;help2("command")&gt; pour obtenir une Aide
+		    spécifique détaillée sur une commande du module
+		    courant; <br/>
+		    - &lt;help2("module")&gt; pour obtenir une Aide
+		    spécifique et détaillée sur les paramètres des
+		    commandes d'un Module; <br/>
+		    - &lt;help2("commande::module")&gt; pour obtenir une
+		    Aide spécifique et détaillée sur les paramètres
+		    d'une commande d'un Module donné. 		    <br/>
+		    <br/>		    
+		    <span class="Style1">lsc</span>        : Liste l'intégralité des commandes disponibles.<br/>
+		    <br/>
+		    <span class="Style1">lsc2</span>       : Liste l'intégralité des commandes disponibles ainsi que leurs paramètres.<br/>
+		    <br/>
+		    <span class="Style1">main</span>       : Menu principal.<br/>
+		    <br/>
+		    <span class="Style1">mods</span>       : Affiche les modules disponibles. <br/>
+		    <br/>
+		    <span class="Style1">usage</span>      : Options au lancement de jugglingTB.<br/>
+		    <br/>
+		    <span class="Style1">version</span>    : Retourne la version du Module. <br/>
+		    <br/>		    
+		  </td> 
+		</tr>
+	      </tbody>
+	    </table>
+	  </div>
+	  
+	  
+	  <h3>BTN</h3><a name="chapAnnexe1.2" id="chapAnnexe1.2"></a>
+	  <p>
+	    Dans ce module un lancer BTN sera composé d'une succession de trous pris parmi <strong>AC, AL, BOL</strong> ainsi que de l'opérateur 
+	    <strong>OP</strong>. (Minuscule ou Majuscule).<br/>
+	  </p>
+	  <p style="font-family:courier;font-size:12px;">
+	    Exemples : OPALAC, BOLAL, OPALOPAC ...
+	  </p>
+	  
+	  <div class="windowCode">   
+	    <table>
+	      <tbody>
+		<tr>
+		  <td> 		    
+		    <span class="Style1">BTN  - BTN juggling Notation (v1.2.2)</span><br/>
+		    <span class="Style1">-----------------------------------------</span><br/>
+		    <br/>
+		    <span class="Style1">BTNParity</span> : Donne la parité BTN. <br/>
+		    Paramètres : 
+		    <br/>
+		    - &lt;Throw&gt; : Lancer. <br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher. En retour 0 indique une parite Paire, 1 indique Impaire <br/>
+		    <br/>
+		    <span class="Style1">gen</span>                 : Donne les lancers BTN limités par le nombre de trous traversés.<br/>
+		    Paramètres :
+		    <br/>
+		    - &lt;int&gt;   Nombre maximum de trous traversés [&gt;4 réservé aux Extra-Terrestres ;-)].<br/>
+		    - ["fichier"] Optionnel, fichier de résultats.<br/>
+		    <br/>
+		    <span class="Style1">gen2</span>                 : Donne les lancers BTN sans les lancers dont le corps contient 2 trous successifs identiques.<br/>
+		    Paramètres :
+		    <br/>
+		    - &lt;int&gt;   Nombre maximum de trous traversés [&gt;4 réservé aux Extra-Terrestres ;-)].<br/>
+		    - ["fichier"] Optionnel, fichier de résultats.<br/>
+		    <br/>		    
+		    <span class="Style1">inv</span>                   : Donne le lancer BTN Time Reversed associé.<br/>
+		    Paramètres :
+		    <br/>
+		    - &lt;Lancer&gt; : Lancer dont on veut obtenir le Time Reversed.<br/>
+		    - &lt;Parite&gt; : Parité du lancer (0: paire, 1: impaire). 
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    <span class="Style1">isValid</span>                   : Teste la validité du lancer BTN.<br/>
+		    Paramètres :
+		    <br/>
+		    - &lt;Lancer&gt; : Lancer à valider.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    <span class="Style1">size</span>                      : Donne la taille du lancer en nombre de trous traversés.<br/>
+		    Paramètres :
+		    <br/>
+		    - &lt;Throw&gt; : Lancer.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		  </td> 
+		</tr>
+	      </tbody>
+	    </table>
+	  </div>
+	  
+	  <h3>SOU</h3><a name="chapAnnexe1.3" id="chapAnnexe1.3"></a>	  
+	  <p>
+	    Dans ce module un pattern SOU sera composé d'une succession d'états (<strong>O, Ob, U, Ub, S, Sb</strong>) 
+	    et d'échanges (<strong>&lt;in&gt;, &lt;out&gt;</strong>).
+	  </p>
+	  <p style="font-family:courier;font-size:12px;">
+	    Exemple : O&lt;in&gt;S&lt;out&gt;U&lt;in&gt;Ob&lt;in&gt;Sb&lt;out&gt;Ub&lt;in&gt;Sb&lt;out&gt;U&lt;in&gt;Ob&lt;in&gt;Sb&lt;out&gt;Ub
+	  </p>
+	  
+	  <div class="windowCode">
+	    <table>
+	      <tbody>
+		<tr>
+		  <td> 		  
+		    <span class="Style1">SOU  - Extended S,O,U juggling Notation (v1.4)</span><br/>
+		    <span class="Style1">-----------------------------------------</span><br/>
+		    <br/>
+		    <span class="Style1">gen</span>            : Génération de tous les patterns avec suppression des redondances.<br/>
+		    Paramètres :<br/>
+		    - &lt;cpt&gt; : Nombre de Passages maximum par Etat<br/>
+		    - &lt;pathLenMax&gt; : Longueur du chemin maximum (-1 : toute longueur)<br/>
+		    - ["fichier"] Optionnel, fichier de résultats.<br/>
+		    <br/>
+		    <span class="Style1">genByState</span>      : Génération de tous les patterns avec classification par Etat.<br/>
+		    Paramètres :<br/>		    
+		    - &lt;cpt&gt; : Nombre de Passages maximum par Etat<br/>
+		    - &lt;pathLenMax&gt; : Longueur du chemin maximum (-1 : toute longueur)<br/>
+		    - ["fichier"] Optionnel, fichier de résultats.<br/>
+		    <br/>
+		    
+		    <span class="Style1">graph</span>                      : Affiche le Graphe SOU des transitions valides.<br/>
+		    Paramètres :<br/>
+		    - Aucun.<br/>
+		    <br/>
+		    
+		    <span class="Style1">inv</span>                        : Calcule l'inversion d'un pattern donné.<br/>
+		    Paramètres :<br/>
+		    - &lt;pattern&gt; : pattern<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    
+		    <span class="Style1">isEquivalent</span>               : Teste l'équivalence de 2 patterns.<br/>
+		    Paramètres :<br/>
+		    - &lt;pattern1&gt; &lt;pattern2&gt; : patterns à comparer.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    
+		    <span class="Style1">isSymetric</span>                 : Teste la symétrie de 2 patterns.<br/>
+		    Paramètres :<br/>
+		    - &lt;pattern1&gt; &lt;pattern2&gt;> : patterns à comparer.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    
+		    <span class="Style1">isValid</span>                    : Teste la validité d'un pattern.<br/>
+		    Paramètres :<br/>
+		    - &lt;pattern&gt; : pattern à tester.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    
+		    <span class="Style1">size</span>                       : Donne la longueur du pattern en nombre d'Etats.<br/>
+		    Paramètres :<br/>
+		    - &lt;pattern&gt; : pattern. Une unité est considérée uniquement sur composition d'un Etat et d'une transition.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    
+		    <span class="Style1">sym</span>                        : Calcule la symétrie d'un pattern donné.<br/>
+		    Paramètres :<br/>
+		    - &lt;pattern&gt; : pattern<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    
+		    <span class="Style1">toMMSTD</span>                    : Donne la notation MMSTD correspondante.<br/>
+		    Paramètres :<br/>
+		    - &lt;pattern&gt; : pattern.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		  </td> 
+		</tr>
+	      </tbody>
+	    </table>
+	  </div>
+	  
+	  
+	  <h3>MMSTD</h3><a name="chapAnnexe1.4" id="chapAnnexe1.4"></a>
+	  <p>
+	    Dans ce module un pattern MMSTD sera composé d'une succession d'états (<strong>Ur, Ul, Rl, Rr, Lr, Lr</strong>) 
+	    et d'échanges (<strong style="font-family:courier;font-size:12px;">-+-&gt;, -o-&gt;</strong>).<br/>
+	  </p>
+	  <p style="font-family:courier;font-size:12px;">
+	    Exemples :  Ur -o-&gt; Ll -+&gt; Ur ,  Rr -+-&gt; Ul -o-&gt;
+	  </p>
+	  
+	  <div class="windowCode">
+	    <table>
+	      <tbody>
+		<tr>
+		  <td> 
+		    <span class="Style1">MMSTD  - Mills Mess State Transition juggling Notation (v1.4)</span><br/>
+		    <span class="Style1">-----------------------------------------</span><br/>
+		    <br/>
+		    <span class="Style1">gen</span>             : Génération de tous les patterns avec suppression des redondances.<br/>
+		    Paramètres :<br/>
+		    - &lt;cpt&gt; : Nombre de Passages maximum par Etat<br/>
+		    - &lt;pathLenMax&gt; : Longueur du chemin maximum (-1 : toute longueur)<br/>
+		    - ["fichier"] Optionnel, fichier de résultats.<br/>
+		    <br/>
+		    
+		    <span class="Style1">genByState</span>      : Génération de tous les patterns avec classification par Etat.<br/>
+		    Paramètres :<br/>
+		    - &lt;cpt&gt; : Nombre de Passages maximum par Etat<br/>
+		    - &lt;pathLenMax&gt; : Longueur du chemin maximum (-1 : toute longueur)<br/>
+		    - ["fichier"] Optionnel, fichier de résultats.<br/>
+		    <br/>
+		    
+		    <span class="Style1">graph </span>                     : Affiche le Graphe MMSTD des transitions valides.<br/>
+		    Paramètres :<br/>
+		    - Aucun ou sinon Graphviz doit préalablement être installé et son
+		    Path correctement configuré dans &lt;conf.ini&gt;. <br/>
+		    Sinon : <br/>
+		    - &lt;"fichier"&gt; : fichier de résultats. <br/>
+		    - ["Format"] Optionnel, format d'image (Défaut:png) parmi : bmp
+		    (Windows Bitmap Format),cmapx (client-side imagemap for use in
+		    html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+		    PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+		    (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+		    pcl (Laserjet printers), imap (imagemap files for httpd servers
+		    for each node or edge that has a non-null "href" attribute.), jpg,
+		    jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+		    Document Format), png (Portable Network Graphics format), ps
+		    (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+		    Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+		    (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+		    format), xlib (Xlib canvas), canon, dot, xdot : Output in DOT
+		    langage, plain , plain-ext : Output in plain text 
+		    - ["Generateur"] Optionnel, filtre generateur Graphviz
+		    (Défaut:circo) parmi : circo (circular layout), dot(directed
+		    graphs), neato (undirected graphs), twopi (radial layouts),
+		    fdp (undirected graphs), sfdp (large undirected graphs), osage
+		    (clustered graphs). <br/>			
+		    <br/>
+		    
+		    <span class="Style1">inv</span>                        : Calcule l'inversion d'un pattern donné.<br/>
+		    Paramètres :<br/>
+		    - &lt;pattern&gt; : pattern<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    
+		    <span class="Style1">isEquivalent </span>              : Teste l'équivalence de 2 patterns.<br/>
+		    Paramètres :<br/>
+		    - &lt;pattern1&gt; &lt;pattern2&gt; : patterns à comparer.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    
+		    <span class="Style1">isSymetric</span>                 : Teste la symétrie de 2 patterns.<br/>
+		    Paramètres :<br/>
+		    - &lt;pattern1&gt; &lt;pattern2&gt; : patterns à comparer.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    
+		    <span class="Style1">isValid</span>                    : Teste la validité d'un pattern.<br/>
+		    Paramètres :<br/>
+		    - &lt;pattern&gt; : pattern à tester.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    
+		    <span class="Style1">size</span>                       : Donne la longueur du pattern en nombre d'Etats.<br/>
+		    Paramètres :<br/>
+		    - &lt;pattern&gt; : pattern. Une unité est considérée uniquement sur composition d'un Etat et d'une transition.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    
+		    <span class="Style1">sym</span>                        : Calcule la symétrie d'un pattern donné.<br/>
+		    Paramètres :<br/>
+		    - &lt;pattern&gt; : pattern<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    
+		    <span class="Style1">toSOU </span>                     : Donne la notation SOU correspondante.<br/>
+		    Paramètres :<br/>
+		    - &lt;pattern&gt; : pattern.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    
+		  </td> 
+		</tr>
+	      </tbody>
+	    </table>
+	  </div>
+
+	  <h3>LADDER</h3><a name="chapAnnexe1.5" id="chapAnnexe1.5"></a>
+	  <script LANGUAGE="JavaScript">	   
+	    var options_print_b1 = "- [\"options\"] Différentes options -[c|d|e|g|h|i|l|m|n|o|p|s|t|v] précisées ci-dessous : <br/>-c &lt;int&gt; :  Mode de colorisation (Défaut:2) <br/>&nbsp;&nbsp;&nbsp;'0' : pas de colorisation; <br/>&nbsp;&nbsp;&nbsp;'1' : Multiplexe dans l'ordre croissant des valeurs Siteswap des lancers précédents; <br/>&nbsp;&nbsp;&nbsp;'2' : Multiplexe dans l'ordre décroissant des valeurs Siteswap des lancers précédents. <br/>-d &lt;int&gt; :  Synchronous Hack (Défaut:0)<br/>&nbsp;&nbsp;&nbsp;'0' : Suppression des 0 dans le diagramme après les lancers synchrones puisqu'il s'agit des réceptions;<br/>&nbsp;&nbsp;&nbsp;'1' : Pas de hack.<br/>-e &lt;\"string\"&gt; : Couleur du Label de la flêche selon le codage X11de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, magenta, goldenrod, saddlebrown, azure4, khaki4, darkorange, olivedrab1, turquoise4, black, peru, mediumslateblue). E pour couleur identique à la flêche (Défaut:E).<br/>-g &lt;y|n&gt; : Conserve Fichier Graphviz pour génération (Défaut:n).<br/>-h &lt;y|n&gt; : Affichage des Mains.<br/>-i \"Liste avec ,\": Enumération des mains pour les diagrammes Vanille.<br/>-l &lt;pos&gt; : Position du label de Siteswap (Défaut:t) <br/>&nbsp;&nbsp;&nbsp;'t': tail, près de la queue de la flêche; <br/>&nbsp;&nbsp;&nbsp;'h': head, près de la tête; <br/>&nbsp;&nbsp;&nbsp;'m': middle, au centre de la flêche; <br/>&nbsp;&nbsp;&nbsp;'n': Pas de label de Siteswap. <br/>&nbsp;&nbsp;&nbsp;'x': external, au centre de la flêche après trace;<br/>&nbsp;&nbsp;&nbsp;'s': state, près de l'Etat;<br/>-m &lt;0|1|2&gt; : Modèle de diagramme (Défaut: selon le type de Siteswap)<br/>&nbsp;&nbsp;&nbsp;'0' : Ladder;<br/>&nbsp;&nbsp;&nbsp;'1' : Applanissement de Ladder (Siteswap Asynchrone);<br/>&nbsp;&nbsp;&nbsp;'2' : Ladder avec suppression des Beats impairs en commençant à 0 (Siteswap Synchrone).<br/>-n &lt;'y'|'n'&gt; : Affichage des lancers négatifs [Expérimental] (Défaut:n); <br/>-o &lt;type&gt; : format d'image (Défaut:png) parmi : bmp (Windows Bitmap Format),cmapx (client-side imagemap for use in html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and pcl (Laserjet printers), imap (imagemap files for httpd servers for each node or edge that has a non-null \"href\" attribute.), jpg, jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable Document Format), png (Portable Network Graphics format), ps (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap format), xlib (Xlib canvas), canon, dot, xdot : Output in DOT langage, plain , plain-ext : Output in plain text. <br/>-p : Période à afficher (Défaut:25). <br/>-s &lt;int&gt; : Affichage du résultat (Défaut:0)<br/>&nbsp;&nbsp;&nbsp;'0' : Affiche le résultat;<br/>&nbsp;&nbsp;&nbsp;'1' : Pas d'affichage.<br/>-t &lt;y|n&gt; : Affichage du titre de l'image (Défaut:y).<br/>-v &lt;\"string\"&gt; : Force la valeur du Titre de l'image.<br/>";	   	    
+																																																																																																																																																																																																																																																																																																																																																																																																													       </script>
+	  
+	  <p>
+	    La description des Diagrammes se fera en utilisant la notation
+	    Siteswap Classique telle qu'elle est utilisée par JugglingLab. 
+	  </p>
+	  <p style="font-family:courier;font-size:12px;">
+      	    Exemples : 534, (6x,4)*, (2x,[22x])(2,[22])(2,[22x])*. 
+	  </p>
+	  <p>
+	    On considérera en plus les symboles '!' et '*' que ce soit en
+	    Synchrone ou en Asynchrone : 
+	  </p>
+	  <p>
+	    <ul>
+	      <li>'!' : supprime un Beat de temps. Apres un Siteswap Synchrone il
+		indique que le lancer suivant se fait sur le Beat suivant censé
+		être un Beat de récupération (et non plus 2 Beats après). Après un
+		lancer Asynchrone, il indique que le lancer suivant se fait au
+		même Beat. Il devient alors possible de représenter un Siteswap
+		Synchrone par un Siteswap Asynchrone. Les Multiplexes peuvent
+		également être adaptés selon ce schéma </li>
+	      <li>'*' : dans le cas d'un Siteswap Synchrone il indique un changement
+		de l'ordre des mains et n'est plus obligatoirement positionné a
+		la fin. Dans le cas d'un Siteswap Asynchrone, le prochain lancer
+		se fait par la même main (Notion de Hurry). </li>
+	    </ul>
+	  </p>
+	  <p style="font-family:courier;font-size:12px;">
+      	    Exemples : 4!40, 5!*4!*3, 6x0*, (6x,0)*, 51x*, (1x,3)!11x* ... 
+	  </p>
+	  <p>
+	    Ce module différentie aussi la colorisation des multiplexes. 
+	  </p>
+	  <p style="font-family:courier;font-size:12px;">
+      	    Exemples : 24[54] et 24[45] ont une colorisation différente. 
+	  </p>
+
+	  <div class="windowCode">
+	    <table>
+	      <tbody>
+		<tr>
+		  <td> 
+		    <span class="Style1">LADDER  - LADDER juggling Notation (v2.1)</span><br/>		    
+		    <span class="Style1">-----------------------------------------</span><br/>		    
+		    <br/>
+
+		    <span class="Style1">draw</span> :                  Dessine le Diagramme en Echelle associé au Siteswap. <br/>
+		    Paramètres : <br/>
+		    - &lt;"ss"&gt; : Siteswap à dessiner. <br/>
+		    <br/>
+		    - &lt;"fichier"&gt; : fichier image de résultats. <br/>
+		    <br/>
+		    <Script LANGUAGE="JavaScript">
+		      document.write(options_print_b1);
+		    </script>
+		    <br/>      
+		    - [\%hash] : Optionnel, hash des transitions. Dans ce cas le
+		    Siteswap n'est utilisé que pour le titre. Chaque Clé/Valeur est
+		    de la forme : Ri:j pour une transition amorcée à droite ou Li:j
+		    lorsqu'il s'agit de la gauche. i correspond au Beat du lancer et j
+		    est le numéro de l'objet lors du lancer (en commencant a 0) pour
+		    aider à la colorisation. <br/>
+      		    Ex :  %hash = ( <br/>
+      		    'L2:0' =&gt; 'R4:0', <br/>
+      		    'R2:0' =&gt; 'R4:0', <br/>
+      		    'L4:0' =&gt; 'R6:0', <br/>
+      		    'R4:0' =&gt; 'R5:0', <br/>
+      		    'R6:0' =&gt; 'R6:0' <br/>
+      		    ); <br/>
+		    <br/>
+
+  		    <span class="Style1">inv</span> : Dessine le Diagramme Time-Reversed du Diagramme en Echelle associé au Siteswap. <br/>
+		    Le Siteswap obtenu ne prend pas en compte la colorisation; le diagramme la considère. <br/>
+		    Paramètres : <br/>
+		    - &lt;"ss"&gt; : Siteswap. <br/>
+		    <br/>
+		    - &lt;"fichier"&gt; : fichier image de résultats. <br/>
+		    <br/>
+		    <Script LANGUAGE="JavaScript">
+		      document.write(options_print_b1);
+		    </script>
+		    <br/>
+
+		    <span class="Style1">merge</span> :  Superpose 2 Siteswaps et dessine le Diagramme associé. <br/>
+		    Paramètres : <br/>
+		    - &lt;"ss1"&gt; : Siteswap1. <br/>
+		    <br/>
+		    - &lt;"ss2"&gt; : Siteswap2. <br/>
+		    <br/>
+		    - &lt;"fichier"&gt; : fichier image de résultats. <br/>
+		    <br/>
+		    <Script LANGUAGE="JavaScript">
+		      document.write(options_print_b1);
+		    </script>
+		    <br/>
+
+		    <span class="Style1">removeObj</span> :   Dessine le Diagramme en Echelle associé au Siteswap après suppression d'un ou plusieurs objets. <br/>
+		    Paramètres : <br/>
+		    - &lt;"ss"&gt; : Siteswap. <br/>
+		    <br/>
+		    - &lt;nb ou "[list]"&gt; : Numéro de l'objet à supprimer (en commençant à 0) ou liste d'objets séparés par des ",".<br/>
+		    <br/>
+		    - &lt;"fichier"&gt; : fichier image de résultats. <br/>
+		    <br/>
+		    <Script LANGUAGE="JavaScript">
+		      document.write(options_print_b1);
+		    </script>
+		    <br/>
+		    
+  		    <span class="Style1">slide</span> :       Dessine le Diagramme en Echelle après décalage(s) de la main droite ou gauche d'un Siteswap. <br/>
+		    Paramètres : <br/>
+		    - &lt;"ss"&gt; : Siteswap. <br/>
+		    <br/>
+		    - &lt;"main"&gt; : Main à décaler (droite : "R" ou gauche : "L")		    <br/>
+		    <br/>
+		    - &lt;"dec"&gt; : Valeur du décalage (ex : +1 , -2, 3)		    <br/>
+		    <br/>
+		    - &lt;"fichier"&gt; : fichier image de résultats. <br/>
+		    <br/>
+		    <Script LANGUAGE="JavaScript">
+		      document.write(options_print_b1);
+		    </script>
+		    <br/>
+
+  		    <span class="Style1">sym</span> :                   Dessine le Symétrique du Diagramme en Echelle associé au Siteswap. <br/>
+		    Paramètres : <br/>		      
+		    - &lt;"ss"&gt; : Siteswap. <br/>      
+		    <br/>
+		    - &lt;"fichier"&gt; : fichier image de résultats.<br/> 
+		    <br/>
+		    <Script LANGUAGE="JavaScript">
+		      document.write(options_print_b1);
+		    </script>
+		    <br/>
+
+  		    <span class="Style1">toMultiSync</span> : Donne le Siteswap MultiSynchrone correspondant (ie transformation des multiplexes, des lancers synchrones) <br/>
+		    Paramètres : <br/>		    
+		    - &lt;ss&gt; : Siteswap. <br/>
+		    <br/>
+		    - &lt;Type&gt; : Type de MultiSynchrone (0: MultiSynchrone Réduit, 1:
+		    Combinaison Synchrone/Asynchrone, 2: MultiSynchrone étendu format Async, 3: MultiSynchrone étendu format Sync)<br/>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier image de résultats au format
+		    png. Si -1 pas d'image générée<br/>
+		    <br/>
+		    <Script LANGUAGE="JavaScript">
+		      document.write(options_print_b1);
+		    </script>
+		    <br/>
+		  </td> 
+		</tr>
+	      </tbody>
+	    </table>
+	  </div>
+	  
+	  
+
+	  <h3>SSWAP</h3><a name="chapAnnexe1.6" id="chapAnnexe1.6"></a>
+	  <script LANGUAGE="JavaScript">
+
+	    var options_print_a1_in = "-r &lt;0|1|2&gt; :  suppression des redondances (Défaut:0):<br/>&nbsp;&nbsp;&nbsp;'0' : Pas de suppression;<br/>&nbsp;&nbsp;&nbsp;'1' : Suppression des redondances avec conservation des Siteswaps Ground prioritairement;<br/>&nbsp;&nbsp;&nbsp;'2' : Suppression des redondances selon l'ordre de la liste.<br/>-c &lt;y|n&gt; : Considère la colorisation des multiplexes pour la suppression des redondances (Défaut:n).<br/>-g &lt;y|n&gt; : Ground Seulement (Défaut:n).<br/>-b &lt;y|n&gt; : Réversible Seulement (Défaut:n).<br/>-d &lt;y|n&gt; : Scramblable Seulement (Défaut:n).<br/>-i &lt;y|n&gt; : Donne des Informations supplémentaires (Défaut:n).<br/>-n &lt;y|n&gt; : Palindromes Seulement (Défaut:n).<br/>-q &lt;y|n&gt; : Non Squeeze Seulement (Défaut:n).<br/>-o &lt;0|1|2|3&gt; : Arrangement du Résultat (Défaut:1).<br/>&nbsp;&nbsp;&nbsp;'0' : Pas d'arrangement;<br/>&nbsp;&nbsp;&nbsp;'1' : Tri Alphanumerique;<br/>&nbsp;&nbsp;&nbsp;'2' : Classification par nombre d'objets;<br/>&nbsp;&nbsp;&nbsp;'3' : Classification par période.<br/>-p &lt;y|n&gt; : Considère les permutations de Siteswap pour la suppression des redondances, la symétrie en fait partie (Défaut:y).<br/>-s &lt;y|n&gt; : Considère la symétrie pour la suppression des redondances (Défaut:n).<br/>-t &lt;\"string\"&gt; : Titre.<br/>-u &lt;y|n&gt; : Premiers Seulement (Défaut:n).<br/>";
+	    
+	    var options_print_a1 = "- [\"options\"] Différentes options -[b|c|d|g|i|n|o|p|r|s|t|u] précisées ci-dessous : <br/>"+options_print_a1_in;
+
+	    var options_print_a1_ssListHTML = "ainsi que les différentes options d'affichage -[b|c|d|g|i|n|o|p|r|s|t|u] précisées ci-dessous : <br/>";
+	    
+	    var options_print_a1_prime = "- [\"options\"] Différentes options -[b|c|d|g|i|n|o|p|r|s|t] précisées ci-dessous : <br/>-r &lt;0|1|2&gt; :  suppression des redondances (Défaut:0):<br/>&nbsp;&nbsp;&nbsp;'0' : Pas de suppression;<br/>&nbsp;&nbsp;&nbsp;'1' : Suppression des redondances avec conservation des Siteswaps Ground prioritairement;<br/>&nbsp;&nbsp;&nbsp;'2' : Suppression des redondances selon l'ordre de la liste.<br/>-c &lt;y|n&gt; : Considère la colorisation des multiplexes pour la suppression des redondances (Défaut:n).<br/>-g &lt;y|n&gt; : Ground Seulement (Défaut:n).<br/>-b &lt;y|n&gt; : Réversible Seulement (Défaut:n).<br/>-d &lt;y|n&gt; : Scramblable Seulement (Défaut:n).<br/>-i &lt;y|n&gt; : Donne des Informations supplémentaires (Défaut:n).<br/>-n &lt;y|n&gt; : Palindromes Seulement (Défaut:n).<br/>-q &lt;y|n&gt; : Non Squeeze Seulement (Défaut:n).<br/>-o &lt;0|1|2|3&gt; : Arrangement du Résultat (Défaut:1).<br/>&nbsp;&nbsp;&nbsp;'0' : Pas d'arrangement;<br/>&nbsp;&nbsp;&nbsp;'1' : Tri Alphanumerique;<br/>&nbsp;&nbsp;&nbsp;'2' : Classification par nombre d'objets;<br/>&nbsp;&nbsp;&nbsp;'3' : Classification par période.<br/>-p &lt;y|n&gt; : Considère les permutations de Siteswap pour la suppression des redondances, la symétrie en fait partie (Défaut:y).<br/>-s &lt;y|n&gt; : Considère la symétrie pour la suppression des redondances (Défaut:n).<br/>-t &lt;\"string\"&gt; : Titre.<br/>";
+	    
+	    var options_print_a1_scramblable = "- [\"options\"] Différentes options -[b|c|g|i|n|o|p|r|s|t|u] précisées ci-dessous : <br/>-r &lt;0|1|2&gt; :  suppression des redondances (Défaut:0):<br/>&nbsp;&nbsp;&nbsp;'0' : Pas de suppression;<br/>&nbsp;&nbsp;&nbsp;'1' : Suppression des redondances avec conservation des Siteswaps Ground prioritairement;<br/>&nbsp;&nbsp;&nbsp;'2' : Suppression des redondances selon l'ordre de la liste.<br/>-c &lt;y|n&gt; : Considère la colorisation des multiplexes pour la suppression des redondances (Défaut:n).<br/>-g &lt;y|n&gt; : Ground Seulement (Défaut:n).<br/>-b &lt;y|n&gt; : Réversible Seulement (Défaut:n).<br/>-i &lt;y|n&gt; : Donne des Informations supplémentaires (Défaut:n).<br/>-n &lt;y|n&gt; : Palindromes Seulement (Défaut:n).<br/>-q &lt;y|n&gt; : Non Squeeze Seulement (Défaut:n).<br/>-o &lt;0|1|2|3&gt; : Arrangement du Résultat (Défaut:1).<br/>&nbsp;&nbsp;&nbsp;'0' : Pas d'arrangement;<br/>&nbsp;&nbsp;&nbsp;'1' : Tri Alphanumerique;<br/>&nbsp;&nbsp;&nbsp;'2' : Classification par nombre d'objets;<br/>&nbsp;&nbsp;&nbsp;'3' : Classification par période.<br/>-p &lt;y|n&gt; : Considère les permutations de Siteswap pour la suppression des redondances, la symétrie en fait partie (Défaut:y).<br/>-s &lt;y|n&gt; : Considère la symétrie pour la suppression des redondances (Défaut:n).<br/>-t &lt;\"string\"&gt; : Titre.<br/>-u &lt;y|n&gt; : Premiers Seulement (Défaut:n).<br/>";
+																																																																																																																																											  </script>
+	  
+	  <p>
+	    Ce module intègre <a href="https://jugglinglab.org/" target="_blank">JugglingLab</a>. 
+	    Dans ce module un SITESWAP sera donc noté selon la notation siteswap classique telle qu'elle est utilisée par JugglingLab 
+	    (cf <a href="https://jugglinglab.org/html/ssnotation.html" target="_blank">ici</a> pour de plus amples informations).
+	    <br/>	  
+	  </p>
+	  <p style="font-family:courier;font-size:12px;">
+	    Exemples :  534, (6x,4)*, (2x,[22x])(2,[22])(2,[22x])*;	   
+	  </p>
+	  <p>
+	    On considérera en plus une notation MultiSynchrone combinant
+	    lancers Synchrones et Asynchrones avec les symboles '!' et '*' :
+	    <ul>
+	      <li>'!' : supprime un Beat de temps. Apres un Siteswap Synchrone il
+		indique que le lancer suivant se fait sur le Beat suivant censé
+		être un Beat de récupération (et non plus 2 Beats après). Après un
+		lancer Asynchrone, il indique que le lancer suivant se fait au
+		même Beat. Il devient alors possible de représenter un Siteswap
+		Synchrone par un Siteswap Asynchrone. Les Multiplexes peuvent
+		également être adaptés selon ce schéma (ie *! ou !*).</li>
+
+	      <li>'*' : dans le cas d'un Siteswap Synchrone il indique un changement
+		de l'ordre des mains et n'est plus obligatoirement positionné a
+		la fin. Dans le cas d'un Siteswap Asynchrone, le prochain lancer
+		se fait par la même main (Notion de Hurry).</li>
+	    </ul>
+	  </p>
+
+	  <p>
+	    Exemples : 4!40, 5!*4!*3, 6x0*, (6x,0)*, 51x*, (1x,3)!11x* ...
+	  </p>
+	  <p>
+	    Respectez les conseils suivants dans les différentes fonctions
+	    de ce module :
+	    <ul>
+	      <li> Evitez au maximum d'utiliser "!*" et "*!" en début et
+		fin de Siteswap, "!" en debut et "!" en
+		fin de Siteswap après un lancer en représentation Asynchrone;;</li>
+	      <li> La hauteur des objets sera généralement en hexadécimale sauf
+		précision contraire.</li>
+	    </ul>
+	  </p>
+	  
+	  <div class="windowCode">
+	    <table>
+	      <tbody>
+		<tr>
+		  <td> 
+		    <span class="Style1">SSWAP  - SITESWAP juggling Notation (v1.5)</span><br/>
+		    <span class="Style1">-----------------------------------------</span><br/>
+		    <br/>
+		    
+		    <span class="Style1">anim</span>             : Montre l'animation d'un Siteswap donné (JugglingLab).<br/>
+		    Paramètres :<br/>
+		    - &lt;ss&gt; : Siteswap dont on veut obtenir l'animation.<br/>		    
+		    <br/>
+		    
+		    <span class="Style1">animAntiSS</span>             : Montre l'animation d'un Antisiteswap (PowerJuggler de Marco Tarini).<br/>
+		    Paramètres :<br/>
+		    - Aucun<br/>		    
+		    <br/>
+		    
+		    <span class="Style1">draw</span> :                  Dessine le Diagramme associé au Siteswap. <br/>
+		    Paramètres : <br/>
+		    - &lt;"ss"&gt; : Siteswap à dessiner. <br/>
+		    <br/>
+		    - &lt;"fichier"&gt; : fichier image de résultats. <br/>
+		    <br/>
+		    <Script LANGUAGE="JavaScript">
+		      document.write(options_print_b1);
+		    </script>
+		    <br/>      
+		    - [\%hash] : Optionnel, hash des transitions. Dans ce cas le
+		    Siteswap n'est utilisé que pour le titre. Chaque Clé/Valeur est
+		    de la forme : Ri:j pour une transition amorcée à droite ou Li:j
+		    lorsqu'il s'agit de la gauche. i correspond au Beat du lancer et j
+		    est le numéro de l'objet lors du lancer (en commencant a 0) pour
+		    aider à la colorisation. <br/>
+      		    Ex :  %hash = ( <br/>
+      		    'L2:0' =&gt; 'R4:0', <br/>
+      		    'R2:0' =&gt; 'R4:0', <br/>
+      		    'L4:0' =&gt; 'R6:0', <br/>
+      		    'R4:0' =&gt; 'R5:0', <br/>
+      		    'R6:0' =&gt; 'R6:0' <br/>
+      		    ); <br/>
+		    <br/>
+		    
+		    <span class="Style1">drawStates</span>   :            Génération des Graphes
+		    Etats/Transitions (Graphviz). 		    <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;type&gt; : Type de générateur parmi 'V' (Vanille), 'S'		   
+		    (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone), 'MULTI' (MultiSynchrone). 		    <br/>
+      		    <br/>
+		    == cas 'V', 'S' == 		    <br/>
+      		    - &lt;int&gt; : Nombre d'objets (-1 non spécifié). 		    <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. 		    <br/>
+		    <br/>
+		    == cas 'M', 'MS', 'MULTI' == 		    <br/>
+      		    - &lt;int&gt; : Nombre d'objets (-1 non spécifié). 		    <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. 		    <br/>
+      		    - &lt;int&gt; : Nombre Max de lancers Simultanés. 		    <br/>
+      		    <br/>
+		    - &lt;"fichier1"&gt; : fichier de résultats. 		    <br/>
+      		    <br/>
+		    - ["Format"] Optionnel, format d'image (Défaut:png) parmi : bmp
+		    (Windows Bitmap Format),cmapx (client-side imagemap for use in
+		    html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+		    PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+		    (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+		    pcl (Laserjet printers), imap (imagemap files for httpd servers
+		    for each node or edge that has a non-null "href" attribute.), jpg,
+		    jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+		    Document Format), png (Portable Network Graphics format), ps
+		    (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+		    Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+		    (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+		    format), xlib (Xlib canvas), canon, dot, xdot : Output in DOT
+		    langage, plain , plain-ext : Output in plain text 		    <br/>		  
+		    <br/>
+		    - ["Generateur"] Optionnel, filtre générateur Graphviz
+		    (Défaut:circo) parmi : circo (circular layout), dot(directed
+		    graphs), neato (undirected graphs), twopi (radial layouts),
+		    fdp (undirected graphs), sfdp (large undirected graphs), osage
+		    (clustered graphs). 		    <br/>
+		    <br/>
+		    - ["fichier2"] Optionnel, fichier XLS Matrice Etats/Transitions valide en entrée pour accélérer les calculs (chemin absolu).<br/>
+		    <br/>
+		    Graphviz doit préalablement être installé et son Path
+		    correctement configuré dans &lt;conf.ini&gt; 		    <br/>
+		    <br/>
+		    
+		    <span class="Style1">drawStatesAggr</span> :        Génération des Graphes Réduits
+		    Etats/Transitions (Graphviz). <br/>
+		    Paramètres : <br/>		  
+		    - &lt;type&gt; : Type de générateur parmi 'V' (Vanille), 'S'
+		    (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone), 'MULTI' (MultiSynchrone). <br/>
+		    <br/>
+		    == cas 'V', 'S' == <br/>
+      		    - &lt;int&gt; : Nombre d'objets (-1 non spécifié). <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. <br/>
+		    <br/>
+		    == cas 'M', 'MS', 'MULTI' == <br/>
+      		    - &lt;int&gt; : Nombre d'objets (-1 non spécifié). <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. <br/>
+      		    - &lt;int&gt; : Nombre Max de lancers Simultanés. <br/>
+		    <br/>
+		    - &lt;"fichier1"&gt; : fichier de résultats. <br/>
+		    <br/>
+		    - ["Format"] Optionnel, format d'image (Défaut:png) parmi : bmp
+		    (Windows Bitmap Format),cmapx (client-side imagemap for use in
+		    html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+		    PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+		    (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+		    pcl (Laserjet printers), imap (imagemap files for httpd servers
+		    for each node or edge that has a non-null "href" attribute.), jpg,
+		    jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+		    Document Format), png (Portable Network Graphics format), ps
+		    (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+		    Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+		    (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+		    format), xlib (Xlib canvas), canon, dot, xdot : Output in DOT
+		    langage, plain , plain-ext : Output in plain text <br/>		  
+		    <br/>
+		    - ["Generateur"] Optionnel, filtre générateur Graphviz
+		    (Défaut:circo) parmi : circo (circular layout), dot(directed
+		    graphs), neato (undirected graphs), twopi (radial layouts),
+		    fdp (undirected graphs), sfdp (large undirected graphs), osage
+		    (clustered graphs). <br/>
+		    <br/>
+		    - ["fichier2"] Optionnel, fichier XLS Matrice Etats/Transitions valide en entrée pour accélérer les calculs (chemin absolu).<br/>
+		    <br/>
+		    Graphviz doit préalablement être installé et son Path
+		    correctement configuré dans &lt;conf.ini&gt; <br/>
+		    <br/>
+
+		    <span class="Style1">dual</span> :                   Génération du Siteswap Dual. <br/>
+		    Paramètres : <br/>
+		    - &lt;type&gt; : Type de générateur parmi 'V' (Vanille), 'M' (Multiplexe). 		    <br/>
+      		    <br/>
+		    - &lt;"ss"&gt; : Siteswap. <br/>
+		    <br/>
+		    == cas 'V' == 		    <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. 		    <br/>
+		    <br/>
+		    == cas 'M' == 		    <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. 		    <br/>
+      		    - &lt;int&gt; : Nombre Max de lancers Simultanés. 		    <br/>
+      		    <br/>
+		    - &lt;"fichier"&gt; : fichier de résultats. Si -1, retourne le résultat sans l'afficher.		    <br/>
+		    <br/>
+		    <Script LANGUAGE="JavaScript">
+		      document.write(options_print_b1);
+		    </script>
+		    <br/>
+		    
+		    <span class="Style1">expandSync</span>             : Développe un Siteswap Synchrone. <br/>
+		    Paramètres :<br/>
+		    - &lt;ss&gt; : Siteswap à développer.<br/>
+		    <br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>		 
+
+		    <span class="Style1">genDiagProbert</span> :        Génération des Diagrammes de Martin
+		    Probert. 		    <br/>
+		    Paramètres : 		    <br/>      		  
+		    - &lt;int&gt; : Nombre d'objets. 		    <br/>
+		    <br/>
+		    - &lt;nb&gt; : Hauteur Max des Siteswaps (-1 toute hauteur). 		    <br/>
+		    <br/>
+		    - &lt;int&gt; : Période des Siteswaps. 		    <br/>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats. Si -1, retourne		    <br/>
+		    le résultat sans l'afficher; Si le fichier commence par 'XLS:',		    <br/>
+		    génère un fichier Excel en y ajoutant l'extension .xlsx 		    <br/>
+		    <br/>		 
+
+		    <span class="Style1">genPolyrythm</span>   :      Génération de Polyrythmes.<br/>
+		    Paramètres : 		    <br/>
+		    - &lt;int&gt; : Nombre d'objets. 		    <br/>
+    		    - &lt;int&gt; : Hauteur Max en héxa. 		    <br/>
+		    - &lt;int&gt; : Ratio Droit. 		    <br/>
+		    - &lt;int&gt; : Ratio Gauche. 		    <br/>
+		    - [\@List] Optionnel, Lancers à exclure.	    <br/>
+		    &nbsp;&nbsp;Ex: @List=('0','2','1x').	    <br/>
+		    &nbsp;&nbsp;Si non précisé, sans autre paramètre optionnel, 0 est exclu;	    <br/>
+		    &nbsp;&nbsp;si '', pas d'exclusion.	    <br/>
+		    <br/>
+		    <script LANGUAGE="JavaScript">
+		      document.write(options_print_a1);
+		    </script>		   
+		    -J &lt;y|n&gt; : Double le Tempo pour les polyrythmes 1:M
+		    principalement afin d'éviter les squeezes (Défaut:n).		    <br/>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats.
+		    Si -1, retourne le résultat sans l'afficher.
+		    Si le fichier commence par :<br/>
+		    &nbsp;&nbsp;&nbsp;- 'JML:', génère un fichier pour une vue JugglingLab
+		    en JML en y ajoutant l'extension .jml;
+		    Les Siteswaps invalides sont masqués.<br/>
+		    &nbsp;&nbsp;&nbsp;- 'SSHTML:', génère un fichier HTML, en y ajoutant l'extension
+		    .html et contenant différentes informations sur
+		    les Siteswaps.<br/>
+		    - 'HTML:', génère un fichier HTML, en y ajoutant l'extension
+                    .html et contenant les Diagrammes Ladder, les Siteswaps
+                    Modifiés avec conservation du Tempo mais réduction des
+                    hauteurs et les fichiers JML associés.	    <br/>
+		    <br/>
+
+		    <span class="Style1">genPolyrythmMult</span>   :      Génération de Polyrythmes avec Multiplexes.<br/>
+		    Paramètres : 		    <br/>
+		    - &lt;int&gt; : Nombre d'objets. 		    <br/>
+    		    - &lt;int&gt; : Hauteur Max en héxa. 		    <br/>
+    		    - &lt;int&gt; : Nombre de lancers simultanés Max. 		    <br/>
+		    - &lt;int&gt; : Ratio Droit. 		    <br/>
+		    - &lt;int&gt; : Ratio Gauche. 		    <br/>
+		    - [\@List] Optionnel, Lancers à exclure.	    <br/>
+		    &nbsp;&nbsp;Ex: @List=('0','2','1x').	    <br/>
+		    &nbsp;&nbsp;Si non précisé, sans autre paramètre optionnel, 0 est exclu;	    <br/>
+		    &nbsp;&nbsp;si '', pas d'exclusion.	    <br/>
+		    <br/>
+		    <script LANGUAGE="JavaScript">
+		      document.write(options_print_a1);
+		    </script>		   
+		    -J &lt;y|n&gt; : Double le Tempo pour les polyrythmes 1:M
+		    principalement afin d'éviter les squeezes (Défaut:n).		    <br/>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats.
+		    Si -1, retourne le résultat sans l'afficher.
+		    Si le fichier commence par :<br/>
+		    &nbsp;&nbsp;&nbsp;- 'JML:', génère un fichier pour une vue JugglingLab
+		    en JML en y ajoutant l'extension .jml;
+		    Les Siteswaps invalides sont masqués.<br/>
+		    &nbsp;&nbsp;&nbsp;- 'SSHTML:', génère un fichier HTML, en y ajoutant l'extension
+		    .html et contenant différentes informations sur
+		    les Siteswaps.<br/>
+		    - 'HTML:', génère un fichier HTML, en y ajoutant l'extension
+                    .html et contenant les Diagrammes Ladder, les Siteswaps
+                    Modifiés avec conservation du Tempo mais réduction des
+                    hauteurs et les fichiers JML associés.	    <br/>
+		    <br/>
+
+		    <span class="Style1">genSS</span>        : Génération de Siteswaps (JugglingLab).<br/>
+		    Paramètres :<br/>
+		    - &lt;int&gt; : Nombre d'objets.<br/>
+		    <br/>
+		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal.<br/>
+		    <br/>
+		    - &lt;int&gt; : Période.<br/>
+		    <br/>
+		    - ["-O [options]"] Optionnel, Différentes options précisées ci-dessous.<br/>		    
+		    les options incluent :<br/>
+		    &nbsp;&nbsp;-s : mode synchrone<br/>
+		    &nbsp;&nbsp;-j &lt;nombre&gt; : définit le nombre de jongleurs<br/>
+		    &nbsp;&nbsp;-n : affiche le nombre de Siteswaps générés<br/>
+		    &nbsp;&nbsp;-m  &lt;nombre&gt; : multiplex avec au moins le nombre donné de lancers simultanés<br/>
+		    &nbsp;&nbsp;-no : imprime juste le nombre de Siteswaps générés<br/>
+		    &nbsp;&nbsp;-g : figures fondamentales<br/>
+		    &nbsp;&nbsp;-mf : permet les réceptions multiples<br/>
+		    &nbsp;&nbsp;-ng : figures excitées<br/>
+		    &nbsp;&nbsp;-mc : empêche les lancers multiplex en grappe<br/>
+		    &nbsp;&nbsp;-f : liste complète (avec les figures composées)<br/>
+		    &nbsp;&nbsp;-mt : vrais multiplexes uniquement<br/>
+		    &nbsp;&nbsp;-d &lt;nombre&gt; : retard de communication (passing)<br/>
+		    &nbsp;&nbsp;-se : désactive starting/ending<br/>
+		    &nbsp;&nbsp;-l &lt;nombre&gt; : numéro du leader passing<br/>
+		    &nbsp;&nbsp;-prime : premiers seulement<br/>
+		    &nbsp;&nbsp;-x &lt;lancer&gt; : ..  exclure les lancers<br/>
+		    &nbsp;&nbsp;-rot : avec permutations des figures<br/>
+		    &nbsp;&nbsp;-i &lt;lancer&gt; : ..  inclure les lancers<br/>
+		    &nbsp;&nbsp;-lame : supprimer les '11' en mode asynchrone<br/>
+		    &nbsp;&nbsp;-cp : patterns connectés uniquement<br/>
+		    &nbsp;&nbsp;-jp : Montre toutes les permutations de jongleurs<br/>
+		    <br/>
+
+		    - ["fichier"] Optionnel, fichier de résultats.<br/>
+		    Si le fichier commence par :<br/>
+		    &nbsp;&nbsp;&nbsp;- 'JML:', génère un fichier pour une vue JugglingLab en JML en y ajoutant l'extension .jml.<br/>
+		    &nbsp;&nbsp;&nbsp;- 'SSHTML:', génère un fichier HTML, en y ajoutant l'extension .html et contenant différentes informations sur
+		    les Siteswaps.<br/>
+		    <br/>
+		    <Script LANGUAGE="JavaScript">
+		      document.write(options_print_a1);
+		    </script>
+		    <br/>
+		    
+		    <span class="Style1">genSSFromStates</span> :                  Génération de Siteswaps depuis Diagrammes Etats/Transitions. <br/>
+		    Paramètres : <br/>
+		    - &lt;type&gt; : Type de générateur parmi 'V' (Vanille), 'S'		   
+		    (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone), 'MULTI' (MultiSynchrone). 		    <br/>
+      		    <br/>
+		    == cas 'V', 'S' == 		    <br/>
+      		    - &lt;int&gt; : Nombre d'objets (-1 non spécifié). 		    <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. 		    <br/>
+		    - &lt;int&gt; : Période des Siteswaps.<br/>
+		    <br/>
+		    == cas 'M', 'MS', 'MULTI' == 		    <br/>
+      		    - &lt;int&gt; : Nombre d'objets (-1 non spécifié). 		    <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. 		    <br/>
+      		    - &lt;int&gt; : Nombre Max de lancers Simultanés. 		    <br/>
+		    - &lt;int&gt; : Période des Siteswaps.<br/>
+		    <br/>
+		    <script LANGUAGE="JavaScript">
+		      document.write(options_print_a1);
+		    </script>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats.
+		    Si -1, retourne le résultat sans l'afficher.
+		    Si le fichier commence par :<br/>
+		    &nbsp;&nbsp;&nbsp;- 'JML:', génère un fichier pour une vue JugglingLab
+		    en JML en y ajoutant l'extension .jml;
+		    Les Siteswaps invalides sont masqués.<br/>
+		    &nbsp;&nbsp;&nbsp;- 'SSHTML:', génère un fichier HTML, en y ajoutant l'extension
+		    .html et contenant différentes informations sur
+		    les Siteswaps.<br/>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier XLS Matrice
+		    Etats/Transitions valide en entrée pour accélérer les calculs
+		    (chemin absolu).<br/>
+		    <br/>
+
+		    <span class="Style1">genSSFromStatesAggr</span> :                  Génération de Siteswaps depuis Diagrammes Etats/Transitions Réduits. <br/>
+		    Paramètres : <br/>
+		    - &lt;type&gt; : Type de générateur parmi 'V' (Vanille), 'S'		   
+		    (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone), 'MULTI' (MultiSynchrone). 		    <br/>
+      		    <br/>
+		    == cas 'V', 'S' == 		    <br/>
+      		    - &lt;int&gt; : Nombre d'objets (-1 non spécifié). 		    <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. 		    <br/>
+		    - &lt;int&gt; : Période des Siteswaps.<br/>
+		    <br/>
+		    == cas 'M', 'MS', 'MULTI' == 		    <br/>
+      		    - &lt;int&gt; : Nombre d'objets (-1 non spécifié). 		    <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. 		    <br/>
+      		    - &lt;int&gt; : Nombre Max de lancers Simultanés. 		    <br/>
+		    - &lt;int&gt; : Période des Siteswaps.<br/>
+		    <br/>
+		    <script LANGUAGE="JavaScript">
+		      document.write(options_print_a1);
+		    </script>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats.
+		    Si -1, retourne le résultat sans l'afficher.
+		    Si le fichier commence par :<br/>
+		    &nbsp;&nbsp;&nbsp;- 'JML:', génère un fichier pour une vue JugglingLab
+		    en JML en y ajoutant l'extension .jml;
+		    Les Siteswaps invalides sont masqués.<br/>
+		    &nbsp;&nbsp;&nbsp;- 'SSHTML:', génère un fichier HTML, en y ajoutant l'extension
+		    .html et contenant différentes informations sur
+		    les Siteswaps.<br/>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier XLS Matrice
+		    Etats/Transitions Réduite valide en entrée pour accélérer les calculs
+		    (chemin absolu).<br/>
+		    <br/>
+
+		    <span class="Style1">genSSFromThrows</span> :                  Génération de Siteswaps depuis liste de lancers. <br/>
+		    Paramètres : <br/>
+		    - &lt;type&gt; : Type de générateur parmi 'V' (Vanille), 'S'		   
+		    (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone), 'MULTI' (MultiSynchrone). 		    <br/>
+      		    <br/>
+		    - &lt;"ss"&gt; : Suite de chiffres dont on veut obtenir
+		    l'ensemble des combinaisons valides.<br/>
+		    <br/>
+		    <script LANGUAGE="JavaScript">
+		      document.write(options_print_a1);
+		    </script>
+		    -A &lt;y|n&gt; : Une option particulière non répertoriée qui
+		    considère uniquement les symétries pour les Siteswap S et MS (Défaut:n).<br/>
+		    <br/>		    
+		    - ["fichier"] Optionnel, fichier de résultats.
+		    Si -1, retourne le résultat sans l'afficher.
+		    Si le fichier commence par :<br/>
+		    &nbsp;&nbsp;&nbsp;- 'JML:', génère un fichier pour une vue JugglingLab
+		    en JML en y ajoutant l'extension .jml;
+		    Les Siteswaps invalides sont masqués.<br/>
+		    &nbsp;&nbsp;&nbsp;- 'SSHTML:', génère un fichier HTML, en y ajoutant l'extension
+		    .html et contenant différentes informations sur
+		    les Siteswaps.<br/>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier XLS Matrice
+		    Etats/Transitions Réduite valide en entrée pour accélérer les calculs
+		    (chemin absolu).<br/>
+		    <br/>
+		    
+		    <span class="Style1">genSSMagic</span>   :            Génération de Magics Siteswaps. 		    <br/>
+		    Paramètres : 		    <br/>     
+		    - &lt;type&gt; : Type de générateur parmi 'V' (Vanille), 'S'
+		    (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone). 		    <br/>
+      		    <br/>
+		    == cas 'V', 'S', 'MULTI' == 		    <br/>
+      		    - &lt;mode&gt; : Mode de Magics Siteswaps (Pair/Impair/All). 		    <br/>
+      		    - &lt;nb&gt; : Valeur Minimum stricte des Lancers. 		    <br/>
+		    - &lt;int&gt; : Période des Siteswaps. 		    <br/>
+      		    <br/>
+		    == cas 'M', 'MS' ==		    <br/> 
+      		    - &lt;mode&gt; : Mode de Magics Siteswaps (Pair/Impair/All). 		    <br/>
+      		    - &lt;int&gt; : Valeur Minimum stricte des Lancers. 		    <br/>
+		    - &lt;int&gt; :  Nombre de Lancers. 		    <br/>
+		    - &lt;int&gt; : Nombre Max de Lancers Multiplexes.<br/>
+		    <br/>
+		    <script LANGUAGE="JavaScript">
+		      document.write(options_print_a1);
+		    </script>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats.
+		    Si -1, retourne le résultat sans l'afficher.
+		    Si le fichier commence par :<br/>
+		    &nbsp;&nbsp;&nbsp;- 'JML:', génère un fichier pour une vue JugglingLab
+		    en JML en y ajoutant l'extension .jml;
+		    Les Siteswaps invalides sont masqués.<br/>
+		    &nbsp;&nbsp;&nbsp;- 'SSHTML:', génère un fichier HTML, en y ajoutant l'extension
+		    .html et contenant différentes informations sur
+		    les Siteswaps.<br/>
+		    <br/>
+
+		    <span class="Style1">genSSMagicStadler</span>   :     Génération Partielle de Magics
+		    Siteswaps Vanilles par l'algorithme
+		    de Jon Stadler. 		    <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;int&gt; : Période Maximum. 		    <br/>
+		    <br/>
+		    <script LANGUAGE="JavaScript">
+		      document.write(options_print_a1);
+		    </script>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats.
+		    Si -1, retourne le résultat sans l'afficher.
+		    Si le fichier commence par :<br/>
+		    &nbsp;&nbsp;&nbsp;- 'JML:', génère un fichier pour une vue JugglingLab
+		    en JML en y ajoutant l'extension .jml;
+		    Les Siteswaps invalides sont masqués.<br/>
+		    &nbsp;&nbsp;&nbsp;- 'SSHTML:', génère un fichier HTML, en y ajoutant l'extension
+		    .html et contenant différentes informations sur
+		    les Siteswaps.<br/>
+		    <br/>
+
+		    <span class="Style1">genSSPerm</span>   :             Génération de Siteswaps Vanilles Par
+		    Test de Permutation (Algorithme de
+		    Polster). 		    <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;int&gt; : Nombre d'objets. 		    <br/>
+		    <br/>
+		    - &lt;int&gt; : Periode des Siteswaps. 		    <br/>
+		    <br/>
+		    <script LANGUAGE="JavaScript">
+		      document.write(options_print_a1);
+		    </script>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats.
+		    Si -1, retourne le résultat sans l'afficher.
+		    Si le fichier commence par :<br/>
+		    &nbsp;&nbsp;&nbsp;- 'JML:', génère un fichier pour une vue JugglingLab
+		    en JML en y ajoutant l'extension .jml;
+		    Les Siteswaps invalides sont masqués.<br/>
+		    &nbsp;&nbsp;&nbsp;- 'SSHTML:', génère un fichier HTML, en y ajoutant l'extension
+		    .html et contenant différentes informations sur
+		    les Siteswaps.<br/>
+		    <br/>
+		    
+	    	    <span class="Style1">genSSPrime</span> :                   Génère les Siteswaps premiers. <br/>
+		    Paramètres : <br/>
+		    - &lt;type&gt; : Type de générateur parmi 'V' (Vanille), 'S'		   
+		    (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone), 'MULTI' (MultiSynchrone). 		    <br/>
+      		    <br/>
+		    == cas 'V', 'S' == 		    <br/>
+      		    - &lt;int&gt; : Nombre d'objets (-1 non spécifié). 		    <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. 		    <br/>
+		    <br/>
+		    == cas 'M', 'MS', 'MULTI' == 		    <br/>
+      		    - &lt;int&gt; : Nombre d'objets (-1 non spécifié). 		    <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. 		    <br/>
+      		    - &lt;int&gt; : Nombre Max de lancers Simultanés. 		    <br/>
+		    <br/>
+		    <script LANGUAGE="JavaScript">
+		      document.write(options_print_a1_prime);
+		    </script>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats.
+		    Si -1, retourne le résultat sans l'afficher.
+		    Si le fichier commence par :<br/>
+		    &nbsp;&nbsp;&nbsp;- 'JML:', génère un fichier pour une vue JugglingLab
+		    en JML en y ajoutant l'extension .jml;
+		    Les Siteswaps invalides sont masqués.<br/>
+		    &nbsp;&nbsp;&nbsp;- 'SSHTML:', génère un fichier HTML, en y ajoutant l'extension
+		    .html et contenant différentes informations sur
+		    les Siteswaps.<br/>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier XLS Matrice
+		    Etats/Transitions Réduite valide en entrée pour accélérer les calculs
+		    (chemin absolu).<br/>
+		    <br/>
+		    
+		    <span class="Style1">genSSProbert</span>   :          Génération de Siteswaps Vanilles
+		    depuis Diagrammes de Martin Probert. 		    <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;int&gt; : Nombre d'objets. 		    <br/>
+		    <br/>
+		    - &lt;nb&gt; : Hauteur Max des Siteswaps (-1 toute hauteur). 		    <br/>
+		    <br/>
+		    - &lt;int&gt; : Période des Siteswaps. 		    <br/>
+		    <br/>
+		    <script LANGUAGE="JavaScript">
+		      document.write(options_print_a1);
+		    </script>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats.
+		    Si -1, retourne le résultat sans l'afficher.
+		    Si le fichier commence par :<br/>
+		    &nbsp;&nbsp;&nbsp;- 'JML:', génère un fichier pour une vue JugglingLab
+		    en JML en y ajoutant l'extension .jml;
+		    Les Siteswaps invalides sont masqués.<br/>
+		    &nbsp;&nbsp;&nbsp;- 'SSHTML:', génère un fichier HTML, en y ajoutant l'extension
+		    .html et contenant différentes informations sur
+		    les Siteswaps.<br/>
+		    <br/>
+
+		    <span class="Style1">genScramblablePolster</span>   :        Génération de Siteswaps Vanilles Scramblables par Algorithme de Polster. <br/>
+		    Les Siteswaps Scramblables respectent le format suivant (p étant la période, c et Ak des entiers positifs) : {Ak*p + c} [k=0...k=p-1] <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;int&gt; : Période p.<br/>
+		    <br/>
+		    - &lt;int&gt; : Valeur Maximum de Ak.<br/>
+		    <br/>
+		    - &lt;int&gt; : Valeur Maximum de Constante c.<br/>
+		    <br/>
+		    <script LANGUAGE="JavaScript">
+		      document.write(options_print_a1_scramblable);
+		    </script>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats.
+		    Si -1, retourne le résultat sans l'afficher.
+		    Si le fichier commence par :<br/>
+		    &nbsp;&nbsp;&nbsp;- 'JML:', génère un fichier pour une vue JugglingLab
+		    en JML en y ajoutant l'extension .jml;
+		    Les Siteswaps invalides sont masqués.<br/>
+		    &nbsp;&nbsp;&nbsp;- 'SSHTML:', génère un fichier HTML, en y ajoutant l'extension
+		    .html et contenant différentes informations sur
+		    les Siteswaps.<br/>
+		    <br/>
+
+		    <span class="Style1">genStates</span>   :             Génération des Matrices
+		    Etats/Transitions. 		    <br/>
+		    Paramètres : 		    <br/>      
+		    - &lt;type&gt; : Type de générateur parmi 'V' (Vanille), 'S'
+		    (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone), 'MULTI' (MultiSynchone). 		    <br/>
+      		    <br/>
+		    == cas 'V', 'S' == 
+      		    - &lt;int&gt; : Nombre d'objets (-1 non spécifié). 		    <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. 		    <br/>
+      		    <br/>
+		    == cas 'M', 'MS', 'MULTI' ==		    <br/> 
+      		    - &lt;int&gt; : Nombre d'objets (-1 non spécifié). 		    <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. 		    <br/>
+      		    - &lt;int&gt; : Nombre Max de lancers Simultanés. 		    <br/>
+      		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats. Si -1, retourne
+		    le résultat sans l'afficher; Si le fichier commence par 'XLS:',
+		    génère un fichier Excel en y ajoutant l'extension .xlsx 		    <br/>
+		    <br/>
+
+		    <span class="Style1">genStatesAggr</span>   :         Génération des Matrices Réduites
+		    Etats/Transitions. 		    <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;type&gt; : Type de générateur parmi 'V' (Vanille), 'S'
+		    (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone), 'MULTI' (MultiSynchone). 		    <br/>
+      		    <br/>
+		    == cas 'V', 'S' == 		    <br/>
+      		    - &lt;int&gt; : Nombre d'objets (-1 non spécifié). 		    <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. 		    <br/>
+      		    <br/>
+		    == cas 'M', 'MS', 'MULTI' == 		    <br/>
+      		    - &lt;int&gt; : Nombre d'objets (-1 non spécifié). 		    <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. 		    <br/>
+      		    - &lt;int&gt; : Nombre Max de lancers Simultanés. 		    <br/>
+      		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats. Si -1, retourne
+		    le résultat sans l'afficher; Si le fichier commence par 'XLS:',
+		    génère un fichier Excel en y ajoutant l'extension .xlsx 		    <br/>
+		    <br/>
+
+
+		    <span class="Style1">genTrans</span>        : Génération de Transitions (JugglingLab).<br/>
+		    Paramètres :<br/>
+		    - &lt;ss1&gt; : Siteswap1.<br/>
+		    <br/>
+		    - &lt;ss2&gt; : Siteswap2.<br/>
+		    <br/>
+		    - ["-O [options]"] Optionnel, Différentes options précisées ci-dessous.<br/>
+		    les options incluent :<br/>
+		    &nbsp;&nbsp;-m &lt;num&gt; : Multiplexe avec au plus num lancers simultanés.<br/>
+		    &nbsp;&nbsp;-mf : Authorise catchs simultanés non triviaux (squeeze)<br/>
+		    &nbsp;&nbsp;-mc : Interdit lancers Multiplexes Cluster (i.e. [33])<br/>
+		    &nbsp;&nbsp;-limits : Désactive Temporisation d'exécution (Recherches peuvent être très longue!).<br/>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats.<br/>
+		    Si le fichier commence par :<br/>
+		    &nbsp;&nbsp;&nbsp;- 'JML:', génère un fichier pour une vue JugglingLab en JML en y ajoutant l'extension .jml.<br/>	
+		    <br/>
+
+		    
+		    <span class="Style1">genTransBtwnSS</span>   :          Génération de Transitions entre Siteswaps depuis les Diagrammes Etats/Transitions.<br/>
+		    Paramètres : 		    <br/>
+		    - &lt;"ss1"&gt; : Siteswap Initial.<br/>
+		    <br/>
+		    - &lt;"ss2"&gt; : Siteswap Final.<br/>
+		    <br/>
+		    - &lt;int&gt; : Profondeur.<br/>
+		    <br/>
+		    Les options suivantes ne sont considérées que lors de la
+		    génération d'un fichier SSHTML ou JML :<br/>
+		    <script LANGUAGE="JavaScript">
+		      document.write(options_print_a1_in);
+		    </script>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats.
+		    Si -1, retourne le résultat sans l'afficher.<br/>
+		    Si le fichier commence par :<br/>
+		    &nbsp;&nbsp;&nbsp;- 'JML:', génère un fichier constitué de siteswaps complets
+		    pour une vue JugglingLab en JML en y ajoutant l'extension .jml;
+		    Les Siteswaps invalides sont masqués.<br/>
+		    &nbsp;&nbsp;&nbsp;- 'SSHTML:', génère un fichier HTML constitué de siteswaps
+		    complets, en y ajoutant l'extension .html et contenant différentes informations sur
+		    les Siteswaps.<br/>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier XLS Matrice
+		    Etats/Transitions valide en entrée pour accélérer les calculs
+		    (chemin absolu).<br/>
+		    <br/>
+		    
+		    <span class="Style1">genTransBtwnSSAggr</span>   :          Generation de Transitions entre Siteswaps depuis les Diagrammes Etats/Transitions Réduits.<br/>
+		    Paramètres : 		    <br/>
+		    - &lt;"ss1"&gt; : Siteswap Initial.<br/>
+		    <br/>
+		    - &lt;"ss2"&gt; : Siteswap Final.<br/>
+		    <br/>
+		    - &lt;int&gt; : Profondeur.<br/>
+		    <br/>
+		    Les options suivantes ne sont considérées que lors de la
+		    génération d'un fichier SSHTML ou JML :<br/>
+		    <script LANGUAGE="JavaScript">
+		      document.write(options_print_a1_in);
+		    </script>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats.
+		    Si -1, retourne le résultat sans l'afficher.<br/>
+		    Si le fichier commence par :<br/>
+		    &nbsp;&nbsp;&nbsp;- 'JML:', génère un fichier constitué de siteswaps complets
+		    pour une vue JugglingLab en JML en y ajoutant l'extension .jml;
+		    Les Siteswaps invalides sont masqués.<br/>
+		    &nbsp;&nbsp;&nbsp;- 'SSHTML:', génère un fichier HTML constitué de siteswaps
+		    complets, en y ajoutant l'extension .html et contenant différentes informations sur
+		    les Siteswaps.<br/>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier XLS Matrice
+		    Etats/Transitions Réduite valide en entrée pour accélérer les calculs
+		    (chemin absolu).<br/>
+		    <br/>
+		    
+		    <span class="Style1">genTransBtwnStates</span> : Génération de Transitions entre Etats depuis les Diagrammes Etats/Transitions.<br/>
+		    Paramètres :<br/>
+		    - &lt;"state1"&gt; : Etat Initial.<br/>
+		    <br/>
+		    - &lt;"state2"&gt; : Etat Final.<br/>
+		    <br/>
+		    - &lt;int&gt; : Profondeur.<br/>
+		    <br/>
+		    - ["options"] Différentes options -[h|m] précisées ci-dessous :<br/>
+		    -h &lt;nb&gt; : Hauteur Max.<br/>
+		    -m &lt;int&gt; : Nombre Min de Lancers Multiplexes.<br/>
+		    <br/>
+		    - ["fichier1"] Optionnel, fichier de résultats. Si -1, retourne
+		    le résultat sans l'afficher.<br/>
+		    <br/>
+		    - ["fichier2"] Optionnel, fichier XLS Matrice
+		    Etats/Transitions valide en entrée pour accélérer les calculs
+		    (chemin absolu).<br/>
+		    <br/>
+		    
+		    <span class="Style1">genTransBtwnStatesAggr</span> : Génération de Transitions entre Etats depuis les Diagrammes Etats/Transitions Réduits.<br/>
+		    Paramètres :<br/>
+		    - &lt;state1&gt; : Etat Initial.<br/>
+		    <br/>
+		    - &lt;"state2"&gt; : Etat Final.<br/>
+		    <br/>
+		    - &lt;int&gt; : Profondeur.<br/>
+		    <br/>
+		    - ["options"] Différentes options -[h|m] précisées ci-dessous :<br/>		    
+		    -h &lt;nb&gt; : Hauteur Max.<br/>
+		    -m &lt;int&gt; : Nombre Min de Lancers Multiplexes.<br/>
+		    <br/>
+		    - ["fichier1"] Optionnel, fichier de résultats. Si -1, retourne
+		    le résultat sans l'afficher.<br/>
+		    <br/>
+		    - ["fichier2"] Optionnel, fichier XLS Matrice
+		    Etats/Transitions Réduite valide en entrée pour accélérer les calculs
+		    (chemin absolu).<br/>
+		    <br/>
+		    
+		    <span class="Style1">genTransTeodoro</span>                    : Lance les Générateurs de Siteswaps & de Transitions de Pedro Teodoro.<br/>
+		    Paramètres :<br/>
+		    - Aucun<br/>		    
+		    <br/>
+		    
+		    <span class="Style1">getAnagrammes</span>                    : Donne les Anagrammes du Siteswap.<br/>
+		    Paramètres :<br/>
+		    - &lt;ss&gt; : Siteswap (V,M,S ou MS).<br/>
+		    - ["options"] Différentes options -[r|k]:<br/>
+		    -r &lt;y|n&gt; : suppression des Siteswaps équivalents (Défaut:y).<br/>
+		    -k &lt;y|n&gt; : option pour Siteswaps S et MS: pour les Siteswaps
+		    symétriques finissant par *, le statut Scramblable est
+		    considéré uniquement sur la première portion. (Défaut:y).<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    
+		    <span class="Style1">getHeightMax</span>                    : Donne la hauteur Maximum du Siteswap.<br/>
+		    Paramètres :<br/>
+		    - &lt;ss&gt; : Siteswap à analyser.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+
+		    <span class="Style1">getHeightMin</span>                    : Donne la hauteur Minimum du Siteswap.<br/>
+		    Paramètres :<br/>
+		    - &lt;ss&gt; : Siteswap à analyser.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+
+		    <span class="Style1">getInfo</span>                    : Affiche des informations sur le Siteswap.<br/>
+		    Paramètres :<br/>
+		    - &lt;ss&gt; : Siteswap à analyser.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+
+		    <span class="Style1">getObjNumber</span>   :          Donne le nombre d'objets du Siteswap 		    <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;ss&gt; : Siteswap à analyser. 		    <br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher. 		    <br/>
+		    <br/>
+
+		    <span class="Style1">getOrbits</span>                    : Donne les Orbites d'un Siteswap.<br/>
+		    Paramètres :<br/>
+		    - &lt;ss&gt; : Siteswap.<br/>
+		    - &lt;int&gt; : Mode de colorisation (Défaut:2)<br/>
+		    &nbsp;&nbsp;&nbsp;'0' : pas de colorisation;<br/>
+		    &nbsp;&nbsp;&nbsp;'1' : Multiplexe dans l'ordre croissant des valeurs
+		    Siteswap des lancers precedents;<br/>
+		    &nbsp;&nbsp;&nbsp;'2' : Multiplexe dans l'ordre decroissant des valeurs
+		    Siteswap des lancers precedents.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+
+		    <span class="Style1">getOrbitsAggr</span>                    : Donne les Orbites Aggrégées d'un Siteswap.<br/>
+		    Paramètres :<br/>
+		    - &lt;ss&gt; : Siteswap.<br/>
+		    - &lt;int&gt; : Mode de colorisation (Défaut:2)<br/>
+		    &nbsp;&nbsp;&nbsp;'0' : pas de colorisation;<br/>
+		    &nbsp;&nbsp;&nbsp;'1' : Multiplexe dans l'ordre croissant des valeurs
+		    Siteswap des lancers precedents;<br/>
+		    &nbsp;&nbsp;&nbsp;'2' : Multiplexe dans l'ordre decroissant des valeurs
+		    Siteswap des lancers precedents.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    
+		    <span class="Style1">getPeriod</span>   :             Donne la Période du Siteswap 		    <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;ss&gt; : Siteswap à analyser. 		    <br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher. 		    <br/>
+		    <br/>
+
+		    <span class="Style1">getPeriodMin</span>   :             Donne la Période Minimum du Siteswap 		    <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;ss&gt; : Siteswap dont on veut obtenir la Période minimum.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher. 		    <br/>
+		    <br/>
+
+		    <span class="Style1">getSSType</span>   :             Donne la famille du Siteswap parmi V
+		    (Vanille), M (Multiplexe), S
+		    (Synchrone), MS
+		    (Multiplexe-Synchrone), MULTI (MultiSynchrone). 		    <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;ss&gt; : Siteswap à analyser. 		    <br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher. 		    <br/>
+		    <br/>
+
+		    <span class="Style1">getSSstatus</span>   :           Donne le Statut du Siteswap (Excite
+		    [Excited], non excité [Ground] ou
+		    [Unknown] si le nombre d'objets ne
+		    permet pas de le dire) 		    <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;ss&gt; : Siteswap à analyser. 		    <br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher. 		    <br/>
+		    <br/>
+
+		    <span class="Style1">getStates</span>   :              Donne les Etats traversés.<br/>
+		    Paramètres : 		    <br/>
+		    - &lt;ss&gt; : Siteswap. 		    <br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher. 		    <br/>
+		    <br/>
+		    
+		    <span class="Style1">isEquivalent</span>   :          Teste l'équivalence de 2 siteswaps.  <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;ss1&gt; &lt;ss2&gt; : siteswaps à comparer. 		    <br/>
+		    - ["options"] Différentes options -[c|p|s] précisées ci-dessous :<br/>
+		    -c &lt;y|n&gt; : Considère la colorisation des multiplexes dans l'équivalence (Défaut:n).<br/>
+		    -s &lt;y|n&gt; : Considère la symétrie dans l'équivalence
+		    (Défaut:n).<br/>
+		    -p &lt;y|n&gt; : Considère les permutations de Siteswap dans
+		    l'équivalence, la symétrie en fait partie (Défaut:y).<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher. 		    <br/>
+		    <br/>
+
+		    <span class="Style1">isFullMagique</span>            :   Teste si un Siteswap est Magique Complet. <br/>
+		    Paramètres :<br/>
+		    - &lt;ss&gt; : Siteswap à tester.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.  Les Valeurs de Retour sont -1 (Non/Invalide), 0 (Full), 1 (Odd/Impair), 2
+		    (Even/Pair).<br/>
+		    <br/>
+
+		    <span class="Style1">isPalindrome</span>             :   Teste si un Siteswap est un Palindrome. <br/>
+		    Paramètres :<br/>
+		    - &lt;ss&gt; : Siteswap à tester.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    
+		    <span class="Style1">isPrime</span>             :  Teste si un Siteswap est premier. <br/>
+		    Paramètres :<br/>
+		    - &lt;ss&gt; : Siteswap à tester.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+
+		    <span class="Style1">isReversible</span>             :   Teste si un Siteswap est réversible. <br/>
+		    Paramètres :<br/>
+		    - &lt;ss&gt; : Siteswap à tester.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+
+		    <span class="Style1">isScramblable</span>             :   Teste si un Siteswap est scramblable. <br/>
+		    Paramètres :<br/>
+		    - &lt;ss&gt; : Siteswap à tester (V,M,S ou MS).<br/>
+		    - ["options"] : Différentes options -[k|l|v]:<br/>
+		    -k &lt;y|n&gt; : option pour Siteswaps S et MS: pour les Siteswaps symétriques finissant par *, le statut Scramblable est considéré uniquement sur la premiere portion. (Défaut:y).<br/>
+		    -l &lt;y|n&gt; : option pour limiter la période des Siteswaps pour éviter de saturer Mémoire/CPU (Défaut:y).<br/>
+		    -v &lt;int&gt; : Période Maximum à considérer (Défaut:8).<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+
+		    <span class="Style1">isSqueeze</span>             :   Teste si un Siteswap Multiplexe, Synchrone Multiplexe ou Multisynchrone est un Squeeze. <br/>
+		    Lancers de même hauteur et tenue en main ne sont pas considérés.<br/><br/>
+		    Paramètres :<br/>
+		    - &lt;ss&gt; : Siteswap à tester.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+
+		    <span class="Style1">isSyntaxValid</span>                    : Teste la syntaxe grammaticale du siteswap.<br/>
+		    Paramètres :<br/>
+		    - &lt;ss&gt; : Siteswap à tester.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    
+		    <span class="Style1">isValid</span>                    : Teste la validité du siteswap.<br/>
+		    Paramètres :<br/>
+		    - &lt;ss&gt; : Siteswap à tester.<br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+
+		    <span class="Style1">jdeep</span>                    : Generation de Siteswaps Premiers (jdeep de Jack Boyce).<br/>
+		    jdeep version 5.1, Jack Boyce<br/>
+		    (02/17/99) jboyce.sourceforge.net<br/>
+		    Ce programme a pour but la recherche des longs Siteswaps Premiers.<br/>
+		    <br/>
+		    format :
+		    jdeep ('&lt;# objects&gt; &lt;max. throw&gt; [&lt;min. length&gt;] [options]') avec :<br/>
+		    &lt;# objects&gt;   = Nombre d'objets dans les patterns trouvés.<br/>
+		    &lt;max. throw&gt;  = plus grand lancer à utiliser.<br/>
+		    &lt;min. length&gt; = plus petits patterns à trouver (optionnel, pour
+		    accélérer les recherches)<br/>
+		    <br/>
+		    Diverses options sont disponibles :<br/>
+		    -block &lt;skips&gt; : donne les patterns en block form, en
+		    autorisant le nombre de skips spécifiés.<br/>
+		    -super &lt;shifts&gt; : trouve (presque) les patterns superprimés, en
+		    autorisant le nombre de lancer shift spécifiés.<br/>
+		    -inverse : affiche l'inverse également, en mode -super.<br/>
+		    -g : donne les patterns ground-state (fondamentaux)
+		    uniquement.<br/>
+		    -ng : donne les patterns excités uniquement.<br/>
+		    -full : donne tous les patterns; sinon seuls les patterns aussi
+		    longs que les patterns les plus longs sont affichés.<br/>
+		    -noprint : suprime l'affichage des patterns.<br/>
+		    -exact : affiche les patterns de la longueur spécifiée
+		    (pas plus long).<br/>
+		    -x &lt;throw1 throw2 ...&gt; : exclu les lancers listes
+		    (pour accélérer les recherches).<br/>
+		    -trim : active l'algorithme de graph trimming.<br/>
+		    -notrim : désactive l'algorithme de graph trimming.<br/>
+		    -fichier : mode de sortie fichier.<br/>
+		    -temps &lt;secs&gt; : temps maximum d'éxecution de la fonction.<br/>
+		    <br/>
+
+		    <span class="Style1">lowerHeightOnTempo</span>  :         Transformation de Siteswaps pour des lancés plus bas en
+		    conservant le Tempo des lancés mais en ajoutant des temps
+		    supplémentaires de Hold Times. <br/>
+		    Particulièrement intéressant pour les Polyrythmes.<br/><br/>
+		    Paramètres : 		    <br/>
+		    - &lt;siteswap&gt; : Siteswap à transformer. <br/><br/>
+		    - ["options"] Différentes options -[f|j|m] précisées
+		    ci-dessous:<br/>
+		    &nbsp;-f &lt;int&gt; : Nombre de Free Beats Minimums sur la transformation
+		    entre 2 lancers (Défaut:1). Comme l'objet est récupéré un peu
+		    avant son lancer, avec généralement un Dwell Time autour de 1, une
+		    valeur inférieure occasionne des squeezes.<br/>
+		    &nbsp;-j &lt;y|n&gt; : Adaptation JugglingLab. JugglingLab ne comprenant
+		    que des Hold Times sur des lancers 1x ou 2, les Holds Times de valeur
+		    supérieure seront donc convertis (Défaut:n).<br/>
+		    &nbsp;-m &lt;int&gt; : Valeur Minimum du lancé sur même main après transformation
+		    afin d'éviter par exemple une transformation d'un lancé en hold (Défaut:3)
+		    <br/><br/>
+		    [-1] Optionnel, retourne le resultat sans l'afficher.<br/>
+		    <br/>
+
+		    
+		    <span class="Style1">polyrythmFountain</span>  :            Outil Fontaine Polyrythmique de Josh Mermelstein.   <br/>
+		    Paramètres : 		    <br/>
+		    - Aucun. 		    <br/>
+		    <br/>
+		    
+		    <span class="Style1">printSSList</span>  :           Met en forme une Liste de Siteswaps
+		    (Texte, Fichier ou dans fichier JML
+		    JugglingLab). Les Siteswaps
+		    invalides sont masqués. 		    <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;List&gt; : Liste Perl de Siteswaps. Si vide utilise le fichier Input. 		    <br/>
+		    <br/>
+		    <script LANGUAGE="JavaScript">
+		      document.write(options_print_a1);
+		    </script>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats.
+		    Si -1, retourne le résultat sans l'afficher.
+		    Si le fichier commence par :<br/>
+		    &nbsp;&nbsp;&nbsp;- 'JML:', génère un fichier pour une vue JugglingLab
+		    en JML en y ajoutant l'extension .jml;
+		    Les Siteswaps invalides sont masqués.<br/>
+		    &nbsp;&nbsp;&nbsp;- 'SSHTML:', génère un fichier HTML, en y ajoutant l'extension
+		    .html et contenant différentes informations sur
+		    les Siteswaps.<br/>
+		    - ["fichierInput"] : Fichier Input utilisé si Liste vide.<br/>
+		    <br/>
+		    
+		    <span class="Style1">printSSListHTML</span>  :           Crée un fichier HTML depuis une Liste de Siteswaps en ajoutant
+		    diagrammes Ladder, JML JugglingLab et Liste TXT.<br/>
+		    Paramètres : 		    <br/>
+		    - &lt;"fichierInput"&gt; :  Fichier contenant la Liste de Siteswaps.   <br/><br/>
+		    - &lt;"fichierOutput"&gt; : Fichiers résultat (avec ajout extensions .html/.jml/.txt).<br/><br/>
+		    - &lt;"string"&gt; : Titre. 		    <br/><br/>
+		    - ["options"] Différentes options -[v|l|j|f|m] 
+		    <script LANGUAGE="JavaScript">
+		      document.write(options_print_a1_ssListHTML);
+		    </script>
+		    <br/>
+		    -v &lt;y|n&gt; : Ajoute une colonne avec Siteswaps simplifiés
+		    (Défaut:n).<br/>
+		    -l &lt;y|n&gt; : Ajoute une colonne avec Siteswaps transformés pour
+		    des lancers plus bas mais en conservant le Tempo des lancers par le
+		    biais de Hold Times supplémentaires (Défaut:n).<br/>
+		    -j &lt;y|n&gt; : Ajoute une colonne avec Siteswaps transformés pour
+		    des lancers plus bas mais en conservant le Tempo des lancers par le
+		    biais de Hold Times supplementaires et adapté pour une
+		    visualisation JugglingLab. JugglingLab ne comprenant que des
+		    Hold Times sur des lancers 1x ou 2, les Hold Times de valeur
+		    supérieure seront donc convertis (Défaut:n).<br/>
+		    &nbsp;-f &lt;int&gt; : Nombre de Free Beats Minimums sur la transformation
+		    entre 2 lancers (Défaut:1). Comme l'objet est récupéré un peu
+		    avant son lancer, avec généralement un Dwell Time autour de 1, une
+		    valeur inférieure occasionne des squeezes.<br/>
+		    &nbsp;-m &lt;int&gt; : Valeur Minimum du lancé sur même main après transformation
+		    afin d'éviter par exemple une transformation d'un lancé en hold (Défaut:3)
+		    <script LANGUAGE="JavaScript">
+		      document.write(options_print_a1_in);
+		    </script>
+		    
+		    <br/>
+		    
+		    <span class="Style1">realsim</span>  :                Lance le Simulateur de Pedro Teodoro. <br/>
+		    Paramètres : 		    <br/>
+		    - Aucun. 		    <br/>
+		    <br/>
+
+		    <span class="Style1">showVanillaDiag</span>  :        Affichage des Diagrammes Etats/Transitions Vanilles. <br/>
+		    Paramètres : 		    <br/>
+		    - Aucun. 		    <br/>
+		    <br/>
+
+		    <span class="Style1">shrink</span>  :                Forme Abrégée d'un Siteswap. 		    <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;ss&gt; : Siteswap à abréger. 		    <br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher. 		    <br/>
+		    <br/>
+		    
+		    <span class="Style1">simplify</span>  :                Simplification d'un Siteswap. <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;ss&gt; : Siteswap à simplifier. 		    <br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher. 		    <br/>
+		    <br/>
+
+		    <span class="Style1">slideSwitchSync</span>  :                 Donne les Siteswaps associes en changeant la Synchronisation. <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;ss&gt; : Siteswap. 		    <br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher. 		    <br/>
+		    <br/>
+
+		    <span class="Style1">sym</span> : Calcule la symétrie d'un Siteswap. <br/>		    
+		    Paramètres : <br/>
+		    - &lt;"ss"&gt; : Siteswap. <br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.		    <br/>
+		    <br/>
+		    
+		    <span class="Style1">symDiag</span>   :                   Calcule la symétrie d'un Siteswap par Méthode des Diagrammes.<br/>
+		    Le Siteswap obtenu peut-être moins synthétique que celui rendu par la function sym.<br/>
+		    Paramètres : 		    <br/>
+		    - &lt;ss&gt; : Siteswap 		    <br/>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats. Si -1, retourne
+		    le résultat sans l'afficher.<br/>
+		    <br/>
+		    <Script LANGUAGE="JavaScript">
+		      document.write(options_print_b1);
+		    </script>
+		    <br/>
+
+		    <span class="Style1">timeRev</span> : Calcule l'inversion (Time-Reversed) d'un Siteswap. <br/>
+		    Le Siteswap obtenu ne prend pas en compte la colorisation.<br/>
+		    Paramètres : <br/>
+		    - &lt;"ss"&gt; : Siteswap. <br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.		    <br/>
+		    <br/>
+
+		    <span class="Style1">timeRevDiag</span>   :                   Calcule l'inversion (Time-Reversed) d'un Siteswap par Méthode des Diagrammes.  <br/>
+		    Le Siteswap obtenu ne prend pas en compte la colorisation; le diagramme la considère, cependant le Siteswap obtenu peut etre
+		    moins synthétique que celui rendu par la function timeRev.<br/>
+		    Paramètres : 		    <br/>
+		    - &lt;ss&gt; : Siteswap 		    <br/>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats. Si -1, retourne
+		    le résultat sans l'afficher.<br/>
+		    <br/>
+		    <Script LANGUAGE="JavaScript">
+		      document.write(options_print_b1);
+		    </script>
+		    <br/>
+		    
+		    <span class="Style1">toStack</span>  :                Donne la Notation Stack correspondante [Experimental]. <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;ss&gt; : Siteswap. 		    <br/>
+		    <br/>
+		    - ["options"] Différentes options -[m|s] précisées ci-dessous :<br/>
+		    -m &lt;int&gt; : Mode de Calcul des trous pour les multiplexes
+		    (Défaut:1)<br/>
+		    &nbsp;&nbsp;&nbsp;'0' : Pas de trou entre les lancers multiplex [Démo];<br/>
+		    &nbsp;&nbsp;&nbsp;'1' : Ordre Croissant d'arrivée;<br/>
+		    &nbsp;&nbsp;&nbsp;'2' : Ordre Décroissant d'arrivée.<br/>
+		    -s &lt;n|r|l&gt; : Mode de Calcul des trous pour les Synchrones
+		    (Défaut:r)<br/>
+		    &nbsp;&nbsp;&nbsp;'n' : Synchro totale. Pas de considération entre les mains,
+		    stacks indépendantes [Demo];<br/>
+		    &nbsp;&nbsp;&nbsp;'r' : Main droite en premier;<br/>
+		    &nbsp;&nbsp;&nbsp;'l' : Main gauche en premier.<br/>
+		    <br/>
+		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+		    
+		    <span class="Style1">writeStates_xls</span>  :       Génération en Excel des Matrices
+		    Etats/Transitions. 		    <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;type&gt; : Type de générateur parmi 'V' (Vanille), 'S'
+		    (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone), 'MULTI' (MultiSynchrone). 		    <br/>
+      		    <br/>
+		    == cas 'V', 'S' == 		    <br/>
+      		    - &lt;int&gt; : Nombre d'objets (-1 non spécifié). 		    <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. 		    <br/>
+      		    <br/>
+		    == cas 'M', 'MS', 'MULTI' ==		    <br/> 
+      		    - &lt;int&gt; : Nombre d'objets (-1 non spécifié). 		    <br/>
+      		    - &lt;nb&gt; : Valeur du lancer max en hexadécimal. 		    <br/>
+      		    - &lt;int&gt; : Nombre Max de lancers Simultanés. 		    <br/>
+      		    <br/>
+		    - &lt;"fichier"&gt; corps du fichier de résultats sans l'extension
+		    .xlsx 		    <br/>
+		    <br/>
+		    Vous devez disposer auparavant d'Excel avec une license valide !
+		    (Fonctionne sous Windows). 
+
+
+		  </td> 
+		</tr>
+	      </tbody>
+	    </table>
+	  </div>
+
+
+	  <h3>HTN</h3><a name="chapAnnexe1.7" id="chapAnnexe1.7"></a>
+	  <p>
+	    Notation 3 Couches / Harmonic Throws.
+	  </p>
+
+	  <div class="windowCode">
+	    <table>
+	      <tbody>
+		<tr>
+		  <td> 
+		    <span class="Style1">HTN  - Harmonic Throws Notation (3-Layers Notation) (v0.6)</span><br/>
+		    <span class="Style1">-----------------------------------------</span><br/>
+		    <br/>
+
+		    <span class="Style1">HTNMaker</span>             :  HTNMaker de Shawn Pinciara pour créer des Grilles Harmoniques.<br/>
+		    Paramètres :<br/>
+		    - Aucun.<br/>
+		    <br/>
+		    
+		    <span class="Style1">drawGrid</span>             :  Dessine la Grille associée au Siteswap. Gnuplot et éventuellement Ghostscript et ImageMagick (converter) doivent avoir été installés au préalable (Sinon les images sont PostScript uniquement).<br/>
+		    Paramètres :<br/>
+		    - &lt;"ss"&gt; : Siteswap à dessiner.<br/>
+		    <br/>
+		    - &lt;"fichier"&gt; : fichier image de résultats.<br/>
+		    <br/>
+		    - ["options"] Différentes options
+		    -[a|b|c|d|e|h|l|p|r|s|t|u|v|y|z] précisées ci-dessous :<br/>
+		    -a &lt;dec&gt; : Hauteur Agrafe pour lancer depuis main identique
+		    (Défaut:0.4).<br/>
+		    -b &lt;color&gt; : Couleur d'agrafe (Défaut:green).<br/>
+		    -c &lt;color&gt; : Couleur de cercle (Défaut:#a935bd).<br/>
+		    -d &lt;color&gt; : Couleur de sync (Défaut:blue).<br/>
+		    -e &lt;color&gt; : Couleur de Mode de Main (Défaut:blue).<br/>
+		    -h &lt;r|l&gt; : Mode des Mains (Défaut:r).<br/>
+		    -l &lt;y|n&gt; : Affichage des Labels (Défaut:y).<br/>
+		    -p &lt;int&gt; : Période à afficher (Défaut:10).<br/>
+		    -r &lt;dec&gt; : Rayon des Cercles (Défaut:0.2).<br/>
+		    -s &lt;int&gt; : Affichage du résultat (Défaut:0)<br/>
+		    &nbsp;&nbsp;&nbsp;'0' : Affiche le résultat;<br/>
+		    &nbsp;&nbsp;&nbsp;'1' : Pas d'affichage.<br/>
+		    -t &lt;y|n&gt; : Affichage du titre (Défaut:y).<br/>
+		    -u &lt;y|n&gt; : Affichage du Mode des Mains dans le titre (Défaut:y).<br/>
+		    -v &lt;"string"&gt; : Force la valeur du Titre de l'image.<br/>
+		    -y &lt;dec&gt; : Décalage Y pour Lancers superposés (Défaut:0.25).<br/>
+		    -z &lt;"string"&gt; : Terminal Driver. Mettre une valeur vide pour
+		    liste des possibilités (Défaut:auto).<br/>		    
+		    <br/>
+
+		  </td> 
+		</tr>
+	      </tbody>
+	    </table>
+	  </div>
+	  
+	  
+	  <h3>SPYRO</h3><a name="chapAnnexe1.8" id="chapAnnexe1.8"></a>
+	  <p>
+	    SPYRO définit un spyrographe pour jongleur. Il permet la modélisation des Spins, Antispins, Hybrides, Isolations,
+	    Extensions dans un unique plan.
+	  </p>
+	  
+	  <div class="windowCode">
+	    <table>
+	      <tbody>
+		<tr>
+		  <td> 
+		    <span class="Style1">SPYRO  - Juggling SPYROGRAPH (v0.3)</span><br/>
+		    <span class="Style1">-----------------------------------------</span><br/>
+		    <br/>
+		    <span class="Style1">anim</span>             :  Lance JuggleSpyro HTML5.<br/>
+		    Paramètres :<br/>
+		    - Aucun ou optionnellement le port du serveur HTTP.<br/>		    
+		    <br/>
+		    
+		    <span class="Style1">staffSimMCP</span>             :  Lance le Simulateur de Staffs de MCP.<br/>
+		    Paramètres :<br/>
+		    - Aucun.<br/>		    
+		    
+		  </td> 
+		</tr>
+	      </tbody>
+	    </table>
+	  </div>
+	  
+	  <div class="pied-canevas">	  
+	    
+	  </div>
+	  
+	</div>	   
+      </div>
+    </div>	
+  </body>
+</html>

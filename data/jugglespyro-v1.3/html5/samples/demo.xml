@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<animation name="demo.xml">
+
+<scenario name="Sc1">
+
+<scene name="scene1">
+<right axisDx="390" axisDy="300" propChoice="4" armWay="out" ratio="0" nbloops="2" armAngle="0" propAngle="0" clockSpeed="2" armLength="100" propLength="50" colorHandPath="rgba(0,255,0,1)" colorPropPath="rgba(255,204,0,1)" colorFilter="rgba(255,255,0,1)" handPathViewMode="0" setColorFilter="false" shadow="false" blurring="true" propPathViewMode="3" showAxis="true" cleaning="true" />
+
+<left axisDx="410" axisDy="300" propChoice="4" armWay="in" ratio="0" nbloops="2" armAngle="0" propAngle="0" clockSpeed="2" armLength="100" propLength="50" colorHandPath="rgba(0,255,0,1)" colorPropPath="rgba(255,204,0,1)" colorFilter="rgba(255,255,0,1)" handPathViewMode="0" setColorFilter="false" shadow="false" blurring="true" propPathViewMode="3" showAxis="true" cleaning="true" />
+
+<both colorBackground="rgba(247,245,126,255)" speed="100" scale="1" clockSpeedRatio="1.0" setClockSpeedRatio="true"/>
+
+</scene>
+
+<scene name="scene2">
+<right ratio="-2" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene3">
+<right ratio="-2" axisDx="400" nbloops="2"/>
+<left ratio="0" axisDx="400" nbloops="2"/>
+</scene>
+
+<scene name="scene4">
+<right ratio="0" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene5">
+<right ratio="0" axisDx="360" nbloops="2"/>
+<left ratio="0" axisDx="440" armWay="out" nbloops="2"/>
+</scene>
+
+<scene name="scene6">
+<right ratio="-2" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene7">
+<right ratio="-2" nbloops="2"/>
+<left ratio="0" nbloops="2"/>
+</scene>
+
+<scene name="scene8">
+<right ratio="0" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene9">
+<right ratio="0" axisDx="390" propAngle="180"  nbloops="2"/>
+<left ratio="0" axisDx="410" propAngle="180" armWay="in" nbloops="2"/>
+</scene>
+
+<scene name="scene10">
+<right ratio="-2" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene11">
+<right ratio="-2" axisDx="400" nbloops="2"/>
+<left ratio="0" axisDx="400" nbloops="2"/>
+</scene>
+
+<scene name="scene12">
+<right ratio="0" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene13">
+<right ratio="0" axisDx="390" nbloops="2"/>
+<left ratio="0" axisDx="410" armWay="out" nbloops="2"/>
+</scene>
+
+<scene name="scene14">
+<right ratio="-2" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene15">
+<right ratio="-2" nbloops="2"/>
+<left ratio="0" nbloops="2"/>
+</scene>
+
+<scene name="scene16">
+<right ratio="0" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene17">
+<right ratio="0" axisDx="400" propAngle="0"  nbloops="2"/>
+<left ratio="0" axisDx="400" armWay="in" nbloops="2"/>
+</scene>
+
+<scene name="scene18">
+<right ratio="-2" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene19">
+<right ratio="0" nbloops="2"/>
+<left ratio="-2" propAngle="180" nbloops="2"/>
+</scene>
+
+<scene name="scene20">
+<right ratio="-2" nbloops="2"/>
+<left ratio="0" nbloops="2"/>
+</scene>
+
+<scene name="scene21">
+<right ratio="0" nbloops="2"/>
+<left ratio="0" armWay="out" nbloops="2"/>
+</scene>
+
+<scene name="scene22">
+<right ratio="-2" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene23">
+<right ratio="0" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene24">
+<right ratio="-2" nbloops="2"/>
+<left ratio="0" nbloops="2"/>
+</scene>
+
+<scene name="scene25">
+<right ratio="0" armAngle="180" armWay="in" nbloops="2"/>
+<left ratio="0" propAngle="0" armWay="in" nbloops="2"/>
+</scene>
+
+<scene name="scene26">
+<right ratio="-2" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene27">
+<right ratio="0" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene28">
+<right ratio="-2" nbloops="2"/>
+<left ratio="0" nbloops="2"/>
+</scene>
+
+<scene name="scene29">
+<right ratio="0" nbloops="2"/>
+<left ratio="0" armWay="out" nbloops="2"/>
+</scene>
+
+<scene name="scene30">
+<right ratio="-2" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene31">
+<right ratio="0" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene32">
+<right ratio="-2" nbloops="2"/>
+<left ratio="0" nbloops="2"/>
+</scene>
+
+<scene name="scene33">
+<right ratio="0" propAngle="180" nbloops="2"/>
+<left ratio="0" propAngle="180" armWay="in" nbloops="2"/>
+</scene>
+
+<scene name="scene34">
+<right ratio="-2" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene35">
+<right ratio="0" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene36">
+<right ratio="-2" nbloops="2"/>
+<left ratio="0" nbloops="2"/>
+</scene>
+
+<scene name="scene37">
+<right ratio="0" armWay="in" nbloops="2"/>
+<left ratio="0" armWay="out" nbloops="2"/>
+</scene>
+
+<scene name="scene38">
+<right ratio="-2" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene39">
+<right ratio="0" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene40">
+<right ratio="-2" nbloops="2"/>
+<left ratio="0" nbloops="2"/>
+</scene>
+
+<scene name="scene41">
+<right ratio="0" propAngle="0" armWay="in" nbloops="2"/>
+<left ratio="0"  armWay="in" nbloops="2"/>
+</scene>
+
+<scene name="scene42">
+<right ratio="-2" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene43">
+<right ratio="0" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene44">
+<right ratio="-2" nbloops="2"/>
+<left ratio="0" nbloops="2"/>
+</scene>
+
+<scene name="scene45">
+<right ratio="0" nbloops="2"/>
+<left ratio="0" armWay="out" nbloops="2"/>
+</scene>
+
+<scene name="scene46">
+<right ratio="-2" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene47">
+<right ratio="0" nbloops="2"/>
+<left ratio="-2" nbloops="2"/>
+</scene>
+
+<scene name="scene48">
+<right ratio="-2" nbloops="2"/>
+<left ratio="0" nbloops="2"/>
+</scene>
+
+</scenario>
+
+</animation>
+

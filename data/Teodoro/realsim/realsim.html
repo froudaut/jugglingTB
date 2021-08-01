@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<script type="text/javascript" src="Jugglev11.js"></script>
+
+<script type="text/javascript" src="slider.js" ></script>
+
+
+<script type="text/javascript">
+function startJuggling() {
+	var i=0;
+	var style = document.demoForm.style.options[document.demoForm.style.selectedIndex].value;
+	var skill = document.demoForm.skill.options[document.demoForm.skill.selectedIndex].value;
+
+	sswani.setSiteswap(document.getElementById("ssw").value,document.getElementById("speed").value, style,document.getElementById("tsec").value,skill);
+	sswani.startAnimation();
+}
+function MM_jumpMenu(targ,selObj,restore){ //v3.0
+  eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
+  if (restore) selObj.selectedIndex=0;
+}
+</script>
+<style type="text/css">
+div.container {
+	position: relative;
+	height: 500px;
+	width: 400px;
+	border: 1px sol
+	id;
+}
+img.doll {
+        position: absolute;
+        height: 160px;
+        width: 220px;
+        visibility: hidden;
+}
+img.lineup {
+        position: absolute;
+        height: 30px;
+        width: 30px;
+        visibility: hidden;
+}
+img.linedw {
+        position: absolute;
+        height: 30px;
+        width: 30px;
+        visibility: hidden;
+}
+img.ball {
+        position: absolute; 
+        height: 15px;
+        width: 15px;
+        visibility: hidden;
+}
+</style>
+</head>
+<body>
+<form action="multiple_sliders_demo.html" method="get" name="demoForm">
+
+<table cellpadding="3">
+  <tr>
+<td width="20">Pattern: </td><td width="20"><input type="text" id="ssw" value="7" /></td>
+<td width="20" rowspan="7">  <div class="container" id="JuggleContainer">
+</div></td>
+  </tr><tr>
+<td height="20">Style:</td><td height="20">
+  <select name="style" size="1" id="jumpMenu">
+    <option value="(150,70);(150,70)" selected>Normal</option>
+    <option value="(150,50);(150,50)" >Inside</option>
+     <option value="(50,150);(50,150)">Outside</option>
+    <option value="(50,-50,150,0);(150,0,50,-50)">Half Shower</option>
+    <option value="(8,-40,-120,0)(0,-60,-120,-90)(-8,-50,120,-50);(-8,-50,120,-50)(-8,-40,-120,0)(0,-60,-120,-90)">Mill's Mess</option>
+    <option value="(20,-50,200,20,-10,200)(50,-50,200,50,-50,200)(20,-50,-150,20,-10,-150)(50,-50,-150,50,-50,-150);(20,-50,-150,20,-10,-150)(50,-50,-150,50,-50,-150)(20,-50,200,20,-10,200)(50,-50,200,50,-50,200)">swap back and forth</option>
+    <option value="(150,-70,200,-10,-10,-150);(150,-70,200,-10,-10,-150)">Behind the back</option>
+         <option value="(100,-70,-150,-10,-10,200);(100,-70,-150,-10,-10,200)" >R. behind the back</option>
+    <option value="(160,-50,-150,130,-50,-150);(160,-50,-150,130,-50,-150)" >Behind the neck</option>
+    <option value="(150,-50,50,-50)(130,-30,60,-60)(130,-60,50,-40)(160,-40,70,-50)(180,-60,70,-30)(170,-40,80,-40);(180,-20,60,-50)(150,-60,50,-50)(130,-40,60,-50)(160,-60,40,-50)(180,-40,70,-40)(190,-50,50,-50)">Real</option>
+  </select>
+</td>
+</tr><tr>
+<td height="20">Skill:</td><td height="20">
+  <select name="skill" size="1" id="jumpMenu">
+    <option value="0">Trainee</option>
+    <option value="3">Newbie</option>
+    <option value="6">Practitioner</option>
+    <option value="9" selected>Juggler</option>
+    <option value="12">Expert</option>
+    <option value="15">Professional</option>
+    <option value="20">Unknown</option>
+  </select>
+</td>
+</tr><tr>
+<td height="20">Throws/sec: </td><td height="20">
+<input name="sliderValue" id="tsec" type="Text" size="3">
+<script language="JavaScript">
+	var A_TPL = {
+		'b_vertical' : false,
+		'b_watch': true,
+		'n_controlWidth': 120,
+		'n_controlHeight': 16,
+		'n_sliderWidth': 16,
+		'n_sliderHeight': 15,
+		'n_pathLeft' : 1,
+		'n_pathTop' : 1,
+		'n_pathLength' : 103,
+		's_imgControl': 'blueh_bg.gif',
+		's_imgSlider': 'blueh_sl.gif',
+		'n_zIndex': 1
+	}
+
+	var A_INIT1 = {
+		's_form' : 0,
+		's_name': 'tsec',
+		'n_minValue' : 2.5,
+		'n_maxValue' : 8,
+		'n_value' : 5,
+		'n_step' : 0.5
+	}
+	new slider(A_INIT1, A_TPL);
+</script>
+</td>
+</tr><tr>
+<td height="20">Speed:</td><td height="20">
+<input name="sliderValue" id="speed" type="Text" size="3">
+<script language="JavaScript">
+	var A_INIT3 = {
+		's_form' : 0,
+		's_name': 'speed',
+		'n_minValue' : 1,
+		'n_maxValue' : 100,
+		'n_value' : 33
+		,
+		'n_step' : 1
+	}
+
+	new slider(A_INIT3, A_TPL);
+</script>
+
+</tr>
+<tr>
+  <td height="20"><input type="button" value="Start" onClick='startJuggling()' /></td>
+  <td height="20"><input type="button" value="Stop" onClick='sswani.stopAnimation()' />  </tr>
+<tr>
+  <td height="269" colspan="2"><p><strong>Realistic Juggling Simulator v1.2:</strong></p>
+    <p>All kinds of siteswaps:<br>
+    vanilla: b61<br>
+    sync: (8,6x)*<br>
+    multyplex: [43]23<br>
+    hybrid: ([4x,4],2)*<br>
+    mixed: 33x3x2x(0,1x)!([2x4x],3)*</p>
+    <p>&nbsp;</p></td>
+  </tr>
+</table>
+
+</form>
+
+
+
+
+
+  
+  <p align="center"><span style="margin-top: 0; margin-bottom: 0"><font face="Tahoma" size="1">Copyright &copy; 2003-2012 </font><b> <font face="Tahoma" color="#000000" size="1">Pedro Teodoro</font></b></span></p>
+<script type="text/javascript">
+var sswani = new SiteswapAnimator(document.getElementById("JuggleContainer"));
+  </script>
+</body>
+</html>

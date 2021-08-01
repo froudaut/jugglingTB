@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<animation name="flowers.xml">
+
+<scenario name="Sc1">
+
+<scene name="scene1">
+<right axisDx="390" axisDy="300" propChoice="3" armWay="out" ratio="-1" nbloops="2" clockSpeed="2" armAngle="0" propAngle="0" armLength="100" propLength="100" colorHandPath="rgba(0,255,0,1)" colorPropPath="rgba(255,204,0,1)" setColorFilter="false" handPathViewMode="0" propPathViewMode="3" shadow="false" showAxis="false" cleaning="true" />
+<left axisDx="410" axisDy="300" propChoice="3" armWay="in" ratio="1" nbloops="0" clockSpeed="2" armAngle="0" propAngle="0" armLength="100" propLength="100" colorHandPath="rgba(0,255,0,1)" colorPropPath="rgba(255,204,0,1)" setColorFilter="false" handPathViewMode="0" propPathViewMode="3" shadow="false" showAxis="false" cleaning="true" />
+<both scale="1" speed="100" colorBackground="rgba(247,245,126,255)"/>
+</scene>
+
+<scene name="scene2">
+<right ratio="-2" nbloops="2" />
+<left ratio="2" nbloops="0"/>
+</scene>
+
+<scene name="scene3">
+<right ratio="-3" nbloops="2" />
+<left ratio="1" nbloops="0"/>
+</scene>
+
+<scene name="scene4">
+<right ratio="-4" nbloops="2" />
+<left ratio="2" nbloops="0"/>
+</scene>
+
+<scene name="scene5">
+<right ratio="-5" nbloops="2" />
+<left ratio="3" nbloops="0"/>
+</scene>
+
+<scene name="scene6">
+<right ratio="-6" nbloops="2" />
+<left ratio="2" nbloops="0"/>
+</scene>
+
+<scene name="scene7">
+<right ratio="1" nbloops="2" />
+<left ratio="3" nbloops="0"/>
+</scene>
+
+<scene name="scene8">
+<right ratio="2" nbloops="2" />
+<left ratio="1" nbloops="0"/>
+</scene>
+
+<scene name="scene9">
+<right ratio="3" nbloops="2" />
+<left ratio="3" nbloops="0"/>
+</scene>
+
+<scene name="scene10">
+<right ratio="4" nbloops="2" />
+<left ratio="4" nbloops="0"/>
+</scene>
+
+<scene name="scene11">
+<right ratio="5" nbloops="2" />
+<left ratio="3" nbloops="0"/>
+</scene>
+
+<scene name="scene12">
+<right ratio="6" nbloops="2" />
+<left ratio="4" nbloops="0"/>
+</scene>
+
+</scenario>
+
+</animation>
+

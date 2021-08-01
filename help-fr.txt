@@ -1,0 +1,3282 @@
+Config loaded : "conf.ini"
+BTN v1.2.2 loaded
+SOU v1.4 loaded
+MMSTD v1.4 loaded
+LADDER v2.1 loaded
+SSWAP v1.5 loaded
+SPYRO v0.3 loaded
+STACK v0.0 loaded
+HTN v0.6 loaded
+
+ USAGE :  perl -I . jugglingTB.pl [[-|-no][a|c|h|H|s|u|v|d int|e cmd|f cmd|i 'file']]*
+
+  -a : Active l'autocompletion (C^d et <TAB>, C^U pour effacer). [Fonctionne mal avec Cmd sur MsWindows ;-(].
+  -c : Colorise jugglingTB. Fonctionne uniquement sur un terminal ANSI ;-(
+  -h : Aide de jugglingTB.
+  -H : Aide etendue de jugglingTB.
+  -s : Affiche les caracteres speciaux (Unicodes) des Menus.
+  -u : Usage pour lancer jugglingTB.
+  -v : Donne la version sans lancer jugglingTB.
+  -d int : Mode Debug.
+  -e cmd : Commande a lancer.
+  -f cmd : Fichier de Commandes a lancer.
+  -i 'file' : Fichier de Configuration pour jugglingTB (Defaut:conf.ini).
+
+Par defaut chacune de ces options est desactivee. Ce comportement peut etre modifie dans le fichier <conf.ini>. Dans ce cas la desactivation des options est explicitement indiquee par l'utilisation du prefix <-no>. 
+Differents parametres de configuration peuvent egalement etre positionnes dans <conf.ini> (Tel que le langage usite par exemple).
+
+ 
+      Voici les differentes commandes utilisables au gre des
+      differents menus. 
+      Pour acceder a un menu de Module, entrez simplement son nom (ou
+      simplement ses 2 premieres lettres). 
+      Une fonction d'un module MOD peut directement etre accedee par
+      son nom dans le Menu MOD ou bien par MOD::LaFonction depuis
+      n'importe quel Menu. 
+
+=============  COMMANDES PRINCIPALES =============
+
+  !          Lance une commande Shell. 
+                !! : Lance une commande Shell mais dans le processus
+                courant. 
+
+  ?          Resultat de la commande precedente. 
+                <1> pour OK. 
+
+  credits    Credits. 
+               
+  exit       Quitte le Programme. "bye" ou "quit" peuvent egalement
+             etre utilises. 
+               
+  help       Utile dans le Menu des modules pour une aide generique ou
+             specialisee. <help>, <help("command")> ou encore
+             <help("module")>. 
+                Utilisez : 
+                - <help> pour obtenir l'Aide courante dans le Menu
+                Principal ou le Menu d'un Module; 
+                - <help("command")> pour obtenir une Aide
+                specifique sur une commande du module courant; 
+                - <help("module")> pour obtenir une Aide specifique
+                sur un Module; 
+                 - <help("command::module")> pour obtenir une Aide
+                specifique sur une commande d'un module donne. 
+
+  help2      Utile pour obtenir les parametres des commandes. 
+                Utilisez : 
+                - <help2> pour obtenir l'ensemble des commandes
+                disponibles du module courant ainsi que leur
+                parametres; 
+                - <help2("command")> pour obtenir une Aide
+                specifique detaillee sur une commande du module
+                courant; 
+                - <help2("module")> pour obtenir une Aide
+                specifique et detaillee sur les parametres des
+                commandes d'un Module; 
+                - <help2("commande::module")> pour obtenir une
+                Aide specifique et detaillee sur les parametres
+                d'une commande d'un Module donne. 
+
+  lsc        Liste l'integralite des commandes disponibles. 
+               
+  lsc2       Liste l'integralite des commandes disponibles ainsi
+             que leurs parametres. 
+               
+  main       Menu principal. 
+               
+  mods       Affiche les modules disponibles. 
+               
+  usage      Options au lancement de jugglingTB. 
+               
+  version    Retourne la version du Module. 
+                Pas de Parametre. 
+
+
+============   CONTEXTE DES MODULES   ============
+
+	Modules disponibles : HTN SSWAP LADDER MMSTD SOU BTN STACK SPYRO 
+
+
+  HTN  - Harmonic Throws Notation (3-Layers Notation) (v0.6)
+-----------------------------------------
+      Harmonic Throws Notation (3-Layers Notation). 
+
+
+  - HTNMaker :                HTNMaker de Shawn Pinciara pour
+                              creer des Grilles Harmoniques. 
+      Parametres : 
+      
+      - Aucun. 
+
+
+  - drawGrid :                Dessine la Grille associee au
+                              Siteswap. Gnuplot et
+                              eventuellement Ghostscript et
+                              ImageMagick (converter) doivent
+                              avoir ete installes au prealable
+                              (Sinon les images sont PostScript
+                              uniquement). 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a dessiner. 
+      
+      - <"fichier"> : fichier image de resultats. 
+      
+      - ["options"] Differentes options
+      -[a|b|c|d|e|h|l|p|r|s|t|u|v|y|z] precisees ci-dessous : 
+      
+      	-a <dec> : Hauteur Agrafe pour lancer depuis main identique
+      (Defaut:0.4). 
+      
+      	-b <color> : Couleur d'agrafe (Defaut:green). 
+      
+      	-c <color> : Couleur de cercle (Defaut:#a935bd). 
+      
+      	-d <color> : Couleur de sync (Defaut:blue). 
+      
+      	-e <color> : Couleur de Mode de Main (Defaut:blue). 
+      
+      	-h <r|l> : Mode des Mains (Defaut:r). 
+      
+      	-l <y|n> : Affichage des Labels (Defaut:y). 
+      
+      	-p <int> : Periode a afficher (Defaut:10). 
+      
+      	-r <dec> : Rayon des Cercles (Defaut:0.2). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre (Defaut:y). 
+      
+      	-u <y|n> : Affichage du Mode des Mains dans le titre (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image. 
+      
+      	-y <dec> : Decalage Y pour Lancers superposes (Defaut:0.25). 
+      
+      	-z <"string"> : Terminal Driver. Mettre une valeur vide pour
+      liste des possibilites (Defaut:auto). 
+
+
+
+
+  SSWAP  - SITESWAP juggling Notation (v1.5)
+-----------------------------------------
+      Dans ce module un SITESWAP sera note selon la notation Siteswap
+      classique telle qu'elle est utilisee par JugglingLab 
+      
+      	Exemples : 534, (6x,4)*, (2x,[22x])(2,[22])(2,[22x])*. 
+      
+      On considerera en plus une notation MultiSynchrone combinant
+      lancers Synchrones et Asynchrones avec les symboles '!' et '*' : 
+      
+      '!' : supprime un Beat de temps. Apres un Siteswap Synchrone il
+      indique que le lancer suivant se fait sur le Beat suivant cense
+      etre un Beat de recuperation (et non plus 2 Beats apres). Apres un
+      lancer Asynchrone, il indique que le lancer suivant se fait au
+      meme Beat. Il devient alors possible de representer un Siteswap
+      Synchrone par un Siteswap Asynchrone. Les Multiplexes peuvent
+      egalement etre adaptes selon ce schema (ie *! ou !*). 
+      
+      '*' : dans le cas d'un Siteswap Synchrone il indique un changement
+      de l'ordre des mains et n'est plus obligatoirement positionne a
+      la fin. Dans le cas d'un Siteswap Asynchrone, le prochain lancer
+      se fait par la meme main (Notion de Hurry). 
+      
+      	Exemples : 4!40, 5!*4!*3, 6x0*, (6x,0)*, 51x*, (1x,3)!11x* ... 
+      
+      Respectez les conseils suivants dans les differentes fonctions
+      de ce module : 
+      	 - Evitez au maximum d'utiliser "!*" et "*!" en debut et 
+      	fin de Siteswap; "!" en debut et "!" en 
+      	fin de Siteswap apres un lancer en representation Asynchrone; 
+      	- La hauteur des objets sera generalement en hexadecimale sauf 
+      	 precision contraire. 
+
+
+  - anim :                    Montre l'animation d'un Siteswap
+                              (JugglingLab). 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap dont on veut obtenir l'animation. 
+
+
+  - animAntiSS :              Montre l'animation d'un
+                              Antisiteswap (PowerJuggler de
+                              Marco Tarini). 
+      Parametres : 
+      
+      - Aucun. 
+
+
+  - draw :                    Dessine le Diagramme associe au
+                              Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a dessiner. 
+      
+      - <"fichier"> : fichier image de resultats. 
+      
+      - ["options"] Differentes options
+      -[c|d|e|g|h|i|l|m|n|o|p|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2) 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap (Defaut:s) 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+      
+      - [\%hash] : Optionnel, hash des transitions. Dans ce cas le
+      Siteswap n'est utilise que pour le titre. Chaque Cle/Valeur est
+      de la forme : Ri:j pour une transition amorcee a droite ou Li:j
+      lorsqu'il s'agit de la gauche. i correspond au Beat du lancer et j
+      est le numero de l'objet lors du lancer (en commençant a 0) pour
+      aider a la colorisation. 
+      	Ex :  %hash = ( 
+      		'L2:0' => 'R4:0', 
+      		'R2:0' => 'R4:1', 
+      		'L4:0' => 'R6:0', 
+      		'R4:0' => 'R5:0', 
+      		'R4:1' => 'L6:0', 
+      		'R6:0' => 'R6:0' 
+      		); 
+
+
+  - drawStates :              Generation des Graphes
+                              Etats/Transitions (Graphviz). 
+      Parametres : 
+      
+      - <type> : Type de generateur parmi 'V' (Vanille), 'S'
+      (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone),
+      'MULTI' (MultiSynchrone). 
+      
+      == cas 'V', 'S' == 
+      	- <int> : Nombre d'objets (-1 non specifie). 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      
+      == cas 'M', 'MS', 'MULTI' == 
+      	- <int> : Nombre d'objets (-1 non specifie). 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      	- <int> : Nombre Max de lancers Simultanes. 
+      
+      - <"fichier1"> : fichier de resultats. 
+      
+      - ["Format"] Optionnel, format d'image (Defaut:png) parmi : bmp
+      (Windows Bitmap Format), cmapx (client-side imagemap for use in
+      html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain, plain-ext (Output in plain text) 
+      
+      - ["Generateur"] Optionnel, filtre generateur Graphviz
+      (Defaut:dot) parmi : circo (circular layout), dot(directed
+      graphs), neato (undirected graphs), twopi (radial layouts),
+      fdp (undirected graphs), sfdp (large undirected graphs), osage
+      (clustered graphs). 
+      
+      - ["fichier2"] Optionnel, fichier XLS Matrice
+      Etats/Transitions valide en entree pour accelerer les calculs
+      (chemin absolu). 
+      
+      
+       Graphviz doit prealablement etre installe et son Path
+      correctement configure dans <conf.ini> 
+
+
+  - drawStatesAggr :          Generation des Graphes
+                              Etats/Transitions Reduits
+                              (Graphviz). 
+      Parametres : 
+      
+      - <type> : Type de generateur parmi 'V' (Vanille), 'S'
+      (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone),
+      'MULTI' (MultiSynchrone). 
+      
+      == cas 'V', 'S' == 
+      	- <int> : Nombre d'objets (-1 non specifie). 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      
+      == cas 'M', 'MS', 'MULTI' == 
+      	- <int> : Nombre d'objets (-1 non specifie). 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      	- <int> : Nombre Max de lancers Simultanes. 
+      
+      - <"fichier1"> : fichier de resultats. 
+      
+      - ["Format"] Optionnel, format d'image (Defaut:png) parmi : bmp
+      (Windows Bitmap Format), cmapx (client-side imagemap for use in
+      html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain, plain-ext (Output in plain text) 
+      
+      - ["Generateur"] Optionnel, filtre generateur Graphviz
+      (Defaut:dot) parmi : circo (circular layout), dot(directed
+      graphs), neato (undirected graphs), twopi (radial layouts),
+      fdp (undirected graphs), sfdp (large undirected graphs), osage
+      (clustered graphs). 
+      
+      - ["fichier2"] Optionnel, fichier XLS Matrice
+      Etats/Transitions Reduite valide en entree pour accelerer les
+      calculs (chemin absolu). 
+      
+      
+       Graphviz doit prealablement etre installe et son Path
+      correctement configure dans <conf.ini> 
+
+
+  - dual :                    Generation du Siteswap Dual. 
+      Parametres : 
+      
+      - <type> : Type de generateur parmi 'V' (Vanille), 'M'
+      (Multiplexe). 
+      
+      - <"siteswap"> : Siteswap. 
+      
+      == cas 'V' == 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      
+      == cas 'M' == 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      	- <int> : Nombre de Max de lancers simultanes. 
+      
+      - ["fichier"] Optionnel, fichier de resultats. Si -1, retourne
+      le resultat sans l'afficher. 
+      
+      - ["options"] Differentes options
+      -[c|d|e|g|h|i|l|m|n|o|p|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2) 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap (Defaut:s) 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+
+
+  - expandSync :              Developpe un Siteswap Synchrone. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a developper. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - genDiagProbert :          Generation des Diagrammes de Martin
+                              Probert. 
+      Parametres : 
+      
+      - <int> : Nombre d'objets. 
+      - <nb> : Hauteur Max des Siteswaps (-1 toute hauteur). 
+      - <int> : Periode des Siteswaps. 
+      - ["fichier"] Optionnel, fichier de resultats. Si -1, retourne
+      le resultat sans l'afficher; Si le fichier commence par 'XLS:',
+      genere un fichier Excel en y ajoutant l'extension .xlsx 
+
+
+  - genPolyrythm :            Generation de Polyrythmes. 
+      Parametres : 
+      
+      - <int> : Nombre d'objets. 
+      - <int> : Hauteur Max en hexa. 
+      - <int> : Ratio Droit. 
+      - <int> : Ratio Gauche. 
+      - [\@List] Optionnel, Lancers a exclure. 
+      	Ex: @List=('0','2','1x'). 
+      	 Si non precise, sans autre parametre optionnel, 0 est exclu; 
+      	 si '', pas d'exclusion. 
+      - ["options"] Differentes options
+      -[b|c|d|g|i|n|o|p|r|s|t|u] precisees ci-dessous : 
+      
+      	-r <0|1|2> :  suppression des redondances (Defaut:0): 
+      		'0' : Pas de suppression; 
+      		'1' : Suppression des redondances avec conservation 
+      		des Siteswaps Ground prioritairement; 
+      		'2' : Suppression des redondances selon l'ordre de la liste. 
+      
+      	-c <y|n> : Considere la colorisation des multiplexes pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-g <y|n> : Ground Seulement (Defaut:n). 
+      
+      	-b <y|n> : Reversible Seulement (Defaut:n). 
+      
+      	-d <y|n> : Scramblable Seulement (Defaut:n). 
+      
+      	-i <y|n> : Donne des Informations supplementaires (Defaut:n). 
+      
+      	-n <y|n> : Palindrome Seulement (Defaut:n). 
+      
+      	-q <y|n> : Non Squeeze Seulement (Defaut:n). 
+      
+      	-o <0|1|2|3> : Arrangement du Resultat (Defaut:1). 
+      		'0' : Pas d'arrangement; 
+      		'1' : Tri Alphanumerique; 
+      		'2' : Classification par nombre d'objets; 
+      		'3' : Classification par periode. 
+      
+      	-p <y|n> : Considere les permutations de Siteswap pour la 
+      	suppression des redondances, la symetrie en fait partie
+      (Defaut:y). 
+      
+      	-s <y|n> : Considere la symetrie pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-t <"string"> : Titre. 
+      
+      	-u <y|n> : Premiers Seulement (Defaut:n) 
+      
+      	-J <y|n> : Double le Tempo pour les polyrythmes 1:M
+      principalement afin d'eviter les squeezes (Defaut:n). 
+      
+      - ["fichier"] Optionnel, fichier de resultats. 
+      Si le fichier commence par : 
+      	- 'JML:', genere un fichier pour une vue JugglingLab 
+      		en JML en y ajoutant l'extension .jml. 
+      	- 'SSHTML:', genere un fichier HTML, en y ajoutant l'extension 
+      		.html et contenant differentes informations sur 
+      		les Siteswaps. 
+      	- 'HTML:', genere un fichier HTML, en y ajoutant l'extension 
+      		.html et contenant les Diagrammes Ladder, les Siteswaps 
+      		Modifies avec conservation du Tempo mais reduction des 
+      		hauteurs et les fichiers JML associes. 
+
+
+  - genPolyrythmMult :        Generation de Polyrythmes avec
+                              Multiplexes. 
+      Parametres : 
+      
+      - <int> : Nombre d'objets. 
+      - <int> : Hauteur Max en hexa. 
+      - <int> : Nombre de lancers simultanes max. 
+      - <int> : Ratio Droit. 
+      - <int> : Ratio Gauche. 
+      - [\@List] Optionnel, Lancers a exclure. 
+      	Ex: @List=('0','2','1x'). 
+      	 Si non precise, sans autre parametre optionnel, 0 est exclu; 
+      	 si '', pas d'exclusion. 
+      - ["options"] Differentes options
+      -[b|c|d|g|i|n|o|p|r|s|t|u] precisees ci-dessous : 
+      
+      	-r <0|1|2> :  suppression des redondances (Defaut:0): 
+      		'0' : Pas de suppression; 
+      		'1' : Suppression des redondances avec conservation 
+      		des Siteswaps Ground prioritairement; 
+      		'2' : Suppression des redondances selon l'ordre de la liste. 
+      
+      	-c <y|n> : Considere la colorisation des multiplexes pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-g <y|n> : Ground Seulement (Defaut:n). 
+      
+      	-b <y|n> : Reversible Seulement (Defaut:n). 
+      
+      	-d <y|n> : Scramblable Seulement (Defaut:n). 
+      
+      	-i <y|n> : Donne des Informations supplementaires (Defaut:n). 
+      
+      	-n <y|n> : Palindrome Seulement (Defaut:n). 
+      
+      	-q <y|n> : Non Squeeze Seulement (Defaut:n). 
+      
+      	-o <0|1|2|3> : Arrangement du Resultat (Defaut:1). 
+      		'0' : Pas d'arrangement; 
+      		'1' : Tri Alphanumerique; 
+      		'2' : Classification par nombre d'objets; 
+      		'3' : Classification par periode. 
+      
+      	-p <y|n> : Considere les permutations de Siteswap pour la 
+      	suppression des redondances, la symetrie en fait partie
+      (Defaut:y). 
+      
+      	-s <y|n> : Considere la symetrie pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-t <"string"> : Titre. 
+      
+      	-u <y|n> : Premiers Seulement (Defaut:n) 
+      
+      	-J <y|n> : Double le Tempo pour les polyrythmes 1:M
+      principalement afin d'eviter les squeezes (Defaut:n). 
+      
+      - ["fichier"] Optionnel, fichier de resultats. 
+      Si le fichier commence par : 
+      	- 'JML:', genere un fichier pour une vue JugglingLab 
+      		en JML en y ajoutant l'extension .jml. 
+      	- 'SSHTML:', genere un fichier HTML, en y ajoutant l'extension 
+      		.html et contenant differentes informations sur 
+      		les Siteswaps. 
+      	- 'HTML:', genere un fichier HTML, en y ajoutant l'extension 
+      		.html et contenant les Diagrammes Ladder, les Siteswaps 
+      		Modifies avec conservation du Tempo mais reduction des 
+      		hauteurs et les fichiers JML associes. 
+
+
+  - genSS :                   Generation de Siteswaps
+                              (JugglingLab). 
+      Parametres : 
+      
+      - <int> : Nombre d'objets. 
+      - <nb> : Valeur du lancer max en hexadecimal. 
+      - <int> : Periode. 
+      - ["-O [options]"] Optionnel, Differentes options precisees
+      ci-dessous. 
+      
+      	les options incluent : 
+      	-s : mode synchrone 
+      	-j : <nombre> definit le nombre de jongleurs 
+      	-n : affiche le nombre de Siteswaps generes 
+      	-m : <nombre> multiplex avec au moins le nombre donne de lancers
+      simultanes 
+      	-no : imprime juste le nombre de Siteswaps generes 
+      	-g : figures fondamentales 
+      	-mf : permet les receptions multiples 
+      	-ng : figures excitees 
+      	-mc : empeche les lancers multiplex en grappes 
+      	-f : liste complete (avec les figures composees) 
+      	-mt : vrai multiplexes uniquement 
+      	-d <nombre> : retard de communication (passing) 
+      	-se : disable starting/ending 
+      	-l <nombre> : passing leader person number 
+      	-prime : premiers seulement 
+      	-x <lancer> : exclure les lancers 
+      	-rot : avec permutations des figures 
+      	-i <lancer> : inclure les lancers 
+      	-lame : supprimer les '11' en mode asynchrone 
+      	-cp : connected patterns only 
+      	-jp : show all juggler permutations 
+      
+      - ["fichier"] Optionnel, fichier de resultats. 
+      Si le fichier commence par : 
+      	- 'JML:', genere un fichier pour une vue JugglingLab 
+      		en JML en y ajoutant l'extension .jml. 
+      	- 'SSHTML:', genere un fichier HTML, en y ajoutant l'extension 
+      		.html et contenant differentes informations sur 
+      		les Siteswaps. 
+      
+      - ["options"] Differentes options
+      -[b|c|d|g|i|n|o|p|r|s|t|u] precisees ci-dessous : 
+      
+      	-r <0|1|2> :  suppression des redondances (Defaut:0): 
+      		'0' : Pas de suppression; 
+      		'1' : Suppression des redondances avec conservation 
+      		des Siteswaps Ground prioritairement; 
+      		'2' : Suppression des redondances selon l'ordre de la liste. 
+      
+      	-c <y|n> : Considere la colorisation des multiplexes pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-g <y|n> : Ground Seulement (Defaut:n). 
+      
+      	-b <y|n> : Reversible Seulement (Defaut:n). 
+      
+      	-d <y|n> : Scramblable Seulement (Defaut:n). 
+      
+      	-i <y|n> : Donne des Informations supplementaires (Defaut:n). 
+      
+      	-n <y|n> : Palindrome Seulement (Defaut:n). 
+      
+      	-q <y|n> : Non Squeeze Seulement (Defaut:n). 
+      
+      	-o <0|1|2|3> : Arrangement du Resultat (Defaut:1). 
+      		'0' : Pas d'arrangement; 
+      		'1' : Tri Alphanumerique; 
+      		'2' : Classification par nombre d'objets; 
+      		'3' : Classification par periode. 
+      
+      	-p <y|n> : Considere les permutations de Siteswap pour la 
+      	suppression des redondances, la symetrie en fait partie
+      (Defaut:y). 
+      
+      	-s <y|n> : Considere la symetrie pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-t <"string"> : Titre. 
+      
+      	-u <y|n> : Premiers Seulement (Defaut:n) 
+
+
+  - genSSFromStates :         Generation de Siteswaps depuis
+                              Diagrammes Etats/Transitions. 
+      Parametres : 
+      
+      - <type> : Type de generateur parmi 'V' (Vanille), 'S'
+      (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone),
+      'MULTI' (MultiSynchrone). 
+      
+      == cas 'V', 'S' == 
+      	- <int> : Nombre d'objets (-1 non specifie). 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      	- <int> : Periode des Siteswaps. 
+      
+      == cas 'M', 'MS', 'MULTI' == 
+      	- <int> : Nombre d'objets (-1 non specifie). 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      	- <int> : Nombre Max de lancers Simultanes. 
+      	- <int> : Periode des Siteswaps. 
+      
+      - ["options"] Differentes options
+      -[b|c|d|g|i|n|o|p|r|s|t|u] precisees ci-dessous : 
+      
+      	-r <0|1|2> :  suppression des redondances (Defaut:0): 
+      		'0' : Pas de suppression; 
+      		'1' : Suppression des redondances avec conservation 
+      		des Siteswaps Ground prioritairement; 
+      		'2' : Suppression des redondances selon l'ordre de la liste. 
+      
+      	-c <y|n> : Considere la colorisation des multiplexes pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-g <y|n> : Ground Seulement (Defaut:n). 
+      
+      	-b <y|n> : Reversible Seulement (Defaut:n). 
+      
+      	-d <y|n> : Scramblable Seulement (Defaut:n). 
+      
+      	-i <y|n> : Donne des Informations supplementaires (Defaut:n). 
+      
+      	-n <y|n> : Palindrome Seulement (Defaut:n). 
+      
+      	-q <y|n> : Non Squeeze Seulement (Defaut:n). 
+      
+      	-o <0|1|2|3> : Arrangement du Resultat (Defaut:1). 
+      		'0' : Pas d'arrangement; 
+      		'1' : Tri Alphanumerique; 
+      		'2' : Classification par nombre d'objets; 
+      		'3' : Classification par periode. 
+      
+      	-p <y|n> : Considere les permutations de Siteswap pour la 
+      	suppression des redondances, la symetrie en fait partie
+      (Defaut:y). 
+      
+      	-s <y|n> : Considere la symetrie pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-t <"string"> : Titre. 
+      
+      	-u <y|n> : Premiers Seulement (Defaut:n) 
+      
+      - ["fichier"] Optionnel, fichier de resultats. 
+      Si -1, retourne le resultat sans l'afficher. 
+      Si le fichier commence par : 
+      	- 'JML:', genere un fichier pour une vue JugglingLab 
+      		en JML en y ajoutant l'extension .jml; 
+      		Les Siteswaps invalides sont masques. 
+      	- 'SSHTML:', genere un fichier HTML, en y ajoutant l'extension 
+      		.html et contenant differentes informations sur 
+      		les Siteswaps. 
+      
+      - ["fichier"] Optionnel, fichier XLS Matrice
+      Etats/Transitions valide en entree pour accelerer les calculs
+      (chemin absolu). 
+
+
+  - genSSFromStatesAggr :     Generation de Siteswaps depuis
+                              Diagrammes Etats/Transitions
+                              Reduits. 
+      Parametres : 
+      
+      - <type> : Type de generateur parmi 'V' (Vanille), 'S'
+      (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone),
+      'MULTI' (MultiSynchrone). 
+      
+      == cas 'V', 'S' == 
+      	- <int> : Nombre d'objets (-1 non specifie). 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      	- <int> : Periode des Siteswaps. 
+      
+      == cas 'M', 'MS', 'MULTI' == 
+      	- <int> : Nombre d'objets (-1 non specifie). 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      	- <int> : Nombre Max de lancers Simultanes. 
+      	- <int> : Periode des Siteswaps. 
+      
+      - ["options"] Differentes options
+      -[b|c|d|g|i|n|o|p|r|s|t|u] precisees ci-dessous : 
+      
+      	-r <0|1|2> :  suppression des redondances (Defaut:0): 
+      		'0' : Pas de suppression; 
+      		'1' : Suppression des redondances avec conservation 
+      		des Siteswaps Ground prioritairement; 
+      		'2' : Suppression des redondances selon l'ordre de la liste. 
+      
+      	-c <y|n> : Considere la colorisation des multiplexes pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-g <y|n> : Ground Seulement (Defaut:n). 
+      
+      	-b <y|n> : Reversible Seulement (Defaut:n). 
+      
+      	-d <y|n> : Scramblable Seulement (Defaut:n). 
+      
+      	-i <y|n> : Donne des Informations supplementaires (Defaut:n). 
+      
+      	-n <y|n> : Palindrome Seulement (Defaut:n). 
+      
+      	-q <y|n> : Non Squeeze Seulement (Defaut:n). 
+      
+      	-o <0|1|2|3> : Arrangement du Resultat (Defaut:1). 
+      		'0' : Pas d'arrangement; 
+      		'1' : Tri Alphanumerique; 
+      		'2' : Classification par nombre d'objets; 
+      		'3' : Classification par periode. 
+      
+      	-p <y|n> : Considere les permutations de Siteswap pour la 
+      	suppression des redondances, la symetrie en fait partie
+      (Defaut:y). 
+      
+      	-s <y|n> : Considere la symetrie pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-t <"string"> : Titre. 
+      
+      	-u <y|n> : Premiers Seulement (Defaut:n) 
+      
+      - ["fichier"] Optionnel, fichier de resultats. 
+      Si -1, retourne le resultat sans l'afficher. 
+      Si le fichier commence par : 
+      	- 'JML:', genere un fichier pour une vue JugglingLab 
+      		en JML en y ajoutant l'extension .jml; 
+      		Les Siteswaps invalides sont masques. 
+      	- 'SSHTML:', genere un fichier HTML, en y ajoutant l'extension 
+      		.html et contenant differentes informations sur 
+      		les Siteswaps. 
+      
+      - ["fichier"] Optionnel, fichier XLS Matrice
+      Etats/Transitions Reduite valide en entree pour accelerer les
+      calculs (chemin absolu). 
+
+
+  - genSSFromThrows :         Generation de Siteswaps depuis
+                              liste de lancers. 
+      Parametres : 
+      
+      - <type> : Type de generateur parmi 'V' (Vanille), 'S'
+      (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone),
+      'MULTI' (MultiSynchrone). 
+      
+      - <"siteswap"> : Suite de chiffres dont on veut obtenir
+      l'ensemble des combinaisons valides. 
+      
+      - ["options"] Differentes options
+      -[b|c|d|g|i|n|o|p|r|s|t|u] precisees ci-dessous : 
+      
+      	-r <0|1|2> :  suppression des redondances (Defaut:0): 
+      		'0' : Pas de suppression; 
+      		'1' : Suppression des redondances avec conservation 
+      		des Siteswaps Ground prioritairement; 
+      		'2' : Suppression des redondances selon l'ordre de la liste. 
+      
+      	-c <y|n> : Considere la colorisation des multiplexes pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-g <y|n> : Ground Seulement (Defaut:n). 
+      
+      	-b <y|n> : Reversible Seulement (Defaut:n). 
+      
+      	-d <y|n> : Scramblable Seulement (Defaut:n). 
+      
+      	-i <y|n> : Donne des Informations supplementaires (Defaut:n). 
+      
+      	-n <y|n> : Palindrome Seulement (Defaut:n). 
+      
+      	-q <y|n> : Non Squeeze Seulement (Defaut:n). 
+      
+      	-o <0|1|2|3> : Arrangement du Resultat (Defaut:1). 
+      		'0' : Pas d'arrangement; 
+      		'1' : Tri Alphanumerique; 
+      		'2' : Classification par nombre d'objets; 
+      		'3' : Classification par periode. 
+      
+      	-p <y|n> : Considere les permutations de Siteswap pour la 
+      	suppression des redondances, la symetrie en fait partie
+      (Defaut:y). 
+      
+      	-s <y|n> : Considere la symetrie pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-t <"string"> : Titre. 
+      
+      	-u <y|n> : Premiers Seulement (Defaut:n) 
+      
+      	-A <y|n> : Une option particuliere non repertoriee qui
+      considere uniquement les symetries pour les Siteswap S et MS
+      (Defaut:n). 
+      
+      - ["fichier"] Optionnel, fichier de resultats. 
+      Si -1, retourne le resultat sans l'afficher. 
+      Si le fichier commence par : 
+      	- 'JML:', genere un fichier pour une vue JugglingLab 
+      		en JML en y ajoutant l'extension .jml; 
+      		Les Siteswaps invalides sont masques. 
+      	- 'SSHTML:', genere un fichier HTML, en y ajoutant l'extension 
+      		.html et contenant differentes informations sur 
+      		les Siteswaps. 
+
+
+  - genSSMagic :              Generation de Magics Siteswaps. 
+      Parametres : 
+      
+      - <type> : Type de generateur parmi 'V' (Vanille), 'S'
+      (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone),
+      'MULTI' (MultiSynchrone). 
+      
+      == cas 'V', 'S', 'MULTI' == 
+      	- <mode> : Mode de Magics Siteswaps (Pair/Impair/All). 
+      	- <nb> : Valeur Minimum stricte des Lancers. 
+      	- <int> : Periode des Siteswaps. 
+      
+      == cas 'M', 'MS' == 
+      	- <mode> : Mode de Magics Siteswaps (Pair/Impair/All). 
+      	- <nb> : Valeur Minimum stricte des Lancers. 
+      	- <int> : Nombre de Lancers. 
+      	- <int> : Nombre Max de Lancers Multiplexes. 
+      
+      - ["options"] Differentes options
+      -[b|c|d|g|i|n|o|p|r|s|t|u] precisees ci-dessous : 
+      
+      	-r <0|1|2> :  suppression des redondances (Defaut:0): 
+      		'0' : Pas de suppression; 
+      		'1' : Suppression des redondances avec conservation 
+      		des Siteswaps Ground prioritairement; 
+      		'2' : Suppression des redondances selon l'ordre de la liste. 
+      
+      	-c <y|n> : Considere la colorisation des multiplexes pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-g <y|n> : Ground Seulement (Defaut:n). 
+      
+      	-b <y|n> : Reversible Seulement (Defaut:n). 
+      
+      	-d <y|n> : Scramblable Seulement (Defaut:n). 
+      
+      	-i <y|n> : Donne des Informations supplementaires (Defaut:n). 
+      
+      	-n <y|n> : Palindrome Seulement (Defaut:n). 
+      
+      	-q <y|n> : Non Squeeze Seulement (Defaut:n). 
+      
+      	-o <0|1|2|3> : Arrangement du Resultat (Defaut:1). 
+      		'0' : Pas d'arrangement; 
+      		'1' : Tri Alphanumerique; 
+      		'2' : Classification par nombre d'objets; 
+      		'3' : Classification par periode. 
+      
+      	-p <y|n> : Considere les permutations de Siteswap pour la 
+      	suppression des redondances, la symetrie en fait partie
+      (Defaut:y). 
+      
+      	-s <y|n> : Considere la symetrie pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-t <"string"> : Titre. 
+      
+      	-u <y|n> : Premiers Seulement (Defaut:n) 
+      
+      - ["fichier"] Optionnel, fichier de resultats. 
+      Si -1, retourne le resultat sans l'afficher. 
+      Si le fichier commence par : 
+      	- 'JML:', genere un fichier pour une vue JugglingLab 
+      		en JML en y ajoutant l'extension .jml; 
+      		Les Siteswaps invalides sont masques. 
+      	- 'SSHTML:', genere un fichier HTML, en y ajoutant l'extension 
+      		.html et contenant differentes informations sur 
+      		les Siteswaps. 
+
+
+  - genSSMagicStadler :       Generation Partielle de Magics
+                              Siteswaps Vanilles par
+                              l'algorithme de Jon Stadler. 
+      Parametres : 
+      
+      - <int> : Periode Maximum. 
+      
+      - ["options"] Differentes options
+      -[b|c|d|g|i|n|o|p|r|s|t|u] precisees ci-dessous : 
+      
+      	-r <0|1|2> :  suppression des redondances (Defaut:0): 
+      		'0' : Pas de suppression; 
+      		'1' : Suppression des redondances avec conservation 
+      		des Siteswaps Ground prioritairement; 
+      		'2' : Suppression des redondances selon l'ordre de la liste. 
+      
+      	-c <y|n> : Considere la colorisation des multiplexes pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-g <y|n> : Ground Seulement (Defaut:n). 
+      
+      	-b <y|n> : Reversible Seulement (Defaut:n). 
+      
+      	-d <y|n> : Scramblable Seulement (Defaut:n). 
+      
+      	-i <y|n> : Donne des Informations supplementaires (Defaut:n). 
+      
+      	-n <y|n> : Palindrome Seulement (Defaut:n). 
+      
+      	-q <y|n> : Non Squeeze Seulement (Defaut:n). 
+      
+      	-o <0|1|2|3> : Arrangement du Resultat (Defaut:1). 
+      		'0' : Pas d'arrangement; 
+      		'1' : Tri Alphanumerique; 
+      		'2' : Classification par nombre d'objets; 
+      		'3' : Classification par periode. 
+      
+      	-p <y|n> : Considere les permutations de Siteswap pour la 
+      	suppression des redondances, la symetrie en fait partie
+      (Defaut:y). 
+      
+      	-s <y|n> : Considere la symetrie pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-t <"string"> : Titre. 
+      
+      	-u <y|n> : Premiers Seulement (Defaut:n) 
+      
+      - ["fichier"] Optionnel, fichier de resultats. 
+      Si -1, retourne le resultat sans l'afficher. 
+      Si le fichier commence par : 
+      	- 'JML:', genere un fichier pour une vue JugglingLab 
+      		en JML en y ajoutant l'extension .jml; 
+      		Les Siteswaps invalides sont masques. 
+      	- 'SSHTML:', genere un fichier HTML, en y ajoutant l'extension 
+      		.html et contenant differentes informations sur 
+      		les Siteswaps. 
+
+
+  - genSSPerm :               Generation de Siteswaps Vanilles
+                              Par Test de Permutation (Algorithme
+                              de Polster). 
+      Parametres : 
+      
+      - <int> : Nombre d'objets. 
+      - <int> : Periode des Siteswaps. 
+      
+      - ["options"] Differentes options
+      -[b|c|d|g|i|n|o|p|r|s|t|u] precisees ci-dessous : 
+      
+      	-r <0|1|2> :  suppression des redondances (Defaut:0): 
+      		'0' : Pas de suppression; 
+      		'1' : Suppression des redondances avec conservation 
+      		des Siteswaps Ground prioritairement; 
+      		'2' : Suppression des redondances selon l'ordre de la liste. 
+      
+      	-c <y|n> : Considere la colorisation des multiplexes pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-g <y|n> : Ground Seulement (Defaut:n). 
+      
+      	-b <y|n> : Reversible Seulement (Defaut:n). 
+      
+      	-d <y|n> : Scramblable Seulement (Defaut:n). 
+      
+      	-i <y|n> : Donne des Informations supplementaires (Defaut:n). 
+      
+      	-n <y|n> : Palindrome Seulement (Defaut:n). 
+      
+      	-q <y|n> : Non Squeeze Seulement (Defaut:n). 
+      
+      	-o <0|1|2|3> : Arrangement du Resultat (Defaut:1). 
+      		'0' : Pas d'arrangement; 
+      		'1' : Tri Alphanumerique; 
+      		'2' : Classification par nombre d'objets; 
+      		'3' : Classification par periode. 
+      
+      	-p <y|n> : Considere les permutations de Siteswap pour la 
+      	suppression des redondances, la symetrie en fait partie
+      (Defaut:y). 
+      
+      	-s <y|n> : Considere la symetrie pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-t <"string"> : Titre. 
+      
+      	-u <y|n> : Premiers Seulement (Defaut:n) 
+      
+      - ["fichier"] Optionnel, fichier de resultats. 
+      Si -1, retourne le resultat sans l'afficher. 
+      Si le fichier commence par : 
+      	- 'JML:', genere un fichier pour une vue JugglingLab 
+      		en JML en y ajoutant l'extension .jml; 
+      		Les Siteswaps invalides sont masques. 
+      	- 'SSHTML:', genere un fichier HTML, en y ajoutant l'extension 
+      		.html et contenant differentes informations sur 
+      		les Siteswaps. 
+
+
+  - genSSPrime :              Genere les Siteswaps Premiers. 
+      Parametres : 
+      
+      - <type> : Type de generateur parmi 'V' (Vanille), 'S'
+      (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone),
+      'MULTI' (MultiSynchrone). 
+      
+      == cas 'V', 'S' == 
+      	- <int> : Nombre d'objets. 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      
+      == cas 'M', 'MS', 'MULTI' == 
+      	- <int> : Nombre d'objets. 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      	- <int> : Nombre Max de lancers Simultanes. 
+      
+      - ["options"] Differentes options
+      -[b|c|d|g|h|i|l|n|o|p|s|t] precisees ci-dessous : 
+      
+      	-r <0|1|2> :  suppression des redondances (Defaut:0): 
+      		'0' : Pas de suppression; 
+      		'1' : Suppression des redondances avec conservation 
+      		des Siteswaps Ground prioritairement; 
+      		'2' : Suppression des redondances selon l'ordre de la liste. 
+      
+      	-c <y|n> : Considere la colorisation des multiplexes pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-g <y|n> : Ground Seulement (Defaut:n). 
+      
+      	-b <y|n> : Reversible Seulement (Defaut:n). 
+      
+      	-d <y|n> : Scramblable Seulement (Defaut:n). 
+      
+      	-i <y|n> : Donne des Informations supplementaires (Defaut:n). 
+      
+      	-n <y|n> : Palindrome Seulement (Defaut:n). 
+      
+      	-q <y|n> : Non Squeeze Seulement (Defaut:n). 
+      
+      	-o <0|1|2|3> : Arrangement du Resultat (Defaut:1). 
+      		'0' : Pas d'arrangement; 
+      		'1' : Tri Alphanumerique; 
+      		'2' : Classification par nombre d'objets; 
+      		'3' : Classification par periode. 
+      
+      	-p <y|n> : Considere les permutations de Siteswap pour la 
+      	suppression des redondances, la symetrie en fait partie
+      (Defaut:y). 
+      
+      	-s <y|n> : Considere la symetrie pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-t <"string"> : Titre. 
+      
+      	-h <y|n> : histogrammes & circuits utilises (Defaut:n). 
+      
+      	-l <y|n> : Synthese de Resultats & plus longs Siteswaps Premiers
+      (Defaut:y). 
+      
+      - ["fichier"] Optionnel, fichier de resultats. 
+      Si -1, retourne le resultat sans l'afficher. 
+      Si -2, affiche les circuits utilises et la synthese si ceux-ci
+      sont positionnes dans les options. 
+      Si le fichier commence par : 
+      	- 'JML:', genere un fichier constitue de siteswaps complets
+      pour une vue JugglingLab 
+      		en JML; 
+      		Les Siteswaps invalides sont masques. 
+      	- 'SSHTML:', genere un fichier HTML constitue de siteswaps
+      complets, en y ajoutant l'extension 
+      		.html et contenant differentes informations sur 
+      		les Siteswaps. 
+      
+      - ["fichier"] Optionnel, fichier XLS Matrice
+      Etats/Transitions (Reduite ou non) valide en entree pour
+      accelerer les calculs (chemin absolu). 
+
+
+  - genSSProbert :            Generation de Siteswaps Vanilles
+                              depuis Diagrammes de Martin
+                              Probert. 
+      Parametres : 
+      
+      - <int> : Nombre d'objets. 
+      
+      - <nb> : Hauteur Max des Siteswaps (-1 toute hauteur). 
+      
+      - <int> : Periode des Siteswaps. 
+      
+      - ["options"] Differentes options
+      -[b|c|d|g|i|n|o|p|r|s|t|u] precisees ci-dessous : 
+      
+      	-r <0|1|2> :  suppression des redondances (Defaut:0): 
+      		'0' : Pas de suppression; 
+      		'1' : Suppression des redondances avec conservation 
+      		des Siteswaps Ground prioritairement; 
+      		'2' : Suppression des redondances selon l'ordre de la liste. 
+      
+      	-c <y|n> : Considere la colorisation des multiplexes pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-g <y|n> : Ground Seulement (Defaut:n). 
+      
+      	-b <y|n> : Reversible Seulement (Defaut:n). 
+      
+      	-d <y|n> : Scramblable Seulement (Defaut:n). 
+      
+      	-i <y|n> : Donne des Informations supplementaires (Defaut:n). 
+      
+      	-n <y|n> : Palindrome Seulement (Defaut:n). 
+      
+      	-q <y|n> : Non Squeeze Seulement (Defaut:n). 
+      
+      	-o <0|1|2|3> : Arrangement du Resultat (Defaut:1). 
+      		'0' : Pas d'arrangement; 
+      		'1' : Tri Alphanumerique; 
+      		'2' : Classification par nombre d'objets; 
+      		'3' : Classification par periode. 
+      
+      	-p <y|n> : Considere les permutations de Siteswap pour la 
+      	suppression des redondances, la symetrie en fait partie
+      (Defaut:y). 
+      
+      	-s <y|n> : Considere la symetrie pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-t <"string"> : Titre. 
+      
+      	-u <y|n> : Premiers Seulement (Defaut:n) 
+      
+      - ["fichier"] Optionnel, fichier de resultats. 
+      Si -1, retourne le resultat sans l'afficher. 
+      Si le fichier commence par : 
+      	- 'JML:', genere un fichier pour une vue JugglingLab 
+      		en JML en y ajoutant l'extension .jml; 
+      		Les Siteswaps invalides sont masques. 
+      	- 'SSHTML:', genere un fichier HTML, en y ajoutant l'extension 
+      		.html et contenant differentes informations sur 
+      		les Siteswaps. 
+
+
+  - genScramblablePolster :   Generation de Siteswaps Vanilles
+                              Scramblables par Algorithme de
+                              Polster. 
+      Les Siteswaps Scramblables respectent le format suivant (p
+      etant la periode, c et Ak des entiers positifs) : {Ak*p + c}
+      [k=0...k=p-1] 
+      
+      Parametres : 
+      
+      - <int> : Periode p. 
+      - <int> : Valeur Maximum de Ak. 
+      - <int> : Valeur Maximum de Constante c. 
+      
+      - ["options"] Differentes options
+      -[b|c|d|g|i|n|o|p|r|s|t|u] precisees ci-dessous : 
+      
+      	-r <0|1|2> :  suppression des redondances (Defaut:0): 
+      		'0' : Pas de suppression; 
+      		'1' : Suppression des redondances avec conservation 
+      		des Siteswaps Ground prioritairement; 
+      		'2' : Suppression des redondances selon l'ordre de la liste. 
+      
+      	-c <y|n> : Considere la colorisation des multiplexes pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-g <y|n> : Ground Seulement (Defaut:n). 
+      
+      	-b <y|n> : Reversible Seulement (Defaut:n). 
+      
+      	-d <y|n> : Scramblable Seulement (Defaut:n). 
+      
+      	-i <y|n> : Donne des Informations supplementaires (Defaut:n). 
+      
+      	-n <y|n> : Palindrome Seulement (Defaut:n). 
+      
+      	-q <y|n> : Non Squeeze Seulement (Defaut:n). 
+      
+      	-o <0|1|2|3> : Arrangement du Resultat (Defaut:1). 
+      		'0' : Pas d'arrangement; 
+      		'1' : Tri Alphanumerique; 
+      		'2' : Classification par nombre d'objets; 
+      		'3' : Classification par periode. 
+      
+      	-p <y|n> : Considere les permutations de Siteswap pour la 
+      	suppression des redondances, la symetrie en fait partie
+      (Defaut:y). 
+      
+      	-s <y|n> : Considere la symetrie pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-t <"string"> : Titre. 
+      
+      	-u <y|n> : Premiers Seulement (Defaut:n) 
+      
+      - ["fichier"] Optionnel, fichier de resultats. 
+      Si -1, retourne le resultat sans l'afficher. 
+      Si le fichier commence par : 
+      	- 'JML:', genere un fichier pour une vue JugglingLab 
+      		en JML en y ajoutant l'extension .jml; 
+      		Les Siteswaps invalides sont masques. 
+      	- 'SSHTML:', genere un fichier HTML, en y ajoutant l'extension 
+      		.html et contenant differentes informations sur 
+      		les Siteswaps. 
+
+
+  - genStates :               Generation des Matrices
+                              Etats/Transitions. 
+      Parametres : 
+      
+      - <type> : Type de generateur parmi 'V' (Vanille), 'S'
+      (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone),
+      'MULTI' (MultiSynchone). 
+      
+      == cas 'V', 'S' == 
+      	- <int> : Nombre d'objets (-1 non specifie). 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      
+      == cas 'M', 'MS', 'MULTI' == 
+      	- <int> : Nombre d'objets (-1 non specifie). 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      	- <int> : Nombre Max de lancers Simultanes. 
+      
+      - ["fichier"] Optionnel, fichier de resultats. Si -1, retourne
+      le resultat sans l'afficher; Si le fichier commence par 'XLS:',
+      genere un fichier Excel en y ajoutant l'extension .xlsx 
+
+
+  - genStatesAggr :           Generation des Matrices
+                              Etats/Transitions Reduites. 
+      Parametres : 
+      
+      - <type> : Type de generateur parmi 'V' (Vanille), 'S'
+      (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone),
+      'MULTI' (MultiSynchone). 
+      
+      == cas 'V', 'S' == 
+      	- <int> : Nombre d'objets (-1 non specifie). 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      
+      == cas 'M', 'MS', 'MULTI' == 
+      	- <int> : Nombre d'objets (-1 non specifie). 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      	- <int> : Nombre Max de lancers Simultanes. 
+      
+      - ["fichier1"] Optionnel, fichier de resultats. Si -1, retourne
+      le resultat sans l'afficher; Si le fichier commence par 'XLS:',
+      genere un fichier Excel en y ajoutant l'extension .xlsx. 
+      
+      - ["fichier2"] Optionnel, fichier XLS Matrice
+      Etats/Transitions valide en entree pour accelerer les calculs
+      (chemin absolu). 
+
+
+  - genTrans :                Generation de Transitions entre
+                              Siteswaps (JugglingLab). 
+      Parametres : 
+      
+      - <ss1> : Siteswap1. 
+      - <ss2> : Siteswap2. 
+      - ["-O [options]"] Optionnel, Differentes options precisees
+      ci-dessous. 
+      
+      	les options incluent : 
+      	-m <num> : Multiplexe avec au plus num lancers simultanes. 
+      	-mf : Authorise catchs simultanes non triviaux (squeeze) 
+      	-mc : Interdit lancers Multiplexes Cluster (i.e. [33]) 
+      	-limits : Desactive Temporisation d'execution (Recherches
+      peuvent etre tres longue!). 
+      
+      - ["fichier"] Optionnel, fichier de resultats. 
+      Si le fichier commence par : 
+      	- 'JML:', genere un fichier pour une vue JugglingLab 
+      		en JML en y ajoutant l'extension .jml. 
+
+
+  - genTransBtwnSS :          Generation de Transitions entre
+                              Siteswaps depuis les Diagrammes
+                              Etats/Transitions. 
+      Parametres : 
+      
+      - <"siteswap1"> : Siteswap Initial. 
+      
+      - <"siteswap2"> : Siteswap Final. 
+      
+      - <int> : Profondeur. 
+      
+      - ["options"] Differentes options -[h|m|c|g|i|o|p|r|s|t|u]
+      precisees ci-dessous : 
+      
+      	-h <nb> : Hauteur Max en hexadecimal. 
+      
+      	-m <int> : Nombre Min de Lancers Multiplexes. 
+      
+      
+      Les options suivantes ne sont considerees que lors de la
+      generation d'un fichier SSHTML ou JML : 
+      
+      	-r <0|1|2> :  suppression des redondances (Defaut:0): 
+      		'0' : Pas de suppression; 
+      		'1' : Suppression des redondances avec conservation 
+      		des Siteswaps Ground prioritairement; 
+      		'2' : Suppression des redondances selon l'ordre de la liste. 
+      
+      	-c <y|n> : Considere la colorisation des multiplexes pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-g <y|n> : Ground Seulement (Defaut:n). 
+      
+      	-b <y|n> : Reversible Seulement (Defaut:n). 
+      
+      	-d <y|n> : Scramblable Seulement (Defaut:n). 
+      
+      	-i <y|n> : Donne des Informations supplementaires (Defaut:n). 
+      
+      	-n <y|n> : Palindrome Seulement (Defaut:n). 
+      
+      	-q <y|n> : Non Squeeze Seulement (Defaut:n). 
+      
+      	-o <0|1|2|3> : Arrangement du Resultat (Defaut:1). 
+      		'0' : Pas d'arrangement; 
+      		'1' : Tri Alphanumerique; 
+      		'2' : Classification par nombre d'objets; 
+      		'3' : Classification par periode. 
+      
+      	-p <y|n> : Considere les permutations de Siteswap pour la 
+      	suppression des redondances, la symetrie en fait partie
+      (Defaut:y). 
+      
+      	-s <y|n> : Considere la symetrie pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-t <"string"> : Titre. 
+      
+      	-u <y|n> : Premiers Seulement (Defaut:n) 
+      
+      - ["fichier"] Optionnel, fichier de resultats. 
+      Si -1, retourne le resultat sans l'afficher. 
+      Si le fichier commence par : 
+      	- 'JML:', genere un fichier constitue de siteswaps complets
+      pour une vue JugglingLab 
+      		en JML en y ajoutant l'extension .jml; 
+      		Les Siteswaps invalides sont masques. 
+      	- 'SSHTML:', genere un fichier HTML constitue de siteswaps
+      complets, en y ajoutant l'extension 
+      		.html et contenant differentes informations sur 
+      		les Siteswaps. 
+      
+      - ["fichier"] Optionnel, fichier XLS Matrice
+      Etats/Transitions valide en entree pour accelerer les calculs
+      (chemin absolu). 
+
+
+  - genTransBtwnSSAggr :      Generation de Transitions entre
+                              Siteswaps depuis les Diagrammes
+                              Etats/Transitions Reduits. 
+      Parametres : 
+      
+      - <"siteswap1"> : Siteswap Initial. 
+      
+      - <"siteswap2"> : Siteswap Final. 
+      
+      - <int> : Profondeur. 
+      
+      - ["options"] Differentes options -[h|m|c|g|i|o|p|r|s|t|u]
+      precisees ci-dessous : 
+      
+      	-h <nb> : Hauteur Max en hexadecimal. 
+      
+      	-m <int> : Nombre Min de Lancers Multiplexes. 
+      
+      
+      Les options suivantes ne sont considerees que lors de la
+      generation d'un fichier SSHTML ou JML : 
+      
+      	-r <0|1|2> :  suppression des redondances (Defaut:0): 
+      		'0' : Pas de suppression; 
+      		'1' : Suppression des redondances avec conservation 
+      		des Siteswaps Ground prioritairement; 
+      		'2' : Suppression des redondances selon l'ordre de la liste. 
+      
+      	-c <y|n> : Considere la colorisation des multiplexes pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-g <y|n> : Ground Seulement (Defaut:n). 
+      
+      	-b <y|n> : Reversible Seulement (Defaut:n). 
+      
+      	-d <y|n> : Scramblable Seulement (Defaut:n). 
+      
+      	-i <y|n> : Donne des Informations supplementaires (Defaut:n). 
+      
+      	-n <y|n> : Palindrome Seulement (Defaut:n). 
+      
+      	-q <y|n> : Non Squeeze Seulement (Defaut:n). 
+      
+      	-o <0|1|2|3> : Arrangement du Resultat (Defaut:1). 
+      		'0' : Pas d'arrangement; 
+      		'1' : Tri Alphanumerique; 
+      		'2' : Classification par nombre d'objets; 
+      		'3' : Classification par periode. 
+      
+      	-p <y|n> : Considere les permutations de Siteswap pour la 
+      	suppression des redondances, la symetrie en fait partie
+      (Defaut:y). 
+      
+      	-s <y|n> : Considere la symetrie pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-t <"string"> : Titre. 
+      
+      	-u <y|n> : Premiers Seulement (Defaut:n) 
+      
+      - ["fichier"] Optionnel, fichier de resultats. 
+      Si -1, retourne le resultat sans l'afficher. 
+      Si le fichier commence par : 
+      	- 'JML:', genere un fichier constitue de siteswaps complets
+      pour une vue JugglingLab 
+      		en JML en y ajoutant l'extension .jml; 
+      		Les Siteswaps invalides sont masques. 
+      	- 'SSHTML:', genere un fichier HTML constitue de siteswaps
+      complets, en y ajoutant l'extension 
+      		.html et contenant differentes informations sur 
+      		les Siteswaps. 
+      
+      - ["fichier"] Optionnel, fichier XLS Matrice
+      Etats/Transitions Reduite valide en entree pour accelerer les
+      calculs (chemin absolu). 
+
+
+  - genTransBtwnStates :      Generation de Transitions entre
+                              Etats depuis les Diagrammes
+                              Etats/Transitions. 
+      Parametres : 
+      
+      - <"state1"> : Etat Initial. 
+      
+      - <"state2"> : Etat Final. 
+      
+      - <int> : Profondeur. 
+      
+      - ["options"] Differentes options -[h|m] precisees ci-dessous
+      : 
+      
+      	-h <nb> : Hauteur Max en hexadecimal. 
+      	-m <int> : Nombre Min de Lancers Multiplexes. 
+      
+      - ["fichier1"] Optionnel, fichier de resultats. Si -1, retourne
+      le resultat sans l'afficher. 
+      
+      - ["fichier2"] Optionnel, fichier XLS Matrice
+      Etats/Transitions valide en entree pour accelerer les calculs
+      (chemin absolu). 
+
+
+  - genTransBtwnStatesAggr :  Generation de Transitions entre
+                              Etats depuis les Diagrammes
+                              Etats/Transitions Reduits. 
+      Parametres : 
+      
+      - <"state1"> : Etat Initial. 
+      
+      - <"state2"> : Etat Final. 
+      
+      - <int> : Profondeur. 
+      
+      - ["options"] Differentes options -[h|m] precisees ci-dessous
+      : 
+      
+      	-h <nb> : Hauteur Max en hexadecimal. 
+      	-m <int> : Nombre Min de Lancers Multiplexes. 
+      
+      - ["fichier1"] Optionnel, fichier de resultats. Si -1, retourne
+      le resultat sans l'afficher. 
+      
+      - ["fichier2"] Optionnel, fichier XLS Matrice
+      Etats/Transitions Reduite valide en entree pour accelerer les
+      calculs (chemin absolu). 
+
+
+  - genTransTeodoro :         Lance les Generateurs de Siteswaps &
+                              de Transitions de Pedro Teodoro. 
+      Parametres : 
+      
+      - Aucun. 
+
+
+  - getAnagrammes :           Donne les Anagrammes du Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap (V,M,S ou MS). 
+      - ["options"] Differentes options [r|k]: 
+      	-r <y|n> : suppression des Siteswaps equivalents (Defaut:y). 
+      	-k <y|n> : option pour Siteswaps S et MS: pour les Siteswaps
+      symetriques finissant par *, le statut Scramblable est
+      considere uniquement sur la premiere portion. (Defaut:y). 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - getHeightMax :            Donne la hauteur Maximum du
+                              Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a analyser. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - getHeightMin :            Donne la hauteur Minimum du
+                              Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a analyser. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - getInfo :                 Affiche des informations sur le
+                              Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a analyser. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - getObjNumber :            Donne le nombre d'objets du
+                              Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a analyser. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - getOrbits :               Donne les Orbites d'un Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap 
+      
+      - <int> : Mode de colorisation (Defaut:2) 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      - ["fichier"] Optionnel, fichier de resultats. Si -1, retourne
+      le resultat sans l'afficher. 
+
+
+  - getOrbitsAggr :           Donne les Orbites Aggregees d'un
+                              Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap 
+      
+      - <int> : Mode de colorisation (Defaut:2) 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      - ["fichier"] Optionnel, fichier de resultats. Si -1, retourne
+      le resultat sans l'afficher. 
+
+
+  - getPeriod :               Donne la Periode du Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a analyser. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - getPeriodMin :            Longueur de la Periode Minimum d'un
+                              Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap dont on veut obtenir la Periode
+      minimum. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - getSSType :               Donne la famille du Siteswap parmi V
+                              (Vanille), M (Multiplexe), S
+                              (Synchrone), MS
+                              (Multiplexe-Synchrone), MULTI
+                              (MultiSynchrone). 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a analyser. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - getSSstatus :             Donne le Statut du Siteswap (Excite
+                              [Excited], non excite [Ground] ou
+                              [Unknown] si le nombre d'objets ne
+                              permet pas de le dire) 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a analyser. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - getStates :               Donne les Etats traverses. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isEquivalent :            Teste l'equivalence de 2 Siteswaps. 
+      Parametres : 
+      
+      - <"siteswap1"> <"siteswap2"> : Siteswaps a comparer. 
+      
+      - ["options"] Differentes options [c|p|s] precisees
+      ci-dessous : 
+      
+      	-c <y|n> : Considere la colorisation des multiplexes dans 
+      		l'equivalence (Defaut:n). 
+      
+      	-s <y|n> : Considere la symetrie dans l'equivalence 
+      		(Defaut:n). 
+      
+      	-p <y|n> : Considere les permutations de Siteswap dans 
+      		l'equivalence, la symetrie en fait partie (Defaut:y). 
+      
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isFullMagic :             Teste si un Siteswap est Magique
+                              Complet. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a tester. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. Les
+      Valeurs de Retour sont -1 (Non/Invalide), 0 (Full), 1
+      (Odd/Impair), 2 (Even/Pair). 
+
+
+  - isPalindrome :            Teste si un Siteswap est un
+                              Palindrome. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a tester. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isPrime :                 Teste si un Siteswap est Premier. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a tester. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isReversible :            Teste si un Siteswap est Reversible. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a tester. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isScramblable :           Teste si un Siteswap est
+                              Scramblable. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a tester (V,M,S ou MS). 
+      - ["options"] : Differentes options -[k|l|v]: 
+      	-k <y|n> : option pour Siteswaps S et MS: pour les Siteswaps
+      symetriques finissant par *, le statut Scramblable est
+      considere uniquement sur la premiere portion. (Defaut:y). 
+      	-l <y|n> : option pour limiter la periode des Siteswaps pour
+      eviter de saturer Memoire/CPU (Defaut:y). 
+      	-v <int> : Periode Maximum a considerer (Defaut:8). 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isSqueeze :               Teste si un Siteswap Multiplexe,
+                              Synchrone Multiplexe ou
+                              Multisynchrone est un Squeeze. 
+      Lancers de meme hauteur et tenue en main ne sont pas consideres. 
+      
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a tester. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isSyntaxValid :           Teste la syntaxe grammaticale du
+                              Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a tester 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isValid :                 Teste la validite du Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a tester 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - jdeep :                   Generation de Siteswaps Premiers
+                              (jdeep from Jack Boyce). 
+      jdeep version 5.1, Jack Boyce 
+      (02/17/99) jboyce.sourceforge.net 
+      
+      Ce programme a pour but la recherche des longs Siteswaps
+      Premiers. 
+      
+      format : 
+      	jdeep ('<# objects> <max. throw> [<min. length>] [options]') 
+      
+      avec : 
+      	<# objects>   = Nombre d'objets dans les patterns trouves. 
+      	<max. throw>  = plus grand lancer a utiliser. 
+      	<min. length> = plus petits patterns a trouver (optionnel, pour
+      accelerer les recherches) 
+      
+      Diverses options sont disponibles : 
+      	-block <skips> : donne les patterns en block form, en 
+      			 autorisant le nombre de skips specifies. 
+      	-super <shifts> : trouve (presque) les patterns superprime, en 
+      			 autorisant le nombre de lancer shift specifies. 
+      	-inverse : affiche l'inverse egalement, en mode -super. 
+      	-g : donne les patterns ground-state (fondamentaux) 
+      			 uniquement. 
+      	-ng : donne les patterns excites uniquement. 
+      	-full : donne tous les patterns; sinon seuls les patterns aussi 
+      			 longs que les patterns les plus longs sont affiches. 
+      	-noprint : suprime l'affichage des patterns. 
+      	-exact : affiche les patterns de la longueur specifiee 
+      			 (pas plus long). 
+      	-x <throw1 throw2 ...> : exclu les lancers listes 
+      			 (pour accelerer les recherches). 
+      	-trim : active l'algorithme de graph trimming. 
+      	-notrim : desactive l'algorithme de graph trimming. 
+      	-fichier : mode de sortie fichier. 
+      	-temps <secs> : temps maximum d'execution de la fonction. 
+
+
+  - lowerHeightOnTempo :      Transformation de Siteswaps pour
+                              des lances plus bas en conservant le
+                              Tempo des lances mais en ajoutant des
+                              temps supplementaires de Hold
+                              Times. 
+      Particulierement interessant pour les Polyrythmes. 
+      
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a transformer. 
+      
+      - ["options"] Differentes options -[f|j|m] precisees
+      ci-dessous: 
+      	-f <int> : Nombre de Free Beats Minimums sur la transformation
+      entre 2 lancers (Defaut:1). Comme l'objet est recupere un peu
+      avant son lancer, avec generalement un Dwell Time autour de 1, une
+      valeur inferieure occasionne des squeezes. 
+      	-j <y|n> : Adaptation JugglingLab. JugglingLab ne comprenant
+      que des Hold Times sur des lancers 1x ou 2, les Hold Times de valeur
+      superieure seront donc convertis. 
+      	-m <int> : Valeur Minimum du lance sur meme main apres
+      transformation afin d'eviter par exemple une transformation
+      d'un lance en hold (Defaut:3). 
+      
+      [-1] Optionnel, retourne le resultat sans l'afficher
+      (Defaut:n) 
+
+
+  - polyrythmFountain :       Outil Fontaine Polyrythmique de
+                              Josh Mermelstein. 
+      Parametres : 
+      
+      - Aucun. 
+
+
+  - printSSList :             Met en forme une Liste de Siteswaps
+                              (Texte, Fichier ou dans fichier JML
+                              JugglingLab). 
+      Parametres : 
+      
+      - <List> : Liste Perl de Siteswaps. Si vide utilise le fichier
+      Input. 
+      
+      - ["options"] Differentes options
+      -[b|c|d|g|i|n|o|p|r|s|t|u] precisees ci-dessous : 
+      
+      	-r <0|1|2> :  suppression des redondances (Defaut:0): 
+      		'0' : Pas de suppression; 
+      		'1' : Suppression des redondances avec conservation 
+      		des Siteswaps Ground prioritairement; 
+      		'2' : Suppression des redondances selon l'ordre de la liste. 
+      
+      	-c <y|n> : Considere la colorisation des multiplexes pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-g <y|n> : Ground Seulement (Defaut:n). 
+      
+      	-b <y|n> : Reversible Seulement (Defaut:n). 
+      
+      	-d <y|n> : Scramblable Seulement (Defaut:n). 
+      
+      	-i <y|n> : Donne des Informations supplementaires (Defaut:n). 
+      
+      	-n <y|n> : Palindrome Seulement (Defaut:n). 
+      
+      	-q <y|n> : Non Squeeze Seulement (Defaut:n). 
+      
+      	-o <0|1|2|3> : Arrangement du Resultat (Defaut:1). 
+      		'0' : Pas d'arrangement; 
+      		'1' : Tri Alphanumerique; 
+      		'2' : Classification par nombre d'objets; 
+      		'3' : Classification par periode. 
+      
+      	-p <y|n> : Considere les permutations de Siteswap pour la 
+      	suppression des redondances, la symetrie en fait partie
+      (Defaut:y). 
+      
+      	-s <y|n> : Considere la symetrie pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-t <"string"> : Titre. 
+      
+      	-u <y|n> : Premiers Seulement (Defaut:n) 
+      
+      - ["fichier"] Optionnel, fichier de resultats. 
+      Si -1, retourne le resultat sans l'afficher. 
+      Si le fichier commence par : 
+      	- 'JML:', genere un fichier pour une vue JugglingLab 
+      		en JML en y ajoutant l'extension .jml; 
+      		Les Siteswaps invalides sont masques. 
+      	- 'SSHTML:', genere un fichier HTML, en y ajoutant l'extension 
+      		.html et contenant differentes informations sur 
+      		les Siteswaps. 
+      
+      - ["fichierInput"] : Fichier Input utilise si Liste vide. 
+
+
+  - printSSListHTML :         Cree un fichier HTML depuis une Liste
+                              de Siteswaps en ajoutant diagrammes
+                              Ladder, JML JugglingLab et liste
+                              TXT. 
+      Parametres : 
+      
+      - <"fichierInput"> : Fichier contenant la Liste de Siteswaps. 
+      
+      - <"fichierOutput"> : Fichiers resultats (avec ajout
+      extensions .html/.jml/.txt). 
+      
+      - <"string"> : Titre. 
+      
+      - ["options"] Differentes options -[v|l|j|f|m] ainsi que les
+      options d'affichages -[b|c|d|g|i|n|o|p|r|s|t|u] precisees
+      ci-dessous : 
+      
+      	-v <y|n> : Ajoute une colonne avec Siteswaps simplifies
+      (Defaut:n). 
+      	-l <y|n> : Ajoute une colonne avec Siteswaps transformes pour
+      des lancers plus bas mais en conservant le Tempo des lancers par le
+      biais de Hold Times supplementaires (Defaut:n). 
+      	-j <y|n> : Ajoute une colonne avec Siteswaps transformes pour
+      des lancers plus bas mais en conservant le Tempo des lancers par le
+      biais de Hold Times supplementaires et adapte pour une
+      visualisation JugglingLab. JugglingLab ne comprenant que des
+      Hold Times sur des lancers 1x ou 2, les Hold Times de valeur
+      superieure seront donc convertis (Defaut:n). 
+      	-f <int> : Nombre de Free Beats Minimums sur la transformation
+      entre 2 lancers (Defaut:1). Comme l'objet est recupere un peu
+      avant son lancer, avec generalement un Dwell Time autour de 1, une
+      valeur inferieure occasionne des squeezes. 
+      	-m <int> : Valeur Minimum du lance sur meme main apres
+      transformation afin d'eviter par exemple une transformation
+      d'un lance en hold (Defaut:3) 
+      
+      	-r <0|1|2> :  suppression des redondances (Defaut:0): 
+      		'0' : Pas de suppression; 
+      		'1' : Suppression des redondances avec conservation 
+      		des Siteswaps Ground prioritairement; 
+      		'2' : Suppression des redondances selon l'ordre de la liste. 
+      
+      	-c <y|n> : Considere la colorisation des multiplexes pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-g <y|n> : Ground Seulement (Defaut:n). 
+      
+      	-b <y|n> : Reversible Seulement (Defaut:n). 
+      
+      	-d <y|n> : Scramblable Seulement (Defaut:n). 
+      
+      	-i <y|n> : Donne des Informations supplementaires (Defaut:n). 
+      
+      	-n <y|n> : Palindrome Seulement (Defaut:n). 
+      
+      	-q <y|n> : Non Squeeze Seulement (Defaut:n). 
+      
+      	-o <0|1|2|3> : Arrangement du Resultat (Defaut:1). 
+      		'0' : Pas d'arrangement; 
+      		'1' : Tri Alphanumerique; 
+      		'2' : Classification par nombre d'objets; 
+      		'3' : Classification par periode. 
+      
+      	-p <y|n> : Considere les permutations de Siteswap pour la 
+      	suppression des redondances, la symetrie en fait partie
+      (Defaut:y). 
+      
+      	-s <y|n> : Considere la symetrie pour la 
+      	suppression des redondances (Defaut:n). 
+      
+      	-t <"string"> : Titre. 
+      
+      	-u <y|n> : Premiers Seulement (Defaut:n) 
+
+
+  - realsim :                 Lance le Simulateur de Pedro
+                              Teodoro. 
+      Parametres : 
+      
+      - Aucun. 
+
+
+  - showVanillaDiag :         Affichage des Diagrammes
+                              Etats/Transitions Vanilles. 
+      Parametres : 
+      
+      - Aucun. 
+
+
+  - shrink :                  Forme Abregee d'un Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a abrege. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - simplify :                Simplification d'un Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a simplifier. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - slideSwitchSync :         Donne les Siteswaps associes en
+                              changeant la Synchronisation. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - sym :                     Calcule la symetrie d'un Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap 
+      
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - symDiag :                 Calcule la symetrie d'un Siteswap
+                              par Methode des Diagrammes. 
+      Le Siteswap obtenu peut-etre moins synthetique que celui rendu
+      par la function sym. 
+      
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap 
+      
+      - ["fichier"] Optionnel, fichier de resultats. Si -1, retourne
+      le resultat sans l'afficher; 
+      
+      - ["options"] Differentes options
+      -[c|d|e|g|h|i|l|m|n|o|p|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2) 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap (Defaut:s) 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+
+
+  - timeRev :                 Calcule l'inversion
+                              (Time-Reversed) d'un Siteswap. 
+      Le Siteswap obtenu ne prend pas en compte la colorisation. 
+      
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap 
+      
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - timeRevDiag :             Calcule l'inversion
+                              (Time-Reversed) d'un Siteswap par
+                              Methode des Diagrammes. 
+      Le Siteswap obtenu ne prend pas en compte la colorisation; le
+      diagramme la considere, cependant le Siteswap obtenu peut-etre
+      moins synthetique que celui rendu par la function timeRev. 
+      
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap 
+      
+      - ["fichier"] Optionnel, fichier de resultats. Si -1, retourne
+      le resultat sans l'afficher. 
+      
+      - ["options"] Differentes options
+      -[c|d|e|g|h|i|l|m|n|o|p|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2) 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap (Defaut:s) 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+
+
+  - toStack :                 Donne la Notation Stack
+                              correspondante [Experimental]. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap. 
+      
+      - ["options"] Differentes options -[m|s] precisees ci-dessous
+      : 
+      
+      	-m <int> : Mode de Calcul des trous pour les multiplexes 
+      	(Defaut:1) 
+      		'0' : Pas de trou entre les lancers multiplex [Demo]; 
+      		'1' : Ordre Croissant d'arrivee; 
+      		'2' : Ordre Decroissant d'arrivee. 
+      
+      	-s <n|r|l> : Mode de Calcul des trous pour les Synchrones 
+      	(Defaut:r) 
+      		'n' : Synchro totale. Pas de consideration entre les mains, 
+      		stacks independantes [Demo]; 
+      		'r' : Main droite en premier; 
+      		'l' : Main gauche en premier. 
+      
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - writeStates_xls :         Generation en Excel des Matrices
+                              Etats/Transitions. 
+      Parametres : 
+      
+      - <type> : Type de generateur parmi 'V' (Vanille), 'S'
+      (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone),
+      'MULTI' (MultiSynchrone). 
+      
+      == cas 'V', 'S' == 
+      	- <int> : Nombre d'objets (-1 non specifie). 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      
+      == cas 'M', 'MS', 'MULTI' == 
+      	- <int> : Nombre d'objets (-1 non specifie). 
+      	- <nb> : Valeur du lancer max en hexadecimal. 
+      	- <int> : Nombre Max de lancers Simultanes. 
+      
+      - <"fichier"> : corps du fichier de resultats sans l'extension
+      .xlsx 
+      
+      Vous devez disposer auparavant d'Excel avec une license valide !
+      (Fonctionne sous Windows). 
+
+
+
+
+  LADDER  - LADDER juggling Notation (v2.1)
+-----------------------------------------
+      La description des Diagrammes se fera en utilisant la notation
+      SITESWAP Classique telle qu'elle est utilisee par JugglingLab. 
+      
+      	Exemples : 534, (6x,4)*, (2x,[22x])(2,[22])(2,[22x])*. 
+      
+      On considerera en plus les symboles '!' et '*' que ce soit en
+      Synchrone ou en Asynchrone : 
+      
+      '!' : supprime un Beat de temps. Apres un Siteswap Synchrone il
+      indique que le lancer suivant se fait sur le Beat suivant cense
+      etre un Beat de recuperation (et non plus 2 Beats apres). Apres un
+      lancer Asynchrone, il indique que le lancer suivant se fait au
+      meme Beat. Il devient alors possible de representer un Siteswap
+      Synchrone par un Siteswap Asynchrone. Les Multiplexes peuvent
+      egalement etre adaptes selon ce schema 
+      
+      '*' : dans le cas d'un Siteswap Synchrone il indique un changement
+      de l'ordre des mains et n'est plus obligatoirement positionne a
+      la fin. Dans le cas d'un Siteswap Asynchrone, le prochain lancer
+      se fait par la meme main (Notion de Hurry). 
+      
+      
+      	Exemples : 4!40, 5!*4!*3, 6x0*, (6x,0)*, 51x*, (1x,3)!11x* ... 
+      
+      
+      Ce module differentie aussi la colorisation des multiplexes. 
+      
+      
+      	Exemples : 24[54] et 24[45] ont une colorisation differente. 
+
+
+  - draw :                    Dessine le Diagramme en Echelle
+                              associe au Siteswap. Graphviz doit
+                              avoir ete installe au prealable. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a dessiner. 
+      
+      - <"fichier"> : fichier image de resultats. 
+      
+      - ["options"] Differentes options
+      -[c|d|e|g|h|i|l|m|n|o|p|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2) 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap (Defaut:s) 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+      
+      - [\%hash] : Optionnel, hash des transitions. Dans ce cas le
+      Siteswap n'est utilise que pour le titre. Chaque Cle/Valeur est
+      de la forme : Ri:j pour une transition amorcee a droite ou Li:j
+      lorsqu'il s'agit de la gauche. i correspond au Beat du lancer et j
+      est le numero de l'objet lors du lancer (en commençant a 0) pour
+      aider a la colorisation. 
+      	Ex :  %hash = ( 
+      		'L2:0' => 'R4:0', 
+      		'R2:0' => 'R4:1', 
+      		'L4:0' => 'R6:0', 
+      		'R4:0' => 'R5:0', 
+      		'R4:1' => 'L6:0', 
+      		'R6:0' => 'R6:0' 
+      		); 
+
+
+  - inv :                     Dessine le Diagramme Time-Reversed
+                              du Diagramme en Echelle associe au
+                              Siteswap. 
+      Le Siteswap obtenu ne prend pas en compte la colorisation; le
+      diagramme la considere. 
+      
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap. 
+      
+      - <"fichier"> : fichier image de resultats. 
+      
+      - ["options"] Differentes options
+      -[c|d|e|g|h|i|l|m|n|o|p|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2) 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap (Defaut:s) 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+
+
+  - merge :                   Superpose 2 Siteswaps et dessine le
+                              Diagramme associe. 
+      Parametres : 
+      
+      - <"siteswap1"> : Siteswap1. 
+      
+      - <"siteswap2"> : Siteswap2. 
+      
+      - <"fichier"> : fichier image de resultats. 
+      
+      - ["options"] Differentes options
+      -[c|d|h|l|m|n|o|p|r|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2) 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap (Defaut:s) 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+      
+      	-r <int> : Suppression des 0 dans les Multiplexes (Defaut:0) 
+      		'0' : Suppression; 
+      		'1' : Conservation. 
+
+
+  - removeObj :               Dessine le Diagramme en Echelle
+                              associe au Siteswap apres
+                              suppression d'un ou plusieurs
+                              objets. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap. 
+      
+      - <int ou "[list]"> : Numero de l'objet a supprimer (en commençant
+      a 0) ou liste d'objets separes par des ",". 
+      
+      - <"fichier"> : fichier image de resultats. 
+      
+      - ["options"] Differentes options
+      -[c|d|e|g|h|i|l|m|n|o|p|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2) 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap (Defaut:s) 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+
+
+  - slide :                   Dessine le Diagramme en Echelle
+                              apres decalage(s) de la main droite
+                              ou gauche d'un Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap. 
+      
+      - <"main"> : Main a decaler (droite : "R" ou gauche : "L") 
+      
+      - <"dec"> : Valeur du decalage (ex : +1 , -2, 3) 
+      
+      - <"fichier"> : fichier image de resultats. 
+      
+      - ["options"] Differentes options
+      -[c|d|e|g|h|i|l|m|n|o|p|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2) 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap (Defaut:s) 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+
+
+  - sym :                     Dessine le Symetrique du Diagramme
+                              en Echelle associe au Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap. 
+      
+      - <"fichier"> : fichier image de resultats. 
+      
+      - ["options"] Differentes options
+      -[c|d|e|g|h|i|l|m|n|o|p|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2) 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap (Defaut:s) 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+
+
+  - toMultiSync :             Donne le Siteswap MultiSynchrone
+                              correspondant (ie transformation
+                              des multiplexes, des lancers
+                              synchrones) 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap. 
+      
+      - <Type> : Type de MultiSynchrone (0: MultiSynchrone Reduit, 1:
+      Combinaison Synchrone/Asynchrone, 2: MultiSynchrone etendu
+      format Async, 3: MultiSynchrone etendu format Sync ) 
+      
+      - ["fichier"] Optionnel, fichier image de resultats au format
+      png. Si -1 pas d'image generee 
+      
+      - ["options"] Differentes options
+      -[c|d|e|g|h|i|l|m|n|o|p|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2) 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap (Defaut:s) 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+
+
+
+
+  MMSTD  - MMSTD (Mills Mess State Transition) juggling Notation (v1.4)
+-----------------------------------------
+      Dans ce module un pattern MMSTD sera compose d'une succession
+      d'etats (Ur, Ul, Rl, Rr, Lr, Lr) et d'echanges (-+->, -o->). 
+      
+      	Exemples : Ur -o-> Ll -+> Ur , Rr -+-> Ul -o-> 
+
+
+  - gen :                     Generation de tous les patterns avec
+                              suppression des redondances. 
+      Parametres : 
+      
+      - <cpt> : Nombre de Passages maximum par Etat 
+      - <pathLenMax> : Longueur du chemin maximum (-1 : toute longueur) 
+      - ["fichier"] Optionnel, fichier de resultats. 
+
+
+  - genByState :              Generation de tous les patterns avec
+                              classification par Etat. 
+      Parametres : 
+      
+      - <cpt> : Nombre de Passages maximum par Etat 
+      - <pathLenMax> : Longueur du chemin maximum (-1 : toute longueur) 
+      - ["fichier"] Optionnel, fichier de resultats. 
+
+
+  - graph :                   Affiche le Graphe MMSTD des
+                              transitions valides. 
+      Parametres : 
+      
+      - Aucun ou sinon Graphviz doit prealablement etre installe et son
+      Path correctement configure dans <conf.ini> 
+      
+      - <"fichier"> : fichier de resultats. 
+      
+      - ["Format"] Optionnel, format d'image (Defaut:png) parmi : bmp
+      (Windows Bitmap Format), cmapx (client-side imagemap for use in
+      html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain, plain-ext (Output in plain text) 
+      
+      - ["Generateur"] Optionnel, filtre generateur Graphviz
+      (Defaut:dot) parmi : circo (circular layout), dot(directed
+      graphs), neato (undirected graphs), twopi (radial layouts),
+      fdp (undirected graphs), sfdp (large undirected graphs), osage
+      (clustered graphs). 
+
+
+  - inv :                     Calcule l'inversion d'un pattern. 
+      Parametres : 
+      
+      - <pattern> : pattern 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isEquivalent :            Teste l'equivalence de 2 patterns. 
+      Parametres : 
+      
+      - <pattern1> <pattern2> : patterns a comparer. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isSymetric :              Teste la symetrie de 2 patterns. 
+      Parametres : 
+      
+      - <pattern1> <pattern2> : patterns a comparer. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isValid :                 Teste la validite d'un pattern. 
+      Parametres : 
+      
+      - <pattern> : pattern a tester. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - size :                    Donne la longueur du pattern en
+                              nombre d'Etats. 
+      Parametres : 
+      
+      - <pattern> : pattern. Une unite est consideree uniquement sur
+      composition d'un Etat et d'une transition. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - sym :                     Calcule la symetrie d'un pattern. 
+      Parametres : 
+      
+      - <pattern> : pattern 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - toSOU :                   Donne la notation SOU
+                              correspondante. 
+      Parametres : 
+      
+      - <pattern> : pattern. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+
+
+  SOU  - Extended S,O,U juggling Notation (v1.4)
+-----------------------------------------
+      Dans ce module un pattern SOU sera compose d'une succession
+      d'etats (O, Ob, U, Ub, S, Sb) et d'echanges (<in>, <out>). 
+      
+      Exemple :
+      O<in>S<out>U<in>Ob<in>Sb<out>Ub<in>Sb<out>U<in>Ob<in>Sb 
+
+
+  - gen :                     Generation de tous les patterns avec
+                              suppression des redondances. 
+      Parametres : 
+      
+      - <cpt> : Nombre de Passages maximum par Etat 
+      - <pathLenMax> : Longueur du chemin maximum (-1 : toute longueur) 
+      - ["fichier"] Optionnel, fichier de resultats. 
+
+
+  - genByState :              Generation de tous les patterns avec
+                              classification par Etat. 
+      Parametres : 
+      
+      - <cpt> : Nombre de Passages maximum par Etat 
+      - <pathLenMax> : Longueur du chemin maximum (-1 : toute longueur) 
+      - ["fichier"] Optionnel, fichier de resultats. 
+
+
+  - graph :                   Affiche le Graphe SOU des
+                              transitions valides. 
+      Parametres : 
+      
+      - Aucun. 
+
+
+  - inv :                     Calcule l'inversion d'un pattern
+                              donne. 
+      Parametres : 
+      
+      - <pattern> : pattern 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isEquivalent :            Teste l'equivalence de 2 patterns. 
+      Parametres : 
+      
+      - <pattern1> <pattern2> : patterns a comparer. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isSymetric :              Teste la symetrie de 2 patterns. 
+      Parametres : 
+      
+      - <pattern1> <pattern2> : patterns a comparer. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isValid :                 Teste la validite d'un pattern. 
+      Parametres : 
+      
+      - <pattern> : pattern a tester. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - size :                    Donne la longueur du pattern en
+                              nombre d'Etats. 
+      Parametres : 
+      
+      - <pattern> : pattern. Une unite est consideree uniquement sur
+      composition d'un Etat et d'une transition. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - sym :                     Calcule la symetrie d'un pattern
+                              donne. 
+      Parametres : 
+      
+      - <pattern> : pattern 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - toMMSTD :                 Donne la notation MMSTD
+                              correspondante. 
+      Parametres : 
+      
+      - <pattern> : pattern. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+
+
+  BTN  - BTN juggling Notation (v1.2.2)
+-----------------------------------------
+      Dans ce module un lancer BTN sera compose d'une succession de
+      trous pris parmi AC, AL, BOL ainsi que de l'operateur OP
+      (Minuscule ou Majuscule). 
+      
+      	Exemples : OPALAC, BOLAL, OPALOPAC ... 
+
+
+  - BTNParity :               Donne la parite BTN. 
+      Parametres : 
+      
+      - <Throw> : Lancer. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. En
+      retour 0 indique une parite Paire, 1 indique Impaire 
+
+
+  - gen :                     Donne les lancers BTN limites par le
+                              nombre de trous traverses. 
+      Parametres : 
+      
+      - <int> : Nombre maximum de trous traverses [>4 reserve aux
+      Extra-Terrestres ;-)]. 
+      - ["fichier"] Optionnel, fichier de resultats. 
+
+
+  - gen2 :                    Donne les lancers BTN sans les
+                              lancers dont le corps contient 2
+                              trous successifs identiques. 
+      Parametres : 
+      
+      - <int> : Nombre maximum de trous traverses [>4 reserve aux
+      Extra-Terrestres ;-)]. 
+      - ["fichier"] Optionnel, fichier de resultats. 
+
+
+  - inv :                     Donne le lancer BTN Time Reversed
+                              associe. 
+      Parametres : 
+      
+      - <Lancer> : Lancer dont on veut obtenir le Time Reversed. 
+      - <Parite> : Parite du lancer (0: paire, 1: impaire). 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isValid :                 Teste la validite du lancer BTN. 
+      Parametres : 
+      
+      - <Lancer> : Lancer a valider. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - size :                    Donne la taille du lancer en nombre de
+                              trous traverses. 
+      Parametres : 
+      
+      - <Throw> : Lancer. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+
+
+  STACK  - STACK juggling Notation (v0.0)
+-----------------------------------------
+     
+
+
+
+  SPYRO  - Juggling SPYROGRAPH (v0.3)
+-----------------------------------------
+      SPYRO definit un spyrographe pour jongleur. Il permet la
+      modelisation des Spins, Antispins, Hybrides, Isolations,
+      Extensions dans un unique plan. 
+
+
+  - anim :                    Lance JuggleSpyro HTML5. 
+      Parametres : 
+      
+      - Aucun ou optionnellement le port du serveur HTTP. 
+
+
+  - staffSimMCP :             Lance le Simulateur de Staffs de MCP. 
+      Parametres : 
+      
+      - Aucun. 
+
+
+

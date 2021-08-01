@@ -1,0 +1,10 @@
+--- Net-Server-2.008/t/Server_PreForkSimple.t	2014-05-06 03:43:15.000000000 +0900
++++ Net-Server-2.008-patched/t/Server_PreForkSimple.t	2016-12-24 10:20:11.440000002 +0900
+@@ -41,6 +41,7 @@
+         print $remote "exit\n";
+ 
+         alarm 0;
++        kill 'TERM', $pid if $^O eq 'MSWin32';
+         return 1;
+ 
+     ### child does the server

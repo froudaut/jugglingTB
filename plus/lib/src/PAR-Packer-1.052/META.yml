@@ -1,0 +1,52 @@
+---
+abstract: 'PAR Packager'
+author:
+  - 'Audrey Tang <cpan@audreyt.org>'
+build_requires:
+  ExtUtils::MakeMaker: '0'
+  IPC::Run3: '0.048'
+  Test::More: '0'
+configure_requires:
+  DynaLoader: '0'
+  ExtUtils::CBuilder: '0'
+  ExtUtils::Embed: '0'
+  File::Basename: '0'
+  File::Glob: '0'
+  File::Spec::Functions: '0'
+dynamic_config: 1
+generated_by: 'ExtUtils::MakeMaker version 7.44, CPAN::Meta::Converter version 2.150010'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: '1.4'
+name: PAR-Packer
+no_index:
+  directory:
+    - t
+    - inc
+    - contrib
+recommends:
+  Digest: '0'
+  Module::Signature: '0'
+  Tk: '0'
+  Tk::ColoredButton: '0'
+  Tk::EntryCheck: '0'
+  Tk::Getopt: '0'
+requires:
+  Archive::Zip: '1.02'
+  Compress::Zlib: '1.30'
+  Digest::SHA: '5.40'
+  File::Temp: '0.05'
+  Getopt::ArgvFile: '1.07'
+  IO::Compress::Gzip: '0'
+  Module::ScanDeps: '1.21'
+  PAR: '1.016'
+  PAR::Dist: '0.22'
+  Text::ParseWords: '0'
+  perl: '5.008009'
+resources:
+  MailingList: mailto:par@perl.org
+  bugtracker: https://github.com/rschupp/PAR-Packer/issues
+  repository: git://github.com/rschupp/PAR-Packer.git
+version: '1.052'
+x_serialization_backend: 'CPAN::Meta::YAML version 0.018'
