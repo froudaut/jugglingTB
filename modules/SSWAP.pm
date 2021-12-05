@@ -28288,7 +28288,7 @@ sub __test_polyrythm_list_gen
 #################################################
 sub __test_polyrythm_mult_list_gen
 {
-    for(my $i=1; $i <= 5; $i++) {
+    for(my $i=2; $i <= 5; $i++) {
 	for(my $j=2; $j <= 2; $j++) {
 	    for(my $d=1; $d <= 5; $d++) {
 		for(my $g=1; $g <= 5; $g++) {
@@ -28305,6 +28305,80 @@ sub __test_polyrythm_mult_list_gen
 	    }
 	}
     }
+}
+
+sub __test_polyrythm_mult_list_gen2
+{
+    for(my $i=2; $i <= 2; $i++) {
+	for(my $j=2; $j <= 2; $j++) {
+	    for(my $d=4; $d <= 4; $d++) {
+		for(my $g=4; $g <= 5; $g++) {
+		    my $filename = 'polyrythms-'.$i.'objects_mult'.$j.'_'.$d.'!'.$g.'.txt';
+		    print "==== ".$filename.' ===='."\n";
+		    if($d == 1 || $g == 1)
+		    {
+			&genPolyrythmMult($i,'f',$j,$d,$g,'','-J Y',$filename);
+		    }
+		    else {
+			&genPolyrythmMult($i,'f',$j,$d,$g,'','',$filename);
+		    }		
+		}
+	    }
+	    for(my $d=5; $d <= 5; $d++) {
+		for(my $g=1; $g <= 5; $g++) {
+		    my $filename = 'polyrythms-'.$i.'objects_mult'.$j.'_'.$d.'!'.$g.'.txt';
+		    print "==== ".$filename.' ===='."\n";
+		    if($d == 1 || $g == 1)
+		    {
+			&genPolyrythmMult($i,'f',$j,$d,$g,'','-J Y',$filename);
+		    }
+		    else {
+			&genPolyrythmMult($i,'f',$j,$d,$g,'','',$filename);
+		    }		
+		}
+	    }
+	}
+    }
+
+
+    for(my $i=3; $i <= 3; $i++) {
+	for(my $j=2; $j <= 2; $j++) {
+	    for(my $d=3; $d <= 5; $d++) {
+		for(my $g=4; $g <= 5; $g++) {
+		    my $filename = 'polyrythms-'.$i.'objects_mult'.$j.'_'.$d.'!'.$g.'.txt';
+		    print "==== ".$filename.' ===='."\n";
+		    if($d == 1 || $g == 1)
+		    {
+			&genPolyrythmMult($i,'f',$j,$d,$g,'','-J Y',$filename);
+		    }
+		    else {
+			&genPolyrythmMult($i,'f',$j,$d,$g,'','',$filename);
+		    }		
+		}
+	    }
+	}
+    }
+
+
+    for(my $i=4; $i <= 4; $i++) {
+	for(my $j=2; $j <= 2; $j++) {
+	    for(my $d=2; $d <= 5; $d++) {
+		for(my $g=4; $g <= 5; $g++) {
+		    my $filename = 'polyrythms-'.$i.'objects_mult'.$j.'_'.$d.'!'.$g.'.txt';
+		    print "==== ".$filename.' ===='."\n";
+		    if($d == 1 || $g == 1)
+		    {
+			&genPolyrythmMult($i,'f',$j,$d,$g,'','-J Y',$filename);
+		    }
+		    else {
+			&genPolyrythmMult($i,'f',$j,$d,$g,'','',$filename);
+		    }		
+		}
+	    }
+	}
+    }
+
+
 }
 
     
