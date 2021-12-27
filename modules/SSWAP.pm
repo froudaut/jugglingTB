@@ -22373,19 +22373,981 @@ sub __toStack_multiplex_sync
 }
 
 
+sub __get_elementary_circuits
+{
+
+    # /*
+    #  * Algorithm Adaptation from : K.A. Hawick and H.A. James
+    #  *  "Enumerating Circuits and Loops in Graphs with Self-Arcs and Multiple-Arcs"
+    #  *                   Computer Science, Institute for Information and Mathematical Sciences,
+    #  *                   Massey University, North Shore 102-904, Auckland, New Zealand
+    #  *                   Technical Report CSTN-013
+    #  * Implementation : Frederic Roudaut
+    #  */
+
+    my $longestMode = 1;          # longest Definition : 0 : in term of state, 1 : in term of siteswap Period 
+    
+    sub __stacksPrint {
+	my $i;
+	my @statesStack=@{$_[0]};
+	my @matrix = @{$_[1]};
+	my @states = @{$_[2]};
+	my @ssStack = @{$_[3]};
+	my $resRef = $_[4];
+	my $opts = uc($_[5]); 
+	my $f = $_[6]; 
+	my $diagram_results = "N";          # Get the States Path Results or no (default)
+	my $longest_results = "Y";          # Get Computation Synthesis (default) or no
+	&GetOptionsFromString($opts,    				    
+			      "-L:s" => \$longest_results,
+			      "-H:s" => \$diagram_results,
+	    );
+
+	my $v="";
+
+	if($f ne "" && $f ne "-2" && "JML:"=~substr($f,0,4))
+	{
+	    my $f_in = substr($f,4).".jml";		      		
+	    open(FILE_JML,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
+	    print FILE_JML "<line display=\"";
+	    close(FILE_JML);	    
+	}
+
+	for ($i = 0; $i < scalar @ssStack; $i++) {
+	    if(uc($diagram_results) eq "Y")
+	    {
+		if($f eq "" || $f eq "-2") 
+		{
+		    print $ssStack[$i];
+		}	      
+		elsif ("JML:"=~substr($f,0,4)) 
+		{
+		    my $f_in = substr($f,4).".jml";		      		
+		    open(FILE_JML,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
+		    print FILE_JML $ssStack[$i];
+		    close(FILE_JML);
+		}  	
+		elsif ("SSHTML:"=~substr($f,0,7)) 
+		{		    
+		    my $f_in = substr($f,7).".html";	
+		    open(FILE,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
+		    print FILE $ssStack[$i];		    
+		    close(FILE);		
+		}
+		elsif($f ne "-1")
+		{		    
+		    open(FILE,">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;
+		    print FILE $ssStack[$i];		    
+		    close(FILE);
+		}
+	    }
+
+	    $v=$v.$ssStack[$i]	   
+	}
+
+	if(uc($diagram_results) eq "Y")
+	{
+	    if($f eq "" || $f eq "-2") 
+	    {
+		print " {";
+		for ($i = 0; $i < scalar @statesStack; $i++) 
+		{
+		    print $states[$statesStack[$i]]." ";
+		}
+		print $states[$statesStack[0]];
+		print "}\n";
+	    }	      
+	    elsif ("JML:"=~substr($f,0,4)) 
+	    {				
+		my $f_in = substr($f,4).".jml";	
+		open(FILE_JML,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
+		print FILE_JML " {";
+		for ($i = 0; $i < scalar @statesStack; $i++) 
+		{
+		    print FILE_JML $states[$statesStack[$i]]." ";
+		}
+		print FILE_JML $states[$statesStack[0]];
+		print FILE_JML "}\"/>\n";
+		close(FILE_JML);
+	    }  	
+	    elsif ("SSHTML:"=~substr($f,0,7)) 
+	    {		    
+		my $f_in = substr($f,7).".html";	
+		open(FILE,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
+		print FILE " {";
+		for ($i = 0; $i < scalar @statesStack; $i++) 
+		{
+		    print FILE $states[$statesStack[$i]]." ";
+		}
+		print FILE $states[$statesStack[0]];
+		print FILE "}<BR/>\n";
+		close(FILE);		
+	    }
+	    elsif($f ne "-1")
+	    {
+		open(FILE,">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;
+		print FILE " {";
+		for ($i = 0; $i < scalar @statesStack; $i++) 
+		{
+		    print FILE $states[$statesStack[$i]]." ";
+		}
+		print FILE $states[$statesStack[0]];
+		print FILE "}\n";
+		close(FILE);
+	    }
+	}
+
+	push( @{$resRef}, $v);  	    	  
+    }
+    
+
+    sub __unblock {
+	my $u=$_[0];
+	my @B=@{$_[1]};
+	my @blocked=@{$_[2]};
+
+	$blocked[$u] = 0;
+	for (my $wPos = 1; $wPos <= $B[$u][0]; $wPos++) {
+	    # for each w in B[u]
+	    my $w = $B[$u][$wPos];
+	    my $nOccurrences = 0;
+	    for (my $i = 1; $i <= $B[$u][0]; $i++) {
+		if ($B[$u][$i] == $w) {
+		    $nOccurrences++;
+		    for (my $j = $i; $j < $B[$u][0]; $j++) {
+			$B[$u][$j] = $B[$u][$j+1];
+		    }
+		    $B[$u][0]--; # should be safe as list is re-evaluated each time around the i-loop
+		    $i--;
+		}
+	    }
+	    
+	    $wPos -= $nOccurrences;
+	    
+	    if ($blocked[$w] == 1)
+	    {
+		&__unblock($w, \@B, \@blocked);
+	    }
+	}
+    }
+    
+    sub __circuit { # Ideas based on Johnson 's logical procedure CIRCUIT
+	my $start = $_[0];                # Start state index
+	my $v = $_[1];                    # Current state index
+	my @Ak = @{$_[2]};                # Graph to analyse : integer array size n of lists, 
+	# ie the transitions from the states
+	#  Ak[i][0] : Number of transitions from state index i
+	#  Ak[i][1..j] : transitions index from state index i   
+	my @statesStack = @{$_[4]};       # Current Stack result of states
+	my @blocked = @{$_[5]};           # logical array indexed by states index
+	my $nCircuits = $_[6];            # total number of circuits found;
+	my $longestCircuitRef = $_[7];    # the longest circuits found	 
+	my $lenLongest = $_[8];           # the longest circuits length
+	my $lengthHistogramRef = $_[9];   # histogram of circuit lengths
+	my @vertexPopularity = @{$_[10]}; # adjacency table of occurrences of vertices in circuits of each length
+	my @matrix = @{$_[11]};           # Transitions/States Matrix
+	my @states = @{$_[12]};           # States 
+	my @B = ();                       # integer array size n of lists
+	my @Ck = @{$_[13]};               # Transition Matrix 
+	# (Ck[i] : Transitions from state i.
+	#  Ck[i][0] : Number of transitions
+	#  Ck[i][1..j] : transitions from state i   
+	my @ssStack = @{$_[14]};          # Current Stack result of siteswaps
+	my $tr = $_[15];                  # Current transition
+	my $resRef = $_[16];
+	my $opts = uc($_[17]); 
+	my $f = $_[18]; 
+	my $histogram_results = "N";          # Get the States Path Results or no (default)
+	my $longest_results = "Y";          # Get Computation Synthesis (default) or no
+	&GetOptionsFromString($opts,    				    
+			      "-L:s" => \$longest_results,
+			      "-H:s" => \$histogram_results,
+	    );
+	
+	my $b = 0;
+	
+	push(@statesStack, $v);
+	if($tr ne "")
+	{
+	    push(@ssStack, $tr);	
+	}
+	$blocked[$v] = 1;
+	for (my $wPos = 1; $wPos <= $Ak[$v][0]; $wPos++) 
+	{  
+	    &common::displayComputingPrompt();
+
+            # for each w in list Ak[v]:	
+	    my $w = $Ak[$v][$wPos];
+
+	    if ($w < $start) 
+	    {
+		next;   # ignore relevant parts of Ak
+	    }
+	    &common::hideComputingPrompt();
+	    if ($w == $start) { # we have a circuit,
+		$tr = $Ck[$v][$wPos];
+		push(@ssStack, $tr);
+
+		# print out the stack to record the circuit
+		&__stacksPrint(\@statesStack, \@matrix, \@states, \@ssStack, \@{$resRef}, $opts, $f); 
+		
+		#@{$lengthHistogramRef}[scalar @statesStack]++; # add this circuit 's length to the length histogram
+		my $period=&getPeriod(join("",@statesStack),-1);
+		@{$lengthHistogramRef}[$period]++; # add this circuit 's length to the length histogram
+		$nCircuits++; # and increment count of circuits found
+		if ($longestMode == 0)
+		{
+		    my $period=&getPeriod(join("",@statesStack),-1);
+		    if ($period > $lenLongest) { # keep a copy of the longest circuits found
+			$lenLongest = $period;
+			@{$longestCircuitRef}[0] = 1;
+			@{$longestCircuitRef}[1] = join("",@ssStack);
+		    }
+		    elsif($period == $lenLongest) { 
+			$lenLongest = $period;
+			@{$longestCircuitRef}[0]++;
+			@{$longestCircuitRef}[@{$longestCircuitRef}[0]] = join("",@ssStack);
+		    }
+		}
+		else
+		{
+		    my $l = join("",@ssStack);
+		    my $period=&getPeriod($l,-1);
+		    if ($period > $lenLongest) { # keep a copy of the longest Siteswap found
+			$lenLongest = $period;
+			@{$longestCircuitRef}[0] = 1;
+			@{$longestCircuitRef}[1] = $l;
+		    }
+		    elsif($period == $lenLongest) { 
+			$lenLongest = $period;
+			@{$longestCircuitRef}[0]++;
+			@{$longestCircuitRef}[@{$longestCircuitRef}[0]] = $l;
+		    }
+		}
+
+                # increment [circuit-length][vertex] for all vertices in this circuit
+		for (my $i = 0; $i < scalar @statesStack; $i ++) 
+		{
+		    $vertexPopularity[scalar @statesStack][$statesStack[$i]]++;
+		}
+		pop(@ssStack);
+		$b = 1;
+	    } elsif ($blocked[$w] == 0) {		
+		$tr = $Ck[$v][$wPos];
+		($nCircuits, $lenLongest, $b) = &__circuit($start, $w, \@Ak, \@B, \@statesStack, \@blocked, $nCircuits, $longestCircuitRef, $lenLongest, \@{$lengthHistogramRef}, \@vertexPopularity, \@matrix, \@states, \@Ck, \@ssStack, $tr, \@{$resRef}, $opts, $f);    
+	    }
+	}
+
+	if ($b == 1) {
+	    &__unblock ($v, \@B, \@blocked);
+	} else {
+	    for (my $wPos = 1; $wPos <= $Ak[$v][0]; $wPos++) { # for each w in list Ak[v]:
+		&common::displayComputingPrompt();
+		my $w = $Ak[$v][$wPos];
+		if ($w < $start) 
+		{
+		    next; # ignore relevant parts of Ak
+		}
+		my @Btmp=$B[$w];
+		if(!(grep {$_ == $v} @Btmp))
+		{
+		    $B[$w][0]++;
+		    $B[$w][$B[$w][0]] = $v;
+		}
+	    }
+	}
+	$v = pop(@statesStack);
+	my $h=pop(@ssStack);
+	return ($nCircuits, $lenLongest, $b);
+    }
+
+
+    my @Ak = @{$_[0]};            # Graph to analyse : integer array size n of lists, ie the transitions from the states
+    #  Ak[i][0] : Number of transitions from state index i
+    #  Ak[i][1..j] : transitions index from state index i   
+    my $nStates = $_[1];          # number of states
+    my @matrix = @{$_[2]};        # Transitions/States Matrix
+    my @states = @{$_[3]};        # States 
+    my @Ck = @{$_[4]};            # Transition Matrix 
+    # (Ck[i] : Transitions from state i.
+    #  Ck[i][0] : Number of transitions
+    #  Ck[i][1..j] : transitions from state i   
+    my $opts = uc($_[5]); 
+    my $f = $_[6]; 
+    my $histogram_results = "N";          # Get the States Path Results or no (default)
+    my $longest_results = "Y";          # Get Computation Synthesis (default) or no
+    &GetOptionsFromString($opts,    				    
+			  "-L:s" => \$longest_results,
+			  "-H:s" => \$histogram_results,
+	);
+    
+    my @res = ();
+
+    my $start = 0;                # Start state index
+    my @B = ();                   # integer array size n of lists
+    my @blocked = ();             # logical array indexed by states index
+    my @statesStack = ();         # Current Stack result of states
+    my $tr = "";                  # Current transition 
+    my @ssStack = ();             # Current Stack result of siteswaps
+
+    my $nCircuits = 0;            # total number of circuits found;
+    my @longestCircuit = ();      # the longest circuits found
+    $longestCircuit[0] = 0;       # longestCircuit[0] : Number of longest circuits.
+    # longestCircuit[1..j] : longest circuits 
+    my $lenLongest = 0;           # the longest circuits length
+    my @lengthHistogram = ();     # histogram of circuit lengths
+    my @vertexPopularity = ();    # adjacency table of occurrences of vertices in circuits of each length
+    
+    my $b = 0;                    # 0 : no circuit found; 1 : at least 1 circuit found 
+    
+    # will use as [1]...[n] to histogram circuits by length
+    # [0] for zero length circuits, which are impossible
+    # initialise histogram bins to empty 
+    for (my $len = 0; $len < $nStates+1; $len++) 
+    {
+        $lengthHistogram[$len] = 0;
+    }
+
+    # max elementary circuit length is exactly nStates 
+    for (my $len = 0; $len <= $nStates; $len++) 
+    {	
+        for (my $j = 0; $j < $nStates; $j++) 
+	{
+            $vertexPopularity[$len][$j] = 0;
+        }
+    }
+
+    for (my $i = 0; $i < $nStates; $i++) {
+	$B[$i][0]=0;
+        $blocked[$i] = 0;
+    }
+
+    while ($start < $nStates) 
+    {
+        if (uc($histogram_results) eq "Y") 
+	{	    
+	    if($f eq "" || $f eq "-2") 
+	    {
+		&common::hideComputingPrompt();
+		print colored [$common::COLOR_RESULT], "=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG11." : $states[$start] === \n";
+	    }	      
+	    elsif ("JML:"=~substr($f,0,4)) 
+	    {	
+		my $f_in = substr($f,4).".jml";
+		&common::hideComputingPrompt();		      		
+		open(FILE_JML,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
+		print FILE_JML "<line display=\""."=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG11." : $states[$start] === "."\"/>\n";
+		close(FILE_JML);
+	    }  	
+	    elsif ("SSHTML:"=~substr($f,0,7)) 
+	    {		    
+		my $f_in = substr($f,7).".html";		      		
+		&common::hideComputingPrompt();
+		open(FILE,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
+		print FILE "=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG11." : $states[$start] === <BR/>\n";
+		close(FILE);		
+	    }
+	    elsif($f ne "-1")
+	    {
+		&common::hideComputingPrompt();
+		open(FILE,">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;
+		print FILE "=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG11." : $states[$start] === \n";
+		close(FILE);
+	    }       
+	}
+
+        for (my $i = 0; $i < $nStates; $i++) { # for all i in Vk
+            $blocked[$i] = 0;
+	    my @Btmp=$B[$i];
+	    @Btmp = ();
+	    $B[$i][0]=0;
+        }
+	
+	($nCircuits, $lenLongest, $b) = &__circuit($start, $start, \@Ak, \@B, \@statesStack, \@blocked, $nCircuits, \@longestCircuit, $lenLongest, \@lengthHistogram, \@vertexPopularity, \@matrix, \@states, \@Ck, \@ssStack, $tr, \@res, $opts, $f );
+        $start ++;	
+    }
+    
+    if($f eq "" || $f eq "-2") 
+    {
+	&common::hideComputingPrompt();
+	if (uc($longest_results) eq "Y") 
+	{
+	    print colored [$common::COLOR_RESULT], "\n================================================================\n";
+	    print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_GENSSPRIME_MSG1.$nCircuits."\n\n";
+	    if ($longestMode == 0)
+	    {		
+		if($lenLongest == $nStates || $lenLongest == $nStates*2)
+		{		    
+		    print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_GENSSPRIME_MSG2." ($longestCircuit[0]) : $lenLongest ".$lang::MSG_SSWAP_GENSSPRIME_MSG3." [=> Hamiltonien] : \n";
+		}
+		else
+		{
+		    print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_GENSSPRIME_MSG2." ($longestCircuit[0]) : $lenLongest ".$lang::MSG_SSWAP_GENSSPRIME_MSG3." :\n";
+		}	
+	    }
+	    else
+	    {
+		if($lenLongest == $nStates || $lenLongest == $nStates*2)
+		{
+		    print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_GENSSPRIME_MSG4." ($longestCircuit[0]) : ".$lang::MSG_SSWAP_GENSSPRIME_MSG5." ".&getPeriod($longestCircuit[1],-1)." [=> Hamiltonien] : \n";
+		}
+		else
+		{
+		    print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_GENSSPRIME_MSG4." ($longestCircuit[0]) : ".$lang::MSG_SSWAP_GENSSPRIME_MSG5." ".&getPeriod($longestCircuit[1],-1)." :\n";		
+		}
+	    }
+
+	    for (my $i=1; $i <= $longestCircuit[0]; $i++)
+	    {
+		print "   ".$longestCircuit[$i]."\n";
+	    }
+	    print colored [$common::COLOR_RESULT], "================================================================\n";
+	}
+	
+	if (uc($histogram_results) eq "Y") 
+	{
+	    print colored [$common::COLOR_RESULT], "\n=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG6." ===\n";
+	    if ($longestMode == 0)
+	    {
+		print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_GENSSPRIME_MSG7."\n\n";
+	    }
+	    else
+	    {
+		print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_GENSSPRIME_MSG8."\n\n";
+	    }
+
+	    for (my $i=0; $i <= $nStates; $i++)
+	    {
+		print "   $i : $lengthHistogram[$i]\n";
+	    }
+	    
+	    print colored [$common::COLOR_RESULT], "\n=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG9." ===\n";
+	    for (my $i=0; $i <= $nStates; $i++)
+	    {
+		print colored [$common::COLOR_RESULT], "\n   === ".$lang::MSG_SSWAP_GENSSPRIME_MSG10." : $i ===\n";
+		for (my $j=0; $j < $nStates; $j++)
+		{
+		    print "   $states[$j] : $vertexPopularity[$i][$j]\n";
+		}
+	    }
+	    print "\n";
+	    print colored [$common::COLOR_RESULT], "================================================================\n";
+	}
+    }
+
+    elsif ("JML:"=~substr($f,0,4)) 
+    {
+	&common::hideComputingPrompt();
+	my $f_in = substr($f,4).".jml";		      		
+	open(FILE_JML,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
+	
+	if (uc($longest_results) eq "Y") 
+	{
+	    print FILE_JML "<line display=\"\"/>\n";
+	    print FILE_JML "<line display=\""."================================================================"."\"/>\n";
+	    print FILE_JML "<line display=\"".$lang::MSG_SSWAP_GENSSPRIME_MSG1.$nCircuits."\"/>\n";
+	    print FILE_JML "<line display=\"\"/>\n";
+	    if ($longestMode == 0)
+	    {
+		if($lenLongest == $nStates || $lenLongest == $nStates*2)
+		{
+		    print FILE_JML "<line display=\"".$lang::MSG_SSWAP_GENSSPRIME_MSG2." ($longestCircuit[0]) : $lenLongest ".$lang::MSG_SSWAP_GENSSPRIME_MSG3." [=> Hamiltonien] : "."\"/>\n";
+		}
+		else
+		{
+		    print FILE_JML "<line display=\"".$lang::MSG_SSWAP_GENSSPRIME_MSG2." ($longestCircuit[0]) : $lenLongest ".$lang::MSG_SSWAP_GENSSPRIME_MSG3." : "."\"/>\n";
+		}	
+	    }
+	    else
+	    {
+		if($lenLongest == $nStates || $lenLongest == $nStates*2)
+		{
+		    print FILE_JML "<line display=\"".$lang::MSG_SSWAP_GENSSPRIME_MSG4." ($longestCircuit[0]) : ".$lang::MSG_SSWAP_GENSSPRIME_MSG5." $lenLongest"." [=> Hamiltonien] : "."\"/>\n";
+		}
+		else
+		{
+		    print FILE_JML "<line display=\"".$lang::MSG_SSWAP_GENSSPRIME_MSG4." ($longestCircuit[0]) : ".$lang::MSG_SSWAP_GENSSPRIME_MSG5." $lenLongest : "."\"/>\n";		
+		}
+	    }
+	    
+	    for (my $i=1; $i <= $longestCircuit[0]; $i++)
+	    {
+		print FILE_JML "<line display=\""."   ".$longestCircuit[$i]."\"/>\n"
+	    }
+	    print FILE_JML "<line display=\""."================================================================"."\"/>\n";
+	}
+
+	if (uc($histogram_results) eq "Y") 
+	{
+	    print FILE_JML "<line display=\"\"/>\n";
+	    print FILE_JML "<line display=\""."=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG6." ==="."\"/>\n";
+	    if ($longestMode == 0)
+	    {
+		print FILE_JML "<line display=\"".$lang::MSG_SSWAP_GENSSPRIME_MSG7."\"/>\n";
+		print FILE_JML "<line display=\"\"/>\n";
+	    }
+	    else
+	    {
+		print FILE_JML "<line display=\"".$lang::MSG_SSWAP_GENSSPRIME_MSG8."\"/>\n";
+		print FILE_JML "<line display=\"\"/>\n";
+	    }
+	    
+	    for (my $i=0; $i <= $nStates; $i++)
+	    {
+		print FILE_JML "<line display=\""."   $i : $lengthHistogram[$i]"."\"/>\n";
+	    }
+	    
+	    print FILE_JML "<line display=\"\"/>\n";
+	    print FILE_JML "<line display=\""."=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG9." ==="."\"/>\n";
+	    for (my $i=0; $i <= $nStates; $i++)
+	    {
+		print FILE_JML "<line display=\"\"/>\n";
+		print FILE_JML "<line display=\""."   === ".$lang::MSG_SSWAP_GENSSPRIME_MSG10." : $i ==="."\"/>\n";
+		for (my $j=0; $j < $nStates; $j++)
+		{
+		    print FILE_JML "<line display=\""."   $states[$j] : $vertexPopularity[$i][$j]"."\"/>\n";
+		}
+	    }
+
+	    print FILE_JML "<line display=\"\"/>\n";
+	    print FILE_JML "<line display=\""."================================================================"."\"/>\n";
+	}
+
+	close(FILE_JML);
+    }  	
+    
+    elsif ("SSHTML:"=~substr($f,0,7)) 
+    {		    
+	&common::hideComputingPrompt();
+	my $f_in = substr($f,7).".html";	
+	open(FILE,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
+
+	if (uc($longest_results) eq "Y") 
+	{
+	    print FILE "<BR/>\n================================================================<BR/>\n";
+	    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG1.$nCircuits."<BR/><BR/>\n\n";
+	    if ($longestMode == 0)
+	    {
+		if($lenLongest == $nStates || $lenLongest == $nStates*2)
+		{
+		    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG2." ($longestCircuit[0]) : $lenLongest ".$lang::MSG_SSWAP_GENSSPRIME_MSG3." [=> Hamiltonien] : <BR/>\n";
+		}
+		else
+		{
+		    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG2." ($longestCircuit[0]) : $lenLongest ".$lang::MSG_SSWAP_GENSSPRIME_MSG3." :<BR/>\n";
+		}	
+	    }
+	    else
+	    {
+		if($lenLongest == $nStates || $lenLongest == $nStates*2)
+		{
+		    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG4." ($longestCircuit[0]) : ".$lang::MSG_SSWAP_GENSSPRIME_MSG5." $lenLongest"." [=> Hamiltonien] : <BR/>\n";
+		}
+		else
+		{
+		    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG4." ($longestCircuit[0]) : ".$lang::MSG_SSWAP_GENSSPRIME_MSG5." $lenLongest"." : <BR/>\n";		
+		}
+	    }
+	    
+	    for (my $i=1; $i <= $longestCircuit[0]; $i++)
+	    {
+		print FILE "   ".$longestCircuit[$i]."<BR/>\n";
+	    }
+	    print FILE "================================================================<BR/>\n";
+	}
+
+	if (uc($histogram_results) eq "Y") 
+	{
+	    print FILE "<BR/>\n=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG6." ===<BR/>\n";
+	    if ($longestMode == 0)
+	    {
+		print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG7."<BR/><BR/>\n\n";
+	    }
+	    else
+	    {
+		print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG8."<BR/><BR/>\n\n";
+	    }
+	    
+	    for (my $i=0; $i <= $nStates; $i++)
+	    {
+		print FILE "   $i : $lengthHistogram[$i]<BR/>\n";
+	    }
+	    
+	    print FILE "<BR/>\n=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG9." ===<BR/>\n";
+	    for (my $i=0; $i <= $nStates; $i++)
+	    {
+		print FILE "<BR/>\n   === ".$lang::MSG_SSWAP_GENSSPRIME_MSG10." : $i ===<BR/>\n";
+		for (my $j=0; $j < $nStates; $j++)
+		{
+		    print FILE "   $states[$j] : $vertexPopularity[$i][$j]<BR/>\n";
+		}
+	    }
+	    print FILE "<BR/>\n";
+	    print FILE "================================================================<BR/>\n\n";
+	}
+
+	close(FILE);		    
+    }
+    
+    elsif($f ne "-1")
+    {
+	&common::hideComputingPrompt();	   
+	open(FILE,">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;
+
+	if (uc($longest_results) eq "Y") 
+	{
+	    print FILE "\n================================================================\n";
+	    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG1.$nCircuits."\n\n";
+	    if ($longestMode == 0)
+	    {
+		if($lenLongest == $nStates || $lenLongest == $nStates*2)
+		{
+		    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG2." ($longestCircuit[0]) : $lenLongest ".$lang::MSG_SSWAP_GENSSPRIME_MSG3." [=> Hamiltonien] : \n";
+		}
+		else
+		{
+		    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG2." ($longestCircuit[0]) : $lenLongest ".$lang::MSG_SSWAP_GENSSPRIME_MSG3." :\n";
+		}	
+	    }
+	    else
+	    {
+		if($lenLongest == $nStates || $lenLongest == $nStates*2)
+		{
+		    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG4." ($longestCircuit[0]) : ".$lang::MSG_SSWAP_GENSSPRIME_MSG5." $lenLongest"." [=> Hamiltonien] : \n";
+		}
+		else
+		{
+		    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG4." ($longestCircuit[0]) : ".$lang::MSG_SSWAP_GENSSPRIME_MSG5." $lenLongest"." :\n"; 
+		}
+	    }
+	    
+	    for (my $i=1; $i <= $longestCircuit[0]; $i++)
+	    {
+		print FILE "   ".$longestCircuit[$i]."\n";
+	    }
+	    print FILE "================================================================\n";
+	}
+
+	if (uc($histogram_results) eq "Y") 
+	{
+	    print FILE "\n=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG6." ===\n";
+	    if ($longestMode == 0)
+	    {
+		print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG7."\n\n";
+	    }
+	    else
+	    {
+		print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG8."\n\n";
+	    }
+	    
+	    for (my $i=0; $i <= $nStates; $i++)
+	    {
+		print FILE "   $i : $lengthHistogram[$i]\n";
+	    }
+	    
+	    print FILE "\n=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG9." ===\n";
+	    for (my $i=0; $i <= $nStates; $i++)
+	    {
+		print FILE "\n   === ".$lang::MSG_SSWAP_GENSSPRIME_MSG10." : $i ===\n";
+		for (my $j=0; $j < $nStates; $j++)
+		{
+		    print FILE "   $states[$j] : $vertexPopularity[$i][$j]\n";
+		}
+	    }
+	    print FILE "\n";
+	    print FILE "================================================================\n";
+	}
+
+	close(FILE);
+    }
+    
+    
+    return \@res;
+}
+
+
+sub genSSPrime
+{
+    my $mod = $_[0];
+    my $nb_objs = $_[1];
+    my $height = hex($_[2]);
+    my $mult = '';
+    my $f = "";
+    my $pwd = getcwd();   
+    my $run_browser = -1;
+    
+    my @Ak = ();              # Graph to analyse : integer array size n of lists, ie the transitions from the states
+    #  Ak[i][0] : Number of transitions from state index i
+    #  Ak[i][1..j] : transitions index from state index i   
+    my @Ck = ();              # Transition Matrix 
+    # (Ck[i] : Transitions from state i.
+    #  Ck[i][0] : Number of transitions
+    #  Ck[i][1..j] : transitions from state i
+    my $nStates = 0;    
+    my $opts;
+    
+    my $title = '-- '.$lang::MSG_SSWAP_GENSSPRIME_MSG0.' --'; 
+    my $color_check = "N";
+    my $sym_check = "N";
+    my $perm_check = "Y";
+    my $remove_redundancy = 0;           # 0 : keep redundancy (default); 1 : prefer ground states; 2 : keep first in the list
+    my $extra_info = "N";
+    my $order_list = 1;                  # 0 : do not sort; 1 : numerical sort (default); 2 : sort by objects number ; 3 : sort by period
+    my $ground_check = "N";              # Get only Ground States or no (default) 
+    my $prime_check = "N";               # For sure this is the case, but keep for testing purpose
+    my $reversible_check = "N";          # Get only Reversible Siteswap or no (default)
+    my $scramblable_check = "N";         # Get only Scramblable Siteswap or no (default)
+    my $palindrome_check = "N"; # Get only Palindrome Siteswap or no (default)
+    my $magic_check = "N";      # Get only Magic Siteswap or no (default)
+    my $squeeze_check = "N";    # Get only No Squeeze Siteswap or any (default)    
+    my $histogram_results = "N";         # Get the States Path Results or no (default)
+    my $longest_results = "Y";           # Get Computation Synthesis (default) or no
+
+    # build the Matrix    
+    my $matrix_tmp ='';
+    my $states_tmp ='';
+
+    if(uc($mod) eq "V" || uc($mod) eq "S")
+    {
+	$opts = uc($_[3]); 
+	my $ret = &GetOptionsFromString($opts,    
+					"-O:i" => \$order_list,
+					"-R:i" => \$remove_redundancy,
+					"-C:s" => \$color_check,
+					"-S:s" => \$sym_check,
+					"-P:s" => \$perm_check,
+					"-T:s" => \$title,
+					"-I:s" => \$extra_info,
+					"-G:s" => \$ground_check,    	
+					"-L:s" => \$longest_results,
+					"-H:s" => \$histogram_results,
+					"-U:s" => \$prime_check,       # For sure this is always the case, but keep for testing purpose
+		       			"-D:s" => \$scramblable_check,
+					"-N:s" => \$palindrome_check,
+		       			"-B:s" => \$reversible_check,
+					"-Z:s" => \$magic_check,
+					"-Q:s" => \$squeeze_check,
+	    );
+	$f = $_[4];	
+
+	# Get the States/Transitions Matrix
+	if(scalar @_ > 5)
+	{
+	    # XLS File with States/Transitions Matrix is provided to speed up the computation
+	    &__check_xls_matrix_file($_[5],$mod,$nb_objs,sprintf("%x",$height),-1,"?");
+	    ($matrix_tmp, $states_tmp) = &__getStates_from_xls($_[5]); 
+	}
+	else
+	{	
+	    ($matrix_tmp, $states_tmp) = &genStates($mod,$nb_objs,$height,"-1");	    
+	}
+    }
+    elsif(uc($mod) eq "M" || uc($mod) eq "MS" || uc($mod) eq "SM" || uc($mod) eq "MULTI")
+    {
+	$mult = $_[3];
+	$opts = uc($_[4]); 	
+	my $ret = &GetOptionsFromString($opts,    
+					"-O:i" => \$order_list,
+					"-R:i" => \$remove_redundancy,
+					"-C:s" => \$color_check,
+					"-S:s" => \$sym_check,
+					"-P:s" => \$perm_check,
+					"-T:s" => \$title,
+					"-I:s" => \$extra_info,
+					"-G:s" => \$ground_check,    	
+					"-L:s" => \$longest_results,
+					"-U:s" => \$prime_check,       # For sure this is always the case, but keep for testing purpose
+					"-H:s" => \$histogram_results,
+					"-D:s" => \$scramblable_check,
+					"-N:s" => \$palindrome_check,
+       		       			"-B:s" => \$reversible_check,
+					"-Z:s" => \$magic_check,
+					"-Q:s" => \$squeeze_check,
+	    );
+	$f = $_[5];
+
+	# Get the States/Transitions Matrix
+	if(scalar @_ > 6)
+	{	    
+	    # XLS File with States/Transitions Matrix is provided to speed up the computation
+	    &__check_xls_matrix_file($_[6],$mod,$nb_objs,sprintf("%x",$height),$mult,-1);
+	    ($matrix_tmp, $states_tmp) = &__getStates_from_xls($_[6]); 
+	}
+	else
+	{	
+	    ($matrix_tmp, $states_tmp) = &genStates($mod,$nb_objs,$height,$mult,"-1");	    
+	}
+    }
+    
+    my @matrix=@{$matrix_tmp};
+    my @states=@{$states_tmp};   
+    my @res = ();    
+    
+    $nStates = scalar @states;
+    foreach my $el1 (@states) 
+    {	
+	foreach my $el2 (@states) 
+	{
+	    my $idx_el1 = &__get_idx_state(\@states,$el1);
+	    my $idx_el2 = &__get_idx_state(\@states,$el2);	    
+	    my $el = $matrix[$idx_el1][$idx_el2];
+	    if($el ne "")
+	    {
+		if(index($el,';') != -1)
+		{		    
+		    my @st=();
+		    @st=split(/;/,$el);
+		    for(my $i = 0; $i < scalar @st; $i++)
+		    {
+			$Ak[$idx_el1][0]++;
+			$Ak[$idx_el1][$Ak[$idx_el1][0]] = $idx_el2;
+			$Ck[$idx_el1][0]++;
+			$st[$i] =~ s/\s+//g;
+			$Ck[$idx_el1][$Ck[$idx_el1][0]] = $st[$i];			
+		    }
+		}
+		else
+		{
+		    $Ak[$idx_el1][0]++;
+		    $Ak[$idx_el1][$Ak[$idx_el1][0]] = $idx_el2;
+		    $Ck[$idx_el1][0]++;
+		    $Ck[$idx_el1][$Ck[$idx_el1][0]] = $el;
+		}
+	    }
+	}
+    }
+
+    if($f eq "" || $f eq "-2")
+    {
+	### Issue the results on stdout 
+	print colored [$common::COLOR_RESULT], "$title\n\n";	
+    }    
+    elsif ("JML:"=~substr($f,0,4)) 
+    {
+	$run_browser=0;
+	my $f_in = substr($f,4).".jml";    
+
+	open(FILE_JML,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ; 
+	print FILE_JML "<?xml version=\"1.0\"?>\n";
+	print FILE_JML "<!DOCTYPE jml SYSTEM \"file://jml.dtd\">\n";
+	print FILE_JML "<jml version=\"".$conf::JUGGLING_LAB_JML_VERSION."\">\n";
+	print FILE_JML "<patternlist>\n";
+	print FILE_JML "<title>".$title."</title>\n";
+	print FILE_JML "<line display=\"\"/>\n";
+	close(FILE_JML);
+    }  	
+    elsif ("SSHTML:"=~substr($f,0,7)) 
+    {		    
+	### Code to issue an HTML file with extension .html with some information on the Siteswaps.";   
+	$run_browser=1;
+	my $f_in = substr($f,7).".html";	
+	open(FILE,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
+	print FILE "$title <BR/><BR/>\n";
+	close(FILE);		
+    }
+    elsif($f ne "-1")
+    {
+	### Issue the results into a given file 
+	open(FILE,">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;
+	print FILE "$title\n\n";
+	close(FILE);
+    }
+    
+    $opts = "-L=$longest_results -H=$histogram_results";
+    @res=@{&__get_elementary_circuits(\@Ak, $nStates, \@matrix, \@states, \@Ck, $opts, $f)};
+
+    #Do not consider options -L & -H anymore
+    $opts = "-O=$order_list -R=$remove_redundancy -C=$color_check -S=$sym_check -P=$perm_check -B=$reversible_check -T=\"$title\" -I=$extra_info -G=$ground_check";
+
+    if(uc($prime_check) eq "Y")
+    {
+	$opts = $opts." -U=$prime_check";
+    }
+
+    if ($f eq "") 
+    {
+	### results on stdout 
+	print colored [$common::COLOR_RESULT], "\n=== Prime Siteswaps ===\n\n";
+	@res = &printSSListWithoutHeaders(\@res,$opts);	    	    
+    }    
+    elsif ("JML:"=~substr($f,0,4)) 
+    {
+	### Code for the HTML file with extension .html for JugglingLab view
+	my $f_in = substr($f,4).".jml";    
+	open(FILE_JML,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ; 
+	print FILE_JML "<line display=\"\"/>\n";
+	print FILE_JML "<line display=\""."=== Prime Siteswaps ==="."\"/>\n";
+	print FILE_JML "<line display=\"\"/>\n";
+	close(FILE_JML);
+	@res = &printSSListWithoutHeaders(\@res,$opts,$f);
+	
+	#system("start /b cmd /c ${JUGGLING_LAB_PATH}/jlab.bat anim -jml $conf::RESULTS/".substr($f,7).".jml\n");
+	print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_JML."$conf::RESULTS/".substr($f,7).".jml\n";     
+
+    }  	
+    elsif ("SSHTML:"=~substr($f,0,7)) 
+    {		    
+	### Code for the HTML file with extension .html with some information on the Siteswaps.";   
+	@res = &printSSListInfoHTMLWithoutHeaders(\@res,$opts,$f);
+    }
+    elsif ($f ne "-1" && $f ne "-2")
+    {
+	### results into a given file 
+	open(FILE,">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;
+	print FILE "=== Prime Siteswaps ===\n\n";
+	close(FILE);
+	@res = &printSSListWithoutHeaders(\@res,$opts,$f);
+    }    
+
+    if ($run_browser == 1 && $conf::jtbOptions_r == 1)
+    {
+	my $f_in = substr($f,7).".html";	
+	if ($common::OS eq "MSWin32") {
+	    system("start /b cmd /c \"$conf::HTTP_BROWSER\" ${pwd}/$conf::RESULTS/$f_in");
+	} else {
+	    # Unix-like OS
+	    system("$conf::HTTP_BROWSER ${pwd}/$conf::RESULTS/$f_in &");
+	}		
+    }
+    
+    return \@res;
+}
+
+
+sub polyrythmFountain
+{
+    my $pwd = cwd();
+    if ($common::OS eq "MSWin32") {
+	system("start /b cmd /c \"$conf::HTTP_BROWSER\" ${pwd}/data/polyrhythmic-fountain/polyrhythmic-fountain.html");
+    } else {
+	# Unix-like OS
+	system("$conf::HTTP_BROWSER ${pwd}/data/polyrhythmic-fountain/polyrhythmic-fountain.html &");
+    }
+}
+
 
 ######################################################################
 #
-# The Followings procedure uses OLE and thus are dedicated to Windows (With Excel License set)
+# TO DO : The Followings procedure uses OLE and thus are dedicated to Windows (With Excel License set)
 #
 ######################################################################
+
+my $rc = eval
+{
+  require Win32::OLE;
+  Win32::OLE->import();
+  1;
+};
+
+if($rc)
+{
+  # Win32::OLE loaded and imported successfully
 
 my $OS=$^O;
 if ($OS eq "MSWin32") {
-    use Win32::OLE;
-    use Win32::OLE qw(in with);
-    # not only use Win32::OLE::Const 'Microsoft Excel'
-    use Win32::OLE::Const;
+#    use Win32::OLE;
+#    use Win32::OLE qw(in with);
+#    use Win32::OLE::Const;
 
     if(! Win32::OLE->new('Excel.Application', 'Quit'))
     {
@@ -25207,957 +26169,10 @@ sub __check_xls_matrix_file
     return 1;
 }
 
-
-sub __get_elementary_circuits
-{
-
-    # /*
-    #  * Algorithm Adaptation from : K.A. Hawick and H.A. James
-    #  *  "Enumerating Circuits and Loops in Graphs with Self-Arcs and Multiple-Arcs"
-    #  *                   Computer Science, Institute for Information and Mathematical Sciences,
-    #  *                   Massey University, North Shore 102-904, Auckland, New Zealand
-    #  *                   Technical Report CSTN-013
-    #  * Implementation : Frederic Roudaut
-    #  */
-
-    my $longestMode = 1;          # longest Definition : 0 : in term of state, 1 : in term of siteswap Period 
-    
-    sub __stacksPrint {
-	my $i;
-	my @statesStack=@{$_[0]};
-	my @matrix = @{$_[1]};
-	my @states = @{$_[2]};
-	my @ssStack = @{$_[3]};
-	my $resRef = $_[4];
-	my $opts = uc($_[5]); 
-	my $f = $_[6]; 
-	my $diagram_results = "N";          # Get the States Path Results or no (default)
-	my $longest_results = "Y";          # Get Computation Synthesis (default) or no
-	&GetOptionsFromString($opts,    				    
-			      "-L:s" => \$longest_results,
-			      "-H:s" => \$diagram_results,
-	    );
-
-	my $v="";
-
-	if($f ne "" && $f ne "-2" && "JML:"=~substr($f,0,4))
-	{
-	    my $f_in = substr($f,4).".jml";		      		
-	    open(FILE_JML,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
-	    print FILE_JML "<line display=\"";
-	    close(FILE_JML);	    
-	}
-
-	for ($i = 0; $i < scalar @ssStack; $i++) {
-	    if(uc($diagram_results) eq "Y")
-	    {
-		if($f eq "" || $f eq "-2") 
-		{
-		    print $ssStack[$i];
-		}	      
-		elsif ("JML:"=~substr($f,0,4)) 
-		{
-		    my $f_in = substr($f,4).".jml";		      		
-		    open(FILE_JML,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
-		    print FILE_JML $ssStack[$i];
-		    close(FILE_JML);
-		}  	
-		elsif ("SSHTML:"=~substr($f,0,7)) 
-		{		    
-		    my $f_in = substr($f,7).".html";	
-		    open(FILE,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
-		    print FILE $ssStack[$i];		    
-		    close(FILE);		
-		}
-		elsif($f ne "-1")
-		{		    
-		    open(FILE,">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;
-		    print FILE $ssStack[$i];		    
-		    close(FILE);
-		}
-	    }
-
-	    $v=$v.$ssStack[$i]	   
-	}
-
-	if(uc($diagram_results) eq "Y")
-	{
-	    if($f eq "" || $f eq "-2") 
-	    {
-		print " {";
-		for ($i = 0; $i < scalar @statesStack; $i++) 
-		{
-		    print $states[$statesStack[$i]]." ";
-		}
-		print $states[$statesStack[0]];
-		print "}\n";
-	    }	      
-	    elsif ("JML:"=~substr($f,0,4)) 
-	    {				
-		my $f_in = substr($f,4).".jml";	
-		open(FILE_JML,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
-		print FILE_JML " {";
-		for ($i = 0; $i < scalar @statesStack; $i++) 
-		{
-		    print FILE_JML $states[$statesStack[$i]]." ";
-		}
-		print FILE_JML $states[$statesStack[0]];
-		print FILE_JML "}\"/>\n";
-		close(FILE_JML);
-	    }  	
-	    elsif ("SSHTML:"=~substr($f,0,7)) 
-	    {		    
-		my $f_in = substr($f,7).".html";	
-		open(FILE,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
-		print FILE " {";
-		for ($i = 0; $i < scalar @statesStack; $i++) 
-		{
-		    print FILE $states[$statesStack[$i]]." ";
-		}
-		print FILE $states[$statesStack[0]];
-		print FILE "}<BR/>\n";
-		close(FILE);		
-	    }
-	    elsif($f ne "-1")
-	    {
-		open(FILE,">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;
-		print FILE " {";
-		for ($i = 0; $i < scalar @statesStack; $i++) 
-		{
-		    print FILE $states[$statesStack[$i]]." ";
-		}
-		print FILE $states[$statesStack[0]];
-		print FILE "}\n";
-		close(FILE);
-	    }
-	}
-
-	push( @{$resRef}, $v);  	    	  
-    }
-    
-
-    sub __unblock {
-	my $u=$_[0];
-	my @B=@{$_[1]};
-	my @blocked=@{$_[2]};
-
-	$blocked[$u] = 0;
-	for (my $wPos = 1; $wPos <= $B[$u][0]; $wPos++) {
-	    # for each w in B[u]
-	    my $w = $B[$u][$wPos];
-	    my $nOccurrences = 0;
-	    for (my $i = 1; $i <= $B[$u][0]; $i++) {
-		if ($B[$u][$i] == $w) {
-		    $nOccurrences++;
-		    for (my $j = $i; $j < $B[$u][0]; $j++) {
-			$B[$u][$j] = $B[$u][$j+1];
-		    }
-		    $B[$u][0]--; # should be safe as list is re-evaluated each time around the i-loop
-		    $i--;
-		}
-	    }
-	    
-	    $wPos -= $nOccurrences;
-	    
-	    if ($blocked[$w] == 1)
-	    {
-		&__unblock($w, \@B, \@blocked);
-	    }
-	}
-    }
-    
-    sub __circuit { # Ideas based on Johnson 's logical procedure CIRCUIT
-	my $start = $_[0];                # Start state index
-	my $v = $_[1];                    # Current state index
-	my @Ak = @{$_[2]};                # Graph to analyse : integer array size n of lists, 
-	# ie the transitions from the states
-	#  Ak[i][0] : Number of transitions from state index i
-	#  Ak[i][1..j] : transitions index from state index i   
-	my @statesStack = @{$_[4]};       # Current Stack result of states
-	my @blocked = @{$_[5]};           # logical array indexed by states index
-	my $nCircuits = $_[6];            # total number of circuits found;
-	my $longestCircuitRef = $_[7];    # the longest circuits found	 
-	my $lenLongest = $_[8];           # the longest circuits length
-	my $lengthHistogramRef = $_[9];   # histogram of circuit lengths
-	my @vertexPopularity = @{$_[10]}; # adjacency table of occurrences of vertices in circuits of each length
-	my @matrix = @{$_[11]};           # Transitions/States Matrix
-	my @states = @{$_[12]};           # States 
-	my @B = ();                       # integer array size n of lists
-	my @Ck = @{$_[13]};               # Transition Matrix 
-	# (Ck[i] : Transitions from state i.
-	#  Ck[i][0] : Number of transitions
-	#  Ck[i][1..j] : transitions from state i   
-	my @ssStack = @{$_[14]};          # Current Stack result of siteswaps
-	my $tr = $_[15];                  # Current transition
-	my $resRef = $_[16];
-	my $opts = uc($_[17]); 
-	my $f = $_[18]; 
-	my $histogram_results = "N";          # Get the States Path Results or no (default)
-	my $longest_results = "Y";          # Get Computation Synthesis (default) or no
-	&GetOptionsFromString($opts,    				    
-			      "-L:s" => \$longest_results,
-			      "-H:s" => \$histogram_results,
-	    );
-	
-	my $b = 0;
-	
-	push(@statesStack, $v);
-	if($tr ne "")
-	{
-	    push(@ssStack, $tr);	
-	}
-	$blocked[$v] = 1;
-	for (my $wPos = 1; $wPos <= $Ak[$v][0]; $wPos++) 
-	{  
-	    &common::displayComputingPrompt();
-
-            # for each w in list Ak[v]:	
-	    my $w = $Ak[$v][$wPos];
-
-	    if ($w < $start) 
-	    {
-		next;   # ignore relevant parts of Ak
-	    }
-	    &common::hideComputingPrompt();
-	    if ($w == $start) { # we have a circuit,
-		$tr = $Ck[$v][$wPos];
-		push(@ssStack, $tr);
-
-		# print out the stack to record the circuit
-		&__stacksPrint(\@statesStack, \@matrix, \@states, \@ssStack, \@{$resRef}, $opts, $f); 
-		
-		#@{$lengthHistogramRef}[scalar @statesStack]++; # add this circuit 's length to the length histogram
-		my $period=&getPeriod(join("",@statesStack),-1);
-		@{$lengthHistogramRef}[$period]++; # add this circuit 's length to the length histogram
-		$nCircuits++; # and increment count of circuits found
-		if ($longestMode == 0)
-		{
-		    my $period=&getPeriod(join("",@statesStack),-1);
-		    if ($period > $lenLongest) { # keep a copy of the longest circuits found
-			$lenLongest = $period;
-			@{$longestCircuitRef}[0] = 1;
-			@{$longestCircuitRef}[1] = join("",@ssStack);
-		    }
-		    elsif($period == $lenLongest) { 
-			$lenLongest = $period;
-			@{$longestCircuitRef}[0]++;
-			@{$longestCircuitRef}[@{$longestCircuitRef}[0]] = join("",@ssStack);
-		    }
-		}
-		else
-		{
-		    my $l = join("",@ssStack);
-		    my $period=&getPeriod($l,-1);
-		    if ($period > $lenLongest) { # keep a copy of the longest Siteswap found
-			$lenLongest = $period;
-			@{$longestCircuitRef}[0] = 1;
-			@{$longestCircuitRef}[1] = $l;
-		    }
-		    elsif($period == $lenLongest) { 
-			$lenLongest = $period;
-			@{$longestCircuitRef}[0]++;
-			@{$longestCircuitRef}[@{$longestCircuitRef}[0]] = $l;
-		    }
-		}
-
-                # increment [circuit-length][vertex] for all vertices in this circuit
-		for (my $i = 0; $i < scalar @statesStack; $i ++) 
-		{
-		    $vertexPopularity[scalar @statesStack][$statesStack[$i]]++;
-		}
-		pop(@ssStack);
-		$b = 1;
-	    } elsif ($blocked[$w] == 0) {		
-		$tr = $Ck[$v][$wPos];
-		($nCircuits, $lenLongest, $b) = &__circuit($start, $w, \@Ak, \@B, \@statesStack, \@blocked, $nCircuits, $longestCircuitRef, $lenLongest, \@{$lengthHistogramRef}, \@vertexPopularity, \@matrix, \@states, \@Ck, \@ssStack, $tr, \@{$resRef}, $opts, $f);    
-	    }
-	}
-
-	if ($b == 1) {
-	    &__unblock ($v, \@B, \@blocked);
-	} else {
-	    for (my $wPos = 1; $wPos <= $Ak[$v][0]; $wPos++) { # for each w in list Ak[v]:
-		&common::displayComputingPrompt();
-		my $w = $Ak[$v][$wPos];
-		if ($w < $start) 
-		{
-		    next; # ignore relevant parts of Ak
-		}
-		my @Btmp=$B[$w];
-		if(!(grep {$_ == $v} @Btmp))
-		{
-		    $B[$w][0]++;
-		    $B[$w][$B[$w][0]] = $v;
-		}
-	    }
-	}
-	$v = pop(@statesStack);
-	my $h=pop(@ssStack);
-	return ($nCircuits, $lenLongest, $b);
-    }
-
-
-    my @Ak = @{$_[0]};            # Graph to analyse : integer array size n of lists, ie the transitions from the states
-    #  Ak[i][0] : Number of transitions from state index i
-    #  Ak[i][1..j] : transitions index from state index i   
-    my $nStates = $_[1];          # number of states
-    my @matrix = @{$_[2]};        # Transitions/States Matrix
-    my @states = @{$_[3]};        # States 
-    my @Ck = @{$_[4]};            # Transition Matrix 
-    # (Ck[i] : Transitions from state i.
-    #  Ck[i][0] : Number of transitions
-    #  Ck[i][1..j] : transitions from state i   
-    my $opts = uc($_[5]); 
-    my $f = $_[6]; 
-    my $histogram_results = "N";          # Get the States Path Results or no (default)
-    my $longest_results = "Y";          # Get Computation Synthesis (default) or no
-    &GetOptionsFromString($opts,    				    
-			  "-L:s" => \$longest_results,
-			  "-H:s" => \$histogram_results,
-	);
-    
-    my @res = ();
-
-    my $start = 0;                # Start state index
-    my @B = ();                   # integer array size n of lists
-    my @blocked = ();             # logical array indexed by states index
-    my @statesStack = ();         # Current Stack result of states
-    my $tr = "";                  # Current transition 
-    my @ssStack = ();             # Current Stack result of siteswaps
-
-    my $nCircuits = 0;            # total number of circuits found;
-    my @longestCircuit = ();      # the longest circuits found
-    $longestCircuit[0] = 0;       # longestCircuit[0] : Number of longest circuits.
-    # longestCircuit[1..j] : longest circuits 
-    my $lenLongest = 0;           # the longest circuits length
-    my @lengthHistogram = ();     # histogram of circuit lengths
-    my @vertexPopularity = ();    # adjacency table of occurrences of vertices in circuits of each length
-    
-    my $b = 0;                    # 0 : no circuit found; 1 : at least 1 circuit found 
-    
-    # will use as [1]...[n] to histogram circuits by length
-    # [0] for zero length circuits, which are impossible
-    # initialise histogram bins to empty 
-    for (my $len = 0; $len < $nStates+1; $len++) 
-    {
-        $lengthHistogram[$len] = 0;
-    }
-
-    # max elementary circuit length is exactly nStates 
-    for (my $len = 0; $len <= $nStates; $len++) 
-    {	
-        for (my $j = 0; $j < $nStates; $j++) 
-	{
-            $vertexPopularity[$len][$j] = 0;
-        }
-    }
-
-    for (my $i = 0; $i < $nStates; $i++) {
-	$B[$i][0]=0;
-        $blocked[$i] = 0;
-    }
-
-    while ($start < $nStates) 
-    {
-        if (uc($histogram_results) eq "Y") 
-	{	    
-	    if($f eq "" || $f eq "-2") 
-	    {
-		&common::hideComputingPrompt();
-		print colored [$common::COLOR_RESULT], "=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG11." : $states[$start] === \n";
-	    }	      
-	    elsif ("JML:"=~substr($f,0,4)) 
-	    {	
-		my $f_in = substr($f,4).".jml";
-		&common::hideComputingPrompt();		      		
-		open(FILE_JML,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
-		print FILE_JML "<line display=\""."=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG11." : $states[$start] === "."\"/>\n";
-		close(FILE_JML);
-	    }  	
-	    elsif ("SSHTML:"=~substr($f,0,7)) 
-	    {		    
-		my $f_in = substr($f,7).".html";		      		
-		&common::hideComputingPrompt();
-		open(FILE,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
-		print FILE "=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG11." : $states[$start] === <BR/>\n";
-		close(FILE);		
-	    }
-	    elsif($f ne "-1")
-	    {
-		&common::hideComputingPrompt();
-		open(FILE,">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;
-		print FILE "=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG11." : $states[$start] === \n";
-		close(FILE);
-	    }       
-	}
-
-        for (my $i = 0; $i < $nStates; $i++) { # for all i in Vk
-            $blocked[$i] = 0;
-	    my @Btmp=$B[$i];
-	    @Btmp = ();
-	    $B[$i][0]=0;
-        }
-	
-	($nCircuits, $lenLongest, $b) = &__circuit($start, $start, \@Ak, \@B, \@statesStack, \@blocked, $nCircuits, \@longestCircuit, $lenLongest, \@lengthHistogram, \@vertexPopularity, \@matrix, \@states, \@Ck, \@ssStack, $tr, \@res, $opts, $f );
-        $start ++;	
-    }
-    
-    if($f eq "" || $f eq "-2") 
-    {
-	&common::hideComputingPrompt();
-	if (uc($longest_results) eq "Y") 
-	{
-	    print colored [$common::COLOR_RESULT], "\n================================================================\n";
-	    print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_GENSSPRIME_MSG1.$nCircuits."\n\n";
-	    if ($longestMode == 0)
-	    {		
-		if($lenLongest == $nStates || $lenLongest == $nStates*2)
-		{		    
-		    print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_GENSSPRIME_MSG2." ($longestCircuit[0]) : $lenLongest ".$lang::MSG_SSWAP_GENSSPRIME_MSG3." [=> Hamiltonien] : \n";
-		}
-		else
-		{
-		    print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_GENSSPRIME_MSG2." ($longestCircuit[0]) : $lenLongest ".$lang::MSG_SSWAP_GENSSPRIME_MSG3." :\n";
-		}	
-	    }
-	    else
-	    {
-		if($lenLongest == $nStates || $lenLongest == $nStates*2)
-		{
-		    print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_GENSSPRIME_MSG4." ($longestCircuit[0]) : ".$lang::MSG_SSWAP_GENSSPRIME_MSG5." ".&getPeriod($longestCircuit[1],-1)." [=> Hamiltonien] : \n";
-		}
-		else
-		{
-		    print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_GENSSPRIME_MSG4." ($longestCircuit[0]) : ".$lang::MSG_SSWAP_GENSSPRIME_MSG5." ".&getPeriod($longestCircuit[1],-1)." :\n";		
-		}
-	    }
-
-	    for (my $i=1; $i <= $longestCircuit[0]; $i++)
-	    {
-		print "   ".$longestCircuit[$i]."\n";
-	    }
-	    print colored [$common::COLOR_RESULT], "================================================================\n";
-	}
-	
-	if (uc($histogram_results) eq "Y") 
-	{
-	    print colored [$common::COLOR_RESULT], "\n=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG6." ===\n";
-	    if ($longestMode == 0)
-	    {
-		print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_GENSSPRIME_MSG7."\n\n";
-	    }
-	    else
-	    {
-		print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_GENSSPRIME_MSG8."\n\n";
-	    }
-
-	    for (my $i=0; $i <= $nStates; $i++)
-	    {
-		print "   $i : $lengthHistogram[$i]\n";
-	    }
-	    
-	    print colored [$common::COLOR_RESULT], "\n=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG9." ===\n";
-	    for (my $i=0; $i <= $nStates; $i++)
-	    {
-		print colored [$common::COLOR_RESULT], "\n   === ".$lang::MSG_SSWAP_GENSSPRIME_MSG10." : $i ===\n";
-		for (my $j=0; $j < $nStates; $j++)
-		{
-		    print "   $states[$j] : $vertexPopularity[$i][$j]\n";
-		}
-	    }
-	    print "\n";
-	    print colored [$common::COLOR_RESULT], "================================================================\n";
-	}
-    }
-
-    elsif ("JML:"=~substr($f,0,4)) 
-    {
-	&common::hideComputingPrompt();
-	my $f_in = substr($f,4).".jml";		      		
-	open(FILE_JML,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
-	
-	if (uc($longest_results) eq "Y") 
-	{
-	    print FILE_JML "<line display=\"\"/>\n";
-	    print FILE_JML "<line display=\""."================================================================"."\"/>\n";
-	    print FILE_JML "<line display=\"".$lang::MSG_SSWAP_GENSSPRIME_MSG1.$nCircuits."\"/>\n";
-	    print FILE_JML "<line display=\"\"/>\n";
-	    if ($longestMode == 0)
-	    {
-		if($lenLongest == $nStates || $lenLongest == $nStates*2)
-		{
-		    print FILE_JML "<line display=\"".$lang::MSG_SSWAP_GENSSPRIME_MSG2." ($longestCircuit[0]) : $lenLongest ".$lang::MSG_SSWAP_GENSSPRIME_MSG3." [=> Hamiltonien] : "."\"/>\n";
-		}
-		else
-		{
-		    print FILE_JML "<line display=\"".$lang::MSG_SSWAP_GENSSPRIME_MSG2." ($longestCircuit[0]) : $lenLongest ".$lang::MSG_SSWAP_GENSSPRIME_MSG3." : "."\"/>\n";
-		}	
-	    }
-	    else
-	    {
-		if($lenLongest == $nStates || $lenLongest == $nStates*2)
-		{
-		    print FILE_JML "<line display=\"".$lang::MSG_SSWAP_GENSSPRIME_MSG4." ($longestCircuit[0]) : ".$lang::MSG_SSWAP_GENSSPRIME_MSG5." $lenLongest"." [=> Hamiltonien] : "."\"/>\n";
-		}
-		else
-		{
-		    print FILE_JML "<line display=\"".$lang::MSG_SSWAP_GENSSPRIME_MSG4." ($longestCircuit[0]) : ".$lang::MSG_SSWAP_GENSSPRIME_MSG5." $lenLongest : "."\"/>\n";		
-		}
-	    }
-	    
-	    for (my $i=1; $i <= $longestCircuit[0]; $i++)
-	    {
-		print FILE_JML "<line display=\""."   ".$longestCircuit[$i]."\"/>\n"
-	    }
-	    print FILE_JML "<line display=\""."================================================================"."\"/>\n";
-	}
-
-	if (uc($histogram_results) eq "Y") 
-	{
-	    print FILE_JML "<line display=\"\"/>\n";
-	    print FILE_JML "<line display=\""."=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG6." ==="."\"/>\n";
-	    if ($longestMode == 0)
-	    {
-		print FILE_JML "<line display=\"".$lang::MSG_SSWAP_GENSSPRIME_MSG7."\"/>\n";
-		print FILE_JML "<line display=\"\"/>\n";
-	    }
-	    else
-	    {
-		print FILE_JML "<line display=\"".$lang::MSG_SSWAP_GENSSPRIME_MSG8."\"/>\n";
-		print FILE_JML "<line display=\"\"/>\n";
-	    }
-	    
-	    for (my $i=0; $i <= $nStates; $i++)
-	    {
-		print FILE_JML "<line display=\""."   $i : $lengthHistogram[$i]"."\"/>\n";
-	    }
-	    
-	    print FILE_JML "<line display=\"\"/>\n";
-	    print FILE_JML "<line display=\""."=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG9." ==="."\"/>\n";
-	    for (my $i=0; $i <= $nStates; $i++)
-	    {
-		print FILE_JML "<line display=\"\"/>\n";
-		print FILE_JML "<line display=\""."   === ".$lang::MSG_SSWAP_GENSSPRIME_MSG10." : $i ==="."\"/>\n";
-		for (my $j=0; $j < $nStates; $j++)
-		{
-		    print FILE_JML "<line display=\""."   $states[$j] : $vertexPopularity[$i][$j]"."\"/>\n";
-		}
-	    }
-
-	    print FILE_JML "<line display=\"\"/>\n";
-	    print FILE_JML "<line display=\""."================================================================"."\"/>\n";
-	}
-
-	close(FILE_JML);
-    }  	
-    
-    elsif ("SSHTML:"=~substr($f,0,7)) 
-    {		    
-	&common::hideComputingPrompt();
-	my $f_in = substr($f,7).".html";	
-	open(FILE,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
-
-	if (uc($longest_results) eq "Y") 
-	{
-	    print FILE "<BR/>\n================================================================<BR/>\n";
-	    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG1.$nCircuits."<BR/><BR/>\n\n";
-	    if ($longestMode == 0)
-	    {
-		if($lenLongest == $nStates || $lenLongest == $nStates*2)
-		{
-		    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG2." ($longestCircuit[0]) : $lenLongest ".$lang::MSG_SSWAP_GENSSPRIME_MSG3." [=> Hamiltonien] : <BR/>\n";
-		}
-		else
-		{
-		    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG2." ($longestCircuit[0]) : $lenLongest ".$lang::MSG_SSWAP_GENSSPRIME_MSG3." :<BR/>\n";
-		}	
-	    }
-	    else
-	    {
-		if($lenLongest == $nStates || $lenLongest == $nStates*2)
-		{
-		    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG4." ($longestCircuit[0]) : ".$lang::MSG_SSWAP_GENSSPRIME_MSG5." $lenLongest"." [=> Hamiltonien] : <BR/>\n";
-		}
-		else
-		{
-		    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG4." ($longestCircuit[0]) : ".$lang::MSG_SSWAP_GENSSPRIME_MSG5." $lenLongest"." : <BR/>\n";		
-		}
-	    }
-	    
-	    for (my $i=1; $i <= $longestCircuit[0]; $i++)
-	    {
-		print FILE "   ".$longestCircuit[$i]."<BR/>\n";
-	    }
-	    print FILE "================================================================<BR/>\n";
-	}
-
-	if (uc($histogram_results) eq "Y") 
-	{
-	    print FILE "<BR/>\n=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG6." ===<BR/>\n";
-	    if ($longestMode == 0)
-	    {
-		print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG7."<BR/><BR/>\n\n";
-	    }
-	    else
-	    {
-		print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG8."<BR/><BR/>\n\n";
-	    }
-	    
-	    for (my $i=0; $i <= $nStates; $i++)
-	    {
-		print FILE "   $i : $lengthHistogram[$i]<BR/>\n";
-	    }
-	    
-	    print FILE "<BR/>\n=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG9." ===<BR/>\n";
-	    for (my $i=0; $i <= $nStates; $i++)
-	    {
-		print FILE "<BR/>\n   === ".$lang::MSG_SSWAP_GENSSPRIME_MSG10." : $i ===<BR/>\n";
-		for (my $j=0; $j < $nStates; $j++)
-		{
-		    print FILE "   $states[$j] : $vertexPopularity[$i][$j]<BR/>\n";
-		}
-	    }
-	    print FILE "<BR/>\n";
-	    print FILE "================================================================<BR/>\n\n";
-	}
-
-	close(FILE);		    
-    }
-    
-    elsif($f ne "-1")
-    {
-	&common::hideComputingPrompt();	   
-	open(FILE,">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;
-
-	if (uc($longest_results) eq "Y") 
-	{
-	    print FILE "\n================================================================\n";
-	    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG1.$nCircuits."\n\n";
-	    if ($longestMode == 0)
-	    {
-		if($lenLongest == $nStates || $lenLongest == $nStates*2)
-		{
-		    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG2." ($longestCircuit[0]) : $lenLongest ".$lang::MSG_SSWAP_GENSSPRIME_MSG3." [=> Hamiltonien] : \n";
-		}
-		else
-		{
-		    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG2." ($longestCircuit[0]) : $lenLongest ".$lang::MSG_SSWAP_GENSSPRIME_MSG3." :\n";
-		}	
-	    }
-	    else
-	    {
-		if($lenLongest == $nStates || $lenLongest == $nStates*2)
-		{
-		    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG4." ($longestCircuit[0]) : ".$lang::MSG_SSWAP_GENSSPRIME_MSG5." $lenLongest"." [=> Hamiltonien] : \n";
-		}
-		else
-		{
-		    print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG4." ($longestCircuit[0]) : ".$lang::MSG_SSWAP_GENSSPRIME_MSG5." $lenLongest"." :\n"; 
-		}
-	    }
-	    
-	    for (my $i=1; $i <= $longestCircuit[0]; $i++)
-	    {
-		print FILE "   ".$longestCircuit[$i]."\n";
-	    }
-	    print FILE "================================================================\n";
-	}
-
-	if (uc($histogram_results) eq "Y") 
-	{
-	    print FILE "\n=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG6." ===\n";
-	    if ($longestMode == 0)
-	    {
-		print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG7."\n\n";
-	    }
-	    else
-	    {
-		print FILE $lang::MSG_SSWAP_GENSSPRIME_MSG8."\n\n";
-	    }
-	    
-	    for (my $i=0; $i <= $nStates; $i++)
-	    {
-		print FILE "   $i : $lengthHistogram[$i]\n";
-	    }
-	    
-	    print FILE "\n=== ".$lang::MSG_SSWAP_GENSSPRIME_MSG9." ===\n";
-	    for (my $i=0; $i <= $nStates; $i++)
-	    {
-		print FILE "\n   === ".$lang::MSG_SSWAP_GENSSPRIME_MSG10." : $i ===\n";
-		for (my $j=0; $j < $nStates; $j++)
-		{
-		    print FILE "   $states[$j] : $vertexPopularity[$i][$j]\n";
-		}
-	    }
-	    print FILE "\n";
-	    print FILE "================================================================\n";
-	}
-
-	close(FILE);
-    }
-    
-    
-    return \@res;
 }
-
-
-sub genSSPrime
+else
 {
-    my $mod = $_[0];
-    my $nb_objs = $_[1];
-    my $height = hex($_[2]);
-    my $mult = '';
-    my $f = "";
-    my $pwd = getcwd();   
-    my $run_browser = -1;
-    
-    my @Ak = ();              # Graph to analyse : integer array size n of lists, ie the transitions from the states
-    #  Ak[i][0] : Number of transitions from state index i
-    #  Ak[i][1..j] : transitions index from state index i   
-    my @Ck = ();              # Transition Matrix 
-    # (Ck[i] : Transitions from state i.
-    #  Ck[i][0] : Number of transitions
-    #  Ck[i][1..j] : transitions from state i
-    my $nStates = 0;    
-    my $opts;
-    
-    my $title = '-- '.$lang::MSG_SSWAP_GENSSPRIME_MSG0.' --'; 
-    my $color_check = "N";
-    my $sym_check = "N";
-    my $perm_check = "Y";
-    my $remove_redundancy = 0;           # 0 : keep redundancy (default); 1 : prefer ground states; 2 : keep first in the list
-    my $extra_info = "N";
-    my $order_list = 1;                  # 0 : do not sort; 1 : numerical sort (default); 2 : sort by objects number ; 3 : sort by period
-    my $ground_check = "N";              # Get only Ground States or no (default) 
-    my $prime_check = "N";               # For sure this is the case, but keep for testing purpose
-    my $reversible_check = "N";          # Get only Reversible Siteswap or no (default)
-    my $scramblable_check = "N";         # Get only Scramblable Siteswap or no (default)
-    my $palindrome_check = "N"; # Get only Palindrome Siteswap or no (default)
-    my $magic_check = "N";      # Get only Magic Siteswap or no (default)
-    my $squeeze_check = "N";    # Get only No Squeeze Siteswap or any (default)    
-    my $histogram_results = "N";         # Get the States Path Results or no (default)
-    my $longest_results = "Y";           # Get Computation Synthesis (default) or no
-
-    # build the Matrix    
-    my $matrix_tmp ='';
-    my $states_tmp ='';
-
-    if(uc($mod) eq "V" || uc($mod) eq "S")
-    {
-	$opts = uc($_[3]); 
-	my $ret = &GetOptionsFromString($opts,    
-					"-O:i" => \$order_list,
-					"-R:i" => \$remove_redundancy,
-					"-C:s" => \$color_check,
-					"-S:s" => \$sym_check,
-					"-P:s" => \$perm_check,
-					"-T:s" => \$title,
-					"-I:s" => \$extra_info,
-					"-G:s" => \$ground_check,    	
-					"-L:s" => \$longest_results,
-					"-H:s" => \$histogram_results,
-					"-U:s" => \$prime_check,       # For sure this is always the case, but keep for testing purpose
-		       			"-D:s" => \$scramblable_check,
-					"-N:s" => \$palindrome_check,
-		       			"-B:s" => \$reversible_check,
-					"-Z:s" => \$magic_check,
-					"-Q:s" => \$squeeze_check,
-	    );
-	$f = $_[4];	
-
-	# Get the States/Transitions Matrix
-	if(scalar @_ > 5)
-	{
-	    # XLS File with States/Transitions Matrix is provided to speed up the computation
-	    &__check_xls_matrix_file($_[5],$mod,$nb_objs,sprintf("%x",$height),-1,"?");
-	    ($matrix_tmp, $states_tmp) = &__getStates_from_xls($_[5]); 
-	}
-	else
-	{	
-	    ($matrix_tmp, $states_tmp) = &genStates($mod,$nb_objs,$height,"-1");	    
-	}
-    }
-    elsif(uc($mod) eq "M" || uc($mod) eq "MS" || uc($mod) eq "SM" || uc($mod) eq "MULTI")
-    {
-	$mult = $_[3];
-	$opts = uc($_[4]); 	
-	my $ret = &GetOptionsFromString($opts,    
-					"-O:i" => \$order_list,
-					"-R:i" => \$remove_redundancy,
-					"-C:s" => \$color_check,
-					"-S:s" => \$sym_check,
-					"-P:s" => \$perm_check,
-					"-T:s" => \$title,
-					"-I:s" => \$extra_info,
-					"-G:s" => \$ground_check,    	
-					"-L:s" => \$longest_results,
-					"-U:s" => \$prime_check,       # For sure this is always the case, but keep for testing purpose
-					"-H:s" => \$histogram_results,
-					"-D:s" => \$scramblable_check,
-					"-N:s" => \$palindrome_check,
-       		       			"-B:s" => \$reversible_check,
-					"-Z:s" => \$magic_check,
-					"-Q:s" => \$squeeze_check,
-	    );
-	$f = $_[5];
-
-	# Get the States/Transitions Matrix
-	if(scalar @_ > 6)
-	{	    
-	    # XLS File with States/Transitions Matrix is provided to speed up the computation
-	    &__check_xls_matrix_file($_[6],$mod,$nb_objs,sprintf("%x",$height),$mult,-1);
-	    ($matrix_tmp, $states_tmp) = &__getStates_from_xls($_[6]); 
-	}
-	else
-	{	
-	    ($matrix_tmp, $states_tmp) = &genStates($mod,$nb_objs,$height,$mult,"-1");	    
-	}
-    }
-    
-    my @matrix=@{$matrix_tmp};
-    my @states=@{$states_tmp};   
-    my @res = ();    
-    
-    $nStates = scalar @states;
-    foreach my $el1 (@states) 
-    {	
-	foreach my $el2 (@states) 
-	{
-	    my $idx_el1 = &__get_idx_state(\@states,$el1);
-	    my $idx_el2 = &__get_idx_state(\@states,$el2);	    
-	    my $el = $matrix[$idx_el1][$idx_el2];
-	    if($el ne "")
-	    {
-		if(index($el,';') != -1)
-		{		    
-		    my @st=();
-		    @st=split(/;/,$el);
-		    for(my $i = 0; $i < scalar @st; $i++)
-		    {
-			$Ak[$idx_el1][0]++;
-			$Ak[$idx_el1][$Ak[$idx_el1][0]] = $idx_el2;
-			$Ck[$idx_el1][0]++;
-			$st[$i] =~ s/\s+//g;
-			$Ck[$idx_el1][$Ck[$idx_el1][0]] = $st[$i];			
-		    }
-		}
-		else
-		{
-		    $Ak[$idx_el1][0]++;
-		    $Ak[$idx_el1][$Ak[$idx_el1][0]] = $idx_el2;
-		    $Ck[$idx_el1][0]++;
-		    $Ck[$idx_el1][$Ck[$idx_el1][0]] = $el;
-		}
-	    }
-	}
-    }
-
-    if($f eq "" || $f eq "-2")
-    {
-	### Issue the results on stdout 
-	print colored [$common::COLOR_RESULT], "$title\n\n";	
-    }    
-    elsif ("JML:"=~substr($f,0,4)) 
-    {
-	$run_browser=0;
-	my $f_in = substr($f,4).".jml";    
-
-	open(FILE_JML,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ; 
-	print FILE_JML "<?xml version=\"1.0\"?>\n";
-	print FILE_JML "<!DOCTYPE jml SYSTEM \"file://jml.dtd\">\n";
-	print FILE_JML "<jml version=\"".$conf::JUGGLING_LAB_JML_VERSION."\">\n";
-	print FILE_JML "<patternlist>\n";
-	print FILE_JML "<title>".$title."</title>\n";
-	print FILE_JML "<line display=\"\"/>\n";
-	close(FILE_JML);
-    }  	
-    elsif ("SSHTML:"=~substr($f,0,7)) 
-    {		    
-	### Code to issue an HTML file with extension .html with some information on the Siteswaps.";   
-	$run_browser=1;
-	my $f_in = substr($f,7).".html";	
-	open(FILE,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ;
-	print FILE "$title <BR/><BR/>\n";
-	close(FILE);		
-    }
-    elsif($f ne "-1")
-    {
-	### Issue the results into a given file 
-	open(FILE,">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;
-	print FILE "$title\n\n";
-	close(FILE);
-    }
-    
-    $opts = "-L=$longest_results -H=$histogram_results";
-    @res=@{&__get_elementary_circuits(\@Ak, $nStates, \@matrix, \@states, \@Ck, $opts, $f)};
-
-    #Do not consider options -L & -H anymore
-    $opts = "-O=$order_list -R=$remove_redundancy -C=$color_check -S=$sym_check -P=$perm_check -B=$reversible_check -T=\"$title\" -I=$extra_info -G=$ground_check";
-
-    if(uc($prime_check) eq "Y")
-    {
-	$opts = $opts." -U=$prime_check";
-    }
-
-    if ($f eq "") 
-    {
-	### results on stdout 
-	print colored [$common::COLOR_RESULT], "\n=== Prime Siteswaps ===\n\n";
-	@res = &printSSListWithoutHeaders(\@res,$opts);	    	    
-    }    
-    elsif ("JML:"=~substr($f,0,4)) 
-    {
-	### Code for the HTML file with extension .html for JugglingLab view
-	my $f_in = substr($f,4).".jml";    
-	open(FILE_JML,">> $conf::RESULTS/$f_in") || die ("$lang::MSG_GENERAL_ERR1 <$f_in> $lang::MSG_GENERAL_ERR1b") ; 
-	print FILE_JML "<line display=\"\"/>\n";
-	print FILE_JML "<line display=\""."=== Prime Siteswaps ==="."\"/>\n";
-	print FILE_JML "<line display=\"\"/>\n";
-	close(FILE_JML);
-	@res = &printSSListWithoutHeaders(\@res,$opts,$f);
-	
-	#system("start /b cmd /c ${JUGGLING_LAB_PATH}/jlab.bat anim -jml $conf::RESULTS/".substr($f,7).".jml\n");
-	print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_JML."$conf::RESULTS/".substr($f,7).".jml\n";     
-
-    }  	
-    elsif ("SSHTML:"=~substr($f,0,7)) 
-    {		    
-	### Code for the HTML file with extension .html with some information on the Siteswaps.";   
-	@res = &printSSListInfoHTMLWithoutHeaders(\@res,$opts,$f);
-    }
-    elsif ($f ne "-1" && $f ne "-2")
-    {
-	### results into a given file 
-	open(FILE,">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;
-	print FILE "=== Prime Siteswaps ===\n\n";
-	close(FILE);
-	@res = &printSSListWithoutHeaders(\@res,$opts,$f);
-    }    
-
-    if ($run_browser == 1 && $conf::jtbOptions_r == 1)
-    {
-	my $f_in = substr($f,7).".html";	
-	if ($common::OS eq "MSWin32") {
-	    system("start /b cmd /c \"$conf::HTTP_BROWSER\" ${pwd}/$conf::RESULTS/$f_in");
-	} else {
-	    # Unix-like OS
-	    system("$conf::HTTP_BROWSER ${pwd}/$conf::RESULTS/$f_in &");
-	}		
-    }
-    
-    return \@res;
-}
-
-
-sub polyrythmFountain
-{
-    my $pwd = cwd();
-    if ($common::OS eq "MSWin32") {
-	system("start /b cmd /c \"$conf::HTTP_BROWSER\" ${pwd}/data/polyrhythmic-fountain/polyrhythmic-fountain.html");
-    } else {
-	# Unix-like OS
-	system("$conf::HTTP_BROWSER ${pwd}/data/polyrhythmic-fountain/polyrhythmic-fountain.html &");
-    }
+    print colored [$common::COLOR_RESULT], "$lang::MSG_SSWAP_GENERAL18\n";
 }
 
 
