@@ -26,8 +26,8 @@ use Cwd;
 use Config;
 #use Getopt::Std;
 
-my @modulesToCompile=("Devel-Symdump-2.18", "Set-Scalar-1.29", "Parse-Yapp-1.21", "Excel-Writer-XLSX-1.07", "Perl4-CoreLibs-0.004", "File-Grep-0.02", "File-Copy-Recursive-0.45", "TermReadKey-2.38", "Win32-Console-ANSI-1.11", "Chart-Gnuplot-0.23", "HTTP-Server-Simple-0.52", "List-MoreUtils-0.430", "Exporter-Tiny-1.002002");
-#"PAR-Packer-1.052", "Module-ScanDeps-1.30");
+my @modulesToCompile=("Devel-Symdump-2.18", "Set-Scalar-1.29", "Parse-Yapp-1.21", "Excel-Writer-XLSX-1.07", "Perl4-CoreLibs-0.004", "File-Grep-0.02", "File-Copy-Recursive-0.45", "TermReadKey-2.38", "Win32-Console-ANSI-1.11", "Chart-Gnuplot-0.23", "HTTP-Server-Simple-0.52");
+#"PAR-Packer-1.052", "Module-ScanDeps-1.30","List-MoreUtils-0.430", "Exporter-Tiny-1.002002", "File-Slurp-9999.32");
 
 #my @modulesCompiled=();
 
