@@ -5,7 +5,7 @@ Author : Frederic Roudaut
 
 jugglingTB's goal is to provide an adaptative toolbox for different
 juggling notations. It is designed to be easily extended. It was for my own needs only first to understand some algorithms and to write articles.
-Thus do not expect some huge optimization ... I do it according to my need ;-/
+Thus do not expect some huge optimization ... I do it according to my needs ;-/
 
 Currently it supports the following notations :
 

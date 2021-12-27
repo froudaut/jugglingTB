@@ -9,18 +9,18 @@ Author : Frederic Roudaut  <frederic.roudaut@free.fr>
 
 jugglingTB's goal is to provide an adaptative toolbox for different
 juggling notations. It is designed to be easily extended. It was for my own needs only first to understand some algorithms and to write articles.
-Thus do not expect some huge optimization ... I do it according to my need ;-/
+Thus do not expect some huge optimization ... I do it according to my needs ;-/
 
 Currently it supports the following notations :
 
-BTN : Body Trick Notation
-Extended SOU: Side-Over-Under Notation
-MMSTD: Mills Mess State Transition Diagram
-LADDER: Ladder Notation
-SSWAP: Siteswap Notation
-STACK: Stack Notation
-HTN: 3-Layers Notation/Harmonic Throws Notation
-SPYRO: Spyrograph for Spin/Antispin/Hybrids/Isolations ...
+- BTN : Body Trick Notation
+- Extended SOU: Side-Over-Under Notation
+- MMSTD: Mills Mess State Transition Diagram
+- LADDER: Ladder Notation
+- SSWAP: Siteswap Notation
+- STACK: Stack Notation
+- HTN: 3-Layers Notation/Harmonic Throws Notation
+- SPYRO: Spyrograph for Spin/Antispin/Hybrids/Isolations ...
 
 The SSWAP module contains the great Tool JugglingLab from Jack Boyce.
 For my personal needs I added others tools:
@@ -32,7 +32,7 @@ For my personal needs I added others tools:
 - realsim from Pedro Teodoro
 - Polyrythm-Fountain from Josh Mermelstein
 	      
-All of then may be launched from jugglingTB
+All of them may be launched from jugglingTB
 
 
 
@@ -50,7 +50,7 @@ To use this tool you have 2 choices :
 ===========================
 You will find a binary for Windows 64bits (packaged with Strawberry Perl (64-bit) 5.32.1-64bit) named jugglingTB.exe. 
 Simply run this file. 
-A binary version packaged on Ubuntu, name jugglingTB.bin is also provided on some packages. [Old one currently]
+A binary version packaged on Ubuntu, name jugglingTB.bin is also provided on some packages. 
 
 
 ===========================
