@@ -9,14 +9,14 @@ Thus do not expect some huge optimization ... I do it according to my need ;-/
 
 Currently it supports the following notations :
 
-BTN : Body Trick Notation
-Extended SOU: Side-Over-Under Notation
-MMSTD: Mills Mess State Transition Diagram
-LADDER: Ladder Notation
-SSWAP: Siteswap Notation
-STACK: Stack Notation
-HTN: 3-Layers Notation/Harmonic Throws Notation
-SPYRO: Spyrograph for Spin/Antispin/Hybrids/Isolations ...
+- BTN : Body Trick Notation
+- Extended SOU: Side-Over-Under Notation
+- MMSTD: Mills Mess State Transition Diagram
+- LADDER: Ladder Notation
+- SSWAP: Siteswap Notation
+- STACK: Stack Notation
+- HTN: 3-Layers Notation/Harmonic Throws Notation
+- SPYRO: Spyrograph for Spin/Antispin/Hybrids/Isolations ...
 
 The SSWAP module contains the great Tool JugglingLab from Jack Boyce.
 For my personal needs I added others tools:
