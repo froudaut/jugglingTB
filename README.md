@@ -28,7 +28,7 @@ For my personal needs I added others tools:
 - realsim from Pedro Teodoro
 - Polyrythm-Fountain from Josh Mermelstein
 	      
-All of then may be launched from jugglingTB
+All of them may be launched from jugglingTB
 
 ## NEEDS & INSTALLATION
 
@@ -41,7 +41,7 @@ To use this tool you have 2 choices :
 
 You will find a binary for Windows 64bits (packaged with Strawberry Perl (64-bit) 5.32.1-64bit) named jugglingTB.exe. 
 Simply run this file. 
-A binary version packaged on Ubuntu, name jugglingTB.bin is also provided on some packages. [Old one currently]
+A binary version packaged on Ubuntu, named jugglingTB.bin is also provided on some packages. 
 
 ### Sources
 
