@@ -23334,393 +23334,366 @@ sub polyrythmFountain
 
 my $rc = eval
 {
-  require Win32::OLE;
-  Win32::OLE->import();
-  1;
+    require Win32::OLE;
+    Win32::OLE->import();
+    1;
 };
 
 if($rc)
 {
-  # Win32::OLE loaded and imported successfully
+    # Win32::OLE loaded and imported successfully
 
-my $OS=$^O;
-if ($OS eq "MSWin32") {
-#    use Win32::OLE;
-#    use Win32::OLE qw(in with);
-#    use Win32::OLE::Const;
+    my $OS=$^O;
+    if ($OS eq "MSWin32") {
+	#    use Win32::OLE;
+	#    use Win32::OLE qw(in with);
+	#    use Win32::OLE::Const;
 
-    if(! Win32::OLE->new('Excel.Application', 'Quit'))
+	if(! Win32::OLE->new('Excel.Application', 'Quit'))
+	{
+	    print colored [$common::COLOR_RESULT], "$lang::MSG_SSWAP_GENERAL18\n";
+	}
+    }
+    else
     {
 	print colored [$common::COLOR_RESULT], "$lang::MSG_SSWAP_GENERAL18\n";
     }
-}
-else
-{
-    print colored [$common::COLOR_RESULT], "$lang::MSG_SSWAP_GENERAL18\n";
-}
 
 
-sub writeStates_xls
-{
-    my $mod = uc(shift);    
+    sub writeStates_xls
+    {
+	my $mod = uc(shift);    
 
-    if ($mod eq "V") {
-	return &__write_states_async_xls(@_);
-    } elsif ($mod eq "M") {
-	return &__write_states_multiplex_xls(@_);
-    } elsif ($mod eq "S") {
-	return &__write_states_sync_xls(@_);
-    } elsif ($mod eq "SM" || $mod eq "MS") {
-	return &__write_states_multiplex_sync_xls(@_);
-    } elsif ($mod eq "MULTI") {
-	return &__write_states_multisync_xls(@_);
-    }    
-}
-
-
-sub __get_xls_sheet
-{
-    my $i = $_[0];
-    my $j = $_[1];
-    my $nb_states =$_[2];
-    my $cur_sheet=1;		#Sheets start at 1 ...
-    my $cur_sheet_row = 1;
-    my $cur_sheet_col = 1;
-    my $nb_sheets_for_col = 1;
-
-    my $max_col = $EXCEL_MAX_COLS - $EXCEL_COL_START;
-    my $max_row = $EXCEL_MAX_ROWS - $EXCEL_ROW_START;
-    
-    if ($i > $max_row) {	
-	$cur_sheet_row = int($i / $max_row);
-	if ($i % $max_row != 0) {
-	    $cur_sheet_row ++;
-	}
+	if ($mod eq "V") {
+	    return &__write_states_async_xls(@_);
+	} elsif ($mod eq "M") {
+	    return &__write_states_multiplex_xls(@_);
+	} elsif ($mod eq "S") {
+	    return &__write_states_sync_xls(@_);
+	} elsif ($mod eq "SM" || $mod eq "MS") {
+	    return &__write_states_multiplex_sync_xls(@_);
+	} elsif ($mod eq "MULTI") {
+	    return &__write_states_multisync_xls(@_);
+	}    
     }
 
-    $nb_sheets_for_col = int($nb_states / $max_col);
-    if ($nb_states % $max_col != 0) {
-	$nb_sheets_for_col ++;
-    }
 
-    if ($j > $max_col) {
-	$cur_sheet_col = int($j / $max_col);
+    sub __get_xls_sheet
+    {
+	my $i = $_[0];
+	my $j = $_[1];
+	my $nb_states =$_[2];
+	my $cur_sheet=1;		#Sheets start at 1 ...
+	my $cur_sheet_row = 1;
+	my $cur_sheet_col = 1;
+	my $nb_sheets_for_col = 1;
+
+	my $max_col = $EXCEL_MAX_COLS - $EXCEL_COL_START;
+	my $max_row = $EXCEL_MAX_ROWS - $EXCEL_ROW_START;
 	
-	if ($j % $max_col != 0) {
-	    $cur_sheet_col ++;
-	}	
-    }
-    
-    $cur_sheet = ($cur_sheet_row -1) * $nb_sheets_for_col + $cur_sheet_col ;
-    return $cur_sheet ;
-}
-
-sub __get_xls_cell
-{
-    my $i = $_[0];
-    my $j = $_[1];
-    my $max_col = $EXCEL_MAX_COLS - $EXCEL_COL_START;
-    my $max_row = $EXCEL_MAX_ROWS - $EXCEL_ROW_START;    
-    my $row = 0;
-    my $col = 0;
-
-    if ($i > $max_row) {
-	if ($i % $max_row !=0) {
-	    $row = $i - int($i / $max_row)*$max_row + $EXCEL_ROW_START;
-	} else {
-	    $row = $i - int($i / $max_row -1)*$max_row + $EXCEL_ROW_START;
-	}
-    } else {
-	$row = $i + $EXCEL_ROW_START;
-    }
-
-    if ($j > $max_col) {	
-	if ($j % $max_col !=0) {
-	    $col = $j - int($j / $max_col)*$max_col + $EXCEL_COL_START ;
-	} else {
-	    $col = $j - int($j / $max_col -1)*$max_col + $EXCEL_COL_START ;
-	}
-    } else {
-	$col = $j + $EXCEL_COL_START;
-    }  
-
-    return ($row, $col) ;
-}
-
-
-
-sub __get_nb_xls_sheets
-{
-    return &__get_nb_xls_sheets_for_col($_[0]) * &__get_nb_xls_sheets_for_row($_[0]);
-}
-
-sub __get_nb_xls_sheets_for_col 
-{
-    my $nbstates = $_[0];
-    my $nbsheets = 1;
-    my $max_col = $EXCEL_MAX_COLS - $EXCEL_COL_START;   
-
-    if ($nbstates >= $max_col) {
-	if ($nbstates % $max_col != 0) {
-	    $nbsheets = int($nbstates / $max_col) + 1;
-	} else {
-	    $nbsheets = int($nbstates / $max_col);
-	}
-    }
-    
-    return $nbsheets;
-}
-
-sub __get_nb_xls_sheets_for_row
-{
-    my $nbstates = $_[0];
-    my $nbsheets = 1;
-    my $max_row = $EXCEL_MAX_ROWS - $EXCEL_ROW_START;
-    
-    if ($nbstates >= $max_row) {	
-	if ($nbstates % $max_row != 0) {
-	    $nbsheets = $nbsheets * int($nbstates / $max_row) +1;
-	} else {
-	    $nbsheets = $nbsheets * int($nbstates / $max_row);
-	}
-    }       
-
-    return $nbsheets;
-}
-
-
-sub __write_states_async_xls
-{
-    # It supports Excel 2007 with 1,048,576 rows x 16,384 columns.
-    
-    my $nb_objs=$_[0];
-    my $highMaxss=hex($_[1]);
-    my $pwd = cwd();   
-    my $file = $pwd."\\$conf::RESULTS\\".$_[2].".xlsx";    
-    my $nbtransitions = 0;
-    
-    #use Win32::OLE qw(in with);
-    #use Win32::OLE::Const 'Microsoft Excel';
-    
-    $Win32::OLE::Warn = 3;	# die on errors...
-    
-    # get already active Excel application or open new
-    # my $Excel = Win32::OLE->GetActiveObject('Excel.Application')
-    # || Win32::OLE->new('Excel.Application', 'Quit');  
-    my $Excel = Win32::OLE->new('Excel.Application', 'Quit');  
-    my $Excel_symb = Win32::OLE::Const->Load($Excel);
-
-    #foreach my $key (keys %$Excel_symb) {
-    #    printf "$key = %s\n", $Excel_symb->{$key};
-    #}
-
-    # open Excel file and write infos
-    my $Book = $Excel->Workbooks->Add;
-    $Book->BuiltinDocumentProperties -> {'title'} = 'States/Transition Matrix';
-    $Book->BuiltinDocumentProperties -> {'author'} = "$common::AUTHOR";
-    $Book->BuiltinDocumentProperties -> {'comments'} = 'Creation : JugglingTB, Module SSWAP '.$SSWAP_VERSION." (writeStates_xls)";    
-
-    # Get all the possible states
-    my @states=&__get_states_async($_[0],$_[1]);        
-
-    print $lang::MSG_SSWAP_WRITE_EXCEL_FROM_STATES2;
-    print colored [$common::COLOR_RESULT], "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10." ]\n";
-    
-    my $nbsheets = &__get_nb_xls_sheets (scalar @states);
-
-    # Generation of needed sheets
-    my $comment ="V,".$nb_objs.",".sprintf("%x",$highMaxss).",-1,-1";
-    if ($nbsheets > 1) {	
-	$Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment."__(1)";
-    } else {
-	$Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment;
-    }
-
-    for (my $i = 1; $i < $nbsheets; $i++) {
-	#$Book -> Worksheets -> Add({After => $Book -> Worksheets($Book -> Worksheets -> {Count})});
-	$Book -> Worksheets -> Add({After => $Book -> Worksheets($i)});
-	$Book -> Worksheets($i +1) -> {'Name'} = "Matrix__".$comment."__(".($i+1).")";
-    }    
-
-
-    # Writing of the Main Header
-    # select worksheet number 1
-    #my $Sheet = $Book->ActiveSheet;
-    #$Book->Sheets(1)->Select();
-    my $Sheet = $Book->Sheets(1);
-    $Sheet->Range('B2:B7')-> Font -> {'ColorIndex'} = 3;
-    $Sheet->Range('B2:B7')-> Font -> {'FontStyle'} = "Bold";
-    $Sheet->Range('B2:B7')-> Font -> {'size'} = 11;
-    $Sheet->Range('B2:B7')-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignLeft'};    
-    $Sheet->Range('B2:P2')-> Merge();
-    $Sheet->Range('B3:P3')-> Merge();
-    $Sheet->Range('B4:P4')-> Merge();
-    $Sheet->Range('B5:P5')-> Merge();
-    $Sheet->Range('B6:P6')-> Merge();
-    $Sheet->Range('B7:P7')-> Merge();
-
-    $Sheet->Range('B2')->{'Value'} = $lang::MSG_SSWAP_GENSTATES_MSG1a;	
-
-    $Sheet->Range('B3')->{'Value'} = $lang::MSG_SSWAP_GENERAL1;	
-    if ($nb_objs != -1) {
-	$Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2." : ".$nb_objs;	
-    } else {
-	$Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2b;	
-    }       
-    if ($highMaxss != -1) {
-	$Sheet->Range('B5')->{'Value'} = $lang::MSG_SSWAP_GENERAL3." : ".sprintf("%x",$highMaxss);
-    }   
-
-    # Writes the States in the Excel file
-    # Start by the Columns headers ...
-    my $idx_sheet = 0;
-    while ($idx_sheet < &__get_nb_xls_sheets_for_row(scalar @states)) {
-	foreach my $jdx (0 .. scalar(@states) -1 ) {    	 	 
-	    &common::displayComputingPrompt();	    
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet(0, $jdx + 1, scalar @states) 
-					  + $idx_sheet * &__get_nb_xls_sheets_for_col(scalar @states));
-	    my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);
-
-	    if (uc($conf::EXCELCOLSIZE) eq "AUTO") {		
-		$Sheet->Columns($cellj)-> AutoFit();
-	    } else {
-		$Sheet->Columns($cellj)-> {'ColumnWidth'} = $conf::EXCELCOLSIZE; 
+	if ($i > $max_row) {	
+	    $cur_sheet_row = int($i / $max_row);
+	    if ($i % $max_row != 0) {
+		$cur_sheet_row ++;
 	    }
-
-	    $Sheet->Columns($cellj)-> {'NumberFormat'} = "\@"; # Text
-	    $Sheet->Columns($cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignRight'};
-
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
-	    $Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
-	    $Sheet->Cells($celli, $cellj)-> {'Orientation'} = -90;
-	    $Sheet->Rows($celli)-> AutoFit(); 	
-	    # Hack for bug with the AutoFit parameter on Columns
-	    $Sheet->Rows($celli)-> {'RowHeight'} = length($states[0]) * 8;
-	    $Sheet->Cells($celli, $cellj)-> {'VerticalAlignment'} = $Excel_symb->{'xlHAlignCenter'}; 	
-	    $Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	    
-	    $Sheet->Cells($celli, $cellj)->{'Value'} = $states[$jdx];
 	}
 
-	$idx_sheet++;
-    }
+	$nb_sheets_for_col = int($nb_states / $max_col);
+	if ($nb_states % $max_col != 0) {
+	    $nb_sheets_for_col ++;
+	}
 
-
-    # ... and then the Rows headers
-    my $jdx_sheet = 0;
-    while ($jdx_sheet < &__get_nb_xls_sheets_for_col(scalar @states)) {
-	foreach my $idx (0 .. scalar(@states) -1) {    	 
-	    &common::displayComputingPrompt();
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx +1, 0, scalar @states) + $jdx_sheet); 
-	    my ($celli, $cellj) = &__get_xls_cell($idx +1, 0);
+	if ($j > $max_col) {
+	    $cur_sheet_col = int($j / $max_col);
 	    
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
-	    $Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
-	    $Sheet->Cells($celli, $cellj)-> {'ColumnWidth'} = length($states[0]) + 2;
-	    $Sheet->Cells($celli, $cellj)-> {'NumberFormat'} = "\@"; # Text
-	    $Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	 
-	    $Sheet->Cells($celli, $cellj)->{'Value'} = $states[$idx];
+	    if ($j % $max_col != 0) {
+		$cur_sheet_col ++;
+	    }	
+	}
+	
+	$cur_sheet = ($cur_sheet_row -1) * $nb_sheets_for_col + $cur_sheet_col ;
+	return $cur_sheet ;
+    }
+
+    sub __get_xls_cell
+    {
+	my $i = $_[0];
+	my $j = $_[1];
+	my $max_col = $EXCEL_MAX_COLS - $EXCEL_COL_START;
+	my $max_row = $EXCEL_MAX_ROWS - $EXCEL_ROW_START;    
+	my $row = 0;
+	my $col = 0;
+
+	if ($i > $max_row) {
+	    if ($i % $max_row !=0) {
+		$row = $i - int($i / $max_row)*$max_row + $EXCEL_ROW_START;
+	    } else {
+		$row = $i - int($i / $max_row -1)*$max_row + $EXCEL_ROW_START;
+	    }
+	} else {
+	    $row = $i + $EXCEL_ROW_START;
 	}
 
-	$jdx_sheet++;
+	if ($j > $max_col) {	
+	    if ($j % $max_col !=0) {
+		$col = $j - int($j / $max_col)*$max_col + $EXCEL_COL_START ;
+	    } else {
+		$col = $j - int($j / $max_col -1)*$max_col + $EXCEL_COL_START ;
+	    }
+	} else {
+	    $col = $j + $EXCEL_COL_START;
+	}  
+
+	return ($row, $col) ;
     }
 
 
-    # Write the Body Excel file    
-    foreach my $el (@states) {       	
-	&common::displayComputingPrompt();		
-	my $idx_state_el=&__get_idx_state(\@states, $el);
+
+    sub __get_nb_xls_sheets
+    {
+	return &__get_nb_xls_sheets_for_col($_[0]) * &__get_nb_xls_sheets_for_row($_[0]);
+    }
+
+    sub __get_nb_xls_sheets_for_col 
+    {
+	my $nbstates = $_[0];
+	my $nbsheets = 1;
+	my $max_col = $EXCEL_MAX_COLS - $EXCEL_COL_START;   
+
+	if ($nbstates >= $max_col) {
+	    if ($nbstates % $max_col != 0) {
+		$nbsheets = int($nbstates / $max_col) + 1;
+	    } else {
+		$nbsheets = int($nbstates / $max_col);
+	    }
+	}
 	
-	my $b = substr(reverse($el),0,$highMaxss);
-	if (substr($b, 0, 1) == 0) {
-	    my $bn=substr($b, 1, length($b) -1);
-	    $bn=${bn}."0";	    
-	    my $bn3=reverse($bn);	    
-	    my $idx_bn3 = &__get_idx_state(\@states,$bn3);
-	    if ($idx_bn3 >= 0) {
-		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_bn3 +1, scalar @states)); 
-		my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_bn3 +1);
-		if ($Sheet->Cells($celli,$cellj)->{'Value'} ne "") {		    
-		    $Sheet->Cells($celli,$cellj)->{'Value'}="0; ".($Sheet->Cells($celli, $cellj)->{'Value'});
+	return $nbsheets;
+    }
+
+    sub __get_nb_xls_sheets_for_row
+    {
+	my $nbstates = $_[0];
+	my $nbsheets = 1;
+	my $max_row = $EXCEL_MAX_ROWS - $EXCEL_ROW_START;
+	
+	if ($nbstates >= $max_row) {	
+	    if ($nbstates % $max_row != 0) {
+		$nbsheets = $nbsheets * int($nbstates / $max_row) +1;
+	    } else {
+		$nbsheets = $nbsheets * int($nbstates / $max_row);
+	    }
+	}       
+
+	return $nbsheets;
+    }
+
+
+    sub __write_states_async_xls
+    {
+	# It supports Excel 2007 with 1,048,576 rows x 16,384 columns.
+	
+	my $nb_objs=$_[0];
+	my $highMaxss=hex($_[1]);
+	my $pwd = cwd();   
+	my $file = $pwd."\\$conf::RESULTS\\".$_[2].".xlsx";    
+	my $nbtransitions = 0;
+	
+	#use Win32::OLE qw(in with);
+	#use Win32::OLE::Const 'Microsoft Excel';
+	
+	$Win32::OLE::Warn = 3;	# die on errors...
+	
+	# get already active Excel application or open new
+	# my $Excel = Win32::OLE->GetActiveObject('Excel.Application')
+	# || Win32::OLE->new('Excel.Application', 'Quit');  
+	my $Excel = Win32::OLE->new('Excel.Application', 'Quit');  
+	my $Excel_symb = Win32::OLE::Const->Load($Excel);
+
+	#foreach my $key (keys %$Excel_symb) {
+	#    printf "$key = %s\n", $Excel_symb->{$key};
+	#}
+
+	# open Excel file and write infos
+	my $Book = $Excel->Workbooks->Add;
+	$Book->BuiltinDocumentProperties -> {'title'} = 'States/Transition Matrix';
+	$Book->BuiltinDocumentProperties -> {'author'} = "$common::AUTHOR";
+	$Book->BuiltinDocumentProperties -> {'comments'} = 'Creation : JugglingTB, Module SSWAP '.$SSWAP_VERSION." (writeStates_xls)";    
+
+	# Get all the possible states
+	my @states=&__get_states_async($_[0],$_[1]);        
+
+	print $lang::MSG_SSWAP_WRITE_EXCEL_FROM_STATES2;
+	print colored [$common::COLOR_RESULT], "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10." ]\n";
+	
+	my $nbsheets = &__get_nb_xls_sheets (scalar @states);
+
+	# Generation of needed sheets
+	my $comment ="V,".$nb_objs.",".sprintf("%x",$highMaxss).",-1,-1";
+	if ($nbsheets > 1) {	
+	    $Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment."__(1)";
+	} else {
+	    $Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment;
+	}
+
+	for (my $i = 1; $i < $nbsheets; $i++) {
+	    #$Book -> Worksheets -> Add({After => $Book -> Worksheets($Book -> Worksheets -> {Count})});
+	    $Book -> Worksheets -> Add({After => $Book -> Worksheets($i)});
+	    $Book -> Worksheets($i +1) -> {'Name'} = "Matrix__".$comment."__(".($i+1).")";
+	}    
+
+
+	# Writing of the Main Header
+	# select worksheet number 1
+	#my $Sheet = $Book->ActiveSheet;
+	#$Book->Sheets(1)->Select();
+	my $Sheet = $Book->Sheets(1);
+	$Sheet->Range('B2:B7')-> Font -> {'ColorIndex'} = 3;
+	$Sheet->Range('B2:B7')-> Font -> {'FontStyle'} = "Bold";
+	$Sheet->Range('B2:B7')-> Font -> {'size'} = 11;
+	$Sheet->Range('B2:B7')-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignLeft'};    
+	$Sheet->Range('B2:P2')-> Merge();
+	$Sheet->Range('B3:P3')-> Merge();
+	$Sheet->Range('B4:P4')-> Merge();
+	$Sheet->Range('B5:P5')-> Merge();
+	$Sheet->Range('B6:P6')-> Merge();
+	$Sheet->Range('B7:P7')-> Merge();
+
+	$Sheet->Range('B2')->{'Value'} = $lang::MSG_SSWAP_GENSTATES_MSG1a;	
+
+	$Sheet->Range('B3')->{'Value'} = $lang::MSG_SSWAP_GENERAL1;	
+	if ($nb_objs != -1) {
+	    $Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2." : ".$nb_objs;	
+	} else {
+	    $Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2b;	
+	}       
+	if ($highMaxss != -1) {
+	    $Sheet->Range('B5')->{'Value'} = $lang::MSG_SSWAP_GENERAL3." : ".sprintf("%x",$highMaxss);
+	}   
+
+	# Writes the States in the Excel file
+	# Start by the Columns headers ...
+	my $idx_sheet = 0;
+	while ($idx_sheet < &__get_nb_xls_sheets_for_row(scalar @states)) {
+	    foreach my $jdx (0 .. scalar(@states) -1 ) {    	 	 
+		&common::displayComputingPrompt();	    
+		my $Sheet = $Book->Worksheets(&__get_xls_sheet(0, $jdx + 1, scalar @states) 
+					      + $idx_sheet * &__get_nb_xls_sheets_for_col(scalar @states));
+		my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);
+
+		if (uc($conf::EXCELCOLSIZE) eq "AUTO") {		
+		    $Sheet->Columns($cellj)-> AutoFit();
 		} else {
-		    $Sheet->Cells($celli,$cellj)->{'Value'}="0";
-		}
-		$nbtransitions++;
-		if ($SSWAP_DEBUG >=1) {
-		    print $el." ===0"."===> ".$bn3."\n";		   
-		    
+		    $Sheet->Columns($cellj)-> {'ColumnWidth'} = $conf::EXCELCOLSIZE; 
 		}
 
-	    } else {
-		&common::hideComputingPrompt();
-		#print $lang::MSG_SSWAP_GENSTATES_MSG1.$bn3."\n";
-	    }
-	    
-	    if ($nb_objs==-1) {
-		#Adding of an object
-		$bn=substr($b, 1, length($b) -1);
-		$bn="1".${bn};	
-		$bn3=reverse($bn);
-		my $idx_bn3 = &__get_idx_state(\@states,$bn3);
-		if ( $idx_bn3 >= 0) {
-		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_bn3 +1,scalar @states));	     
-		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_bn3 +1);
-		    $Sheet->Cells($celli, $cellj)->{'Value'}="+";		    
-		    $nbtransitions++;
-		    if ($SSWAP_DEBUG >=1) {
-			print $el." ===+"."===> ".$bn3."\n";		   
-			
-		    }
+		$Sheet->Columns($cellj)-> {'NumberFormat'} = "\@"; # Text
+		$Sheet->Columns($cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignRight'};
 
-		} else {
-		    &common::hideComputingPrompt();
-		    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$bn3."\n";
-		}	    
+		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		$Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
+		$Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
+		$Sheet->Cells($celli, $cellj)-> {'Orientation'} = -90;
+		$Sheet->Rows($celli)-> AutoFit(); 	
+		# Hack for bug with the AutoFit parameter on Columns
+		$Sheet->Rows($celli)-> {'RowHeight'} = length($states[0]) * 8;
+		$Sheet->Cells($celli, $cellj)-> {'VerticalAlignment'} = $Excel_symb->{'xlHAlignCenter'}; 	
+		$Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	    
+		$Sheet->Cells($celli, $cellj)->{'Value'} = $states[$jdx];
 	    }
-	} else {	 
-	    if ($nb_objs==-1) {
-		#Removing of an object
+
+	    $idx_sheet++;
+	}
+
+
+	# ... and then the Rows headers
+	my $jdx_sheet = 0;
+	while ($jdx_sheet < &__get_nb_xls_sheets_for_col(scalar @states)) {
+	    foreach my $idx (0 .. scalar(@states) -1) {    	 
+		&common::displayComputingPrompt();
+		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx +1, 0, scalar @states) + $jdx_sheet); 
+		my ($celli, $cellj) = &__get_xls_cell($idx +1, 0);
+		
+		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		$Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
+		$Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
+		$Sheet->Cells($celli, $cellj)-> {'ColumnWidth'} = length($states[0]) + 2;
+		$Sheet->Cells($celli, $cellj)-> {'NumberFormat'} = "\@"; # Text
+		$Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	 
+		$Sheet->Cells($celli, $cellj)->{'Value'} = $states[$idx];
+	    }
+
+	    $jdx_sheet++;
+	}
+
+
+	# Write the Body Excel file    
+	foreach my $el (@states) {       	
+	    &common::displayComputingPrompt();		
+	    my $idx_state_el=&__get_idx_state(\@states, $el);
+	    
+	    my $b = substr(reverse($el),0,$highMaxss);
+	    if (substr($b, 0, 1) == 0) {
 		my $bn=substr($b, 1, length($b) -1);
-		$bn="0".${bn};
+		$bn=${bn}."0";	    
 		my $bn3=reverse($bn);	    
 		my $idx_bn3 = &__get_idx_state(\@states,$bn3);
 		if ($idx_bn3 >= 0) {
-		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_bn3 +1, scalar @states));
+		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_bn3 +1, scalar @states)); 
 		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_bn3 +1);
-		    $Sheet->Cells($celli, $cellj)->{'Value'}="-";	 	    
+		    if ($Sheet->Cells($celli,$cellj)->{'Value'} ne "") {		    
+			$Sheet->Cells($celli,$cellj)->{'Value'}="0; ".($Sheet->Cells($celli, $cellj)->{'Value'});
+		    } else {
+			$Sheet->Cells($celli,$cellj)->{'Value'}="0";
+		    }
 		    $nbtransitions++;
 		    if ($SSWAP_DEBUG >=1) {
-			print $el." ===-"."===> ".$bn3."\n";		   
+			print $el." ===0"."===> ".$bn3."\n";		   
 			
 		    }
 
-		} else {	       
+		} else {
 		    &common::hideComputingPrompt();
 		    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$bn3."\n";
 		}
-	    }
+		
+		if ($nb_objs==-1) {
+		    #Adding of an object
+		    $bn=substr($b, 1, length($b) -1);
+		    $bn="1".${bn};	
+		    $bn3=reverse($bn);
+		    my $idx_bn3 = &__get_idx_state(\@states,$bn3);
+		    if ( $idx_bn3 >= 0) {
+			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_bn3 +1,scalar @states));	     
+			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_bn3 +1);
+			$Sheet->Cells($celli, $cellj)->{'Value'}="+";		    
+			$nbtransitions++;
+			if ($SSWAP_DEBUG >=1) {
+			    print $el." ===+"."===> ".$bn3."\n";		   
+			    
+			}
 
-	    my $bn=substr($b, 1, length($b) -1);
-	    $bn=${bn}."0";
-	    for (my $k=0; $k<length($bn); $k++) {		
-		if (substr($bn, $k, 1) == 0 && $k+1 <= $MAX_HEIGHT) {
-		    my $bn2=substr($bn, 0, $k)."1".substr($bn, $k+1, length($bn)-$k);		    
-		    my $bn3=reverse($bn2);		   
-		    my $idx_bn3 = &__get_idx_state(\@states,$bn3);	
+		    } else {
+			&common::hideComputingPrompt();
+			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$bn3."\n";
+		    }	    
+		}
+	    } else {	 
+		if ($nb_objs==-1) {
+		    #Removing of an object
+		    my $bn=substr($b, 1, length($b) -1);
+		    $bn="0".${bn};
+		    my $bn3=reverse($bn);	    
+		    my $idx_bn3 = &__get_idx_state(\@states,$bn3);
 		    if ($idx_bn3 >= 0) {
 			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_bn3 +1, scalar @states));
 			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_bn3 +1);
-			if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
-			    $Sheet->Cells($celli, $cellj)->{'Value'}=sprintf("%x",($k+1))."; ".($Sheet->Cells($celli, $cellj)->{'Value'}); 
-			} else {
-			    $Sheet->Cells($celli, $cellj)->{'Value'}=sprintf("%x",($k+1));	 
-			}
+			$Sheet->Cells($celli, $cellj)->{'Value'}="-";	 	    
 			$nbtransitions++;
 			if ($SSWAP_DEBUG >=1) {
-			    print $el." ===".sprintf("%x",($k+1))."===> ".$bn3."\n";		   
+			    print $el." ===-"."===> ".$bn3."\n";		   
 			    
 			}
 
@@ -23729,1636 +23702,1685 @@ sub __write_states_async_xls
 			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$bn3."\n";
 		    }
 		}
-	    }
 
-	}    
-    }
-    
-    my $idx_i =0;
-    my $idx_j =0;
-    foreach my $i (@states) {    	 
-	
-	# Coloring Median States
-	my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_i +1, scalar @states));	
-	my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_i + 1);
-	$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 6;
+		my $bn=substr($b, 1, length($b) -1);
+		$bn=${bn}."0";
+		for (my $k=0; $k<length($bn); $k++) {		
+		    if (substr($bn, $k, 1) == 0 && $k+1 <= $MAX_HEIGHT) {
+			my $bn2=substr($bn, 0, $k)."1".substr($bn, $k+1, length($bn)-$k);		    
+			my $bn3=reverse($bn2);		   
+			my $idx_bn3 = &__get_idx_state(\@states,$bn3);	
+			if ($idx_bn3 >= 0) {
+			    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_bn3 +1, scalar @states));
+			    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_bn3 +1);
+			    if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
+				$Sheet->Cells($celli, $cellj)->{'Value'}=sprintf("%x",($k+1))."; ".($Sheet->Cells($celli, $cellj)->{'Value'}); 
+			    } else {
+				$Sheet->Cells($celli, $cellj)->{'Value'}=sprintf("%x",($k+1));	 
+			    }
+			    $nbtransitions++;
+			    if ($SSWAP_DEBUG >=1) {
+				print $el." ===".sprintf("%x",($k+1))."===> ".$bn3."\n";		   
+				
+			    }
 
-	$idx_j =0;
-	foreach my $j (@states) {    	 
-	    &common::displayComputingPrompt();	
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_j +1, scalar @states));	
-	    my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_j + 1);
-	    my $w = $Sheet->Cells($celli, $cellj) -> {'Value'};
-	    # Coloring Adding/Removing Objects 
-	    if ($w =~ /\+/ && $w =~ /-/ ) {		 		
-		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 4;
-		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    } elsif ($w  =~ /\+/) {		 
-		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 8;
-		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    } elsif ($w =~ /-/) {		 
-		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 7;
-		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    }
-	    
-	    $idx_j++;
-	}
-	$idx_i++;
-    }
-    
-    #$last_row = $sheet -> UsedRange -> Find({What => "*", SearchDirection => xlPrevious, SearchOrder => xlByRows})    -> {Row};
-    #$last_col = $sheet -> UsedRange -> Find({What => "*", SearchDirection => xlPrevious, SearchOrder => xlByColumns}) -> {Column};
-
-    &common::hideComputingPrompt();
-    $Sheet->Range('B7')->{'Value'} = "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10.", ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]";
-
-    # Do Autofit
-    if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
-	my $idx_sheet = 0;
-	while ($idx_sheet < &__get_nb_xls_sheets_for_row(scalar @states)) {
-	    foreach my $jdx (0 .. scalar(@states) -1 ) {    	 	 
-		&common::displayComputingPrompt();	    
-		my $Sheet = $Book->Worksheets(&__get_xls_sheet(0, $jdx + 1, scalar @states) 
-					      + $idx_sheet * &__get_nb_xls_sheets_for_col(scalar @states));
-		my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);				
-		$Sheet->Columns($cellj)-> AutoFit(); 		
-	    }
-	    
-	    $idx_sheet ++;
-	}
-	&common::hideComputingPrompt();
-    }
-
-    print colored [$common::COLOR_RESULT], "[ => ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]\n";
-
-    #$Book->Sheets(1)->Select();
-    $Excel -> {'DisplayAlerts'} = 0; # This turns off the "This file already exists" message.
-    $Book -> SaveAs ($file) or die $!;
-    $Book->Close;    
-    #$Excel->Quit();      
-}
-
-
-sub __write_states_multiplex_xls
-{   
-    # It supports Excel 2007 with 1,048,576 rows x 16,384 columns.
-    
-    my $nb_objs=$_[0];
-    my $highMaxss=hex($_[1]);
-    my $multiplex=$_[2];
-    my $pwd = getdcwd();   
-    my $file = $pwd."\\$conf::RESULTS\\".$_[3].".xlsx";    
-    my $nbtransitions=0;
-    
-    #use Win32::OLE qw(in with);
-    #use Win32::OLE::Const 'Microsoft Excel';
-    
-    $Win32::OLE::Warn = 3;	# die on errors...
-    
-    # get already active Excel application or open new
-    # my $Excel = Win32::OLE->GetActiveObject('Excel.Application')
-    # || Win32::OLE->new('Excel.Application', 'Quit');  
-    my $Excel = Win32::OLE->new('Excel.Application', 'Quit');
-    my $Excel_symb = Win32::OLE::Const->Load($Excel);  
-
-    # open Excel file and write infos
-    my $Book = $Excel->Workbooks->Add;
-    $Book->BuiltinDocumentProperties -> {'title'} = 'States/Transition Matrix';
-    $Book->BuiltinDocumentProperties -> {'author'} = "$common::AUTHOR";
-    $Book->BuiltinDocumentProperties -> {'comments'} = 'Creation : JugglingTB, Module SSWAP '.$SSWAP_VERSION." (writeStates_xls)";    
-
-    # Get all the possible states
-    my @states=&__get_states_multiplex($_[0], $_[1], $_[2]);	
-
-    print $lang::MSG_SSWAP_WRITE_EXCEL_FROM_STATES2;
-    print colored [$common::COLOR_RESULT], "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10." ]\n";
-    
-    my $nbsheets = &__get_nb_xls_sheets (scalar @states);
-
-
-    # Generation of needed sheets
-    my $comment ="M,".$nb_objs.",".sprintf("%x",$highMaxss).",".$multiplex.",-1";
-    if ($nbsheets > 1) {	
-	$Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment."__(1)";
-    } else {
-	$Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment;
-    }
-
-    for (my $i = 1; $i < $nbsheets; $i++) {
-	#$Book -> Worksheets -> Add({After => $Book -> Worksheets($Book -> Worksheets -> {Count})});
-	$Book -> Worksheets -> Add({After => $Book -> Worksheets($i)});
-	$Book -> Worksheets($i +1) -> {'Name'} = "Matrix__".$comment."__(".($i+1).")";
-    }    
-
-
-    # Writing of the Main Header
-    # select worksheet number 1
-    #my $Sheet = $Book->ActiveSheet;
-    #$Book->Sheets(1)->Select();
-    my $Sheet = $Book->Sheets(1);
-    $Sheet->Range('B2:B7')-> Font -> {'ColorIndex'} = 3;
-    $Sheet->Range('B2:B7')-> Font -> {'FontStyle'} = "Bold";
-    $Sheet->Range('B2:B7')-> Font -> {'size'} = 11;    
-    $Sheet->Range('B2:B7')-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignLeft'};
-    $Sheet->Range('B2:P2')-> Merge();
-    $Sheet->Range('B3:P3')-> Merge();
-    $Sheet->Range('B4:P4')-> Merge();
-    $Sheet->Range('B5:P5')-> Merge();
-    $Sheet->Range('B6:P6')-> Merge();
-    $Sheet->Range('B7:P7')-> Merge();
-
-    $Sheet->Range('B2')->{'Value'} = $lang::MSG_SSWAP_GENSTATES_MSG1a;	
-
-    $Sheet->Range('B3')->{'Value'} = $lang::MSG_SSWAP_GENERAL1;	
-    if ($nb_objs != -1) {
-	$Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2." : ".$nb_objs;	
-    } else {
-	$Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2b;	
-    }       
-    if ($highMaxss != -1) {
-	$Sheet->Range('B5')->{'Value'} = $lang::MSG_SSWAP_GENERAL3." : ".sprintf("%x",$highMaxss);
-    }
-    if ($multiplex != -1) {
-	$Sheet->Range('B6')->{'Value'} = $lang::MSG_SSWAP_GENERAL4." : ".$multiplex;
-    }    
-
-    # Writes the States in the Excel file
-    # Start by the Columns headers ...
-    my $idx_sheet = 0;
-    while ($idx_sheet < &__get_nb_xls_sheets_for_row(scalar @states)) {
-	foreach my $jdx (0 .. scalar(@states) -1 ) {    	 	 
-	    &common::displayComputingPrompt();	    
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet(0, $jdx + 1, scalar @states) 
-					  + $idx_sheet * &__get_nb_xls_sheets_for_col(scalar @states));
-	    my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);
-	    
-	    if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
-		# Will be done at the end
-		$Sheet->Columns($cellj)-> AutoFit(); 		
-	    } else {	
-		$Sheet->Columns($cellj)-> {'ColumnWidth'} = $conf::EXCELCOLSIZE; 
-	    }
-
-	    $Sheet->Columns($cellj)-> {'NumberFormat'} = "\@"; # Text
-	    $Sheet->Columns($cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignRight'};
-
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
-	    $Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
-	    $Sheet->Cells($celli, $cellj)-> {'Orientation'} = -90;
-	    $Sheet->Rows($celli)-> AutoFit(); 	
-	    # Hack for bug with the AutoFit parameter on Columns
-	    $Sheet->Rows($celli)-> {'RowHeight'} = length($states[0]) * 8;
-	    $Sheet->Cells($celli, $cellj)-> {'VerticalAlignment'} = $Excel_symb->{'xlHAlignCenter'}; 	
-	    $Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	    
-	    $Sheet->Cells($celli, $cellj)->{'Value'} = $states[$jdx];
-	}
-
-	$idx_sheet++;
-    }
-
-
-    # ... and then the Rows headers
-    my $jdx_sheet = 0;
-    while ($jdx_sheet < &__get_nb_xls_sheets_for_col(scalar @states)) {
-	foreach my $idx (0 .. scalar(@states) -1) {    	 
-	    &common::displayComputingPrompt();
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx +1, 0, scalar @states) + $jdx_sheet); 
-	    my ($celli, $cellj) = &__get_xls_cell($idx +1, 0);
-	    
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
-	    $Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
-	    $Sheet->Cells($celli, $cellj)-> {'ColumnWidth'} = length($states[0]) + 2;
-	    $Sheet->Cells($celli, $cellj)-> {'NumberFormat'} = "\@"; # Text
-	    $Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	 
-	    $Sheet->Cells($celli, $cellj)->{'Value'} = $states[$idx];
-	}
-
-	$jdx_sheet++;
-    }
-
-
-    # Write the Body Excel file            
-    foreach my $el (@states) {
-	&common::displayComputingPrompt();		
-	my $mult=0;
-	my $sum=0;
-	my $nstate=-1;	    	
-	my $idx_state_el=&__get_idx_state(\@states, $el);
-	
-	$mult = hex(substr($el,length($el)-1));
-	
-	if ($mult != 0) {
-	    # Here the computing is slightly different.
-	    # All the possible multiplexes are selected first, and according to them the new states are established.
-	    my @mult_list=&__get_throws_multiplex($_[0],$_[1],hex(substr($el,length($el)-1)));
-	    
-	  LOOP1: foreach my $el_mult (@mult_list) {		  
-	      my @nstate_tmp = reverse(split(//, "0".substr($el,0,length($el)-1)));
-	      for (my $i=0; $i<length($el_mult); $i++) {
-		  &common::displayComputingPrompt();
-		  {
-		      my $v=hex(substr($el_mult,$i,1));
-		      if (hex($nstate_tmp[$v -1]) + 1 > $MAX_HEIGHT) {
-			  next LOOP1;
-		      }			    
-		      $nstate_tmp[$v -1] = sprintf("%x", (hex($nstate_tmp[$v -1]) + 1));  
-		  }
-	      }
-	      
-	      $nstate = join('',reverse(@nstate_tmp));
-	      
-	      my $idx_nstate=&__get_idx_state(\@states,$nstate);
-	      if ($idx_nstate >= 0) {		    
-		  my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		  my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		  my $res ='';
-		  if (length($el_mult)>=2) {		      
-		      $res = "[".$el_mult."]";
-		      if ($Sheet->Cells($celli,$cellj)->{'Value'} ne "") {
-			  $Sheet->Cells($celli,$cellj)->{'Value'} = $res."; ".($Sheet->Cells($celli,$cellj)->{'Value'}) ;    
-		      } else {
-			  $Sheet->Cells($celli,$cellj)->{'Value'} = $res;			 
-		      }
-		  } else {
-		      $res = $el_mult;
-		      if ($Sheet->Cells($celli,$cellj)->{'Value'} ne "") {
-			  $Sheet->Cells($celli,$cellj)->{'Value'} = $res."; ".($Sheet->Cells($celli,$cellj)->{'Value'});			 
-		      } else {
-			  $Sheet->Cells($celli,$cellj)->{'Value'} = $res;			 
-		      }
-		  }
-
-		  $nbtransitions++;
-		  if ($SSWAP_DEBUG >=1) {
-		      print $el." ===".$res."===> ".$nstate."\n";		   		      
-		  }
-
-	      } else {
-		  &common::hideComputingPrompt();
-		  #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";		    
-	      }
-	  }
-
-	    if ($nb_objs == -1) {
-		# Removing of one or several objects
-		for (my $r = 1; $r <= $mult; $r ++) {
-		    my $nm = $mult - $r;
-		    $nstate = substr($el,0,length($el)-1).sprintf("%x",$nm);
-		    my $idx_nstate=&__get_idx_state(\@states,$nstate);
-		    if ($idx_nstate >= 0) {
-			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-			$Sheet->Cells($celli,$cellj)->{'Value'}="-".sprintf("%x",$r);		
-			$nbtransitions++;
-			if ($SSWAP_DEBUG >=1) {
-			    print $el." ===[".sprintf("%x",$r)."]===> ".$nstate."\n";		   			    
+			} else {	       
+			    &common::hideComputingPrompt();
+			    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$bn3."\n";
 			}
-			
-		    } else {
-			&common::hideComputingPrompt();
-			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";		    
 		    }
 		}
-	  }	    
+
+	    }    
+	}
+	
+	my $idx_i =0;
+	my $idx_j =0;
+	foreach my $i (@states) {    	 
+	    
+	    # Coloring Median States
+	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_i +1, scalar @states));	
+	    my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_i + 1);
+	    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 6;
+
+	    $idx_j =0;
+	    foreach my $j (@states) {    	 
+		&common::displayComputingPrompt();	
+		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_j +1, scalar @states));	
+		my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_j + 1);
+		my $w = $Sheet->Cells($celli, $cellj) -> {'Value'};
+		# Coloring Adding/Removing Objects 
+		if ($w =~ /\+/ && $w =~ /-/ ) {		 		
+		    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 4;
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		} elsif ($w  =~ /\+/) {		 
+		    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 8;
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		} elsif ($w =~ /-/) {		 
+		    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 7;
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		}
+		
+		$idx_j++;
+	    }
+	    $idx_i++;
+	}
+	
+	#$last_row = $sheet -> UsedRange -> Find({What => "*", SearchDirection => xlPrevious, SearchOrder => xlByRows})    -> {Row};
+	#$last_col = $sheet -> UsedRange -> Find({What => "*", SearchDirection => xlPrevious, SearchOrder => xlByColumns}) -> {Column};
+
+	&common::hideComputingPrompt();
+	$Sheet->Range('B7')->{'Value'} = "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10.", ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]";
+
+	# Do Autofit
+	if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
+	    my $idx_sheet = 0;
+	    while ($idx_sheet < &__get_nb_xls_sheets_for_row(scalar @states)) {
+		foreach my $jdx (0 .. scalar(@states) -1 ) {    	 	 
+		    &common::displayComputingPrompt();	    
+		    my $Sheet = $Book->Worksheets(&__get_xls_sheet(0, $jdx + 1, scalar @states) 
+						  + $idx_sheet * &__get_nb_xls_sheets_for_col(scalar @states));
+		    my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);				
+		    $Sheet->Columns($cellj)-> AutoFit(); 		
+		}
+		
+		$idx_sheet ++;
+	    }
+	    &common::hideComputingPrompt();
+	}
+
+	print colored [$common::COLOR_RESULT], "[ => ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]\n";
+
+	#$Book->Sheets(1)->Select();
+	$Excel -> {'DisplayAlerts'} = 0; # This turns off the "This file already exists" message.
+	$Book -> SaveAs ($file) or die $!;
+	$Book->Close;    
+	#$Excel->Quit();      
+    }
+
+
+    sub __write_states_multiplex_xls
+    {   
+	# It supports Excel 2007 with 1,048,576 rows x 16,384 columns.
+	
+	my $nb_objs=$_[0];
+	my $highMaxss=hex($_[1]);
+	my $multiplex=$_[2];
+	my $pwd = getdcwd();   
+	my $file = $pwd."\\$conf::RESULTS\\".$_[3].".xlsx";    
+	my $nbtransitions=0;
+	
+	#use Win32::OLE qw(in with);
+	#use Win32::OLE::Const 'Microsoft Excel';
+	
+	$Win32::OLE::Warn = 3;	# die on errors...
+	
+	# get already active Excel application or open new
+	# my $Excel = Win32::OLE->GetActiveObject('Excel.Application')
+	# || Win32::OLE->new('Excel.Application', 'Quit');  
+	my $Excel = Win32::OLE->new('Excel.Application', 'Quit');
+	my $Excel_symb = Win32::OLE::Const->Load($Excel);  
+
+	# open Excel file and write infos
+	my $Book = $Excel->Workbooks->Add;
+	$Book->BuiltinDocumentProperties -> {'title'} = 'States/Transition Matrix';
+	$Book->BuiltinDocumentProperties -> {'author'} = "$common::AUTHOR";
+	$Book->BuiltinDocumentProperties -> {'comments'} = 'Creation : JugglingTB, Module SSWAP '.$SSWAP_VERSION." (writeStates_xls)";    
+
+	# Get all the possible states
+	my @states=&__get_states_multiplex($_[0], $_[1], $_[2]);	
+
+	print $lang::MSG_SSWAP_WRITE_EXCEL_FROM_STATES2;
+	print colored [$common::COLOR_RESULT], "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10." ]\n";
+	
+	my $nbsheets = &__get_nb_xls_sheets (scalar @states);
+
+
+	# Generation of needed sheets
+	my $comment ="M,".$nb_objs.",".sprintf("%x",$highMaxss).",".$multiplex.",-1";
+	if ($nbsheets > 1) {	
+	    $Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment."__(1)";
 	} else {
-	    &common::displayComputingPrompt();
-	    $nstate = "0".substr($el,0,length($el)-1);
-	    my $idx_nstate=&__get_idx_state(\@states,$nstate);
-	    if ($idx_nstate >= 0) {		    
-		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		$Sheet->Cells($celli,$cellj)->{'Value'}="0";		    
-		$nbtransitions++;
-		if ($SSWAP_DEBUG >=1) {
-		    print $el." ===0"."===> ".$nstate."\n";		   		      
-		}
-
-	    } else {
-		&common::hideComputingPrompt();
-		#print $lang::MSG_SSWAP_GENSTATES_MSG1."0".substr($el,0,length($el)-1)."\n";		    
-	    }	    
-
-	    if ($nb_objs == -1) {
-		# Adding of one or several objects
-		for (my $nm = 1; $nm <= $multiplex; $nm ++) {
-		    $nstate = substr($el,0,length($el)-1).sprintf("%x",$nm);
-		    my $idx_nstate=&__get_idx_state(\@states,$nstate);
-		    if ($idx_nstate >= 0) {		    
-			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-			$Sheet->Cells($celli,$cellj)->{'Value'}="+".sprintf("%x",$nm);		
-			$nbtransitions++;
-			if ($SSWAP_DEBUG >=1) {
-			    print $el." ===+".sprintf("%x",$nm)."===> ".$nstate."\n";		   		      
-			}
-			
-		    } else {
-			&common::hideComputingPrompt();
-			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";		    
-		    }
-		}
-	    }	    
+	    $Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment;
 	}
-    }
 
-    
-    my $idx_i =0;
-    my $idx_j =0;
-    foreach my $i (@states) {    	 
-	
-	# Coloring Median States
-	my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_i +1, scalar @states));	
-	my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_i + 1);
-	$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 6;
-	
-	$idx_j =0;
-	foreach my $j (@states) {    	 
-	    &common::displayComputingPrompt();	
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_j +1, scalar @states));	
-	    my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_j + 1);
-	    my $w = $Sheet->Cells($celli, $cellj) -> {'Value'};
-	    # Coloring Adding/Removing Objects 
-	    if ($w =~ /\+/ && $w =~ /-/ ) {		 		
-		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 4;
-		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-		#$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    } elsif ($w  =~ /\+/) {		 
-		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 8;
-		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-		#$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    } elsif ($w =~ /-/) {		 
-		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 7;
-		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-		#$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    }
-	    
-	    $idx_j++;
+	for (my $i = 1; $i < $nbsheets; $i++) {
+	    #$Book -> Worksheets -> Add({After => $Book -> Worksheets($Book -> Worksheets -> {Count})});
+	    $Book -> Worksheets -> Add({After => $Book -> Worksheets($i)});
+	    $Book -> Worksheets($i +1) -> {'Name'} = "Matrix__".$comment."__(".($i+1).")";
+	}    
+
+
+	# Writing of the Main Header
+	# select worksheet number 1
+	#my $Sheet = $Book->ActiveSheet;
+	#$Book->Sheets(1)->Select();
+	my $Sheet = $Book->Sheets(1);
+	$Sheet->Range('B2:B7')-> Font -> {'ColorIndex'} = 3;
+	$Sheet->Range('B2:B7')-> Font -> {'FontStyle'} = "Bold";
+	$Sheet->Range('B2:B7')-> Font -> {'size'} = 11;    
+	$Sheet->Range('B2:B7')-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignLeft'};
+	$Sheet->Range('B2:P2')-> Merge();
+	$Sheet->Range('B3:P3')-> Merge();
+	$Sheet->Range('B4:P4')-> Merge();
+	$Sheet->Range('B5:P5')-> Merge();
+	$Sheet->Range('B6:P6')-> Merge();
+	$Sheet->Range('B7:P7')-> Merge();
+
+	$Sheet->Range('B2')->{'Value'} = $lang::MSG_SSWAP_GENSTATES_MSG1a;	
+
+	$Sheet->Range('B3')->{'Value'} = $lang::MSG_SSWAP_GENERAL1;	
+	if ($nb_objs != -1) {
+	    $Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2." : ".$nb_objs;	
+	} else {
+	    $Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2b;	
+	}       
+	if ($highMaxss != -1) {
+	    $Sheet->Range('B5')->{'Value'} = $lang::MSG_SSWAP_GENERAL3." : ".sprintf("%x",$highMaxss);
 	}
-	$idx_i++;
-    }
+	if ($multiplex != -1) {
+	    $Sheet->Range('B6')->{'Value'} = $lang::MSG_SSWAP_GENERAL4." : ".$multiplex;
+	}    
 
-    &common::hideComputingPrompt();        
-    $Sheet->Range('B7')->{'Value'} = "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10.", ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]";
-    
-    # Do Autofit
-    if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
+	# Writes the States in the Excel file
+	# Start by the Columns headers ...
 	my $idx_sheet = 0;
 	while ($idx_sheet < &__get_nb_xls_sheets_for_row(scalar @states)) {
 	    foreach my $jdx (0 .. scalar(@states) -1 ) {    	 	 
 		&common::displayComputingPrompt();	    
 		my $Sheet = $Book->Worksheets(&__get_xls_sheet(0, $jdx + 1, scalar @states) 
 					      + $idx_sheet * &__get_nb_xls_sheets_for_col(scalar @states));
-		my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);				
-		$Sheet->Columns($cellj)-> AutoFit(); 		
-	    }
-	    
-	    $idx_sheet ++;
-	}
-	&common::hideComputingPrompt();
-    }
+		my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);
+		
+		if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
+		    # Will be done at the end
+		    $Sheet->Columns($cellj)-> AutoFit(); 		
+		} else {	
+		    $Sheet->Columns($cellj)-> {'ColumnWidth'} = $conf::EXCELCOLSIZE; 
+		}
 
-    print colored [$common::COLOR_RESULT], "[ => ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]\n";
-    
-    #$Book->Sheets(1)->Select();
-    $Excel -> {'DisplayAlerts'} = 0; # This turns off the "This file already exists" message.
-    $Book -> SaveAs ($file) or die $!;
-    $Book->Close;    
-    #$Excel->Quit();      
-}
+		$Sheet->Columns($cellj)-> {'NumberFormat'} = "\@"; # Text
+		$Sheet->Columns($cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignRight'};
 
-
-
-sub __write_states_sync_xls
-{    
-    # It supports Excel 2007 with 1,048,576 rows x 16,384 columns.
-    
-    my $nb_objs=$_[0];
-    my $highMaxss=hex($_[1]);
-    my $pwd = getdcwd();   
-    my $file = $pwd."\\$conf::RESULTS\\".$_[2].".xlsx";        
-    my $nbtransitions=0;
-    
-    #use Win32::OLE qw(in with);
-    #use Win32::OLE::Const 'Microsoft Excel';
-    
-    $Win32::OLE::Warn = 3;	# die on errors...
-    
-    # get already active Excel application or open new
-    # my $Excel = Win32::OLE->GetActiveObject('Excel.Application')
-    #	|| Win32::OLE->new('Excel.Application', 'Quit');  
-    my $Excel = Win32::OLE->new('Excel.Application', 'Quit');  
-    my $Excel_symb = Win32::OLE::Const->Load($Excel);
-
-    # open Excel file and write infos
-    my $Book = $Excel->Workbooks->Add;
-    $Book->BuiltinDocumentProperties -> {'title'} = 'States/Transition Matrix';
-    $Book->BuiltinDocumentProperties -> {'author'} = "$common::AUTHOR";
-    $Book->BuiltinDocumentProperties -> {'comments'} = 'Creation : JugglingTB, Module SSWAP '.$SSWAP_VERSION." (writeStates_xls)";    
-
-    # Get all the possible states
-    my @states=&__get_states_sync($_[0], $_[1]);    
-
-    print $lang::MSG_SSWAP_WRITE_EXCEL_FROM_STATES2;
-    print colored [$common::COLOR_RESULT], "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10." ]\n";
-    
-    my $nbsheets = &__get_nb_xls_sheets (scalar @states);
-
-
-    # Generation of needed sheets
-    my $comment ="S,".$nb_objs.",".sprintf("%x",$highMaxss).",-1,-1";
-    if ($nbsheets > 1) {	
-	$Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment."__(1)";
-    } else {
-	$Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment;
-    }
-
-    for (my $i = 1; $i < $nbsheets; $i++) {
-	#$Book -> Worksheets -> Add({After => $Book -> Worksheets($Book -> Worksheets -> {Count})});
-	$Book -> Worksheets -> Add({After => $Book -> Worksheets($i)});
-	$Book -> Worksheets($i +1) -> {'Name'} = "Matrix__".$comment."__(".($i+1).")";
-    }    
-
-
-    # Writing of the Main Header
-    # select worksheet number 1
-    #my $Sheet = $Book->ActiveSheet;
-    #$Book->Sheets(1)->Select();
-    my $Sheet = $Book->Sheets(1);
-    $Sheet->Range('B2:B7')-> Font -> {'ColorIndex'} = 3;
-    $Sheet->Range('B2:B7')-> Font -> {'FontStyle'} = "Bold";
-    $Sheet->Range('B2:B7')-> Font -> {'size'} = 11;
-    $Sheet->Range('B2:B7')-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignLeft'};
-    $Sheet->Range('B2:P2')-> Merge();
-    $Sheet->Range('B3:P3')-> Merge();
-    $Sheet->Range('B4:P4')-> Merge();
-    $Sheet->Range('B5:P5')-> Merge();
-    $Sheet->Range('B6:P6')-> Merge();
-    $Sheet->Range('B7:P7')-> Merge();
-
-    $Sheet->Range('B2')->{'Value'} = $lang::MSG_SSWAP_GENSTATES_MSG1a;	
-
-    $Sheet->Range('B3')->{'Value'} = $lang::MSG_SSWAP_GENERAL1b;	
-    if ($nb_objs != -1) {
-	$Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2." : ".$nb_objs;	
-    } else {
-	$Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2b;	
-    }       
-    if ($highMaxss != -1) {
-	$Sheet->Range('B5')->{'Value'} = $lang::MSG_SSWAP_GENERAL3." : ".sprintf("%x",$highMaxss);
-    }
-
-    
-    # Writes the States in the Excel file
-    # Start by the Columns headers ...
-    my $idx_sheet = 0;
-    while ($idx_sheet < &__get_nb_xls_sheets_for_row(scalar @states)) {
-	foreach my $jdx (0 .. scalar(@states) -1 ) {    	 	 
-	    &common::displayComputingPrompt();	    
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet(0, $jdx + 1, scalar @states) 
-					  + $idx_sheet * &__get_nb_xls_sheets_for_col(scalar @states));
-	    my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);
-
-	    if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
-		$Sheet->Columns($cellj)-> AutoFit(); 
-	    } else {
-		$Sheet->Columns($cellj)-> {'ColumnWidth'} = $conf::EXCELCOLSIZE; 
+		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		$Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
+		$Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
+		$Sheet->Cells($celli, $cellj)-> {'Orientation'} = -90;
+		$Sheet->Rows($celli)-> AutoFit(); 	
+		# Hack for bug with the AutoFit parameter on Columns
+		$Sheet->Rows($celli)-> {'RowHeight'} = length($states[0]) * 8;
+		$Sheet->Cells($celli, $cellj)-> {'VerticalAlignment'} = $Excel_symb->{'xlHAlignCenter'}; 	
+		$Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	    
+		$Sheet->Cells($celli, $cellj)->{'Value'} = $states[$jdx];
 	    }
 
-	    $Sheet->Columns($cellj)-> {'NumberFormat'} = "\@"; # Text
-	    $Sheet->Columns($cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignRight'};
-
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
-	    $Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
-	    $Sheet->Cells($celli, $cellj)-> {'Orientation'} = -90;
-	    $Sheet->Rows($celli)-> AutoFit(); 	
-	    # Hack for bug with the AutoFit parameter on Columns
-	    $Sheet->Rows($celli)-> {'RowHeight'} = length($states[0]) * 8;
-	    $Sheet->Cells($celli, $cellj)-> {'VerticalAlignment'} = $Excel_symb->{'xlHAlignCenter'}; 	
-	    $Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	    
-	    $Sheet->Cells($celli, $cellj)->{'Value'} = $states[$jdx];
+	    $idx_sheet++;
 	}
 
-	$idx_sheet++;
-    }
 
+	# ... and then the Rows headers
+	my $jdx_sheet = 0;
+	while ($jdx_sheet < &__get_nb_xls_sheets_for_col(scalar @states)) {
+	    foreach my $idx (0 .. scalar(@states) -1) {    	 
+		&common::displayComputingPrompt();
+		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx +1, 0, scalar @states) + $jdx_sheet); 
+		my ($celli, $cellj) = &__get_xls_cell($idx +1, 0);
+		
+		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		$Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
+		$Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
+		$Sheet->Cells($celli, $cellj)-> {'ColumnWidth'} = length($states[0]) + 2;
+		$Sheet->Cells($celli, $cellj)-> {'NumberFormat'} = "\@"; # Text
+		$Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	 
+		$Sheet->Cells($celli, $cellj)->{'Value'} = $states[$idx];
+	    }
 
-    # ... and then the Rows headers
-    my $jdx_sheet = 0;
-    while ($jdx_sheet < &__get_nb_xls_sheets_for_col(scalar @states)) {
-	foreach my $idx (0 .. scalar(@states) -1) {    	 
-	    &common::displayComputingPrompt();
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx +1, 0, scalar @states) + $jdx_sheet); 
-	    my ($celli, $cellj) = &__get_xls_cell($idx +1, 0);
-	    
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
-	    $Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
-	    $Sheet->Cells($celli, $cellj)-> {'ColumnWidth'} = length($states[0]) + 2;
-	    $Sheet->Cells($celli, $cellj)-> {'NumberFormat'} = "\@"; # Text
-	    $Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	 
-	    $Sheet->Cells($celli, $cellj)->{'Value'} = $states[$idx];
+	    $jdx_sheet++;
 	}
 
-	$jdx_sheet++;
-    }
 
-
-    # Write the Body Excel file    
-    my $nstate=();        
-    foreach my $el (@states) {       
-	&common::displayComputingPrompt();		
-	my $idx = rindex($el,',');
-	my $idx_state_el=&__get_idx_state(\@states, $el);
-	
-	my $rhand=substr($el,0,$idx);
-	my $rhandth=hex(substr($rhand,length($rhand)-1));
-	my $lhand=substr($el,$idx+1);
-	my $lhandth =hex(substr($lhand,length($lhand)-1));
-
-	if ($rhandth eq "0" && $lhandth eq "0") {		
-	    $nstate="0".substr($rhand,0,length($rhand)-1).",0".substr($lhand,0,length($lhand)-1);	    	 	    
-	    my $idx_nstate = &__get_idx_state(\@states,$nstate);
-	    if ($idx_nstate >=0) {
-		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		$Sheet->Cells($celli, $cellj)->{'Value'}="(0,0)";		  	 
-		$nbtransitions++;
-		if ($SSWAP_DEBUG >=1) {		   
-		    print $rhand.",".$lhand." ===(0,0)===> ".$nstate."\n";		   
-		}		
-
-	    } else {
-		&common::hideComputingPrompt();
-		#print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-	    }
-
-	    if ($nb_objs == -1) {
-		# Adding of one or two objects (one in each hand)
-		# ==> Both Hands
-		$nstate=substr($rhand,0,length($rhand)-1)."1,".substr($lhand,0,length($lhand)-1)."1";	    	 	    
-		my $idx_nstate = &__get_idx_state(\@states,$nstate);
-		if ($idx_nstate >=0) {
-		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		    $Sheet->Cells($celli, $cellj)->{'Value'}="(+,+)";		  	 
-		    $nbtransitions++;
-		    if ($SSWAP_DEBUG >=1) {		   
-			print $rhand.",".$lhand." ===(+,+)===> ".$nstate."\n";		   
-		    }		
-
-		} else {
-		    &common::hideComputingPrompt();
-		    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-		}
-		# ==> Right Hand only
-		$nstate=substr($rhand,0,length($rhand)-1)."1,".substr($lhand,0,length($lhand)-1)."0";	    	 	    
-		my $idx_nstate = &__get_idx_state(\@states,$nstate);
-		if ($idx_nstate >=0) {
-		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		    $Sheet->Cells($celli, $cellj)->{'Value'}="(+,)";		  	 
-		    $nbtransitions++;
-		    if ($SSWAP_DEBUG >=1) {		   
-			print $rhand.",".$lhand." ===(+,)===> ".$nstate."\n";		   
-		    }		
-
-		} else {
-		    &common::hideComputingPrompt();
-		    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-		}
-		# ==> Left Hand only
-		$nstate=substr($rhand,0,length($rhand)-1)."0,".substr($lhand,0,length($lhand)-1)."1";	    	 	    
-		my $idx_nstate = &__get_idx_state(\@states,$nstate);
-		if ($idx_nstate >=0) {
-		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		    $Sheet->Cells($celli, $cellj)->{'Value'}="(,+)";		  	 
-		    $nbtransitions++;
-		    if ($SSWAP_DEBUG >=1) {		   
-			print $rhand.",".$lhand." ===(,+)===> ".$nstate."\n";		   
-		    }		
-
-		} else {
-		    &common::hideComputingPrompt();
-		    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-		}
-	    }
+	# Write the Body Excel file            
+	foreach my $el (@states) {
+	    &common::displayComputingPrompt();		
+	    my $mult=0;
+	    my $sum=0;
+	    my $nstate=-1;	    	
+	    my $idx_state_el=&__get_idx_state(\@states, $el);
 	    
-	} elsif ($rhandth eq "1" && $lhandth eq "1") {
-	    $nstate="0".substr($rhand,0,length($rhand)-1).",0".substr($lhand,0,length($lhand)-1);
+	    $mult = hex(substr($el,length($el)-1));
 	    
-	    # Start by right Hand ...
-	    for (my $k=0; $k<length($nstate); $k++) {
-		&common::displayComputingPrompt();		
-		if (substr($nstate, $k, 1) eq "0") {
-		    my $x = "?";
-		    if ($k > $idx) {
-			$x = 2*(length($nstate)-$k);
-			if ($x > $highMaxss) {
-			    next;
-			}			
-			$x = sprintf("%x",$x)."x" ;
-		    } else {
-			$x = 2*(length($rhand)-$k);
-			if ($x > $highMaxss) {
-			    next;
-			}			
-			$x = sprintf("%x",$x);
+	    if ($mult != 0) {
+		# Here the computing is slightly different.
+		# All the possible multiplexes are selected first, and according to them the new states are established.
+		my @mult_list=&__get_throws_multiplex($_[0],$_[1],hex(substr($el,length($el)-1)));
+		
+	      LOOP1: foreach my $el_mult (@mult_list) {		  
+		  my @nstate_tmp = reverse(split(//, "0".substr($el,0,length($el)-1)));
+		  for (my $i=0; $i<length($el_mult); $i++) {
+		      &common::displayComputingPrompt();
+		      {
+			  my $v=hex(substr($el_mult,$i,1));
+			  if (hex($nstate_tmp[$v -1]) + 1 > $MAX_HEIGHT) {
+			      next LOOP1;
+			  }			    
+			  $nstate_tmp[$v -1] = sprintf("%x", (hex($nstate_tmp[$v -1]) + 1));  
+		      }
+		  }
+		  
+		  $nstate = join('',reverse(@nstate_tmp));
+		  
+		  my $idx_nstate=&__get_idx_state(\@states,$nstate);
+		  if ($idx_nstate >= 0) {		    
+		      my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+		      my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+		      my $res ='';
+		      if (length($el_mult)>=2) {		      
+			  $res = "[".$el_mult."]";
+			  if ($Sheet->Cells($celli,$cellj)->{'Value'} ne "") {
+			      $Sheet->Cells($celli,$cellj)->{'Value'} = $res."; ".($Sheet->Cells($celli,$cellj)->{'Value'}) ;    
+			  } else {
+			      $Sheet->Cells($celli,$cellj)->{'Value'} = $res;			 
+			  }
+		      } else {
+			  $res = $el_mult;
+			  if ($Sheet->Cells($celli,$cellj)->{'Value'} ne "") {
+			      $Sheet->Cells($celli,$cellj)->{'Value'} = $res."; ".($Sheet->Cells($celli,$cellj)->{'Value'});			 
+			  } else {
+			      $Sheet->Cells($celli,$cellj)->{'Value'} = $res;			 
+			  }
+		      }
+
+		      $nbtransitions++;
+		      if ($SSWAP_DEBUG >=1) {
+			  print $el." ===".$res."===> ".$nstate."\n";		   		      
+		      }
+
+		  } else {
+		      &common::hideComputingPrompt();
+		      #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";		    
+		  }
+	      }
+
+		if ($nb_objs == -1) {
+		    # Removing of one or several objects
+		    for (my $r = 1; $r <= $mult; $r ++) {
+			my $nm = $mult - $r;
+			$nstate = substr($el,0,length($el)-1).sprintf("%x",$nm);
+			my $idx_nstate=&__get_idx_state(\@states,$nstate);
+			if ($idx_nstate >= 0) {
+			    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			    $Sheet->Cells($celli,$cellj)->{'Value'}="-".sprintf("%x",$r);		
+			    $nbtransitions++;
+			    if ($SSWAP_DEBUG >=1) {
+				print $el." ===[".sprintf("%x",$r)."]===> ".$nstate."\n";		   			    
+			    }
+			    
+			} else {
+			    &common::hideComputingPrompt();
+			    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";		    
+			}
 		    }
-		    
-		    my $bnstate=substr($nstate, 0, $k)."1".substr($nstate, $k+1);		    
-		    {
-			# ... And then left hand ...
-			for (my $l=0; $l<length($bnstate); $l++) {
-			    &common::displayComputingPrompt();		
-			    if (substr($bnstate, $l, 1) eq "0") {
-				my $y = "?";			
-				if ($l > $idx) {		
-				    $y = 2*(length($nstate)-$l);
-				    if ($y > $highMaxss) {
-					next;
-				    }
-				    $y = sprintf("%x",$y);			    
-				} else {
-				    $y = 2*(length($rhand)-$l);
-				    if ($y > $highMaxss) {
-					next;
-				    }
-				    $y = sprintf("%x",$y)."x" ;
-				}				
-				my $idx_bn = &__get_idx_state(\@states,substr($bnstate, 0, $l)."1".substr($bnstate, $l+1));
-				if ($idx_bn >=0) {	
-				    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_bn +1, scalar @states)); 
-				    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_bn +1);
-				    if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
-					$Sheet->Cells($celli, $cellj)->{'Value'}= "(".$x.",".$y."); ".$Sheet->Cells($celli, $cellj)->{'Value'};
-				    } else {
-					$Sheet->Cells($celli, $cellj)->{'Value'}= "(".$x.",".$y.")";  
-				    }
-				    $nbtransitions++;
-				    if ($SSWAP_DEBUG >=1) {		   
-					print $rhand.",".$lhand." ===(".$x.",".$y.")===> ".$bnstate."\n";		   
-				    }		
+	      }	    
+	    } else {
+		&common::displayComputingPrompt();
+		$nstate = "0".substr($el,0,length($el)-1);
+		my $idx_nstate=&__get_idx_state(\@states,$nstate);
+		if ($idx_nstate >= 0) {		    
+		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+		    $Sheet->Cells($celli,$cellj)->{'Value'}="0";		    
+		    $nbtransitions++;
+		    if ($SSWAP_DEBUG >=1) {
+			print $el." ===0"."===> ".$nstate."\n";		   		      
+		    }
 
-				} else {
-				    &common::hideComputingPrompt();
-				    #print $lang::MSG_SSWAP_GENSTATES_MSG1.substr($bnstate, 0, $l)."1".substr($bnstate, $l+1)."\n";
+		} else {
+		    &common::hideComputingPrompt();
+		    #print $lang::MSG_SSWAP_GENSTATES_MSG1."0".substr($el,0,length($el)-1)."\n";		    
+		}	    
+
+		if ($nb_objs == -1) {
+		    # Adding of one or several objects
+		    for (my $nm = 1; $nm <= $multiplex; $nm ++) {
+			$nstate = substr($el,0,length($el)-1).sprintf("%x",$nm);
+			my $idx_nstate=&__get_idx_state(\@states,$nstate);
+			if ($idx_nstate >= 0) {		    
+			    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			    $Sheet->Cells($celli,$cellj)->{'Value'}="+".sprintf("%x",$nm);		
+			    $nbtransitions++;
+			    if ($SSWAP_DEBUG >=1) {
+				print $el." ===+".sprintf("%x",$nm)."===> ".$nstate."\n";		   		      
+			    }
+			    
+			} else {
+			    &common::hideComputingPrompt();
+			    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";		    
+			}
+		    }
+		}	    
+	    }
+	}
+
+	
+	my $idx_i =0;
+	my $idx_j =0;
+	foreach my $i (@states) {    	 
+	    
+	    # Coloring Median States
+	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_i +1, scalar @states));	
+	    my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_i + 1);
+	    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 6;
+	    
+	    $idx_j =0;
+	    foreach my $j (@states) {    	 
+		&common::displayComputingPrompt();	
+		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_j +1, scalar @states));	
+		my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_j + 1);
+		my $w = $Sheet->Cells($celli, $cellj) -> {'Value'};
+		# Coloring Adding/Removing Objects 
+		if ($w =~ /\+/ && $w =~ /-/ ) {		 		
+		    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 4;
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		    #$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		} elsif ($w  =~ /\+/) {		 
+		    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 8;
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		    #$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		} elsif ($w =~ /-/) {		 
+		    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 7;
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		    #$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		}
+		
+		$idx_j++;
+	    }
+	    $idx_i++;
+	}
+
+	&common::hideComputingPrompt();        
+	$Sheet->Range('B7')->{'Value'} = "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10.", ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]";
+	
+	# Do Autofit
+	if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
+	    my $idx_sheet = 0;
+	    while ($idx_sheet < &__get_nb_xls_sheets_for_row(scalar @states)) {
+		foreach my $jdx (0 .. scalar(@states) -1 ) {    	 	 
+		    &common::displayComputingPrompt();	    
+		    my $Sheet = $Book->Worksheets(&__get_xls_sheet(0, $jdx + 1, scalar @states) 
+						  + $idx_sheet * &__get_nb_xls_sheets_for_col(scalar @states));
+		    my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);				
+		    $Sheet->Columns($cellj)-> AutoFit(); 		
+		}
+		
+		$idx_sheet ++;
+	    }
+	    &common::hideComputingPrompt();
+	}
+
+	print colored [$common::COLOR_RESULT], "[ => ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]\n";
+	
+	#$Book->Sheets(1)->Select();
+	$Excel -> {'DisplayAlerts'} = 0; # This turns off the "This file already exists" message.
+	$Book -> SaveAs ($file) or die $!;
+	$Book->Close;    
+	#$Excel->Quit();      
+    }
+
+
+
+    sub __write_states_sync_xls
+    {    
+	# It supports Excel 2007 with 1,048,576 rows x 16,384 columns.
+	
+	my $nb_objs=$_[0];
+	my $highMaxss=hex($_[1]);
+	my $pwd = getdcwd();   
+	my $file = $pwd."\\$conf::RESULTS\\".$_[2].".xlsx";        
+	my $nbtransitions=0;
+	
+	#use Win32::OLE qw(in with);
+	#use Win32::OLE::Const 'Microsoft Excel';
+	
+	$Win32::OLE::Warn = 3;	# die on errors...
+	
+	# get already active Excel application or open new
+	# my $Excel = Win32::OLE->GetActiveObject('Excel.Application')
+	#	|| Win32::OLE->new('Excel.Application', 'Quit');  
+	my $Excel = Win32::OLE->new('Excel.Application', 'Quit');  
+	my $Excel_symb = Win32::OLE::Const->Load($Excel);
+
+	# open Excel file and write infos
+	my $Book = $Excel->Workbooks->Add;
+	$Book->BuiltinDocumentProperties -> {'title'} = 'States/Transition Matrix';
+	$Book->BuiltinDocumentProperties -> {'author'} = "$common::AUTHOR";
+	$Book->BuiltinDocumentProperties -> {'comments'} = 'Creation : JugglingTB, Module SSWAP '.$SSWAP_VERSION." (writeStates_xls)";    
+
+	# Get all the possible states
+	my @states=&__get_states_sync($_[0], $_[1]);    
+
+	print $lang::MSG_SSWAP_WRITE_EXCEL_FROM_STATES2;
+	print colored [$common::COLOR_RESULT], "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10." ]\n";
+	
+	my $nbsheets = &__get_nb_xls_sheets (scalar @states);
+
+
+	# Generation of needed sheets
+	my $comment ="S,".$nb_objs.",".sprintf("%x",$highMaxss).",-1,-1";
+	if ($nbsheets > 1) {	
+	    $Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment."__(1)";
+	} else {
+	    $Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment;
+	}
+
+	for (my $i = 1; $i < $nbsheets; $i++) {
+	    #$Book -> Worksheets -> Add({After => $Book -> Worksheets($Book -> Worksheets -> {Count})});
+	    $Book -> Worksheets -> Add({After => $Book -> Worksheets($i)});
+	    $Book -> Worksheets($i +1) -> {'Name'} = "Matrix__".$comment."__(".($i+1).")";
+	}    
+
+
+	# Writing of the Main Header
+	# select worksheet number 1
+	#my $Sheet = $Book->ActiveSheet;
+	#$Book->Sheets(1)->Select();
+	my $Sheet = $Book->Sheets(1);
+	$Sheet->Range('B2:B7')-> Font -> {'ColorIndex'} = 3;
+	$Sheet->Range('B2:B7')-> Font -> {'FontStyle'} = "Bold";
+	$Sheet->Range('B2:B7')-> Font -> {'size'} = 11;
+	$Sheet->Range('B2:B7')-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignLeft'};
+	$Sheet->Range('B2:P2')-> Merge();
+	$Sheet->Range('B3:P3')-> Merge();
+	$Sheet->Range('B4:P4')-> Merge();
+	$Sheet->Range('B5:P5')-> Merge();
+	$Sheet->Range('B6:P6')-> Merge();
+	$Sheet->Range('B7:P7')-> Merge();
+
+	$Sheet->Range('B2')->{'Value'} = $lang::MSG_SSWAP_GENSTATES_MSG1a;	
+
+	$Sheet->Range('B3')->{'Value'} = $lang::MSG_SSWAP_GENERAL1b;	
+	if ($nb_objs != -1) {
+	    $Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2." : ".$nb_objs;	
+	} else {
+	    $Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2b;	
+	}       
+	if ($highMaxss != -1) {
+	    $Sheet->Range('B5')->{'Value'} = $lang::MSG_SSWAP_GENERAL3." : ".sprintf("%x",$highMaxss);
+	}
+
+	
+	# Writes the States in the Excel file
+	# Start by the Columns headers ...
+	my $idx_sheet = 0;
+	while ($idx_sheet < &__get_nb_xls_sheets_for_row(scalar @states)) {
+	    foreach my $jdx (0 .. scalar(@states) -1 ) {    	 	 
+		&common::displayComputingPrompt();	    
+		my $Sheet = $Book->Worksheets(&__get_xls_sheet(0, $jdx + 1, scalar @states) 
+					      + $idx_sheet * &__get_nb_xls_sheets_for_col(scalar @states));
+		my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);
+
+		if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
+		    $Sheet->Columns($cellj)-> AutoFit(); 
+		} else {
+		    $Sheet->Columns($cellj)-> {'ColumnWidth'} = $conf::EXCELCOLSIZE; 
+		}
+
+		$Sheet->Columns($cellj)-> {'NumberFormat'} = "\@"; # Text
+		$Sheet->Columns($cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignRight'};
+
+		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		$Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
+		$Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
+		$Sheet->Cells($celli, $cellj)-> {'Orientation'} = -90;
+		$Sheet->Rows($celli)-> AutoFit(); 	
+		# Hack for bug with the AutoFit parameter on Columns
+		$Sheet->Rows($celli)-> {'RowHeight'} = length($states[0]) * 8;
+		$Sheet->Cells($celli, $cellj)-> {'VerticalAlignment'} = $Excel_symb->{'xlHAlignCenter'}; 	
+		$Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	    
+		$Sheet->Cells($celli, $cellj)->{'Value'} = $states[$jdx];
+	    }
+
+	    $idx_sheet++;
+	}
+
+
+	# ... and then the Rows headers
+	my $jdx_sheet = 0;
+	while ($jdx_sheet < &__get_nb_xls_sheets_for_col(scalar @states)) {
+	    foreach my $idx (0 .. scalar(@states) -1) {    	 
+		&common::displayComputingPrompt();
+		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx +1, 0, scalar @states) + $jdx_sheet); 
+		my ($celli, $cellj) = &__get_xls_cell($idx +1, 0);
+		
+		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		$Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
+		$Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
+		$Sheet->Cells($celli, $cellj)-> {'ColumnWidth'} = length($states[0]) + 2;
+		$Sheet->Cells($celli, $cellj)-> {'NumberFormat'} = "\@"; # Text
+		$Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	 
+		$Sheet->Cells($celli, $cellj)->{'Value'} = $states[$idx];
+	    }
+
+	    $jdx_sheet++;
+	}
+
+
+	# Write the Body Excel file    
+	my $nstate=();        
+	foreach my $el (@states) {       
+	    &common::displayComputingPrompt();		
+	    my $idx = rindex($el,',');
+	    my $idx_state_el=&__get_idx_state(\@states, $el);
+	    
+	    my $rhand=substr($el,0,$idx);
+	    my $rhandth=hex(substr($rhand,length($rhand)-1));
+	    my $lhand=substr($el,$idx+1);
+	    my $lhandth =hex(substr($lhand,length($lhand)-1));
+
+	    if ($rhandth eq "0" && $lhandth eq "0") {		
+		$nstate="0".substr($rhand,0,length($rhand)-1).",0".substr($lhand,0,length($lhand)-1);	    	 	    
+		my $idx_nstate = &__get_idx_state(\@states,$nstate);
+		if ($idx_nstate >=0) {
+		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+		    $Sheet->Cells($celli, $cellj)->{'Value'}="(0,0)";		  	 
+		    $nbtransitions++;
+		    if ($SSWAP_DEBUG >=1) {		   
+			print $rhand.",".$lhand." ===(0,0)===> ".$nstate."\n";		   
+		    }		
+
+		} else {
+		    &common::hideComputingPrompt();
+		    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
+		}
+
+		if ($nb_objs == -1) {
+		    # Adding of one or two objects (one in each hand)
+		    # ==> Both Hands
+		    $nstate=substr($rhand,0,length($rhand)-1)."1,".substr($lhand,0,length($lhand)-1)."1";	    	 	    
+		    my $idx_nstate = &__get_idx_state(\@states,$nstate);
+		    if ($idx_nstate >=0) {
+			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			$Sheet->Cells($celli, $cellj)->{'Value'}="(+,+)";		  	 
+			$nbtransitions++;
+			if ($SSWAP_DEBUG >=1) {		   
+			    print $rhand.",".$lhand." ===(+,+)===> ".$nstate."\n";		   
+			}		
+
+		    } else {
+			&common::hideComputingPrompt();
+			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
+		    }
+		    # ==> Right Hand only
+		    $nstate=substr($rhand,0,length($rhand)-1)."1,".substr($lhand,0,length($lhand)-1)."0";	    	 	    
+		    my $idx_nstate = &__get_idx_state(\@states,$nstate);
+		    if ($idx_nstate >=0) {
+			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			$Sheet->Cells($celli, $cellj)->{'Value'}="(+,)";		  	 
+			$nbtransitions++;
+			if ($SSWAP_DEBUG >=1) {		   
+			    print $rhand.",".$lhand." ===(+,)===> ".$nstate."\n";		   
+			}		
+
+		    } else {
+			&common::hideComputingPrompt();
+			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
+		    }
+		    # ==> Left Hand only
+		    $nstate=substr($rhand,0,length($rhand)-1)."0,".substr($lhand,0,length($lhand)-1)."1";	    	 	    
+		    my $idx_nstate = &__get_idx_state(\@states,$nstate);
+		    if ($idx_nstate >=0) {
+			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			$Sheet->Cells($celli, $cellj)->{'Value'}="(,+)";		  	 
+			$nbtransitions++;
+			if ($SSWAP_DEBUG >=1) {		   
+			    print $rhand.",".$lhand." ===(,+)===> ".$nstate."\n";		   
+			}		
+
+		    } else {
+			&common::hideComputingPrompt();
+			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
+		    }
+		}
+		
+	    } elsif ($rhandth eq "1" && $lhandth eq "1") {
+		$nstate="0".substr($rhand,0,length($rhand)-1).",0".substr($lhand,0,length($lhand)-1);
+		
+		# Start by right Hand ...
+		for (my $k=0; $k<length($nstate); $k++) {
+		    &common::displayComputingPrompt();		
+		    if (substr($nstate, $k, 1) eq "0") {
+			my $x = "?";
+			if ($k > $idx) {
+			    $x = 2*(length($nstate)-$k);
+			    if ($x > $highMaxss) {
+				next;
+			    }			
+			    $x = sprintf("%x",$x)."x" ;
+			} else {
+			    $x = 2*(length($rhand)-$k);
+			    if ($x > $highMaxss) {
+				next;
+			    }			
+			    $x = sprintf("%x",$x);
+			}
+			
+			my $bnstate=substr($nstate, 0, $k)."1".substr($nstate, $k+1);		    
+			{
+			    # ... And then left hand ...
+			    for (my $l=0; $l<length($bnstate); $l++) {
+				&common::displayComputingPrompt();		
+				if (substr($bnstate, $l, 1) eq "0") {
+				    my $y = "?";			
+				    if ($l > $idx) {		
+					$y = 2*(length($nstate)-$l);
+					if ($y > $highMaxss) {
+					    next;
+					}
+					$y = sprintf("%x",$y);			    
+				    } else {
+					$y = 2*(length($rhand)-$l);
+					if ($y > $highMaxss) {
+					    next;
+					}
+					$y = sprintf("%x",$y)."x" ;
+				    }				
+				    my $idx_bn = &__get_idx_state(\@states,substr($bnstate, 0, $l)."1".substr($bnstate, $l+1));
+				    if ($idx_bn >=0) {	
+					my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_bn +1, scalar @states)); 
+					my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_bn +1);
+					if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
+					    $Sheet->Cells($celli, $cellj)->{'Value'}= "(".$x.",".$y."); ".$Sheet->Cells($celli, $cellj)->{'Value'};
+					} else {
+					    $Sheet->Cells($celli, $cellj)->{'Value'}= "(".$x.",".$y.")";  
+					}
+					$nbtransitions++;
+					if ($SSWAP_DEBUG >=1) {		   
+					    print $rhand.",".$lhand." ===(".$x.",".$y.")===> ".$bnstate."\n";		   
+					}		
+
+				    } else {
+					&common::hideComputingPrompt();
+					#print $lang::MSG_SSWAP_GENSTATES_MSG1.substr($bnstate, 0, $l)."1".substr($bnstate, $l+1)."\n";
+				    }
 				}
 			    }
 			}
 		    }
 		}
-	    }
 
-	    if ($nb_objs == -1) {
-		# Removing of one or two objects (one in each hand)
-		# ==> Both Hands
-		$nstate=substr($rhand,0,length($rhand)-1)."0,".substr($lhand,0,length($lhand)-1)."0";
-		my $idx_nstate = &__get_idx_state(\@states,$nstate);		
-		if ($idx_nstate >=0) {		    
-		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		    $Sheet->Cells($celli, $cellj)->{'Value'}="(-,-)";		  	
-		    $nbtransitions++;
-		    if ($SSWAP_DEBUG >=1) {		   
-			print $rhand.",".$lhand." ===(-,-)===> ".$nstate."\n";		   
-		    }		
-
-		} else {
-		    &common::hideComputingPrompt();
-		    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-		}
-		# ==> Only Right Hand
-		$nstate=substr($rhand,0,length($rhand)-1)."0,".substr($lhand,0,length($lhand)-1)."1";
-		my $idx_nstate = &__get_idx_state(\@states,$nstate);		
-		if ($idx_nstate >=0) {
-		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		    $Sheet->Cells($celli, $cellj)->{'Value'}="(-,)";		  	 
-		    $nbtransitions++;
-		    if ($SSWAP_DEBUG >=1) {		   
-			print $rhand.",".$lhand." ===(-,)===> ".$nstate."\n";		   
-		    }		
-
-		} else {
-		    &common::hideComputingPrompt();
-		    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-		}
-		# ==> Only Left Hand
-		$nstate=substr($rhand,0,length($rhand)-1)."1,".substr($lhand,0,length($lhand)-1)."0";
-		my $idx_nstate = &__get_idx_state(\@states,$nstate);
-		if ($idx_nstate >=0) {
-		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		    $Sheet->Cells($celli, $cellj)->{'Value'}="(,-)";		  	 
-		    $nbtransitions++;
-		    if ($SSWAP_DEBUG >=1) {		   
-			print $rhand.",".$lhand." ===(,-)===> ".$nstate."\n";		   
-		    }		
-
-		} else {
-		    &common::hideComputingPrompt();
-		    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-		}
-	    }
-
-	} elsif ($rhandth eq "1" && $lhandth eq "0") {
-	    $nstate="0".substr($rhand,0,length($rhand)-1).",0".substr($lhand,0,length($lhand)-1);
-	    
-	    # Only right Hand throws ...
-	    for (my $k=0; $k<length($nstate); $k++) {
-		&common::displayComputingPrompt();		
-		if (substr($nstate, $k, 1) eq "0") {
-		    my $x = "?";
-		    my $y = "0";
-		    if ($k > $idx) {
-			$x = 2*(length($nstate)-$k);
-			if ($x > $highMaxss) {
-			    next;
-			}			
-			$x = sprintf("%x",$x)."x" ;
-		    } else {
-			$x = 2*(length($rhand)-$k);
-			if ($x > $highMaxss) {
-			    next;
-			}
-			$x = sprintf("%x",$x);
-		    }
-		    
-		    my $bnstate=substr($nstate, 0, $k)."1".substr($nstate, $k+1);		    		    
-		    my $idx_bnstate = &__get_idx_state(\@states,$bnstate);
-		    if ($idx_bnstate>=0) {
-			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_bnstate +1, scalar @states)); 
-			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_bnstate +1);
-			if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
-			    $Sheet->Cells($celli, $cellj)->{'Value'}="(".$x.",".$y."); ".$Sheet->Cells($celli, $cellj)->{'Value'};
-			} else {
-			    $Sheet->Cells($celli, $cellj)->{'Value'}="(".$x.",".$y.")";		    			   			
-			}
+		if ($nb_objs == -1) {
+		    # Removing of one or two objects (one in each hand)
+		    # ==> Both Hands
+		    $nstate=substr($rhand,0,length($rhand)-1)."0,".substr($lhand,0,length($lhand)-1)."0";
+		    my $idx_nstate = &__get_idx_state(\@states,$nstate);		
+		    if ($idx_nstate >=0) {		    
+			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			$Sheet->Cells($celli, $cellj)->{'Value'}="(-,-)";		  	
 			$nbtransitions++;
 			if ($SSWAP_DEBUG >=1) {		   
-			    print $rhand.",".$lhand." ===(".$x.",".$y.")===> ".$bnstate."\n";		   
+			    print $rhand.",".$lhand." ===(-,-)===> ".$nstate."\n";		   
 			}		
 
 		    } else {
 			&common::hideComputingPrompt();
-			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$bnstate."\n";
+			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
 		    }
-		}	    		
-	    }
-	    
-	    if ($nb_objs == -1) {
-		# Adding of one object (in Left Hand)
-		# => Keep object in Right Hand
-		$nstate=substr($rhand,0,length($rhand)-1)."1,".substr($lhand,0,length($lhand)-1)."1";
-		my $idx_nstate = &__get_idx_state(\@states,$nstate);
-		if ($idx_nstate >=0) {
-		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		    $Sheet->Cells($celli, $cellj)->{'Value'}="(,+)";		  	 
-		    $nbtransitions++;
-		    if ($SSWAP_DEBUG >=1) {		   
-			print $rhand.",".$lhand." ===(,+)===> ".$nstate."\n";		   
-		    }		
-
-		} else {
-		    &common::hideComputingPrompt();
-		    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-		}
-		# => Remove object in Right Hand
-		$nstate=substr($rhand,0,length($rhand)-1)."0,".substr($lhand,0,length($lhand)-1)."1";
-		my $idx_nstate = &__get_idx_state(\@states,$nstate);
-		if ($idx_nstate >=0) {
-		    # A collapse could occur there
-		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		    if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
-			$Sheet->Cells($celli, $cellj)->{'Value'}="(-,+)"."; ".$Sheet->Cells($celli, $cellj)->{'Value'};
-		    } else {
-			$Sheet->Cells($celli, $cellj)->{'Value'}="(-,+)";
-		    }			    		  				
-		    $nbtransitions++;
-		    if ($SSWAP_DEBUG >=1) {		   
-			print $rhand.",".$lhand." ===(-,+)===> ".$nstate."\n";		   
-		    }		
-
-		} else {
-		    &common::hideComputingPrompt();
-		    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-		}
-		
-		# Remove only object in Right Hand and do not add object in Left Hand
-		$nstate=substr($rhand,0,length($rhand)-1)."0,".substr($lhand,0,length($lhand)-1)."0";
-		my $idx_nstate = &__get_idx_state(\@states,$nstate);
-		if ($idx_nstate >=0) {
-		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		    $Sheet->Cells($celli, $cellj)->{'Value'}="(-,)";		  	 
-		    $nbtransitions++;
-		    if ($SSWAP_DEBUG >=1) {		   
-			print $rhand.",".$lhand." ===(-,)===> ".$nstate."\n";		   
-		    }		
-
-		} else {
-		    &common::hideComputingPrompt();
-		    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-		}
-	    }
-
-	} elsif ($rhandth eq "0" && $lhandth eq "1") {
-	    $nstate="0".substr($rhand,0,length($rhand)-1).",0".substr($lhand,0,length($lhand)-1);	    
-	    
-	    # Only Left Hand throws ...
-	    for (my $k=0; $k<length($nstate); $k++) {
-		&common::displayComputingPrompt();		
-		if (substr($nstate, $k, 1) eq "0") {
-		    my $x = "0";
-		    my $y = "?";
-		    if ($k > $idx) {
-			$y = 2*(length($nstate)-$k);
-			if ($y > $highMaxss) {
-			    next;
-			}
-			$y = sprintf("%x",$y);
-		    } else {
-			$y= 2*(length($rhand)-$k);
-			if ($y > $highMaxss) {
-			    next;
-			}
-			$y = sprintf("%x",$y)."x";
-		    }
-		    
-		    my $bnstate=substr($nstate, 0, $k)."1".substr($nstate, $k+1);		    
-		    my $idx_bnstate = &__get_idx_state(\@states,$bnstate);
-		    if ($idx_bnstate>=0) {		    
-			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_bnstate +1, scalar @states)); 
-			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_bnstate +1);
-			if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
-			    $Sheet->Cells($celli, $cellj)->{'Value'}="(".$x.",".$y."); ".$Sheet->Cells($celli, $cellj)->{'Value'};
-			} else {
-			    $Sheet->Cells($celli, $cellj)->{'Value'}="(".$x.",".$y.")";
-			}
+		    # ==> Only Right Hand
+		    $nstate=substr($rhand,0,length($rhand)-1)."0,".substr($lhand,0,length($lhand)-1)."1";
+		    my $idx_nstate = &__get_idx_state(\@states,$nstate);		
+		    if ($idx_nstate >=0) {
+			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			$Sheet->Cells($celli, $cellj)->{'Value'}="(-,)";		  	 
 			$nbtransitions++;
 			if ($SSWAP_DEBUG >=1) {		   
-			    print $rhand.",".$lhand." ===(".$x.",".$y.")===> ".$bnstate."\n";		   
+			    print $rhand.",".$lhand." ===(-,)===> ".$nstate."\n";		   
 			}		
 
 		    } else {
 			&common::hideComputingPrompt();
-			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$bnstate."\n";
+			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
 		    }
-		}	    	    
-	    }
+		    # ==> Only Left Hand
+		    $nstate=substr($rhand,0,length($rhand)-1)."1,".substr($lhand,0,length($lhand)-1)."0";
+		    my $idx_nstate = &__get_idx_state(\@states,$nstate);
+		    if ($idx_nstate >=0) {
+			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			$Sheet->Cells($celli, $cellj)->{'Value'}="(,-)";		  	 
+			$nbtransitions++;
+			if ($SSWAP_DEBUG >=1) {		   
+			    print $rhand.",".$lhand." ===(,-)===> ".$nstate."\n";		   
+			}		
 
-	    if ($nb_objs == -1) {
-		# Adding of one object (in Right Hand)
-		# => Keep object in Left Hand
-		$nstate=substr($rhand,0,length($rhand)-1)."1,".substr($lhand,0,length($lhand)-1)."1";
-		my $idx_nstate = &__get_idx_state(\@states,$nstate);
-		if ($idx_nstate >=0) {
-		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		    $Sheet->Cells($celli, $cellj)->{'Value'}="(+,)";		  	 
-		    $nbtransitions++;
-		    if ($SSWAP_DEBUG >=1) {		   
-			print $rhand.",".$lhand." ===(+,)===> ".$nstate."\n";		   
-		    }		
-
-		} else {
-		    &common::hideComputingPrompt();
-		    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-		}
-		# => Remove object in Left Hand
-		$nstate=substr($rhand,0,length($rhand)-1)."1,".substr($lhand,0,length($lhand)-1)."0";
-		my $idx_nstate = &__get_idx_state(\@states,$nstate);
-		if ($idx_nstate >=0) {
-		    # A collapse could occur there
-		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		    if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
-			$Sheet->Cells($celli, $cellj)->{'Value'}="(+,-)"."; ".$Sheet->Cells($celli, $cellj)->{'Value'};
 		    } else {
-			$Sheet->Cells($celli, $cellj)->{'Value'}="(+,-)";
-		    }			    		  				
-		    $nbtransitions++;
-		    if ($SSWAP_DEBUG >=1) {		   
-			print $rhand.",".$lhand." ===(+,-)===> ".$nstate."\n";		   
-		    }		
-		    
-		} else {
-		    &common::hideComputingPrompt();
-		    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-		}	    
+			&common::hideComputingPrompt();
+			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
+		    }
+		}
+
+	    } elsif ($rhandth eq "1" && $lhandth eq "0") {
+		$nstate="0".substr($rhand,0,length($rhand)-1).",0".substr($lhand,0,length($lhand)-1);
 		
-		# Remove only object in Left Hand and do not add object in Right Hand
-		$nstate=substr($rhand,0,length($rhand)-1)."0,".substr($lhand,0,length($lhand)-1)."0";
-		my $idx_nstate = &__get_idx_state(\@states,$nstate);
-		if ($idx_nstate >=0) {
-		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		    $Sheet->Cells($celli, $cellj)->{'Value'}="(,-)";		  	 
-		    $nbtransitions++;
-		    if ($SSWAP_DEBUG >=1) {		   
-			print $rhand.",".$lhand." ===(,-)===> ".$nstate."\n";		   
-		    }		
+		# Only right Hand throws ...
+		for (my $k=0; $k<length($nstate); $k++) {
+		    &common::displayComputingPrompt();		
+		    if (substr($nstate, $k, 1) eq "0") {
+			my $x = "?";
+			my $y = "0";
+			if ($k > $idx) {
+			    $x = 2*(length($nstate)-$k);
+			    if ($x > $highMaxss) {
+				next;
+			    }			
+			    $x = sprintf("%x",$x)."x" ;
+			} else {
+			    $x = 2*(length($rhand)-$k);
+			    if ($x > $highMaxss) {
+				next;
+			    }
+			    $x = sprintf("%x",$x);
+			}
+			
+			my $bnstate=substr($nstate, 0, $k)."1".substr($nstate, $k+1);		    		    
+			my $idx_bnstate = &__get_idx_state(\@states,$bnstate);
+			if ($idx_bnstate>=0) {
+			    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_bnstate +1, scalar @states)); 
+			    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_bnstate +1);
+			    if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
+				$Sheet->Cells($celli, $cellj)->{'Value'}="(".$x.",".$y."); ".$Sheet->Cells($celli, $cellj)->{'Value'};
+			    } else {
+				$Sheet->Cells($celli, $cellj)->{'Value'}="(".$x.",".$y.")";		    			   			
+			    }
+			    $nbtransitions++;
+			    if ($SSWAP_DEBUG >=1) {		   
+				print $rhand.",".$lhand." ===(".$x.",".$y.")===> ".$bnstate."\n";		   
+			    }		
 
-		} else {
-		    &common::hideComputingPrompt();
-		    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-		}	    	    
-	    }
-	}	
-    }
-    
-    my $idx_i =0;
-    my $idx_j =0;
-    foreach my $i (@states) {    	 
-	
-	# Coloring Median States
-	my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_i +1, scalar @states));	
-	my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_i + 1);
-	$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 6;
+			} else {
+			    &common::hideComputingPrompt();
+			    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$bnstate."\n";
+			}
+		    }	    		
+		}
+		
+		if ($nb_objs == -1) {
+		    # Adding of one object (in Left Hand)
+		    # => Keep object in Right Hand
+		    $nstate=substr($rhand,0,length($rhand)-1)."1,".substr($lhand,0,length($lhand)-1)."1";
+		    my $idx_nstate = &__get_idx_state(\@states,$nstate);
+		    if ($idx_nstate >=0) {
+			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			$Sheet->Cells($celli, $cellj)->{'Value'}="(,+)";		  	 
+			$nbtransitions++;
+			if ($SSWAP_DEBUG >=1) {		   
+			    print $rhand.",".$lhand." ===(,+)===> ".$nstate."\n";		   
+			}		
 
-	# Coloring Symetrics states 	
-	if ($i =~ ",") {
-	    my @res=split(/,/,$i);
-	    my $nstate=$res[1].",".$res[0];
-	    my $idx_nj=&__get_idx_state(\@states,$nstate); 
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_nj +1, scalar @states));	
-	    my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_nj + 1);
-	    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 15;
+		    } else {
+			&common::hideComputingPrompt();
+			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
+		    }
+		    # => Remove object in Right Hand
+		    $nstate=substr($rhand,0,length($rhand)-1)."0,".substr($lhand,0,length($lhand)-1)."1";
+		    my $idx_nstate = &__get_idx_state(\@states,$nstate);
+		    if ($idx_nstate >=0) {
+			# A collapse could occur there
+			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
+			    $Sheet->Cells($celli, $cellj)->{'Value'}="(-,+)"."; ".$Sheet->Cells($celli, $cellj)->{'Value'};
+			} else {
+			    $Sheet->Cells($celli, $cellj)->{'Value'}="(-,+)";
+			}			    		  				
+			$nbtransitions++;
+			if ($SSWAP_DEBUG >=1) {		   
+			    print $rhand.",".$lhand." ===(-,+)===> ".$nstate."\n";		   
+			}		
+
+		    } else {
+			&common::hideComputingPrompt();
+			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
+		    }
+		    
+		    # Remove only object in Right Hand and do not add object in Left Hand
+		    $nstate=substr($rhand,0,length($rhand)-1)."0,".substr($lhand,0,length($lhand)-1)."0";
+		    my $idx_nstate = &__get_idx_state(\@states,$nstate);
+		    if ($idx_nstate >=0) {
+			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			$Sheet->Cells($celli, $cellj)->{'Value'}="(-,)";		  	 
+			$nbtransitions++;
+			if ($SSWAP_DEBUG >=1) {		   
+			    print $rhand.",".$lhand." ===(-,)===> ".$nstate."\n";		   
+			}		
+
+		    } else {
+			&common::hideComputingPrompt();
+			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
+		    }
+		}
+
+	    } elsif ($rhandth eq "0" && $lhandth eq "1") {
+		$nstate="0".substr($rhand,0,length($rhand)-1).",0".substr($lhand,0,length($lhand)-1);	    
+		
+		# Only Left Hand throws ...
+		for (my $k=0; $k<length($nstate); $k++) {
+		    &common::displayComputingPrompt();		
+		    if (substr($nstate, $k, 1) eq "0") {
+			my $x = "0";
+			my $y = "?";
+			if ($k > $idx) {
+			    $y = 2*(length($nstate)-$k);
+			    if ($y > $highMaxss) {
+				next;
+			    }
+			    $y = sprintf("%x",$y);
+			} else {
+			    $y= 2*(length($rhand)-$k);
+			    if ($y > $highMaxss) {
+				next;
+			    }
+			    $y = sprintf("%x",$y)."x";
+			}
+			
+			my $bnstate=substr($nstate, 0, $k)."1".substr($nstate, $k+1);		    
+			my $idx_bnstate = &__get_idx_state(\@states,$bnstate);
+			if ($idx_bnstate>=0) {		    
+			    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_bnstate +1, scalar @states)); 
+			    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_bnstate +1);
+			    if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
+				$Sheet->Cells($celli, $cellj)->{'Value'}="(".$x.",".$y."); ".$Sheet->Cells($celli, $cellj)->{'Value'};
+			    } else {
+				$Sheet->Cells($celli, $cellj)->{'Value'}="(".$x.",".$y.")";
+			    }
+			    $nbtransitions++;
+			    if ($SSWAP_DEBUG >=1) {		   
+				print $rhand.",".$lhand." ===(".$x.",".$y.")===> ".$bnstate."\n";		   
+			    }		
+
+			} else {
+			    &common::hideComputingPrompt();
+			    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$bnstate."\n";
+			}
+		    }	    	    
+		}
+
+		if ($nb_objs == -1) {
+		    # Adding of one object (in Right Hand)
+		    # => Keep object in Left Hand
+		    $nstate=substr($rhand,0,length($rhand)-1)."1,".substr($lhand,0,length($lhand)-1)."1";
+		    my $idx_nstate = &__get_idx_state(\@states,$nstate);
+		    if ($idx_nstate >=0) {
+			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			$Sheet->Cells($celli, $cellj)->{'Value'}="(+,)";		  	 
+			$nbtransitions++;
+			if ($SSWAP_DEBUG >=1) {		   
+			    print $rhand.",".$lhand." ===(+,)===> ".$nstate."\n";		   
+			}		
+
+		    } else {
+			&common::hideComputingPrompt();
+			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
+		    }
+		    # => Remove object in Left Hand
+		    $nstate=substr($rhand,0,length($rhand)-1)."1,".substr($lhand,0,length($lhand)-1)."0";
+		    my $idx_nstate = &__get_idx_state(\@states,$nstate);
+		    if ($idx_nstate >=0) {
+			# A collapse could occur there
+			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
+			    $Sheet->Cells($celli, $cellj)->{'Value'}="(+,-)"."; ".$Sheet->Cells($celli, $cellj)->{'Value'};
+			} else {
+			    $Sheet->Cells($celli, $cellj)->{'Value'}="(+,-)";
+			}			    		  				
+			$nbtransitions++;
+			if ($SSWAP_DEBUG >=1) {		   
+			    print $rhand.",".$lhand." ===(+,-)===> ".$nstate."\n";		   
+			}		
+			
+		    } else {
+			&common::hideComputingPrompt();
+			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
+		    }	    
+		    
+		    # Remove only object in Left Hand and do not add object in Right Hand
+		    $nstate=substr($rhand,0,length($rhand)-1)."0,".substr($lhand,0,length($lhand)-1)."0";
+		    my $idx_nstate = &__get_idx_state(\@states,$nstate);
+		    if ($idx_nstate >=0) {
+			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			$Sheet->Cells($celli, $cellj)->{'Value'}="(,-)";		  	 
+			$nbtransitions++;
+			if ($SSWAP_DEBUG >=1) {		   
+			    print $rhand.",".$lhand." ===(,-)===> ".$nstate."\n";		   
+			}		
+
+		    } else {
+			&common::hideComputingPrompt();
+			#print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
+		    }	    	    
+		}
+	    }	
 	}
 	
-	$idx_j =0;
-	foreach my $j (@states) {    	 
-	    &common::displayComputingPrompt();	
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_j +1, scalar @states));	
-	    my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_j + 1);
-	    my $w = $Sheet->Cells($celli, $cellj) -> {'Value'};
-	    # Coloring Adding/Removing Objects 
-	    if ($w =~ /\+/ && $w =~ /-/ ) {		 		
-		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 4;
-		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    } elsif ($w  =~ /\+/) {		 
-		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 8;
-		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    } elsif ($w =~ /-/) {		 
-		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 7;
-		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+	my $idx_i =0;
+	my $idx_j =0;
+	foreach my $i (@states) {    	 
+	    
+	    # Coloring Median States
+	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_i +1, scalar @states));	
+	    my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_i + 1);
+	    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 6;
+
+	    # Coloring Symetrics states 	
+	    if ($i =~ ",") {
+		my @res=split(/,/,$i);
+		my $nstate=$res[1].",".$res[0];
+		my $idx_nj=&__get_idx_state(\@states,$nstate); 
+		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_nj +1, scalar @states));	
+		my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_nj + 1);
+		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 15;
 	    }
 	    
-	    $idx_j++;
+	    $idx_j =0;
+	    foreach my $j (@states) {    	 
+		&common::displayComputingPrompt();	
+		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_j +1, scalar @states));	
+		my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_j + 1);
+		my $w = $Sheet->Cells($celli, $cellj) -> {'Value'};
+		# Coloring Adding/Removing Objects 
+		if ($w =~ /\+/ && $w =~ /-/ ) {		 		
+		    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 4;
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		} elsif ($w  =~ /\+/) {		 
+		    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 8;
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		} elsif ($w =~ /-/) {		 
+		    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 7;
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		}
+		
+		$idx_j++;
+	    }
+	    $idx_i++;
 	}
-	$idx_i++;
+
+	&common::hideComputingPrompt();        
+	$Sheet->Range('B7')->{'Value'} = "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10.", ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]";
+
+	# Do Autofit
+	if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
+	    my $idx_sheet = 0;
+	    while ($idx_sheet < &__get_nb_xls_sheets_for_row(scalar @states)) {
+		foreach my $jdx (0 .. scalar(@states) -1) {    	 	 
+		    &common::displayComputingPrompt();	    
+		    my $Sheet = $Book->Worksheets(&__get_xls_sheet(0, $jdx + 1, scalar @states) 
+						  + $idx_sheet * &__get_nb_xls_sheets_for_col(scalar @states));
+		    my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);				
+		    $Sheet->Columns($cellj)-> AutoFit(); 		
+		}
+		
+		$idx_sheet ++;
+	    }
+	    &common::hideComputingPrompt();
+	}
+
+	print colored [$common::COLOR_RESULT], "[ => ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]\n";
+
+	#$Book->Sheets(1)->Select();
+	$Excel -> {'DisplayAlerts'} = 0; # This turns off the "This file already exists" message.
+	$Book -> SaveAs ($file) or die $!;
+	$Book->Close;    
+	#$Excel->Quit();      
     }
 
-    &common::hideComputingPrompt();        
-    $Sheet->Range('B7')->{'Value'} = "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10.", ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]";
 
-    # Do Autofit
-    if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
+
+    sub __write_states_multiplex_sync_xls
+    {
+	my $nb_objs=$_[0];
+	my $highMaxss=hex($_[1]);
+	my $multiplex=$_[2];        
+	my $pwd = getdcwd();   
+	my $file = $pwd."\\$conf::RESULTS\\".$_[3].".xlsx";        
+	my $nbtransitions = 0;
+	
+	#use Win32::OLE qw(in with);
+	#use Win32::OLE::Const 'Microsoft Excel';
+	
+	$Win32::OLE::Warn = 3;	# die on errors...
+	
+	# get already active Excel application or open new
+	# my $Excel = Win32::OLE->GetActiveObject('Excel.Application')
+	# || Win32::OLE->new('Excel.Application', 'Quit');  
+	my $Excel = Win32::OLE->new('Excel.Application', 'Quit');  
+	my $Excel_symb = Win32::OLE::Const->Load($Excel);
+
+	# open Excel file and write infos
+	my $Book = $Excel->Workbooks->Add;
+	$Book->BuiltinDocumentProperties -> {'title'} = 'States/Transition Matrix';
+	$Book->BuiltinDocumentProperties -> {'author'} = "$common::AUTHOR";
+	$Book->BuiltinDocumentProperties -> {'comments'} = 'Creation : JugglingTB, Module SSWAP '.$SSWAP_VERSION." (writeStates_xls)";    
+
+	# Get all the possible states
+	my @states=&__get_states_multiplex_sync($_[0], $_[1], $_[2]);	
+
+	print $lang::MSG_SSWAP_WRITE_EXCEL_FROM_STATES2;
+	print colored [$common::COLOR_RESULT], "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10." ]\n";
+	
+	my $nbsheets = &__get_nb_xls_sheets (scalar @states);
+
+
+	# Generation of needed sheets
+	my $comment ="MS,".$nb_objs.",".sprintf("%x",$highMaxss).",".$multiplex.",-1";
+	if ($nbsheets > 1) {	
+	    $Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment."__(1)";
+	} else {
+	    $Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment;
+	}
+
+	for (my $i = 1; $i < $nbsheets; $i++) {
+	    #$Book -> Worksheets -> Add({After => $Book -> Worksheets($Book -> Worksheets -> {Count})});
+	    $Book -> Worksheets -> Add({After => $Book -> Worksheets($i)});
+	    $Book -> Worksheets($i +1) -> {'Name'} = "Matrix__".$comment."__(".($i+1).")";
+	}    
+
+
+	# Writing of the Main Header
+	# select worksheet number 1
+	#my $Sheet = $Book->ActiveSheet;
+	#$Book->Sheets(1)->Select();
+	my $Sheet = $Book->Sheets(1);
+	$Sheet->Range('B2:B7')-> Font -> {'ColorIndex'} = 3;
+	$Sheet->Range('B2:B7')-> Font -> {'FontStyle'} = "Bold";
+	$Sheet->Range('B2:B7')-> Font -> {'size'} = 11;
+	$Sheet->Range('B2:B7')-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignLeft'};
+	$Sheet->Range('B2:P2')-> Merge();
+	$Sheet->Range('B3:P3')-> Merge();
+	$Sheet->Range('B4:P4')-> Merge();
+	$Sheet->Range('B5:P5')-> Merge();
+	$Sheet->Range('B6:P6')-> Merge();
+	$Sheet->Range('B7:P7')-> Merge();
+
+	$Sheet->Range('B2')->{'Value'} = $lang::MSG_SSWAP_GENSTATES_MSG1a;	
+
+	$Sheet->Range('B3')->{'Value'} = $lang::MSG_SSWAP_GENERAL1b;	
+	if ($nb_objs != -1) {
+	    $Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2." : ".$nb_objs;	
+	} else {
+	    $Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2b;	
+	}       
+	if ($highMaxss != -1) {
+	    $Sheet->Range('B5')->{'Value'} = $lang::MSG_SSWAP_GENERAL3." : ".sprintf("%x",$highMaxss);
+	}
+	if ($multiplex != -1) {
+	    $Sheet->Range('B6')->{'Value'} = $lang::MSG_SSWAP_GENERAL4." : ".$multiplex;
+	}
+	
+
+	# Writes the States in the Excel file
+	# Start by the Columns headers ...
 	my $idx_sheet = 0;
 	while ($idx_sheet < &__get_nb_xls_sheets_for_row(scalar @states)) {
-	    foreach my $jdx (0 .. scalar(@states) -1) {    	 	 
+	    foreach my $jdx (0 .. scalar(@states) -1 ) {    	 	 
 		&common::displayComputingPrompt();	    
 		my $Sheet = $Book->Worksheets(&__get_xls_sheet(0, $jdx + 1, scalar @states) 
 					      + $idx_sheet * &__get_nb_xls_sheets_for_col(scalar @states));
-		my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);				
-		$Sheet->Columns($cellj)-> AutoFit(); 		
-	    }
-	    
-	    $idx_sheet ++;
-	}
-	&common::hideComputingPrompt();
-    }
+		my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);
 
-    print colored [$common::COLOR_RESULT], "[ => ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]\n";
+		if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
+		    $Sheet->Columns($cellj)-> AutoFit(); 
+		} else {
+		    $Sheet->Columns($cellj)-> {'ColumnWidth'} = $conf::EXCELCOLSIZE; 
+		}
 
-    #$Book->Sheets(1)->Select();
-    $Excel -> {'DisplayAlerts'} = 0; # This turns off the "This file already exists" message.
-    $Book -> SaveAs ($file) or die $!;
-    $Book->Close;    
-    #$Excel->Quit();      
-}
+		$Sheet->Columns($cellj)-> {'NumberFormat'} = "\@"; # Text
+		$Sheet->Columns($cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignRight'};
 
-
-
-sub __write_states_multiplex_sync_xls
-{
-    my $nb_objs=$_[0];
-    my $highMaxss=hex($_[1]);
-    my $multiplex=$_[2];        
-    my $pwd = getdcwd();   
-    my $file = $pwd."\\$conf::RESULTS\\".$_[3].".xlsx";        
-    my $nbtransitions = 0;
-    
-    #use Win32::OLE qw(in with);
-    #use Win32::OLE::Const 'Microsoft Excel';
-    
-    $Win32::OLE::Warn = 3;	# die on errors...
-    
-    # get already active Excel application or open new
-    # my $Excel = Win32::OLE->GetActiveObject('Excel.Application')
-    # || Win32::OLE->new('Excel.Application', 'Quit');  
-    my $Excel = Win32::OLE->new('Excel.Application', 'Quit');  
-    my $Excel_symb = Win32::OLE::Const->Load($Excel);
-
-    # open Excel file and write infos
-    my $Book = $Excel->Workbooks->Add;
-    $Book->BuiltinDocumentProperties -> {'title'} = 'States/Transition Matrix';
-    $Book->BuiltinDocumentProperties -> {'author'} = "$common::AUTHOR";
-    $Book->BuiltinDocumentProperties -> {'comments'} = 'Creation : JugglingTB, Module SSWAP '.$SSWAP_VERSION." (writeStates_xls)";    
-
-    # Get all the possible states
-    my @states=&__get_states_multiplex_sync($_[0], $_[1], $_[2]);	
-
-    print $lang::MSG_SSWAP_WRITE_EXCEL_FROM_STATES2;
-    print colored [$common::COLOR_RESULT], "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10." ]\n";
-    
-    my $nbsheets = &__get_nb_xls_sheets (scalar @states);
-
-
-    # Generation of needed sheets
-    my $comment ="MS,".$nb_objs.",".sprintf("%x",$highMaxss).",".$multiplex.",-1";
-    if ($nbsheets > 1) {	
-	$Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment."__(1)";
-    } else {
-	$Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment;
-    }
-
-    for (my $i = 1; $i < $nbsheets; $i++) {
-	#$Book -> Worksheets -> Add({After => $Book -> Worksheets($Book -> Worksheets -> {Count})});
-	$Book -> Worksheets -> Add({After => $Book -> Worksheets($i)});
-	$Book -> Worksheets($i +1) -> {'Name'} = "Matrix__".$comment."__(".($i+1).")";
-    }    
-
-
-    # Writing of the Main Header
-    # select worksheet number 1
-    #my $Sheet = $Book->ActiveSheet;
-    #$Book->Sheets(1)->Select();
-    my $Sheet = $Book->Sheets(1);
-    $Sheet->Range('B2:B7')-> Font -> {'ColorIndex'} = 3;
-    $Sheet->Range('B2:B7')-> Font -> {'FontStyle'} = "Bold";
-    $Sheet->Range('B2:B7')-> Font -> {'size'} = 11;
-    $Sheet->Range('B2:B7')-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignLeft'};
-    $Sheet->Range('B2:P2')-> Merge();
-    $Sheet->Range('B3:P3')-> Merge();
-    $Sheet->Range('B4:P4')-> Merge();
-    $Sheet->Range('B5:P5')-> Merge();
-    $Sheet->Range('B6:P6')-> Merge();
-    $Sheet->Range('B7:P7')-> Merge();
-
-    $Sheet->Range('B2')->{'Value'} = $lang::MSG_SSWAP_GENSTATES_MSG1a;	
-
-    $Sheet->Range('B3')->{'Value'} = $lang::MSG_SSWAP_GENERAL1b;	
-    if ($nb_objs != -1) {
-	$Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2." : ".$nb_objs;	
-    } else {
-	$Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2b;	
-    }       
-    if ($highMaxss != -1) {
-	$Sheet->Range('B5')->{'Value'} = $lang::MSG_SSWAP_GENERAL3." : ".sprintf("%x",$highMaxss);
-    }
-    if ($multiplex != -1) {
-	$Sheet->Range('B6')->{'Value'} = $lang::MSG_SSWAP_GENERAL4." : ".$multiplex;
-    }
-    
-
-    # Writes the States in the Excel file
-    # Start by the Columns headers ...
-    my $idx_sheet = 0;
-    while ($idx_sheet < &__get_nb_xls_sheets_for_row(scalar @states)) {
-	foreach my $jdx (0 .. scalar(@states) -1 ) {    	 	 
-	    &common::displayComputingPrompt();	    
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet(0, $jdx + 1, scalar @states) 
-					  + $idx_sheet * &__get_nb_xls_sheets_for_col(scalar @states));
-	    my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);
-
-	    if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
-		$Sheet->Columns($cellj)-> AutoFit(); 
-	    } else {
-		$Sheet->Columns($cellj)-> {'ColumnWidth'} = $conf::EXCELCOLSIZE; 
+		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		$Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
+		$Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
+		$Sheet->Cells($celli, $cellj)-> {'Orientation'} = -90;
+		$Sheet->Rows($celli)-> AutoFit(); 	
+		# Hack for bug with the AutoFit parameter on Columns
+		$Sheet->Rows($celli)-> {'RowHeight'} = length($states[0]) * 8;
+		$Sheet->Cells($celli, $cellj)-> {'VerticalAlignment'} = $Excel_symb->{'xlHAlignCenter'}; 	
+		$Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	    
+		$Sheet->Cells($celli, $cellj)->{'Value'} = $states[$jdx];
 	    }
 
-	    $Sheet->Columns($cellj)-> {'NumberFormat'} = "\@"; # Text
-	    $Sheet->Columns($cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignRight'};
-
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
-	    $Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
-	    $Sheet->Cells($celli, $cellj)-> {'Orientation'} = -90;
-	    $Sheet->Rows($celli)-> AutoFit(); 	
-	    # Hack for bug with the AutoFit parameter on Columns
-	    $Sheet->Rows($celli)-> {'RowHeight'} = length($states[0]) * 8;
-	    $Sheet->Cells($celli, $cellj)-> {'VerticalAlignment'} = $Excel_symb->{'xlHAlignCenter'}; 	
-	    $Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	    
-	    $Sheet->Cells($celli, $cellj)->{'Value'} = $states[$jdx];
+	    $idx_sheet++;
 	}
 
-	$idx_sheet++;
-    }
 
+	# ... and then the Rows headers
+	my $jdx_sheet = 0;
+	while ($jdx_sheet < &__get_nb_xls_sheets_for_col(scalar @states)) {
+	    foreach my $idx (0 .. scalar(@states) -1) {    	 
+		&common::displayComputingPrompt();
+		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx +1, 0, scalar @states) + $jdx_sheet); 
+		my ($celli, $cellj) = &__get_xls_cell($idx +1, 0);
+		
+		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		$Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
+		$Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
+		$Sheet->Cells($celli, $cellj)-> {'ColumnWidth'} = length($states[0]) + 2;
+		$Sheet->Cells($celli, $cellj)-> {'NumberFormat'} = "\@"; # Text
+		$Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	 
+		$Sheet->Cells($celli, $cellj)->{'Value'} = $states[$idx];
+	    }
 
-    # ... and then the Rows headers
-    my $jdx_sheet = 0;
-    while ($jdx_sheet < &__get_nb_xls_sheets_for_col(scalar @states)) {
-	foreach my $idx (0 .. scalar(@states) -1) {    	 
-	    &common::displayComputingPrompt();
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx +1, 0, scalar @states) + $jdx_sheet); 
-	    my ($celli, $cellj) = &__get_xls_cell($idx +1, 0);
-	    
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
-	    $Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
-	    $Sheet->Cells($celli, $cellj)-> {'ColumnWidth'} = length($states[0]) + 2;
-	    $Sheet->Cells($celli, $cellj)-> {'NumberFormat'} = "\@"; # Text
-	    $Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	 
-	    $Sheet->Cells($celli, $cellj)->{'Value'} = $states[$idx];
-	}
+	    $jdx_sheet++;
+	}    
+	
+	# Write the Body Excel file    
+      LOOP_MAIN: foreach my $el (@states) {
+	  my $idx = rindex($el,',');
+	  my $idx_state_el=&__get_idx_state(\@states, $el);
+	  
+	  my $rhand   =substr($el,0,$idx);
+	  my $rhandth =hex(substr($rhand,length($rhand)-1));
+	  my $lhand   =substr($el,$idx+1);
+	  my $lhandth =hex(substr($lhand,length($lhand)-1));		
 
-	$jdx_sheet++;
-    }    
-    
-    # Write the Body Excel file    
-  LOOP_MAIN: foreach my $el (@states) {
-      my $idx = rindex($el,',');
-      my $idx_state_el=&__get_idx_state(\@states, $el);
-      
-      my $rhand   =substr($el,0,$idx);
-      my $rhandth =hex(substr($rhand,length($rhand)-1));
-      my $lhand   =substr($el,$idx+1);
-      my $lhandth =hex(substr($lhand,length($lhand)-1));		
+	  if ($rhandth != 0 && $lhandth != 0) {
+	      my @mult_list_right=&__get_throws_multiplex_sync_single($_[0],$_[1],$rhandth);
 
-      if ($rhandth != 0 && $lhandth != 0) {
-	  my @mult_list_right=&__get_throws_multiplex_sync_single($_[0],$_[1],$rhandth);
-
-	LOOP1: foreach my $el_multiplex_right (@mult_list_right) {		    
-	    my $nrhand='0'.substr($rhand,0,length($rhand)-1);
-	    my $nlhand='0'.substr($lhand,0,length($lhand)-1);		    		 
-	    my $mult_to_add_nlhand='0' x length($nrhand);
-	    
-	    for (my $i=0; $i<length($el_multiplex_right); $i++) {	
-		# Handle x on multiplex from right hand		    
-		if (length($el_multiplex_right)>1 && hex(substr($el_multiplex_right, $i, 1)) > 0 && substr($el_multiplex_right, $i +1, 1) eq "x") {
-		    my $mult_to_add_nlhand2 = ('0' x (length($nrhand) - hex(substr($el_multiplex_right, $i, 1))/2)).'1'.('0' x (hex(substr($el_multiplex_right, $i, 1))/2 - 1)); 
-		    my $mult_to_add_nlhand_tmp = "";
-		    for (my $j =0; $j < length($mult_to_add_nlhand); $j++) {
-			my $r = hex(substr($mult_to_add_nlhand,$j,1)) + hex(substr($mult_to_add_nlhand2,$j,1));
-			if ( $r> $MAX_HEIGHT) {
-			    next LOOP1;
+	    LOOP1: foreach my $el_multiplex_right (@mult_list_right) {		    
+		my $nrhand='0'.substr($rhand,0,length($rhand)-1);
+		my $nlhand='0'.substr($lhand,0,length($lhand)-1);		    		 
+		my $mult_to_add_nlhand='0' x length($nrhand);
+		
+		for (my $i=0; $i<length($el_multiplex_right); $i++) {	
+		    # Handle x on multiplex from right hand		    
+		    if (length($el_multiplex_right)>1 && hex(substr($el_multiplex_right, $i, 1)) > 0 && substr($el_multiplex_right, $i +1, 1) eq "x") {
+			my $mult_to_add_nlhand2 = ('0' x (length($nrhand) - hex(substr($el_multiplex_right, $i, 1))/2)).'1'.('0' x (hex(substr($el_multiplex_right, $i, 1))/2 - 1)); 
+			my $mult_to_add_nlhand_tmp = "";
+			for (my $j =0; $j < length($mult_to_add_nlhand); $j++) {
+			    my $r = hex(substr($mult_to_add_nlhand,$j,1)) + hex(substr($mult_to_add_nlhand2,$j,1));
+			    if ( $r> $MAX_HEIGHT) {
+				next LOOP1;
+			    }
+			    $mult_to_add_nlhand_tmp = $mult_to_add_nlhand_tmp.sprintf("%x",$r);			
 			}
-			$mult_to_add_nlhand_tmp = $mult_to_add_nlhand_tmp.sprintf("%x",$r);			
+			$mult_to_add_nlhand = $mult_to_add_nlhand_tmp;
+			$i++;
+			#last;
+		    } elsif (hex(substr($el_multiplex_right, $i, 1)) > 0) {  				
+			my $mult_to_add_loc = ('0' x (length($nrhand) - hex(substr($el_multiplex_right, $i, 1))/2)).'1'.('0' x (hex(substr($el_multiplex_right, $i, 1))/2 - 1));
+			my $mult_to_add_loc_tmp = "";
+			for (my $j=0;$j<length($nrhand);$j++) {
+			    my $r = hex(substr($nrhand, $j, 1))+hex(substr($mult_to_add_loc, $j, 1));
+			    if ( $r> $MAX_HEIGHT) {
+				next LOOP1;
+			    }
+			    $mult_to_add_loc_tmp=$mult_to_add_loc_tmp.(sprintf("%x",$r));
+			}
+			
+			$nrhand = $mult_to_add_loc_tmp;						
+		    }		    
+		}
+		
+		my $nrhand_sav = $nrhand;
+		my $nlhand_sav = '0'.substr($lhand,0,length($lhand)-1); 
+		my $mult_to_add_loc_tmp = "";	
+		for (my $j=0;$j<length($nlhand_sav);$j++) {
+		    my $r = hex(substr($mult_to_add_nlhand, $j, 1)) + hex(substr($nlhand_sav, $j, 1));
+		    if ( $r> $MAX_HEIGHT) {
+			next LOOP1;
 		    }
-		    $mult_to_add_nlhand = $mult_to_add_nlhand_tmp;
-		    $i++;
-		    #last;
-		} elsif (hex(substr($el_multiplex_right, $i, 1)) > 0) {  				
-		    my $mult_to_add_loc = ('0' x (length($nrhand) - hex(substr($el_multiplex_right, $i, 1))/2)).'1'.('0' x (hex(substr($el_multiplex_right, $i, 1))/2 - 1));
-		    my $mult_to_add_loc_tmp = "";
-		    for (my $j=0;$j<length($nrhand);$j++) {
-			my $r = hex(substr($nrhand, $j, 1))+hex(substr($mult_to_add_loc, $j, 1));
-			if ( $r> $MAX_HEIGHT) {
-			    next LOOP1;
+		    $mult_to_add_loc_tmp=$mult_to_add_loc_tmp.sprintf("%x",$r);
+		}
+		
+		$nlhand = $mult_to_add_loc_tmp;					  
+		$nlhand_sav = $nlhand;
+
+		my @mult_list_left=&__get_throws_multiplex_sync_single($_[0],$_[1],$lhandth);
+	      LOOP2: foreach my $el_multiplex_left (@mult_list_left) {	      
+		  $nrhand = $nrhand_sav;	      
+		  $nlhand = $nlhand_sav;
+		  # Handle x on multiplex from right hand on left Hand					            	      
+		  my $mult_to_add_nrhand='0' x length($nrhand);
+		  for (my $i=0; $i<length($el_multiplex_left); $i++) {
+		      # Handle x on multiplex from left hand
+		      if (length($el_multiplex_left)>1 && hex(substr($el_multiplex_left, $i, 1)) > 0 && substr($el_multiplex_left, $i +1, 1) eq "x") {
+			  $mult_to_add_nrhand = ('0' x (length($nrhand) - hex(substr($el_multiplex_left, $i, 1))/2)).'1'.('0' x (hex(substr($el_multiplex_left, $i, 1))/2 - 1));
+			  my $mult_to_add_loc_tmp = "";
+			  for (my $j=0;$j<length($nrhand);$j++) {
+			      my $r = hex(substr($nrhand, $j, 1))+hex(substr($mult_to_add_nrhand, $j, 1));
+			      if ( $r> $MAX_HEIGHT) {
+				  next LOOP2;
+			      }
+			      $mult_to_add_loc_tmp=$mult_to_add_loc_tmp.sprintf("%x",$r);
+			  }
+			  
+			  $nrhand = $mult_to_add_loc_tmp;			    
+			  $i++;
+			  #last;
+		      } elsif (hex(substr($el_multiplex_left, $i, 1)) > 0) {  				
+			  my $mult_to_add_loc = ('0' x (length($nlhand) - hex(substr($el_multiplex_left, $i, 1))/2)).'1'.('0' x (hex(substr($el_multiplex_left, $i, 1))/2 - 1));
+			  my $mult_to_add_loc_tmp = "";	
+			  for (my $j=0;$j<length($mult_to_add_loc);$j++) {
+			      my $r = hex(substr($mult_to_add_loc, $j, 1)) + hex(substr($nlhand, $j, 1));
+			      if ( $r> $MAX_HEIGHT) {
+				  next LOOP2;
+			      }
+			      $mult_to_add_loc_tmp=$mult_to_add_loc_tmp.sprintf("%x",$r);
+			  }
+			  $nlhand = $mult_to_add_loc_tmp;					    
+		      }
+		  }
+
+		  &common::displayComputingPrompt();
+		  my $nstate=$nrhand.",".$nlhand;
+		  my $idx_nstate=&__get_idx_state(\@states, $nstate);
+
+		  if ($idx_nstate >= 0) {	
+		      my $res="(";
+		      if (length($el_multiplex_right) > 1 && !(length($el_multiplex_right) == 2 && substr($el_multiplex_right,1,1) eq 'x')) { 
+			  $res = $res."[".$el_multiplex_right."],";
+		      } else {
+			  $res = $res.$el_multiplex_right.",";
+		      }
+		      
+		      if (length($el_multiplex_left) > 1 && !(length($el_multiplex_left) == 2 && substr($el_multiplex_left,1,1) eq 'x')) {
+			  $res = $res."[".$el_multiplex_left."])";
+		      } else {
+			  $res = $res.$el_multiplex_left.")";
+		      }
+		      my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+		      my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+		      if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
+			  $Sheet->Cells($celli, $cellj)->{'Value'} = $res."; ".$Sheet->Cells($celli, $cellj)->{'Value'};			  
+		      } else {
+			  $Sheet->Cells($celli, $cellj)->{'Value'}=$res;
+		      }
+		      
+		      $nbtransitions++;		  		 
+		      if ($SSWAP_DEBUG >=1) {		   
+			  print $rhand.",".$lhand." ===".$res."===> ".$nstate."\n";		   
+		      }		  
+
+		  } else {
+		      &common::hideComputingPrompt();
+		      #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";		    
+		  }	    
+	      }	
+	    }
+
+	      if ($nb_objs == -1) {
+		  # Removing of one or several objects in Both Hand
+		  for (my $nmrhand = 0; $nmrhand <= $rhandth; $nmrhand ++) {
+		      for (my $nmlhand = 0; $nmlhand <= $lhandth; $nmlhand ++) {
+			  my $nstate=substr($rhand,0,length($rhand)-1).$nmrhand.",".substr($lhand,0,length($lhand)-1).sprintf("%x",$nmlhand);   
+			  my $idx_nstate=&__get_idx_state(\@states, $nstate);
+
+			  if ($idx_nstate >=0) {
+			      my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			      my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			      if ($rhandth - $nmrhand == 0 && $lhandth - $nmlhand == 0) {
+				  #No modification, thus no entry concerned
+			      } else
+			      {
+				  my $res = '';
+				  if ($lhandth - $nmlhand == 0) {
+				      $res="(-".sprintf("%x",$rhandth - $nmrhand).",)";	  			  		   } 
+				  elsif ($rhandth - $nmrhand == 0) {
+				      $res="(,-".sprintf("%x",$lhandth - $nmlhand).")";	
+				  } else {
+				      $res="(-".sprintf("%x",$rhandth - $nmrhand).",-".sprintf("%x",$lhandth - $nmlhand).")";    
+				  }
+				  $Sheet->Cells($celli, $cellj)->{'Value'}=$res;
+				  $nbtransitions++;		  		 
+				  if ($SSWAP_DEBUG >=1) {		   
+				      print $rhand.",".$lhand." ===".$res."===> ".$nstate."\n";		   
+				  }		  
+			      }
+			  } else {
+			      &common::hideComputingPrompt();
+			      #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
+			  }
+		      }
+		  }	    
+	    }
+	      
+	  } elsif ($rhandth != 0 && $lhandth == 0) {	 
+	      my @mult_list_right=&__get_throws_multiplex_sync_single($_[0],$_[1],$rhandth);
+	      
+	    LOOP1: foreach my $el_multiplex_right (@mult_list_right) {		
+		&common::displayComputingPrompt();
+		my $nrhand='0'.substr($rhand,0,length($rhand)-1);
+		my $mult_to_add_nlhand='0' x length($nrhand);
+
+		for (my $i=0; $i<length($el_multiplex_right); $i++) {
+		    # Handle x on multiplex from right hand
+		    if (length($el_multiplex_right)>1 && hex(substr($el_multiplex_right, $i, 1)) > 0 && substr($el_multiplex_right, $i +1, 1) eq "x") {
+			my $mult_to_add_nlhand2 = ('0' x (length($nrhand) - hex(substr($el_multiplex_right, $i, 1))/2)).'1'.('0' x (hex(substr($el_multiplex_right, $i, 1))/2 - 1)); 
+			my $mult_to_add_nlhand_tmp = "";
+			for (my $j =0; $j < length($mult_to_add_nlhand); $j++) {
+			    my $r = hex(substr($mult_to_add_nlhand,$j,1)) + hex(substr($mult_to_add_nlhand2,$j,1));
+			    if ( $r> $MAX_HEIGHT) {
+				next LOOP1;
+			    }
+			    $mult_to_add_nlhand_tmp = $mult_to_add_nlhand_tmp.(sprintf("%x",$r));			
 			}
-			$mult_to_add_loc_tmp=$mult_to_add_loc_tmp.(sprintf("%x",$r));
+			$mult_to_add_nlhand = $mult_to_add_nlhand_tmp;
+			$i++;			
+			#last;
+		    } elsif (hex(substr($el_multiplex_right, $i, 1)) > 0) {  				
+			my $mult_to_add_loc = ('0' x (length($nrhand) - hex(substr($el_multiplex_right, $i, 1))/2)).'1'.('0' x (hex(substr($el_multiplex_right, $i, 1))/2 - 1));
+			my $mult_to_add_loc_tmp = "";
+
+			for (my $j=0;$j<length($nrhand);$j++) {
+			    my $r = hex(substr($nrhand, $j, 1))+hex(substr($mult_to_add_loc, $j, 1));
+			    if ( $r> $MAX_HEIGHT) {
+				next LOOP1;
+			    }
+			    $mult_to_add_loc_tmp=$mult_to_add_loc_tmp.(sprintf("%x",$r));			    
+			}
+			$nrhand = $mult_to_add_loc_tmp;			
+		    }
+		}
+		
+		# Handle x on multiplex from right hand
+		my $nlhand='0'.substr($lhand,0,length($lhand)-1);			
+		my $mult_to_add_loc_tmp ="";
+		for (my $j=0;$j<length($nlhand);$j++) {
+		    my $r = hex(substr($nlhand, $j, 1))+hex(substr($mult_to_add_nlhand, $j, 1));
+		    if ( $r> $MAX_HEIGHT) {
+			next LOOP1;
+		    }
+		    $mult_to_add_loc_tmp=$mult_to_add_loc_tmp.(sprintf("%x",$r));
+		}
+		$nlhand=$mult_to_add_loc_tmp;
+		
+		my $nstate=$nrhand.",".$nlhand;
+		
+		my $idx_nstate=&__get_idx_state(\@states, $nstate);
+
+		if ($idx_nstate >= 0) {		    
+		    my $res="(";
+		    if (length($el_multiplex_right) > 1 && !(length($el_multiplex_right) == 2 && substr($el_multiplex_right,1,1) eq 'x')) {		  
+			$res = $res."[".$el_multiplex_right."],0)";
+		    } else {
+			$res = $res.$el_multiplex_right.",0)";
 		    }
 		    
-		    $nrhand = $mult_to_add_loc_tmp;						
-		}		    
+		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+		    if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
+			$Sheet->Cells($celli, $cellj)->{'Value'}= $res."; ".$Sheet->Cells($celli, $cellj)->{'Value'};				
+		    } else {
+			$Sheet->Cells($celli, $cellj)->{'Value'}=$res;				
+		    }
+		    
+		    $nbtransitions++;		  		 
+		    if ($SSWAP_DEBUG >=1) {		   
+			print $rhand.",".$lhand." ===".$res."===> ".$nstate."\n";		   
+		    }		  
+		} else {
+		    &common::hideComputingPrompt();
+		    #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";		    
+		}	    	       		
 	    }
-	    
-	    my $nrhand_sav = $nrhand;
-	    my $nlhand_sav = '0'.substr($lhand,0,length($lhand)-1); 
-	    my $mult_to_add_loc_tmp = "";	
-	    for (my $j=0;$j<length($nlhand_sav);$j++) {
-		my $r = hex(substr($mult_to_add_nlhand, $j, 1)) + hex(substr($nlhand_sav, $j, 1));
-		if ( $r> $MAX_HEIGHT) {
-		    next LOOP1;
-		}
-		$mult_to_add_loc_tmp=$mult_to_add_loc_tmp.sprintf("%x",$r);
-	    }
-	    
-	    $nlhand = $mult_to_add_loc_tmp;					  
-	    $nlhand_sav = $nlhand;
 
-	    my @mult_list_left=&__get_throws_multiplex_sync_single($_[0],$_[1],$lhandth);
-	  LOOP2: foreach my $el_multiplex_left (@mult_list_left) {	      
-	      $nrhand = $nrhand_sav;	      
-	      $nlhand = $nlhand_sav;
-	      # Handle x on multiplex from right hand on left Hand					            	      
-	      my $mult_to_add_nrhand='0' x length($nrhand);
-	      for (my $i=0; $i<length($el_multiplex_left); $i++) {
-		  # Handle x on multiplex from left hand
-		  if (length($el_multiplex_left)>1 && hex(substr($el_multiplex_left, $i, 1)) > 0 && substr($el_multiplex_left, $i +1, 1) eq "x") {
-		      $mult_to_add_nrhand = ('0' x (length($nrhand) - hex(substr($el_multiplex_left, $i, 1))/2)).'1'.('0' x (hex(substr($el_multiplex_left, $i, 1))/2 - 1));
+	      if ($nb_objs == -1) {
+		  # Adding of one or several objects (in Left Hand) and Removing of one or several objects (in Right Hand)
+		  for (my $nmrhand = 0; $nmrhand <= $rhandth; $nmrhand ++) {
+		      for (my $nmlhand = 0; $nmlhand <= $multiplex; $nmlhand ++) {
+			  my $nstate=substr($rhand,0,length($rhand)-1).sprintf("%x",$nmrhand).",".substr($lhand,0,length($lhand)-1).sprintf("%x",$nmlhand);   
+			  my $idx_nstate=&__get_idx_state(\@states, $nstate);
+			  if ($idx_nstate >=0) {
+			      my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			      my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			      if ($rhandth - $nmrhand == 0 && $nmlhand == 0) {
+				  #No modification, thus no entry concerned
+			      } 
+			      else
+			      {
+				  my $res = '';
+				  if ($nmlhand == 0) {
+				      $res = "(-".sprintf("%x",$rhandth - $nmrhand).",)";	
+				      $Sheet->Cells($celli, $cellj)->{'Value'}=$res;
+				  } 
+				  elsif ($rhandth - $nmrhand == 0) {		
+				      $res = "(,+".sprintf("%x",$nmlhand).")";
+				      $Sheet->Cells($celli, $cellj)->{'Value'}=$res;
+				  } else {
+				      $res = "(-".sprintf("%x",$rhandth - $nmrhand).",+".sprintf("%x",$nmlhand).")";
+				      # A collapse could occur there
+				      if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
+					  $Sheet->Cells($celli, $cellj)->{'Value'}=$res."; ".$Sheet->Cells($celli, $cellj)->{'Value'};
+				      } else {
+					  $Sheet->Cells($celli, $cellj)->{'Value'}=$res;
+				      }
+				  }
+				  $nbtransitions++;		  		 
+				  if ($SSWAP_DEBUG >=1) {		   
+				      print $rhand.",".$lhand." ===".$res."===> ".$nstate."\n";		   
+				  }		  
+			      }
+			  } 
+			  else {
+			      &common::hideComputingPrompt();
+			      #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
+			  }
+		      }
+		  }
+	    }	    
+
+	  } elsif ($rhandth == 0 && $lhandth != 0) {	    		
+	      my $nrhand='0'.substr($rhand,0,length($rhand)-1);
+	      my $nrhand_sav = $nrhand;
+	      
+	      my @mult_list_left=&__get_throws_multiplex_sync_single($_[0],$_[1],$lhandth);
+	      LOOP1 : foreach my $el_multiplex_left (@mult_list_left) {		
+		  $nrhand = $nrhand_sav;
+		  my $nlhand='0'.substr($lhand,0,length($lhand)-1);
+		  my $mult_to_add_nrhand='0' x length($nrhand);
+
+		  for (my $i=0; $i<length($el_multiplex_left); $i++) {
+		      # Handle x on multiplex from left hand
+		      my $mult_to_add_nrhand = '0' x length($nrhand);
+		      if (length($el_multiplex_left)>1 && hex(substr($el_multiplex_left, $i, 1)) > 0 && substr($el_multiplex_left, $i +1, 1) eq "x") {
+			  my $mult_to_add_nrhand2 = ('0' x (length($nrhand) - hex(substr($el_multiplex_left, $i, 1))/2)).'1'.('0' x (hex(substr($el_multiplex_left, $i, 1))/2 - 1)); 
+			  my $mult_to_add_nrhand_tmp = "";
+			  for (my $j =0; $j < length($mult_to_add_nrhand); $j++) {
+			      my $r = hex(substr($mult_to_add_nrhand,$j,1)) + hex(substr($mult_to_add_nrhand2,$j,1));
+			      if ( $r> $MAX_HEIGHT) {
+				  next LOOP1;
+			      }
+			      $mult_to_add_nrhand_tmp = $mult_to_add_nrhand_tmp.(sprintf("%x",$r));			
+			  }
+			  $mult_to_add_nrhand = $mult_to_add_nrhand_tmp;
+			  $i++;
+			  #last;
+		      } elsif (hex(substr($el_multiplex_left, $i, 1)) > 0) {  				
+			  my $mult_to_add_loc = ('0' x (length($nlhand) - hex(substr($el_multiplex_left, $i, 1))/2)).'1'.('0' x (hex(substr($el_multiplex_left, $i, 1))/2 - 1));
+			  my $mult_to_add_loc_tmp = "";
+			  
+			  for (my $j=0;$j<length($nlhand);$j++) {
+			      my $r = hex(substr($nlhand, $j, 1))+hex(substr($mult_to_add_loc, $j, 1));
+			      if ( $r> $MAX_HEIGHT) {
+				  next LOOP1;
+			      }
+			      $mult_to_add_loc_tmp=$mult_to_add_loc_tmp.(sprintf("%x",$r));	
+			  }
+			  $nlhand = $mult_to_add_loc_tmp;			
+		      }
+		      
+		      # Handle x on multiplex from left hand		    
 		      my $mult_to_add_loc_tmp = "";
 		      for (my $j=0;$j<length($nrhand);$j++) {
 			  my $r = hex(substr($nrhand, $j, 1))+hex(substr($mult_to_add_nrhand, $j, 1));
-			  if ( $r> $MAX_HEIGHT) {
-			      next LOOP2;
-			  }
-			  $mult_to_add_loc_tmp=$mult_to_add_loc_tmp.sprintf("%x",$r);
-		      }
-		      
-		      $nrhand = $mult_to_add_loc_tmp;			    
-		      $i++;
-		      #last;
-		  } elsif (hex(substr($el_multiplex_left, $i, 1)) > 0) {  				
-		      my $mult_to_add_loc = ('0' x (length($nlhand) - hex(substr($el_multiplex_left, $i, 1))/2)).'1'.('0' x (hex(substr($el_multiplex_left, $i, 1))/2 - 1));
-		      my $mult_to_add_loc_tmp = "";	
-		      for (my $j=0;$j<length($mult_to_add_loc);$j++) {
-			  my $r = hex(substr($mult_to_add_loc, $j, 1)) + hex(substr($nlhand, $j, 1));
-			  if ( $r> $MAX_HEIGHT) {
-			      next LOOP2;
-			  }
-			  $mult_to_add_loc_tmp=$mult_to_add_loc_tmp.sprintf("%x",$r);
-		      }
-		      $nlhand = $mult_to_add_loc_tmp;					    
-		  }
-	      }
-
-	      &common::displayComputingPrompt();
-	      my $nstate=$nrhand.",".$nlhand;
-	      my $idx_nstate=&__get_idx_state(\@states, $nstate);
-
-	      if ($idx_nstate >= 0) {	
-		  my $res="(";
-		  if (length($el_multiplex_right) > 1 && !(length($el_multiplex_right) == 2 && substr($el_multiplex_right,1,1) eq 'x')) { 
-		      $res = $res."[".$el_multiplex_right."],";
-		  } else {
-		      $res = $res.$el_multiplex_right.",";
-		  }
-		  
-		  if (length($el_multiplex_left) > 1 && !(length($el_multiplex_left) == 2 && substr($el_multiplex_left,1,1) eq 'x')) {
-		      $res = $res."[".$el_multiplex_left."])";
-		  } else {
-		      $res = $res.$el_multiplex_left.")";
-		  }
-		  my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		  my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		  if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
-		      $Sheet->Cells($celli, $cellj)->{'Value'} = $res."; ".$Sheet->Cells($celli, $cellj)->{'Value'};			  
-		  } else {
-		      $Sheet->Cells($celli, $cellj)->{'Value'}=$res;
-		  }
-		  
-		  $nbtransitions++;		  		 
-		  if ($SSWAP_DEBUG >=1) {		   
-		      print $rhand.",".$lhand." ===".$res."===> ".$nstate."\n";		   
-		  }		  
-
-	      } else {
-		  &common::hideComputingPrompt();
-		  #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";		    
-	      }	    
-	  }	
-	}
-
-	  if ($nb_objs == -1) {
-	      # Removing of one or several objects in Both Hand
-	      for (my $nmrhand = 0; $nmrhand <= $rhandth; $nmrhand ++) {
-		  for (my $nmlhand = 0; $nmlhand <= $lhandth; $nmlhand ++) {
-		      my $nstate=substr($rhand,0,length($rhand)-1).$nmrhand.",".substr($lhand,0,length($lhand)-1).sprintf("%x",$nmlhand);   
-		      my $idx_nstate=&__get_idx_state(\@states, $nstate);
-
-		      if ($idx_nstate >=0) {
-			  my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-			  my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-			  if ($rhandth - $nmrhand == 0 && $lhandth - $nmlhand == 0) {
-			      #No modification, thus no entry concerned
-			  } else
-			  {
-			      my $res = '';
-			      if ($lhandth - $nmlhand == 0) {
-				  $res="(-".sprintf("%x",$rhandth - $nmrhand).",)";	  			  		   } 
-			      elsif ($rhandth - $nmrhand == 0) {
-				  $res="(,-".sprintf("%x",$lhandth - $nmlhand).")";	
-			      } else {
-				  $res="(-".sprintf("%x",$rhandth - $nmrhand).",-".sprintf("%x",$lhandth - $nmlhand).")";    
-			      }
-			      $Sheet->Cells($celli, $cellj)->{'Value'}=$res;
-			      $nbtransitions++;		  		 
-			      if ($SSWAP_DEBUG >=1) {		   
-				  print $rhand.",".$lhand." ===".$res."===> ".$nstate."\n";		   
-			      }		  
-			  }
-		      } else {
-			  &common::hideComputingPrompt();
-			  #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-		      }
-		  }
-	      }	    
-	}
-	  
-      } elsif ($rhandth != 0 && $lhandth == 0) {	 
-	  my @mult_list_right=&__get_throws_multiplex_sync_single($_[0],$_[1],$rhandth);
-	  
-	LOOP1: foreach my $el_multiplex_right (@mult_list_right) {		
-	    &common::displayComputingPrompt();
-	    my $nrhand='0'.substr($rhand,0,length($rhand)-1);
-	    my $mult_to_add_nlhand='0' x length($nrhand);
-
-	    for (my $i=0; $i<length($el_multiplex_right); $i++) {
-		# Handle x on multiplex from right hand
-		if (length($el_multiplex_right)>1 && hex(substr($el_multiplex_right, $i, 1)) > 0 && substr($el_multiplex_right, $i +1, 1) eq "x") {
-		    my $mult_to_add_nlhand2 = ('0' x (length($nrhand) - hex(substr($el_multiplex_right, $i, 1))/2)).'1'.('0' x (hex(substr($el_multiplex_right, $i, 1))/2 - 1)); 
-		    my $mult_to_add_nlhand_tmp = "";
-		    for (my $j =0; $j < length($mult_to_add_nlhand); $j++) {
-			my $r = hex(substr($mult_to_add_nlhand,$j,1)) + hex(substr($mult_to_add_nlhand2,$j,1));
-			if ( $r> $MAX_HEIGHT) {
-			    next LOOP1;
-			}
-			$mult_to_add_nlhand_tmp = $mult_to_add_nlhand_tmp.(sprintf("%x",$r));			
-		    }
-		    $mult_to_add_nlhand = $mult_to_add_nlhand_tmp;
-		    $i++;			
-		    #last;
-		} elsif (hex(substr($el_multiplex_right, $i, 1)) > 0) {  				
-		    my $mult_to_add_loc = ('0' x (length($nrhand) - hex(substr($el_multiplex_right, $i, 1))/2)).'1'.('0' x (hex(substr($el_multiplex_right, $i, 1))/2 - 1));
-		    my $mult_to_add_loc_tmp = "";
-
-		    for (my $j=0;$j<length($nrhand);$j++) {
-			my $r = hex(substr($nrhand, $j, 1))+hex(substr($mult_to_add_loc, $j, 1));
-			if ( $r> $MAX_HEIGHT) {
-			    next LOOP1;
-			}
-			$mult_to_add_loc_tmp=$mult_to_add_loc_tmp.(sprintf("%x",$r));			    
-		    }
-		    $nrhand = $mult_to_add_loc_tmp;			
-		}
-	    }
-	    
-	    # Handle x on multiplex from right hand
-	    my $nlhand='0'.substr($lhand,0,length($lhand)-1);			
-	    my $mult_to_add_loc_tmp ="";
-	    for (my $j=0;$j<length($nlhand);$j++) {
-		my $r = hex(substr($nlhand, $j, 1))+hex(substr($mult_to_add_nlhand, $j, 1));
-		if ( $r> $MAX_HEIGHT) {
-		    next LOOP1;
-		}
-		$mult_to_add_loc_tmp=$mult_to_add_loc_tmp.(sprintf("%x",$r));
-	    }
-	    $nlhand=$mult_to_add_loc_tmp;
-	    
-	    my $nstate=$nrhand.",".$nlhand;
-	    
-	    my $idx_nstate=&__get_idx_state(\@states, $nstate);
-
-	    if ($idx_nstate >= 0) {		    
-		my $res="(";
-		if (length($el_multiplex_right) > 1 && !(length($el_multiplex_right) == 2 && substr($el_multiplex_right,1,1) eq 'x')) {		  
-		    $res = $res."[".$el_multiplex_right."],0)";
-		} else {
-		    $res = $res.$el_multiplex_right.",0)";
-		}
-		
-		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
-		    $Sheet->Cells($celli, $cellj)->{'Value'}= $res."; ".$Sheet->Cells($celli, $cellj)->{'Value'};				
-		} else {
-		    $Sheet->Cells($celli, $cellj)->{'Value'}=$res;				
-		}
-		
-		$nbtransitions++;		  		 
-		if ($SSWAP_DEBUG >=1) {		   
-		    print $rhand.",".$lhand." ===".$res."===> ".$nstate."\n";		   
-		}		  
-	    } else {
-		&common::hideComputingPrompt();
-		#print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";		    
-	    }	    	       		
-	}
-
-	  if ($nb_objs == -1) {
-	      # Adding of one or several objects (in Left Hand) and Removing of one or several objects (in Right Hand)
-	      for (my $nmrhand = 0; $nmrhand <= $rhandth; $nmrhand ++) {
-		  for (my $nmlhand = 0; $nmlhand <= $multiplex; $nmlhand ++) {
-		      my $nstate=substr($rhand,0,length($rhand)-1).sprintf("%x",$nmrhand).",".substr($lhand,0,length($lhand)-1).sprintf("%x",$nmlhand);   
-		      my $idx_nstate=&__get_idx_state(\@states, $nstate);
-		      if ($idx_nstate >=0) {
-			  my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-			  my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-			  if ($rhandth - $nmrhand == 0 && $nmlhand == 0) {
-			      #No modification, thus no entry concerned
-			  } 
-			  else
-			  {
-			      my $res = '';
-			      if ($nmlhand == 0) {
-				  $res = "(-".sprintf("%x",$rhandth - $nmrhand).",)";	
-				  $Sheet->Cells($celli, $cellj)->{'Value'}=$res;
-			      } 
-			      elsif ($rhandth - $nmrhand == 0) {		
-				  $res = "(,+".sprintf("%x",$nmlhand).")";
-				  $Sheet->Cells($celli, $cellj)->{'Value'}=$res;
-			      } else {
-				  $res = "(-".sprintf("%x",$rhandth - $nmrhand).",+".sprintf("%x",$nmlhand).")";
-				  # A collapse could occur there
-				  if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
-				      $Sheet->Cells($celli, $cellj)->{'Value'}=$res."; ".$Sheet->Cells($celli, $cellj)->{'Value'};
-				  } else {
-				      $Sheet->Cells($celli, $cellj)->{'Value'}=$res;
-				  }
-			      }
-			      $nbtransitions++;		  		 
-			      if ($SSWAP_DEBUG >=1) {		   
-				  print $rhand.",".$lhand." ===".$res."===> ".$nstate."\n";		   
-			      }		  
-			  }
-		      } 
-		      else {
-			  &common::hideComputingPrompt();
-			  #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-		      }
-		  }
-	      }
-	}	    
-
-      } elsif ($rhandth == 0 && $lhandth != 0) {	    		
-	  my $nrhand='0'.substr($rhand,0,length($rhand)-1);
-	  my $nrhand_sav = $nrhand;
-	  
-	  my @mult_list_left=&__get_throws_multiplex_sync_single($_[0],$_[1],$lhandth);
-	  LOOP1 : foreach my $el_multiplex_left (@mult_list_left) {		
-	      $nrhand = $nrhand_sav;
-	      my $nlhand='0'.substr($lhand,0,length($lhand)-1);
-	      my $mult_to_add_nrhand='0' x length($nrhand);
-
-	      for (my $i=0; $i<length($el_multiplex_left); $i++) {
-		  # Handle x on multiplex from left hand
-		  my $mult_to_add_nrhand = '0' x length($nrhand);
-		  if (length($el_multiplex_left)>1 && hex(substr($el_multiplex_left, $i, 1)) > 0 && substr($el_multiplex_left, $i +1, 1) eq "x") {
-		      my $mult_to_add_nrhand2 = ('0' x (length($nrhand) - hex(substr($el_multiplex_left, $i, 1))/2)).'1'.('0' x (hex(substr($el_multiplex_left, $i, 1))/2 - 1)); 
-		      my $mult_to_add_nrhand_tmp = "";
-		      for (my $j =0; $j < length($mult_to_add_nrhand); $j++) {
-			  my $r = hex(substr($mult_to_add_nrhand,$j,1)) + hex(substr($mult_to_add_nrhand2,$j,1));
-			  if ( $r> $MAX_HEIGHT) {
-			      next LOOP1;
-			  }
-			  $mult_to_add_nrhand_tmp = $mult_to_add_nrhand_tmp.(sprintf("%x",$r));			
-		      }
-		      $mult_to_add_nrhand = $mult_to_add_nrhand_tmp;
-		      $i++;
-		      #last;
-		  } elsif (hex(substr($el_multiplex_left, $i, 1)) > 0) {  				
-		      my $mult_to_add_loc = ('0' x (length($nlhand) - hex(substr($el_multiplex_left, $i, 1))/2)).'1'.('0' x (hex(substr($el_multiplex_left, $i, 1))/2 - 1));
-		      my $mult_to_add_loc_tmp = "";
-		      
-		      for (my $j=0;$j<length($nlhand);$j++) {
-			  my $r = hex(substr($nlhand, $j, 1))+hex(substr($mult_to_add_loc, $j, 1));
 			  if ( $r> $MAX_HEIGHT) {
 			      next LOOP1;
 			  }
 			  $mult_to_add_loc_tmp=$mult_to_add_loc_tmp.(sprintf("%x",$r));	
 		      }
-		      $nlhand = $mult_to_add_loc_tmp;			
+		      $nrhand = $mult_to_add_loc_tmp;
 		  }
-		  
-		  # Handle x on multiplex from left hand		    
-		  my $mult_to_add_loc_tmp = "";
-		  for (my $j=0;$j<length($nrhand);$j++) {
-		      my $r = hex(substr($nrhand, $j, 1))+hex(substr($mult_to_add_nrhand, $j, 1));
-		      if ( $r> $MAX_HEIGHT) {
-			  next LOOP1;
+
+		  &common::displayComputingPrompt();
+		  my $nstate=$nrhand.",".$nlhand;
+		  my $idx_nstate=&__get_idx_state(\@states, $nstate);
+
+		  if ($idx_nstate >= 0) {		    		  
+		      my $res="(0,";
+
+		      if (length($el_multiplex_left) > 1 && !(length($el_multiplex_left) == 2 && substr($el_multiplex_left,1,1) eq 'x')) {
+			  $res = $res."[".$el_multiplex_left."])";
+		      } else {
+			  $res = $res.$el_multiplex_left.")";
 		      }
-		      $mult_to_add_loc_tmp=$mult_to_add_loc_tmp.(sprintf("%x",$r));	
-		  }
-		  $nrhand = $mult_to_add_loc_tmp;
+		      
+		      $nbtransitions++;		  		 
+		      if ($SSWAP_DEBUG >=1) {		   
+			  print $rhand.",".$lhand." ===".$res."===> ".$nstate."\n";		   
+		      }		  
+		      
+		      my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+		      my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+		      if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
+			  $Sheet->Cells($celli, $cellj)->{'Value'}=$res."; ".$Sheet->Cells($celli, $cellj)->{'Value'};      
+		      } else {
+			  $Sheet->Cells($celli, $cellj)->{'Value'}=$res;				
+		      }	    
+		      
+		  } else {
+		      &common::hideComputingPrompt();
+		      #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";		    
+		  }	    
 	      }
 
+	      if ($nb_objs == -1) {
+		  # Adding of one or several objects (in Right Hand) and Removing of one or several objects (in Left Hand)
+		  for (my $nmrhand = 0; $nmrhand <= $multiplex; $nmrhand ++) {
+		      for (my $nmlhand = 0; $nmlhand <= $lhandth; $nmlhand ++) {
+			  my $nstate=substr($rhand,0,length($rhand)-1).sprintf("%x",$nmrhand).",".substr($lhand,0,length($lhand)-1).sprintf("%x",$nmlhand);   
+			  my $idx_nstate=&__get_idx_state(\@states, $nstate);
+
+			  if ($idx_nstate >=0) {
+			      my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			      my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			      if ($nmrhand == 0 && $lhandth - $nmlhand == 0) {
+				  #No modification, thus no entry concerned
+			      } 
+			      else
+			      {
+				  my $res = '';
+				  if ($nmrhand == 0) {
+				      $res = "(,-".sprintf("%x",$lhandth - $nmlhand).")";
+				      $Sheet->Cells($celli, $cellj)->{'Value'}=$res;		  
+				  } elsif ($lhandth - $nmlhand == 0) {
+				      $res = "(+".sprintf("%x",$nmrhand).",)";
+				      $Sheet->Cells($celli, $cellj)->{'Value'}=$res;		  
+				  } else {
+				      $res = "(+".sprintf("%x",$nmrhand).",-".sprintf("%x",$lhandth - $nmlhand).")";
+				      # A collapse could occur there
+				      if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
+					  $Sheet->Cells($celli, $cellj)->{'Value'}=$res."; ".$Sheet->Cells($celli, $cellj)->{'Value'};
+				      } else {
+					  $Sheet->Cells($celli, $cellj)->{'Value'}=$res;
+				      }			    		  
+				  }
+				  $nbtransitions++;		  		 
+				  if ($SSWAP_DEBUG >=1) {		   
+				      print $rhand.",".$lhand." ===".$res."===> ".$nstate."\n";		   
+				  }		  
+			      }
+			  } else {
+			      &common::hideComputingPrompt();
+			      #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
+			  }
+		      }
+		  }
+	      }	    
+	  } elsif ($rhandth == 0 && $lhandth == 0) {	    		
+	      my $nrhand='0'.substr($rhand,0,length($rhand)-1);				
+	      my $nlhand='0'.substr($lhand,0,length($lhand)-1);	
+	      
 	      &common::displayComputingPrompt();
 	      my $nstate=$nrhand.",".$nlhand;
 	      my $idx_nstate=&__get_idx_state(\@states, $nstate);
 
-	      if ($idx_nstate >= 0) {		    		  
-		  my $res="(0,";
-
-		  if (length($el_multiplex_left) > 1 && !(length($el_multiplex_left) == 2 && substr($el_multiplex_left,1,1) eq 'x')) {
-		      $res = $res."[".$el_multiplex_left."])";
+	      if ($idx_nstate >= 0) {		    
+		  my $res="(0,0)";
+		  my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+		  my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+		  if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
+		      $Sheet->Cells($celli, $cellj)->{'Value'}=$res."; ".$Sheet->Cells($celli, $cellj)->{'Value'};				
 		  } else {
-		      $res = $res.$el_multiplex_left.")";
-		  }
-		  
+		      $Sheet->Cells($celli, $cellj)->{'Value'}=$res;				
+		  }	
+
 		  $nbtransitions++;		  		 
 		  if ($SSWAP_DEBUG >=1) {		   
 		      print $rhand.",".$lhand." ===".$res."===> ".$nstate."\n";		   
 		  }		  
 		  
-		  my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		  my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		  if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
-		      $Sheet->Cells($celli, $cellj)->{'Value'}=$res."; ".$Sheet->Cells($celli, $cellj)->{'Value'};      
-		  } else {
-		      $Sheet->Cells($celli, $cellj)->{'Value'}=$res;				
-		  }	    
-		  
 	      } else {
 		  &common::hideComputingPrompt();
 		  #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";		    
-	      }	    
-	  }
+	      }	
 
-	  if ($nb_objs == -1) {
-	      # Adding of one or several objects (in Right Hand) and Removing of one or several objects (in Left Hand)
-	      for (my $nmrhand = 0; $nmrhand <= $multiplex; $nmrhand ++) {
-		  for (my $nmlhand = 0; $nmlhand <= $lhandth; $nmlhand ++) {
-		      my $nstate=substr($rhand,0,length($rhand)-1).sprintf("%x",$nmrhand).",".substr($lhand,0,length($lhand)-1).sprintf("%x",$nmlhand);   
+	      if ($nb_objs == -1) {
+		  #Adding of one or several objects (in each hand)
+		  # ==> Both Hands
+		  for (my $nmrhand = 1; $nmrhand <= $multiplex; $nmrhand ++) {
+		      for (my $nmlhand = 1; $nmlhand <= $multiplex; $nmlhand ++) {
+			  $nstate=substr($rhand,0,length($rhand)-1).sprintf("%x",$nmrhand).",".substr($lhand,0,length($lhand)-1).sprintf("%x",$nmlhand);   
+			  my $idx_nstate=&__get_idx_state(\@states, $nstate);		      
+
+			  if ($idx_nstate >=0) {
+			      my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			      my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			      my $res="(+".sprintf("%x",$nmrhand).",+".sprintf("%x",$nmlhand).")";
+			      $Sheet->Cells($celli, $cellj)->{'Value'}=$res;		  
+
+			      $nbtransitions++;		  		 
+			      if ($SSWAP_DEBUG >=1) {		   
+				  print $rhand.",".$lhand." ===".$res."===> ".$nstate."\n";		   
+			      }		  
+
+			  } else {
+			      &common::hideComputingPrompt();
+			      #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
+			  }
+		      }
+		  }
+		  # ==> Right Hand only
+		  for (my $nmrhand = 1; $nmrhand <= $multiplex; $nmrhand ++) {
+		      $nstate=substr($rhand,0,length($rhand)-1).sprintf("%x",$nmrhand).",".substr($lhand,0,length($lhand)-1)."0";	    	 	
 		      my $idx_nstate=&__get_idx_state(\@states, $nstate);
 
 		      if ($idx_nstate >=0) {
 			  my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
 			  my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-			  if ($nmrhand == 0 && $lhandth - $nmlhand == 0) {
-			      #No modification, thus no entry concerned
-			  } 
-			  else
-			  {
-			      my $res = '';
-			      if ($nmrhand == 0) {
-				  $res = "(,-".sprintf("%x",$lhandth - $nmlhand).")";
-				  $Sheet->Cells($celli, $cellj)->{'Value'}=$res;		  
-			      } elsif ($lhandth - $nmlhand == 0) {
-				  $res = "(+".sprintf("%x",$nmrhand).",)";
-				  $Sheet->Cells($celli, $cellj)->{'Value'}=$res;		  
-			      } else {
-				  $res = "(+".sprintf("%x",$nmrhand).",-".sprintf("%x",$lhandth - $nmlhand).")";
-				  # A collapse could occur there
-				  if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
-				      $Sheet->Cells($celli, $cellj)->{'Value'}=$res."; ".$Sheet->Cells($celli, $cellj)->{'Value'};
-				  } else {
-				      $Sheet->Cells($celli, $cellj)->{'Value'}=$res;
-				  }			    		  
-			      }
-			      $nbtransitions++;		  		 
-			      if ($SSWAP_DEBUG >=1) {		   
-				  print $rhand.",".$lhand." ===".$res."===> ".$nstate."\n";		   
-			      }		  
-			  }
-		      } else {
-			  &common::hideComputingPrompt();
-			  #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-		      }
-		  }
-	      }
-	  }	    
-      } elsif ($rhandth == 0 && $lhandth == 0) {	    		
-	  my $nrhand='0'.substr($rhand,0,length($rhand)-1);				
-	  my $nlhand='0'.substr($lhand,0,length($lhand)-1);	
-	  
-	  &common::displayComputingPrompt();
-	  my $nstate=$nrhand.",".$nlhand;
-	  my $idx_nstate=&__get_idx_state(\@states, $nstate);
-
-	  if ($idx_nstate >= 0) {		    
-	      my $res="(0,0)";
-	      my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-	      my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-	      if ($Sheet->Cells($celli, $cellj)->{'Value'} ne "") {
-		  $Sheet->Cells($celli, $cellj)->{'Value'}=$res."; ".$Sheet->Cells($celli, $cellj)->{'Value'};				
-	      } else {
-		  $Sheet->Cells($celli, $cellj)->{'Value'}=$res;				
-	      }	
-
-	      $nbtransitions++;		  		 
-	      if ($SSWAP_DEBUG >=1) {		   
-		  print $rhand.",".$lhand." ===".$res."===> ".$nstate."\n";		   
-	      }		  
-	      
-	  } else {
-	      &common::hideComputingPrompt();
-	      #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";		    
-	  }	
-
-	  if ($nb_objs == -1) {
-	      #Adding of one or several objects (in each hand)
-	      # ==> Both Hands
-	      for (my $nmrhand = 1; $nmrhand <= $multiplex; $nmrhand ++) {
-		  for (my $nmlhand = 1; $nmlhand <= $multiplex; $nmlhand ++) {
-		      $nstate=substr($rhand,0,length($rhand)-1).sprintf("%x",$nmrhand).",".substr($lhand,0,length($lhand)-1).sprintf("%x",$nmlhand);   
-		      my $idx_nstate=&__get_idx_state(\@states, $nstate);		      
-
-		      if ($idx_nstate >=0) {
-			  my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-			  my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-			  my $res="(+".sprintf("%x",$nmrhand).",+".sprintf("%x",$nmlhand).")";
-			  $Sheet->Cells($celli, $cellj)->{'Value'}=$res;		  
+			  my $res = "(+".sprintf("%x",$nmrhand).",)";
+			  $Sheet->Cells($celli, $cellj)->{'Value'}=$res;		  	 
 
 			  $nbtransitions++;		  		 
 			  if ($SSWAP_DEBUG >=1) {		   
@@ -25370,425 +25392,479 @@ sub __write_states_multiplex_sync_xls
 			  #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
 		      }
 		  }
-	      }
-	      # ==> Right Hand only
-	      for (my $nmrhand = 1; $nmrhand <= $multiplex; $nmrhand ++) {
-		  $nstate=substr($rhand,0,length($rhand)-1).sprintf("%x",$nmrhand).",".substr($lhand,0,length($lhand)-1)."0";	    	 	
-		  my $idx_nstate=&__get_idx_state(\@states, $nstate);
+		  # ==> Left Hand only
+		  for (my $nmlhand = 1; $nmlhand <= $multiplex; $nmlhand ++) {
+		      $nstate=substr($rhand,0,length($rhand)-1)."0,".substr($lhand,0,length($lhand)-1).sprintf("%x",$nmlhand);	    	 	
+		      my $idx_nstate=&__get_idx_state(\@states, $nstate);
 
-		  if ($idx_nstate >=0) {
-		      my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		      my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		      my $res = "(+".sprintf("%x",$nmrhand).",)";
-		      $Sheet->Cells($celli, $cellj)->{'Value'}=$res;		  	 
+		      if ($idx_nstate >=0) {
+			  my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+			  my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+			  my $res = "(,+".sprintf("%x",$nmlhand).")";		  	 
+			  $Sheet->Cells($celli, $cellj)->{'Value'}=$res;
 
-		      $nbtransitions++;		  		 
-		      if ($SSWAP_DEBUG >=1) {		   
-			  print $rhand.",".$lhand." ===".$res."===> ".$nstate."\n";		   
-		      }		  
+			  $nbtransitions++;		  		 
+			  if ($SSWAP_DEBUG >=1) {		   
+			      print $rhand.",".$lhand." ===".$res."===> ".$nstate."\n";		   
+			  }		  
 
-		  } else {
-		      &common::hideComputingPrompt();
-		      #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-		  }
-	      }
-	      # ==> Left Hand only
-	      for (my $nmlhand = 1; $nmlhand <= $multiplex; $nmlhand ++) {
-		  $nstate=substr($rhand,0,length($rhand)-1)."0,".substr($lhand,0,length($lhand)-1).sprintf("%x",$nmlhand);	    	 	
-		  my $idx_nstate=&__get_idx_state(\@states, $nstate);
-
-		  if ($idx_nstate >=0) {
-		      my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		      my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		      my $res = "(,+".sprintf("%x",$nmlhand).")";		  	 
-		      $Sheet->Cells($celli, $cellj)->{'Value'}=$res;
-
-		      $nbtransitions++;		  		 
-		      if ($SSWAP_DEBUG >=1) {		   
-			  print $rhand.",".$lhand." ===".$res."===> ".$nstate."\n";		   
-		      }		  
-
-		  } else {
-		      &common::hideComputingPrompt();
-		      #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
-		  }
-	      }    				    
-	  }    
-      } 
-    }
-
-
-    my $idx_i =0;
-    my $idx_j =0;
-    foreach my $i (@states) {    	 
-	
-	# Coloring Median States
-	my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_i +1, scalar @states));	
-	my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_i + 1);
-	$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 6;
-
-	# Coloring Symetrics states 	
-	if ($i =~ ",") {
-	    my @res=split(/,/,$i);
-	    my $nstate=$res[1].",".$res[0];
-	    my $idx_nj=&__get_idx_state(\@states,$nstate); 
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_nj +1, scalar @states));	
-	    my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_nj + 1);
-	    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 15;
+		      } else {
+			  &common::hideComputingPrompt();
+			  #print $lang::MSG_SSWAP_GENSTATES_MSG1.$nstate."\n";
+		      }
+		  }    				    
+	      }    
+	  } 
 	}
-	
-	$idx_j =0;
-	foreach my $j (@states) {    	 
-	    &common::displayComputingPrompt();	
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_j +1, scalar @states));	
-	    my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_j + 1);
-	    my $w = $Sheet->Cells($celli, $cellj) -> {'Value'};
-	    # Coloring Adding/Removing Objects 
-	    if ($w =~ /\+/ && $w =~ /-/ ) {		 		
-		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 4;
-		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    } elsif ($w  =~ /\+/) {		 
-		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 8;
-		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    } elsif ($w =~ /-/) {		 
-		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 7;
-		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+
+
+	my $idx_i =0;
+	my $idx_j =0;
+	foreach my $i (@states) {    	 
+	    
+	    # Coloring Median States
+	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_i +1, scalar @states));	
+	    my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_i + 1);
+	    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 6;
+
+	    # Coloring Symetrics states 	
+	    if ($i =~ ",") {
+		my @res=split(/,/,$i);
+		my $nstate=$res[1].",".$res[0];
+		my $idx_nj=&__get_idx_state(\@states,$nstate); 
+		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_nj +1, scalar @states));	
+		my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_nj + 1);
+		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 15;
 	    }
 	    
-	    $idx_j++;
+	    $idx_j =0;
+	    foreach my $j (@states) {    	 
+		&common::displayComputingPrompt();	
+		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_j +1, scalar @states));	
+		my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_j + 1);
+		my $w = $Sheet->Cells($celli, $cellj) -> {'Value'};
+		# Coloring Adding/Removing Objects 
+		if ($w =~ /\+/ && $w =~ /-/ ) {		 		
+		    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 4;
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		} elsif ($w  =~ /\+/) {		 
+		    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 8;
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		} elsif ($w =~ /-/) {		 
+		    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 7;
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		}
+		
+		$idx_j++;
+	    }
+	    $idx_i++;
 	}
-	$idx_i++;
+	
+	&common::hideComputingPrompt();        
+	$Sheet->Range('B7')->{'Value'} = "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10.", ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]";
+	
+	# Do Autofit
+	if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
+	    my $idx_sheet = 0;
+	    while ($idx_sheet < &__get_nb_xls_sheets_for_row(scalar @states)) {
+		foreach my $jdx (0 .. scalar(@states) -1 ) {    	 	 
+		    &common::displayComputingPrompt();	    
+		    my $Sheet = $Book->Worksheets(&__get_xls_sheet(0, $jdx + 1, scalar @states) 
+						  + $idx_sheet * &__get_nb_xls_sheets_for_col(scalar @states));
+		    my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);				
+		    $Sheet->Columns($cellj)-> AutoFit(); 		
+		}
+		
+		$idx_sheet ++;
+	    }
+	    &common::hideComputingPrompt();
+	}
+
+	print colored [$common::COLOR_RESULT], "[ => ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]\n";
+
+	#$Book->Sheets(1)->Select();
+	$Excel -> {'DisplayAlerts'} = 0; # This turns off the "This file already exists" message.
+	$Book -> SaveAs ($file) or die $!;
+	$Book->Close;    
+	#$Excel->Quit();  
     }
-    
-    &common::hideComputingPrompt();        
-    $Sheet->Range('B7')->{'Value'} = "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10.", ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]";
-    
-    # Do Autofit
-    if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
+
+
+    sub __write_states_multisync_xls
+    {
+	my $nb_objs=$_[0];
+	my $highMaxss=hex($_[1]);
+	my $multiplex=$_[2];        
+	my $pwd = getdcwd();   
+	my $file = $pwd."\\$conf::RESULTS\\".$_[3].".xlsx";        
+	my $nbtransitions = 0;
+	
+	#use Win32::OLE qw(in with);
+	#use Win32::OLE::Const 'Microsoft Excel';
+	
+	$Win32::OLE::Warn = 3;	# die on errors...
+	
+	# get already active Excel application or open new
+	# my $Excel = Win32::OLE->GetActiveObject('Excel.Application')
+	# || Win32::OLE->new('Excel.Application', 'Quit');  
+	my $Excel = Win32::OLE->new('Excel.Application', 'Quit');  
+	my $Excel_symb = Win32::OLE::Const->Load($Excel);
+
+	# open Excel file and write infos
+	my $Book = $Excel->Workbooks->Add;
+	$Book->BuiltinDocumentProperties -> {'title'} = 'States/Transition Matrix';
+	$Book->BuiltinDocumentProperties -> {'author'} = "$common::AUTHOR";
+	$Book->BuiltinDocumentProperties -> {'comments'} = 'Creation : JugglingTB, Module SSWAP '.$SSWAP_VERSION." (writeStates_xls)";    
+
+	# Get all the possible states
+	my @states=&__get_states_multisync($_[0], $_[1], $_[2]);	
+
+	print $lang::MSG_SSWAP_WRITE_EXCEL_FROM_STATES2;
+	print colored [$common::COLOR_RESULT], "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10." ]\n";
+	
+	my $nbsheets = &__get_nb_xls_sheets (scalar @states);
+
+
+	# Generation of needed sheets
+	my $comment ="MULTI,".$nb_objs.",".sprintf("%x",$highMaxss).",".$multiplex.",-1";
+	if ($nbsheets > 1) {	
+	    $Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment."__(1)";
+	} else {
+	    $Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment;
+	}
+
+	for (my $i = 1; $i < $nbsheets; $i++) {
+	    #$Book -> Worksheets -> Add({After => $Book -> Worksheets($Book -> Worksheets -> {Count})});
+	    $Book -> Worksheets -> Add({After => $Book -> Worksheets($i)});
+	    $Book -> Worksheets($i +1) -> {'Name'} = "Matrix__".$comment."__(".($i+1).")";
+	}    
+
+
+	# Writing of the Main Header
+	# select worksheet number 1
+	#my $Sheet = $Book->ActiveSheet;
+	#$Book->Sheets(1)->Select();
+	my $Sheet = $Book->Sheets(1);
+	$Sheet->Range('B2:B7')-> Font -> {'ColorIndex'} = 3;
+	$Sheet->Range('B2:B7')-> Font -> {'FontStyle'} = "Bold";
+	$Sheet->Range('B2:B7')-> Font -> {'size'} = 11;
+	$Sheet->Range('B2:B7')-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignLeft'};
+	$Sheet->Range('B2:P2')-> Merge();
+	$Sheet->Range('B3:P3')-> Merge();
+	$Sheet->Range('B4:P4')-> Merge();
+	$Sheet->Range('B5:P5')-> Merge();
+	$Sheet->Range('B6:P6')-> Merge();
+	$Sheet->Range('B7:P7')-> Merge();
+
+	$Sheet->Range('B2')->{'Value'} = $lang::MSG_SSWAP_GENSTATES_MSG1a;	
+
+	$Sheet->Range('B3')->{'Value'} = $lang::MSG_SSWAP_GENERAL1c;	
+	if ($nb_objs != -1) {
+	    $Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2." : ".$nb_objs;	
+	} else {
+	    $Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2b;	
+	}       
+	if ($highMaxss != -1) {
+	    $Sheet->Range('B5')->{'Value'} = $lang::MSG_SSWAP_GENERAL3." : ".sprintf("%x",$highMaxss);
+	}
+	if ($multiplex != -1) {
+	    $Sheet->Range('B6')->{'Value'} = $lang::MSG_SSWAP_GENERAL4." : ".$multiplex;
+	}
+	
+
+	# Writes the States in the Excel file
+	# Start by the Columns headers ...
 	my $idx_sheet = 0;
 	while ($idx_sheet < &__get_nb_xls_sheets_for_row(scalar @states)) {
 	    foreach my $jdx (0 .. scalar(@states) -1 ) {    	 	 
 		&common::displayComputingPrompt();	    
 		my $Sheet = $Book->Worksheets(&__get_xls_sheet(0, $jdx + 1, scalar @states) 
 					      + $idx_sheet * &__get_nb_xls_sheets_for_col(scalar @states));
-		my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);				
-		$Sheet->Columns($cellj)-> AutoFit(); 		
-	    }
-	    
-	    $idx_sheet ++;
-	}
-	&common::hideComputingPrompt();
-    }
+		my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);
 
-    print colored [$common::COLOR_RESULT], "[ => ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]\n";
+		if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
+		    $Sheet->Columns($cellj)-> AutoFit(); 
+		} else {
+		    $Sheet->Columns($cellj)-> {'ColumnWidth'} = $conf::EXCELCOLSIZE; 
+		}
 
-    #$Book->Sheets(1)->Select();
-    $Excel -> {'DisplayAlerts'} = 0; # This turns off the "This file already exists" message.
-    $Book -> SaveAs ($file) or die $!;
-    $Book->Close;    
-    #$Excel->Quit();  
-}
+		$Sheet->Columns($cellj)-> {'NumberFormat'} = "\@"; # Text
+		$Sheet->Columns($cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignRight'};
 
-
-sub __write_states_multisync_xls
-{
-    my $nb_objs=$_[0];
-    my $highMaxss=hex($_[1]);
-    my $multiplex=$_[2];        
-    my $pwd = getdcwd();   
-    my $file = $pwd."\\$conf::RESULTS\\".$_[3].".xlsx";        
-    my $nbtransitions = 0;
-    
-    #use Win32::OLE qw(in with);
-    #use Win32::OLE::Const 'Microsoft Excel';
-    
-    $Win32::OLE::Warn = 3;	# die on errors...
-    
-    # get already active Excel application or open new
-    # my $Excel = Win32::OLE->GetActiveObject('Excel.Application')
-    # || Win32::OLE->new('Excel.Application', 'Quit');  
-    my $Excel = Win32::OLE->new('Excel.Application', 'Quit');  
-    my $Excel_symb = Win32::OLE::Const->Load($Excel);
-
-    # open Excel file and write infos
-    my $Book = $Excel->Workbooks->Add;
-    $Book->BuiltinDocumentProperties -> {'title'} = 'States/Transition Matrix';
-    $Book->BuiltinDocumentProperties -> {'author'} = "$common::AUTHOR";
-    $Book->BuiltinDocumentProperties -> {'comments'} = 'Creation : JugglingTB, Module SSWAP '.$SSWAP_VERSION." (writeStates_xls)";    
-
-    # Get all the possible states
-    my @states=&__get_states_multisync($_[0], $_[1], $_[2]);	
-
-    print $lang::MSG_SSWAP_WRITE_EXCEL_FROM_STATES2;
-    print colored [$common::COLOR_RESULT], "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10." ]\n";
-    
-    my $nbsheets = &__get_nb_xls_sheets (scalar @states);
-
-
-    # Generation of needed sheets
-    my $comment ="MULTI,".$nb_objs.",".sprintf("%x",$highMaxss).",".$multiplex.",-1";
-    if ($nbsheets > 1) {	
-	$Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment."__(1)";
-    } else {
-	$Book -> Worksheets(1) -> {'Name'} = "Matrix__".$comment;
-    }
-
-    for (my $i = 1; $i < $nbsheets; $i++) {
-	#$Book -> Worksheets -> Add({After => $Book -> Worksheets($Book -> Worksheets -> {Count})});
-	$Book -> Worksheets -> Add({After => $Book -> Worksheets($i)});
-	$Book -> Worksheets($i +1) -> {'Name'} = "Matrix__".$comment."__(".($i+1).")";
-    }    
-
-
-    # Writing of the Main Header
-    # select worksheet number 1
-    #my $Sheet = $Book->ActiveSheet;
-    #$Book->Sheets(1)->Select();
-    my $Sheet = $Book->Sheets(1);
-    $Sheet->Range('B2:B7')-> Font -> {'ColorIndex'} = 3;
-    $Sheet->Range('B2:B7')-> Font -> {'FontStyle'} = "Bold";
-    $Sheet->Range('B2:B7')-> Font -> {'size'} = 11;
-    $Sheet->Range('B2:B7')-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignLeft'};
-    $Sheet->Range('B2:P2')-> Merge();
-    $Sheet->Range('B3:P3')-> Merge();
-    $Sheet->Range('B4:P4')-> Merge();
-    $Sheet->Range('B5:P5')-> Merge();
-    $Sheet->Range('B6:P6')-> Merge();
-    $Sheet->Range('B7:P7')-> Merge();
-
-    $Sheet->Range('B2')->{'Value'} = $lang::MSG_SSWAP_GENSTATES_MSG1a;	
-
-    $Sheet->Range('B3')->{'Value'} = $lang::MSG_SSWAP_GENERAL1c;	
-    if ($nb_objs != -1) {
-	$Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2." : ".$nb_objs;	
-    } else {
-	$Sheet->Range('B4')->{'Value'} = $lang::MSG_SSWAP_GENERAL2b;	
-    }       
-    if ($highMaxss != -1) {
-	$Sheet->Range('B5')->{'Value'} = $lang::MSG_SSWAP_GENERAL3." : ".sprintf("%x",$highMaxss);
-    }
-    if ($multiplex != -1) {
-	$Sheet->Range('B6')->{'Value'} = $lang::MSG_SSWAP_GENERAL4." : ".$multiplex;
-    }
-    
-
-    # Writes the States in the Excel file
-    # Start by the Columns headers ...
-    my $idx_sheet = 0;
-    while ($idx_sheet < &__get_nb_xls_sheets_for_row(scalar @states)) {
-	foreach my $jdx (0 .. scalar(@states) -1 ) {    	 	 
-	    &common::displayComputingPrompt();	    
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet(0, $jdx + 1, scalar @states) 
-					  + $idx_sheet * &__get_nb_xls_sheets_for_col(scalar @states));
-	    my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);
-
-	    if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
-		$Sheet->Columns($cellj)-> AutoFit(); 
-	    } else {
-		$Sheet->Columns($cellj)-> {'ColumnWidth'} = $conf::EXCELCOLSIZE; 
+		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		$Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
+		$Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
+		$Sheet->Cells($celli, $cellj)-> {'Orientation'} = -90;
+		$Sheet->Rows($celli)-> AutoFit(); 	
+		# Hack for bug with the AutoFit parameter on Columns
+		$Sheet->Rows($celli)-> {'RowHeight'} = length($states[0]) * 8;
+		$Sheet->Cells($celli, $cellj)-> {'VerticalAlignment'} = $Excel_symb->{'xlHAlignCenter'}; 	
+		$Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	    
+		$Sheet->Cells($celli, $cellj)->{'Value'} = $states[$jdx];
 	    }
 
-	    $Sheet->Columns($cellj)-> {'NumberFormat'} = "\@"; # Text
-	    $Sheet->Columns($cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignRight'};
-
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
-	    $Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
-	    $Sheet->Cells($celli, $cellj)-> {'Orientation'} = -90;
-	    $Sheet->Rows($celli)-> AutoFit(); 	
-	    # Hack for bug with the AutoFit parameter on Columns
-	    $Sheet->Rows($celli)-> {'RowHeight'} = length($states[0]) * 8;
-	    $Sheet->Cells($celli, $cellj)-> {'VerticalAlignment'} = $Excel_symb->{'xlHAlignCenter'}; 	
-	    $Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	    
-	    $Sheet->Cells($celli, $cellj)->{'Value'} = $states[$jdx];
+	    $idx_sheet++;
 	}
 
-	$idx_sheet++;
-    }
 
-
-    # ... and then the Rows headers
-    my $jdx_sheet = 0;
-    while ($jdx_sheet < &__get_nb_xls_sheets_for_col(scalar @states)) {
-	foreach my $idx (0 .. scalar(@states) -1) {    	 
-	    &common::displayComputingPrompt();
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx +1, 0, scalar @states) + $jdx_sheet); 
-	    my ($celli, $cellj) = &__get_xls_cell($idx +1, 0);
-	    
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    $Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
-	    $Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
-	    $Sheet->Cells($celli, $cellj)-> {'ColumnWidth'} = length($states[0]) + 2;
-	    $Sheet->Cells($celli, $cellj)-> {'NumberFormat'} = "\@"; # Text
-	    $Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	 
-	    $Sheet->Cells($celli, $cellj)->{'Value'} = $states[$idx];
-	}
-
-	$jdx_sheet++;
-    }    
-    
-    # Write the Body Excel file    
-    foreach my $el (@states) {
-	&common::displayComputingPrompt();
-	my $idx = rindex($el,'|');
-	my $idx_state_el=&__get_idx_state(\@states, $el);
-	
-	my $rhand   =substr($el,0,$idx);
-	my $rhandth =hex(substr($rhand,length($rhand)-1));
-	my $lhand   =substr($el,$idx+1);
-	my $lhandth =hex(substr($lhand,length($lhand)-1));		
-	
-	my @multisync_list=&__get_throws_multisync($_[0],$_[1],$rhandth,$lhandth);
-
-	foreach my $elmult (@multisync_list) {		
-	    &common::displayComputingPrompt();
-	    my $elmult_final = $elmult;
-	    my $nrhand=reverse('0'.substr($rhand,0,length($rhand)-1));
-	    my $nlhand=reverse('0'.substr($lhand,0,length($lhand)-1));
-	    my $nrhand_tmp = '';
-	    my $nlhand_tmp = '';
-
-	    my $cur = "R";
-	    my $beat = 0;
-
-	    for (my $i=0; $i<length($elmult); $i++) {
+	# ... and then the Rows headers
+	my $jdx_sheet = 0;
+	while ($jdx_sheet < &__get_nb_xls_sheets_for_col(scalar @states)) {
+	    foreach my $idx (0 .. scalar(@states) -1) {    	 
 		&common::displayComputingPrompt();
-		my $v = substr($elmult,$i,1);		
-		if($v eq "*")
-		{
-		    if($cur eq "R")
-		    {
-			$cur = "L";
-		    }
-		    else
-		    {
-			$cur = "R";
-		    }		    		
-		}
-		elsif($v eq "!")
-		{
-		    # Nothing to do
-		}
-		else
-		{
-		    $v = hex($v);
-		    if($cur eq "R")
-		    {
-			if($v ne "0")
-			{
-			    if(($v % 2 == 0 && uc(substr($elmult,$i+1,1)) ne "X") || ($v % 2 != 0 && uc(substr($elmult,$i+1,1)) eq "X"))
-			    {
-				$nrhand_tmp = $nrhand;
-				$nrhand_tmp = substr($nrhand,0,$v-1).sprintf("%x",(1+hex(substr($nrhand,$v-1,1)))).substr($nrhand,$v);
-				$nrhand = $nrhand_tmp;
-			    }
-			    elsif(($v % 2 != 0 && uc(substr($elmult,$i+1,1)) ne "X") || ($v % 2 == 0 && uc(substr($elmult,$i+1,1)) eq "X"))
-			    {
-				$nlhand_tmp = $nlhand;
-				$nlhand_tmp = substr($nlhand,0,$v-1).sprintf("%x",(1+hex(substr($nlhand,$v-1,1)))).substr($nlhand,$v); 
-				$nlhand = $nlhand_tmp;
-			    }
-			    if(uc(substr($elmult,$i+1,1)) eq "X")
-			    {
-				$i++;
-			    }
-			}
-			$cur = "L";
-		    }
-		    else
-		    {
-			if($v ne "0")
-			{
-			    if(($v % 2 == 0 && uc(substr($elmult,$i+1,1)) ne "X") || ($v % 2 != 0 && uc(substr($elmult,$i+1,1)) eq "X"))		       
-			    {
-				$nlhand_tmp = $nlhand;
-				$nlhand_tmp = substr($nlhand,0,$v-1).sprintf("%x",(1+hex(substr($nlhand,$v-1,1)))).substr($nlhand,$v); 
-				$nlhand = $nlhand_tmp;
-			    }
-			    elsif(($v % 2 != 0 && uc(substr($elmult,$i+1,1)) ne "X") || ($v % 2 == 0 && uc(substr($elmult,$i+1,1)) eq "X"))			  
-			    {
-				$nrhand_tmp = $nrhand;
-				$nrhand_tmp = substr($nrhand,0,$v-1).sprintf("%x",(1+hex(substr($nrhand,$v-1,1)))).substr($nrhand,$v);			
-				$nrhand = $nrhand_tmp;
-			    }
-			    if(uc(substr($elmult,$i+1,1)) eq "X")
-			    {
-				$i++;
-			    }
-			}
-			$cur = "R";
-		    }
-		}
+		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx +1, 0, scalar @states) + $jdx_sheet); 
+		my ($celli, $cellj) = &__get_xls_cell($idx +1, 0);
+		
+		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		$Sheet->Cells($celli, $cellj)-> Font -> {'ColorIndex'} = 3;
+		$Sheet->Cells($celli, $cellj)-> {'HorizontalAlignment'} = $Excel_symb->{'xlHAlignCenter'};
+		$Sheet->Cells($celli, $cellj)-> {'ColumnWidth'} = length($states[0]) + 2;
+		$Sheet->Cells($celli, $cellj)-> {'NumberFormat'} = "\@"; # Text
+		$Sheet->Cells($celli, $cellj)->Interior->{'ColorIndex'} = 6;	 
+		$Sheet->Cells($celli, $cellj)->{'Value'} = $states[$idx];
 	    }
 
-	    my $nstate=reverse($nrhand)."|".reverse($nlhand);	    
-	    my $idx_nstate=&__get_idx_state(\@states, $nstate);
-	    if($idx_nstate == -1)
-	    {
-		if ($SSWAP_DEBUG>=1) 
-		{			
-		    print "== SSWAP::__gen_states_multisync : Rejected State : ".$nstate."\n";
-		}
-	    }
-	    else
-	    {
-		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-		my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
-		if($Sheet->Cells($celli, $cellj)->{'Value'} eq "")
-		{
-		    $Sheet->Cells($celli, $cellj)->{'Value'}=$elmult_final;		  	 
-		}
-		else
-		{
-		    $Sheet->Cells($celli, $cellj)->{'Value'}=$elmult_final."; ".$Sheet->Cells($celli, $cellj)->{'Value'};
-		}
-		$nbtransitions++;
-		if ($SSWAP_DEBUG >=1) {		   
-		    print $rhand."|".$lhand." ===".$elmult_final."===> ".$nstate."\n";		   
-		}	       
-
-	    }
-	}
-
-	if($nb_objs == -1)
-	{
-	    # Handle Objects Lost or Added
-	    my $nrhand=substr($rhand,0,length($rhand)-1);
-	    my $nlhand=substr($lhand,0,length($lhand)-1);
+	    $jdx_sheet++;
+	}    
+	
+	# Write the Body Excel file    
+	foreach my $el (@states) {
+	    &common::displayComputingPrompt();
+	    my $idx = rindex($el,'|');
+	    my $idx_state_el=&__get_idx_state(\@states, $el);
+	    
+	    my $rhand   =substr($el,0,$idx);
 	    my $rhandth =hex(substr($rhand,length($rhand)-1));
+	    my $lhand   =substr($el,$idx+1);
 	    my $lhandth =hex(substr($lhand,length($lhand)-1));		
+	    
+	    my @multisync_list=&__get_throws_multisync($_[0],$_[1],$rhandth,$lhandth);
 
-	    if($rhandth >=1 || $lhandth >= 1)
-	    {
-		for(my $i=0; $i<=$rhandth; $i++)
-		{
-		    for(my $j=0;$j<=$lhandth; $j++)
-		    {		  
-			my $nstate=$nrhand.sprintf("%x",$i)."|".$nlhand.sprintf("%x",$j);
-			my $idx_nstate=&__get_idx_state(\@states, $nstate);
-			my $tr = '';
-			if($rhandth-$i > 0)
+	    foreach my $elmult (@multisync_list) {		
+		&common::displayComputingPrompt();
+		my $elmult_final = $elmult;
+		my $nrhand=reverse('0'.substr($rhand,0,length($rhand)-1));
+		my $nlhand=reverse('0'.substr($lhand,0,length($lhand)-1));
+		my $nrhand_tmp = '';
+		my $nlhand_tmp = '';
+
+		my $cur = "R";
+		my $beat = 0;
+
+		for (my $i=0; $i<length($elmult); $i++) {
+		    &common::displayComputingPrompt();
+		    my $v = substr($elmult,$i,1);		
+		    if($v eq "*")
+		    {
+			if($cur eq "R")
 			{
-			    $tr="-".sprintf("%x",$rhandth-$i)."|";
+			    $cur = "L";
 			}
 			else
 			{
-			    $tr = "|";
-			}
-			if($lhandth-$j > 0)
+			    $cur = "R";
+			}		    		
+		    }
+		    elsif($v eq "!")
+		    {
+			# Nothing to do
+		    }
+		    else
+		    {
+			$v = hex($v);
+			if($cur eq "R")
 			{
-			    $tr=$tr."-".sprintf("%x",$lhandth-$j);
+			    if($v ne "0")
+			    {
+				if(($v % 2 == 0 && uc(substr($elmult,$i+1,1)) ne "X") || ($v % 2 != 0 && uc(substr($elmult,$i+1,1)) eq "X"))
+				{
+				    $nrhand_tmp = $nrhand;
+				    $nrhand_tmp = substr($nrhand,0,$v-1).sprintf("%x",(1+hex(substr($nrhand,$v-1,1)))).substr($nrhand,$v);
+				    $nrhand = $nrhand_tmp;
+				}
+				elsif(($v % 2 != 0 && uc(substr($elmult,$i+1,1)) ne "X") || ($v % 2 == 0 && uc(substr($elmult,$i+1,1)) eq "X"))
+				{
+				    $nlhand_tmp = $nlhand;
+				    $nlhand_tmp = substr($nlhand,0,$v-1).sprintf("%x",(1+hex(substr($nlhand,$v-1,1)))).substr($nlhand,$v); 
+				    $nlhand = $nlhand_tmp;
+				}
+				if(uc(substr($elmult,$i+1,1)) eq "X")
+				{
+				    $i++;
+				}
+			    }
+			    $cur = "L";
 			}
-			
-			if($tr ne "|")
+			else
 			{
+			    if($v ne "0")
+			    {
+				if(($v % 2 == 0 && uc(substr($elmult,$i+1,1)) ne "X") || ($v % 2 != 0 && uc(substr($elmult,$i+1,1)) eq "X"))		       
+				{
+				    $nlhand_tmp = $nlhand;
+				    $nlhand_tmp = substr($nlhand,0,$v-1).sprintf("%x",(1+hex(substr($nlhand,$v-1,1)))).substr($nlhand,$v); 
+				    $nlhand = $nlhand_tmp;
+				}
+				elsif(($v % 2 != 0 && uc(substr($elmult,$i+1,1)) ne "X") || ($v % 2 == 0 && uc(substr($elmult,$i+1,1)) eq "X"))			  
+				{
+				    $nrhand_tmp = $nrhand;
+				    $nrhand_tmp = substr($nrhand,0,$v-1).sprintf("%x",(1+hex(substr($nrhand,$v-1,1)))).substr($nrhand,$v);			
+				    $nrhand = $nrhand_tmp;
+				}
+				if(uc(substr($elmult,$i+1,1)) eq "X")
+				{
+				    $i++;
+				}
+			    }
+			    $cur = "R";
+			}
+		    }
+		}
+
+		my $nstate=reverse($nrhand)."|".reverse($nlhand);	    
+		my $idx_nstate=&__get_idx_state(\@states, $nstate);
+		if($idx_nstate == -1)
+		{
+		    if ($SSWAP_DEBUG>=1) 
+		    {			
+			print "== SSWAP::__gen_states_multisync : Rejected State : ".$nstate."\n";
+		    }
+		}
+		else
+		{
+		    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+		    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);
+		    if($Sheet->Cells($celli, $cellj)->{'Value'} eq "")
+		    {
+			$Sheet->Cells($celli, $cellj)->{'Value'}=$elmult_final;		  	 
+		    }
+		    else
+		    {
+			$Sheet->Cells($celli, $cellj)->{'Value'}=$elmult_final."; ".$Sheet->Cells($celli, $cellj)->{'Value'};
+		    }
+		    $nbtransitions++;
+		    if ($SSWAP_DEBUG >=1) {		   
+			print $rhand."|".$lhand." ===".$elmult_final."===> ".$nstate."\n";		   
+		    }	       
+
+		}
+	    }
+
+	    if($nb_objs == -1)
+	    {
+		# Handle Objects Lost or Added
+		my $nrhand=substr($rhand,0,length($rhand)-1);
+		my $nlhand=substr($lhand,0,length($lhand)-1);
+		my $rhandth =hex(substr($rhand,length($rhand)-1));
+		my $lhandth =hex(substr($lhand,length($lhand)-1));		
+
+		if($rhandth >=1 || $lhandth >= 1)
+		{
+		    for(my $i=0; $i<=$rhandth; $i++)
+		    {
+			for(my $j=0;$j<=$lhandth; $j++)
+			{		  
+			    my $nstate=$nrhand.sprintf("%x",$i)."|".$nlhand.sprintf("%x",$j);
+			    my $idx_nstate=&__get_idx_state(\@states, $nstate);
+			    my $tr = '';
+			    if($rhandth-$i > 0)
+			    {
+				$tr="-".sprintf("%x",$rhandth-$i)."|";
+			    }
+			    else
+			    {
+				$tr = "|";
+			    }
+			    if($lhandth-$j > 0)
+			    {
+				$tr=$tr."-".sprintf("%x",$lhandth-$j);
+			    }
+			    
+			    if($tr ne "|")
+			    {
+				my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+				my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);			    
+				if($Sheet->Cells($celli, $cellj)->{'Value'} eq "")
+				{
+				    $Sheet->Cells($celli, $cellj)->{'Value'}=$tr;		  	 
+				}
+				else
+				{
+				    $Sheet->Cells($celli, $cellj)->{'Value'}=$tr."; ".$Sheet->Cells($celli, $cellj)->{'Value'};
+				}
+				$nbtransitions++;
+				if ($SSWAP_DEBUG >=1) {		   
+				    print $rhand."|".$lhand." ===".$tr."===> ".$nstate."\n";		   
+				}	       
+
+			    }				      
+			}
+		    }
+		}
+		elsif($rhandth == 0 && $lhandth == 0)
+		{
+		    for(my $i=0; $i<=$multiplex; $i++)
+		    {
+			for(my $j=0;$j<=$multiplex; $j++)
+			{		  
+			    my $nstate=$nrhand.sprintf("%x",$i)."|".$nlhand.sprintf("%x",$j);
+			    my $idx_nstate=&__get_idx_state(\@states, $nstate);		      
+			    my $tr='';
+			    if($i > 0)
+			    {
+				$tr = "+".sprintf("%x",$i)."|"; 
+			    }
+			    else
+			    {
+				$tr="|",
+			    }
+			    if($j > 0)
+			    {
+				$tr = $tr."+".sprintf("%x",$j); 
+			    }
+			    if($tr ne "|")
+			    {
+				my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
+				my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);			    
+				if($Sheet->Cells($celli, $cellj)->{'Value'} eq "")
+				{
+				    $Sheet->Cells($celli, $cellj)->{'Value'}=$tr;		  	 
+				}
+				else
+				{
+				    $Sheet->Cells($celli, $cellj)->{'Value'}=$tr."; ".$Sheet->Cells($celli, $cellj)->{'Value'};
+				}
+				$nbtransitions++;
+				if ($SSWAP_DEBUG >=1) {		   
+				    print $rhand."|".$lhand." ===".$tr."===> ".$nstate."\n";		   
+				}	       
+
+			    }		          
+			}
+		    }	      
+		}
+
+		if($rhandth == 0 && $lhandth != 0)
+		{
+		    for(my $i=1; $i<=$multiplex; $i++)
+		    {
+			for(my $j=0;$j<=$lhandth; $j++)
+			{
+			    my $nstate=$nrhand.sprintf("%x",$i)."|".$nlhand.sprintf("%x",$j);
+			    my $idx_nstate=&__get_idx_state(\@states, $nstate);			
+			    my $tr = "+".sprintf("%x",$i)."|";
+			    if($lhandth-$j > 0)
+			    {
+				$tr=$tr."-".sprintf("%x",$lhandth-$j);
+			    }
+
 			    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-			    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);			    
+			    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);			
 			    if($Sheet->Cells($celli, $cellj)->{'Value'} eq "")
 			    {
 				$Sheet->Cells($celli, $cellj)->{'Value'}=$tr;		  	 
@@ -25802,35 +25878,30 @@ sub __write_states_multisync_xls
 				print $rhand."|".$lhand." ===".$tr."===> ".$nstate."\n";		   
 			    }	       
 
-			}				      
+			}
 		    }
-		}
-	    }
-	    elsif($rhandth == 0 && $lhandth == 0)
-	    {
-		for(my $i=0; $i<=$multiplex; $i++)
+		}		 
+		elsif($lhandth == 0 && $rhandth != 0)
 		{
-		    for(my $j=0;$j<=$multiplex; $j++)
-		    {		  
-			my $nstate=$nrhand.sprintf("%x",$i)."|".$nlhand.sprintf("%x",$j);
-			my $idx_nstate=&__get_idx_state(\@states, $nstate);		      
-			my $tr='';
-			if($i > 0)
+		    for(my $i=0; $i<=$rhandth; $i++)
+		    {
+			for(my $j=1;$j<=$multiplex; $j++)
 			{
-			    $tr = "+".sprintf("%x",$i)."|"; 
-			}
-			else
-			{
-			    $tr="|",
-			}
-			if($j > 0)
-			{
-			    $tr = $tr."+".sprintf("%x",$j); 
-			}
-			if($tr ne "|")
-			{
+			    my $nstate=$nrhand.sprintf("%x",$i)."|".$nlhand.sprintf("%x",$j);
+			    my $idx_nstate=&__get_idx_state(\@states, $nstate);
+			    my $tr = '';
+			    if($rhandth-$i > 0)
+			    {
+				$tr="-".sprintf("%x",$rhandth-$i)."|";
+			    }
+			    else
+			    {
+				$tr = "|";
+			    }
+			    $tr=$tr."+".sprintf("%x",$j);
+
 			    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-			    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);			    
+			    my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);			
 			    if($Sheet->Cells($celli, $cellj)->{'Value'} eq "")
 			    {
 				$Sheet->Cells($celli, $cellj)->{'Value'}=$tr;		  	 
@@ -25844,330 +25915,259 @@ sub __write_states_multisync_xls
 				print $rhand."|".$lhand." ===".$tr."===> ".$nstate."\n";		   
 			    }	       
 
-			}		          
+			}
 		    }
-		}	      
+		}		 
 	    }
-
-	    if($rhandth == 0 && $lhandth != 0)
-	    {
-		for(my $i=1; $i<=$multiplex; $i++)
-		{
-		    for(my $j=0;$j<=$lhandth; $j++)
-		    {
-			my $nstate=$nrhand.sprintf("%x",$i)."|".$nlhand.sprintf("%x",$j);
-			my $idx_nstate=&__get_idx_state(\@states, $nstate);			
-			my $tr = "+".sprintf("%x",$i)."|";
-			if($lhandth-$j > 0)
-			{
-			    $tr=$tr."-".sprintf("%x",$lhandth-$j);
-			}
-
-			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);			
-			if($Sheet->Cells($celli, $cellj)->{'Value'} eq "")
-			{
-			    $Sheet->Cells($celli, $cellj)->{'Value'}=$tr;		  	 
-			}
-			else
-			{
-			    $Sheet->Cells($celli, $cellj)->{'Value'}=$tr."; ".$Sheet->Cells($celli, $cellj)->{'Value'};
-			}
-			$nbtransitions++;
-			if ($SSWAP_DEBUG >=1) {		   
-			    print $rhand."|".$lhand." ===".$tr."===> ".$nstate."\n";		   
-			}	       
-
-		    }
-		}
-	    }		 
-	    elsif($lhandth == 0 && $rhandth != 0)
-	    {
-		for(my $i=0; $i<=$rhandth; $i++)
-		{
-		    for(my $j=1;$j<=$multiplex; $j++)
-		    {
-			my $nstate=$nrhand.sprintf("%x",$i)."|".$nlhand.sprintf("%x",$j);
-			my $idx_nstate=&__get_idx_state(\@states, $nstate);
-			my $tr = '';
-			if($rhandth-$i > 0)
-			{
-			    $tr="-".sprintf("%x",$rhandth-$i)."|";
-			}
-			else
-			{
-			    $tr = "|";
-			}
-			$tr=$tr."+".sprintf("%x",$j);
-
-			my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_state_el +1, $idx_nstate +1, scalar @states)); 
-			my ($celli, $cellj) = &__get_xls_cell($idx_state_el +1, $idx_nstate +1);			
-			if($Sheet->Cells($celli, $cellj)->{'Value'} eq "")
-			{
-			    $Sheet->Cells($celli, $cellj)->{'Value'}=$tr;		  	 
-			}
-			else
-			{
-			    $Sheet->Cells($celli, $cellj)->{'Value'}=$tr."; ".$Sheet->Cells($celli, $cellj)->{'Value'};
-			}
-			$nbtransitions++;
-			if ($SSWAP_DEBUG >=1) {		   
-			    print $rhand."|".$lhand." ===".$tr."===> ".$nstate."\n";		   
-			}	       
-
-		    }
-		}
-	    }		 
 	}
-    }
 
-    my $idx_i =0;
-    my $idx_j =0;
-    foreach my $i (@states) {    	 
-	
-	# Coloring Median States
-	my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_i +1, scalar @states));	
-	my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_i + 1);
-	$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 6;
+	my $idx_i =0;
+	my $idx_j =0;
+	foreach my $i (@states) {    	 
+	    
+	    # Coloring Median States
+	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_i +1, scalar @states));	
+	    my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_i + 1);
+	    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 6;
 
-	# Coloring Symetrics states 	
-	if ($i =~ "\|") {
-	    my @res=split(/\|/,$i);
-	    my $nstate=$res[1]."|".$res[0];
-	    my $idx_nj=&__get_idx_state(\@states,$nstate); 
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_nj +1, scalar @states));	
-	    my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_nj + 1);
-	    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 15;
-	}
-	
-	$idx_j =0;
-	foreach my $j (@states) {    	 
-	    &common::displayComputingPrompt();	
-	    my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_j +1, scalar @states));	
-	    my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_j + 1);
-	    my $w = $Sheet->Cells($celli, $cellj) -> {'Value'};
-	    # Coloring Adding/Removing Objects 
-	    if ($w =~ /\+/ && $w =~ /-/ ) {		 		
-		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 4;
-		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    } elsif ($w  =~ /\+/) {		 
-		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 8;
-		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
-	    } elsif ($w =~ /-/) {		 
-		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 7;
-		$Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
-		$Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+	    # Coloring Symetrics states 	
+	    if ($i =~ "\|") {
+		my @res=split(/\|/,$i);
+		my $nstate=$res[1]."|".$res[0];
+		my $idx_nj=&__get_idx_state(\@states,$nstate); 
+		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_nj +1, scalar @states));	
+		my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_nj + 1);
+		$Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 15;
 	    }
 	    
-	    $idx_j++;
-	}
-	$idx_i++;
-    }
-    
-    &common::hideComputingPrompt();        
-    $Sheet->Range('B7')->{'Value'} = "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10.", ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]";
-
-    # Do Autofit
-    if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
-	my $idx_sheet = 0;
-	while ($idx_sheet < &__get_nb_xls_sheets_for_row(scalar @states)) {
-	    foreach my $jdx (0 .. scalar(@states) -1 ) {    	 	 
-		&common::displayComputingPrompt();	    
-		my $Sheet = $Book->Worksheets(&__get_xls_sheet(0, $jdx + 1, scalar @states) 
-					      + $idx_sheet * &__get_nb_xls_sheets_for_col(scalar @states));
-		my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);				
-		$Sheet->Columns($cellj)-> AutoFit(); 		
+	    $idx_j =0;
+	    foreach my $j (@states) {    	 
+		&common::displayComputingPrompt();	
+		my $Sheet = $Book->Worksheets(&__get_xls_sheet($idx_i +1, $idx_j +1, scalar @states));	
+		my ($celli, $cellj) = &__get_xls_cell($idx_i +1, $idx_j + 1);
+		my $w = $Sheet->Cells($celli, $cellj) -> {'Value'};
+		# Coloring Adding/Removing Objects 
+		if ($w =~ /\+/ && $w =~ /-/ ) {		 		
+		    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 4;
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		} elsif ($w  =~ /\+/) {		 
+		    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 8;
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		} elsif ($w =~ /-/) {		 
+		    $Sheet->Cells($celli, $cellj)-> Interior->{'ColorIndex'} = 7;
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'FontStyle'} = "Bold";
+		    $Sheet->Cells($celli, $cellj)-> Font -> {'size'} = 11;
+		}
+		
+		$idx_j++;
 	    }
-	    
-	    $idx_sheet ++;
+	    $idx_i++;
 	}
-	&common::hideComputingPrompt();
+	
+	&common::hideComputingPrompt();        
+	$Sheet->Range('B7')->{'Value'} = "[ => ".(scalar @states)." ".$lang::MSG_SSWAP_GENERAL10.", ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]";
+
+	# Do Autofit
+	if (uc($conf::EXCELCOLSIZE) eq "AUTO") {
+	    my $idx_sheet = 0;
+	    while ($idx_sheet < &__get_nb_xls_sheets_for_row(scalar @states)) {
+		foreach my $jdx (0 .. scalar(@states) -1 ) {    	 	 
+		    &common::displayComputingPrompt();	    
+		    my $Sheet = $Book->Worksheets(&__get_xls_sheet(0, $jdx + 1, scalar @states) 
+						  + $idx_sheet * &__get_nb_xls_sheets_for_col(scalar @states));
+		    my ($celli, $cellj) = &__get_xls_cell(0, $jdx +1);				
+		    $Sheet->Columns($cellj)-> AutoFit(); 		
+		}
+		
+		$idx_sheet ++;
+	    }
+	    &common::hideComputingPrompt();
+	}
+
+	print colored [$common::COLOR_RESULT], "[ => ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]\n";
+
+	#$Book->Sheets(1)->Select();
+	$Excel -> {'DisplayAlerts'} = 0; # This turns off the "This file already exists" message.
+	$Book -> SaveAs ($file) or die $!;
+	$Book->Close;    
+	#$Excel->Quit();  
+
     }
 
-    print colored [$common::COLOR_RESULT], "[ => ".$nbtransitions." ".$lang::MSG_SSWAP_GENERAL11." ]\n";
 
-    #$Book->Sheets(1)->Select();
-    $Excel -> {'DisplayAlerts'} = 0; # This turns off the "This file already exists" message.
-    $Book -> SaveAs ($file) or die $!;
-    $Book->Close;    
-    #$Excel->Quit();  
-
-}
-
-
-# Get Matrix and States from an XLS file
-sub __getStates_from_xls
-{
-    my $excelfile = $_[0];
-    my @states = ();
-    my @matrix = ();
-    
-    $Win32::OLE::Warn = 3;	# die on errors...    
-    # get already active Excel application or open new
-    # my $Excel = Win32::OLE->GetActiveObject('Excel.Application') 
-    # || Win32::OLE->new('Excel.Application', 'Quit');
-    my $Excel = Win32::OLE->new('Excel.Application', 'Quit');
-    my $Book = $Excel->Workbooks->Open($excelfile);
-    my $Sheet = $Book->Worksheets(1);
-    my $celli = $EXCEL_ROW_START;
-    my $cellj = $EXCEL_COL_START+1;
-
-    my $nbstates=0;
-
-    if ($SSWAP_DEBUG >= 1) {
-	print "== SSWAP::__getStates_from_xls : $_[0] \n";
-    }
-
-    # Get States
-    for(my $j = 0; $j < $EXCEL_MAX_ROWS; $j++)
+    # Get Matrix and States from an XLS file
+    sub __getStates_from_xls
     {
-	&common::displayComputingPrompt();	    
-	my $v = $Sheet->Cells($celli, $cellj + $j)->{'Value'};
-	if ($v eq "")
+	my $excelfile = $_[0];
+	my @states = ();
+	my @matrix = ();
+	
+	$Win32::OLE::Warn = 3;	# die on errors...    
+	# get already active Excel application or open new
+	# my $Excel = Win32::OLE->GetActiveObject('Excel.Application') 
+	# || Win32::OLE->new('Excel.Application', 'Quit');
+	my $Excel = Win32::OLE->new('Excel.Application', 'Quit');
+	my $Book = $Excel->Workbooks->Open($excelfile);
+	my $Sheet = $Book->Worksheets(1);
+	my $celli = $EXCEL_ROW_START;
+	my $cellj = $EXCEL_COL_START+1;
+
+	my $nbstates=0;
+
+	if ($SSWAP_DEBUG >= 1) {
+	    print "== SSWAP::__getStates_from_xls : $_[0] \n";
+	}
+
+	# Get States
+	for(my $j = 0; $j < $EXCEL_MAX_ROWS; $j++)
 	{
-	    last;
-	}
-
-	$nbstates++;
-	push(@states, $v);
-	if ($SSWAP_DEBUG >=1) {
-	    print "Found State ($celli,".($cellj+$j).") :".$v."\n";
-	}
-    }
-    &common::hideComputingPrompt();	    
-
-    my $celli = $EXCEL_ROW_START+1;
-    my $cellj = $EXCEL_COL_START+1;
-
-    # Fill Matrix
-    for(my $i = 0; $i < $nbstates; $i++)
-    {
-	&common::displayComputingPrompt();	    
-	my $el1 = $Sheet->Cells($EXCEL_ROW_START + 1 + $i, $EXCEL_COL_START)->{'Value'};
-	my $idx_state_i=&__get_idx_state(\@states, $el1);
-
-	for(my $j = 0; $j < $nbstates; $j++)
-	{	    
 	    &common::displayComputingPrompt();	    
-	    my $el2 = $Sheet->Cells($EXCEL_ROW_START, $EXCEL_COL_START + 1 + $j)->{'Value'};
-	    my $idx_state_j=&__get_idx_state(\@states, $el2);
-	    my $v = $Sheet->Cells($celli + $i, $cellj + $j)->{'Value'};
-	    if ($v ne "")
-	    {      	    
-		$matrix[$idx_state_i][$idx_state_j]= $v;	
-		if ($SSWAP_DEBUG >=1) {		    
-		    print "($el1, $el2)===> ".$v."\n";       
+	    my $v = $Sheet->Cells($celli, $cellj + $j)->{'Value'};
+	    if ($v eq "")
+	    {
+		last;
+	    }
+
+	    $nbstates++;
+	    push(@states, $v);
+	    if ($SSWAP_DEBUG >=1) {
+		print "Found State ($celli,".($cellj+$j).") :".$v."\n";
+	    }
+	}
+	&common::hideComputingPrompt();	    
+
+	my $celli = $EXCEL_ROW_START+1;
+	my $cellj = $EXCEL_COL_START+1;
+
+	# Fill Matrix
+	for(my $i = 0; $i < $nbstates; $i++)
+	{
+	    &common::displayComputingPrompt();	    
+	    my $el1 = $Sheet->Cells($EXCEL_ROW_START + 1 + $i, $EXCEL_COL_START)->{'Value'};
+	    my $idx_state_i=&__get_idx_state(\@states, $el1);
+
+	    for(my $j = 0; $j < $nbstates; $j++)
+	    {	    
+		&common::displayComputingPrompt();	    
+		my $el2 = $Sheet->Cells($EXCEL_ROW_START, $EXCEL_COL_START + 1 + $j)->{'Value'};
+		my $idx_state_j=&__get_idx_state(\@states, $el2);
+		my $v = $Sheet->Cells($celli + $i, $cellj + $j)->{'Value'};
+		if ($v ne "")
+		{      	    
+		    $matrix[$idx_state_i][$idx_state_j]= $v;	
+		    if ($SSWAP_DEBUG >=1) {		    
+			print "($el1, $el2)===> ".$v."\n";       
+		    }
 		}
 	    }
 	}
-    }
-    &common::hideComputingPrompt();	    
-    $Book -> Close;
-
-    print $lang::MSG_SSWAP_GETSTATES_FROM_XLS_MSG1."\n";
-    return (\@matrix, \@states) ;
-}
-
-
-## Check if the XLS file is valid and the one awaited
-#  The first Sheet name is one of :
-#   - Matrix__MOD1,NbOjects,Height,Mult,Type : If generated using writeStates_xls
-#              MOD1 is V, M, S, MS, MULTI
-#              NbObjects may be -1 if undefined 
-#              Mult may be -1 if no relevant  
-#              Type is -1 for Regular Matrix (R for Reduced but not possible currently)
-#
-#   - Matrix:MOD2,NbOjects,Height,Mult,Type : If generated using genStates
-#              MOD2 is A, S, MULTI
-#              NbObjects may be -1 if undefined 
-#              Mult may be -1 if no relevant  
-#              Type is -1 for Regular Matrix and R for Reduced
-#             
-sub __check_xls_matrix_file
-{
-    my $excelfile = $_[0];
-    my $mod = $_[1];
-    my $NbObjects = $_[2];
-    my $height = $_[3];
-    my $mult = $_[4];
-    my $type = $_[5];
-
-    $Win32::OLE::Warn = 3;	# die on errors...    
-    # get already active Excel application or open new
-    # my $Excel = Win32::OLE->GetActiveObject('Excel.Application') 
-    # || Win32::OLE->new('Excel.Application', 'Quit');
-    my $Excel = Win32::OLE->new('Excel.Application', 'Quit');
-    my $Book = $Excel->Workbooks->Open($excelfile);
-    my $Sheet = $Book->Worksheets(1);   
-    my $propal1 = "Matrix__";                # writeStates_xls   
-    my $propal2 = "Matrix=";                 # genStates
-
-    if($type eq '?')
-    {
-	# Nevermind if it is a Regular or a Reduced Matrix
-	my $propal1b = "Matrix__";           # writeStates_xls   
-	my $propal2b = "Matrix=";            # genStates
-
-	$propal1 = $propal1.$mod.",".$NbObjects.",".$height.",".$mult.","."-1"; # writeStates_xls   
-	$propal1b = $propal1b.$mod.",".$NbObjects.",".$height.",".$mult.","."-R"; # writeStates_xls   
-
-	if($mod eq "V" || $mod eq "M")
-	{
-	    $propal2=$propal2."A,".$NbObjects.",".$height.",".$mult.","."-1";    
-	    $propal2b=$propal2b."A,".$NbObjects.",".$height.",".$mult.","."R";    
-	}
-	elsif($mod eq "MULTI")
-	{
-	    $propal2=$propal2."MULTI,".$NbObjects.",".$height.",".$mult.",".$type;    
-	    $propal2b=$propal2b."MULTI,".$NbObjects.",".$height.",".$mult.","."R";    
-	}
-	else {
-	    $propal2=$propal2."S,".$NbObjects.",".$height.",".$mult.","."-1";    
-	    $propal2b=$propal2b."S,".$NbObjects.",".$height.",".$mult.","."R";    
-	}
-	
-	if($Sheet->{Name} ne $propal1 && 
-	   $Sheet->{Name} ne $propal1b && 
-	   $Sheet->{Name} ne $propal2 && 
-	   $Sheet->{Name} ne $propal2b)
-	{
-	    print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_CHECK_XLS_FILE_1."[".$Sheet->{Name}." != $propal1 || $propal2]"."\n".$lang::MSG_SSWAP_CHECK_XLS_FILE_2."\n";
-	    $Book -> Close;
-	    return -1;
-	}
-	
+	&common::hideComputingPrompt();	    
 	$Book -> Close;
+
+	print $lang::MSG_SSWAP_GETSTATES_FROM_XLS_MSG1."\n";
+	return (\@matrix, \@states) ;
     }
-    else
+
+
+    ## Check if the XLS file is valid and the one awaited
+    #  The first Sheet name is one of :
+    #   - Matrix__MOD1,NbOjects,Height,Mult,Type : If generated using writeStates_xls
+    #              MOD1 is V, M, S, MS, MULTI
+    #              NbObjects may be -1 if undefined 
+    #              Mult may be -1 if no relevant  
+    #              Type is -1 for Regular Matrix (R for Reduced but not possible currently)
+    #
+    #   - Matrix:MOD2,NbOjects,Height,Mult,Type : If generated using genStates
+    #              MOD2 is A, S, MULTI
+    #              NbObjects may be -1 if undefined 
+    #              Mult may be -1 if no relevant  
+    #              Type is -1 for Regular Matrix and R for Reduced
+    #             
+    sub __check_xls_matrix_file
     {
-	$propal1 = $propal1.$mod.",".$NbObjects.",".$height.",".$mult.",".$type; # writeStates_xls   
+	my $excelfile = $_[0];
+	my $mod = $_[1];
+	my $NbObjects = $_[2];
+	my $height = $_[3];
+	my $mult = $_[4];
+	my $type = $_[5];
 
-	if($mod eq "V" || $mod eq "M")
+	$Win32::OLE::Warn = 3;	# die on errors...    
+	# get already active Excel application or open new
+	# my $Excel = Win32::OLE->GetActiveObject('Excel.Application') 
+	# || Win32::OLE->new('Excel.Application', 'Quit');
+	my $Excel = Win32::OLE->new('Excel.Application', 'Quit');
+	my $Book = $Excel->Workbooks->Open($excelfile);
+	my $Sheet = $Book->Worksheets(1);   
+	my $propal1 = "Matrix__";                # writeStates_xls   
+	my $propal2 = "Matrix=";                 # genStates
+
+	if($type eq '?')
 	{
-	    $propal2=$propal2."A,".$NbObjects.",".$height.",".$mult.",".$type;    
-	}
-	elsif($mod eq "MULTI")
-	{
-	    $propal2=$propal2."MULTI,".$NbObjects.",".$height.",".$mult.",".$type;    
-	}
-	else {
-	    $propal2=$propal2."S,".$NbObjects.",".$height.",".$mult.",".$type;    
-	}
-	
-	if($Sheet->{Name} ne $propal1 && $Sheet->{Name} ne $propal2)
-	{
-	    print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_CHECK_XLS_FILE_1."[".$Sheet->{Name}." != $propal1 || $propal2]"."\n".$lang::MSG_SSWAP_CHECK_XLS_FILE_2."\n";
+	    # Nevermind if it is a Regular or a Reduced Matrix
+	    my $propal1b = "Matrix__";           # writeStates_xls   
+	    my $propal2b = "Matrix=";            # genStates
+
+	    $propal1 = $propal1.$mod.",".$NbObjects.",".$height.",".$mult.","."-1"; # writeStates_xls   
+	    $propal1b = $propal1b.$mod.",".$NbObjects.",".$height.",".$mult.","."-R"; # writeStates_xls   
+
+	    if($mod eq "V" || $mod eq "M")
+	    {
+		$propal2=$propal2."A,".$NbObjects.",".$height.",".$mult.","."-1";    
+		$propal2b=$propal2b."A,".$NbObjects.",".$height.",".$mult.","."R";    
+	    }
+	    elsif($mod eq "MULTI")
+	    {
+		$propal2=$propal2."MULTI,".$NbObjects.",".$height.",".$mult.",".$type;    
+		$propal2b=$propal2b."MULTI,".$NbObjects.",".$height.",".$mult.","."R";    
+	    }
+	    else {
+		$propal2=$propal2."S,".$NbObjects.",".$height.",".$mult.","."-1";    
+		$propal2b=$propal2b."S,".$NbObjects.",".$height.",".$mult.","."R";    
+	    }
+	    
+	    if($Sheet->{Name} ne $propal1 && 
+	       $Sheet->{Name} ne $propal1b && 
+	       $Sheet->{Name} ne $propal2 && 
+	       $Sheet->{Name} ne $propal2b)
+	    {
+		print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_CHECK_XLS_FILE_1."[".$Sheet->{Name}." != $propal1 || $propal2]"."\n".$lang::MSG_SSWAP_CHECK_XLS_FILE_2."\n";
+		$Book -> Close;
+		return -1;
+	    }
+	    
 	    $Book -> Close;
-	    return -1;
 	}
-	
-	$Book -> Close;
-    }
+	else
+	{
+	    $propal1 = $propal1.$mod.",".$NbObjects.",".$height.",".$mult.",".$type; # writeStates_xls   
 
-    return 1;
-}
+	    if($mod eq "V" || $mod eq "M")
+	    {
+		$propal2=$propal2."A,".$NbObjects.",".$height.",".$mult.",".$type;    
+	    }
+	    elsif($mod eq "MULTI")
+	    {
+		$propal2=$propal2."MULTI,".$NbObjects.",".$height.",".$mult.",".$type;    
+	    }
+	    else {
+		$propal2=$propal2."S,".$NbObjects.",".$height.",".$mult.",".$type;    
+	    }
+	    
+	    if($Sheet->{Name} ne $propal1 && $Sheet->{Name} ne $propal2)
+	    {
+		print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_CHECK_XLS_FILE_1."[".$Sheet->{Name}." != $propal1 || $propal2]"."\n".$lang::MSG_SSWAP_CHECK_XLS_FILE_2."\n";
+		$Book -> Close;
+		return -1;
+	    }
+	    
+	    $Book -> Close;
+	}
+
+	return 1;
+    }
 
 }
 else
@@ -28240,7 +28240,7 @@ sub __test_polyrythm_info_gen
 		if(-e $filenameIn)
 		{
 		    my $filenameOut = $conf::RESULTS.'/polyrythms-'.$i.'objects_'.$j.'!'.$k.'.txt';
-		
+		    
 		    open(my $fhin, '<:encoding(UTF-8)', $filenameIn)
 			or die "Could not open file $filenameIn $!";
 		    print "==== polyrythms-".$i.'objects_'.$j.'!'.$k.".txt ===="."\n";
@@ -28396,7 +28396,7 @@ sub __test_polyrythm_mult_list_gen2
 
 }
 
-    
+
 
 #################################################
 #  Generic Test functions 
