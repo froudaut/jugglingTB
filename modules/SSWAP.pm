@@ -63,9 +63,9 @@ our %SSWAP_CMDS =
 	 'genStatesAggr'         => ["$lang::MSG_SSWAP_MENU_GENAGGRSTATES_1","$lang::MSG_SSWAP_MENU_GENAGGRSTATES_2"],
 	 'genDiagProbert'        => ["$lang::MSG_SSWAP_MENU_GENPROBERTDIAG_1","$lang::MSG_SSWAP_MENU_GENPROBERTDIAG_2"],
 	 'genSSPerm'             => ["$lang::MSG_SSWAP_MENU_GENPERMSS_1","$lang::MSG_SSWAP_MENU_GENPERMSS_2"],
-	 #'genPolyrythmOld'       => ["$lang::MSG_SSWAP_MENU_GENPOLYRYTHMOLD_1","$lang::MSG_SSWAP_MENU_GENPOLYRYTHMOLD_2"],
-	 'genPolyrythm'          => ["$lang::MSG_SSWAP_MENU_GENPOLYRYTHM_1","$lang::MSG_SSWAP_MENU_GENPOLYRYTHM_2"],
-	 'genPolyrythmMult'      => ["$lang::MSG_SSWAP_MENU_GENPOLYRYTHMMULT_1","$lang::MSG_SSWAP_MENU_GENPOLYRYTHMMULT_2"],
+	 #'genPolyrhythmOld'       => ["$lang::MSG_SSWAP_MENU_GENPOLYRHYTHMOLD_1","$lang::MSG_SSWAP_MENU_GENPOLYRHYTHMOLD_2"],
+	 'genPolyrhythm'          => ["$lang::MSG_SSWAP_MENU_GENPOLYRHYTHM_1","$lang::MSG_SSWAP_MENU_GENPOLYRHYTHM_2"],
+	 'genPolyrhythmMult'      => ["$lang::MSG_SSWAP_MENU_GENPOLYRHYTHMMULT_1","$lang::MSG_SSWAP_MENU_GENPOLYRHYTHMMULT_2"],
 	 'genSSProbert'          => ["$lang::MSG_SSWAP_MENU_GENPROBERTSS_1","$lang::MSG_SSWAP_MENU_GENPROBERTSS_2"],
 	 'genSSMagic'            => ["$lang::MSG_SSWAP_MENU_GENMAGICSS_1","$lang::MSG_SSWAP_MENU_GENMAGICSS_2"],
 	 'genSSMagicStadler'     => ["$lang::MSG_SSWAP_MENU_GENMAGICSTADLERSS_1","$lang::MSG_SSWAP_MENU_GENMAGICSTADLERSS_2"],
@@ -110,7 +110,7 @@ our %SSWAP_CMDS =
 	 'jdeep'                 => ["$lang::MSG_SSWAP_MENU_JDEEP_1","$lang::MSG_SSWAP_MENU_JDEEP_2"],
 	 'dual'                  => ["$lang::MSG_SSWAP_MENU_DUAL_1","$lang::MSG_SSWAP_MENU_DUAL_2"],
  	 'slideSwitchSync'       => ["$lang::MSG_SSWAP_MENU_SLIDESWITCHSYNC_1","$lang::MSG_SSWAP_MENU_SLIDESWITCHSYNC_2"],
-	 'polyrythmFountain'     => ["$lang::MSG_SSWAP_MENU_POLYRYTHMFOUNTAIN_1","$lang::MSG_SSWAP_MENU_POLYRYTHMFOUNTAIN_2"],
+	 'polyrhythmFountain'     => ["$lang::MSG_SSWAP_MENU_POLYRHYTHMFOUNTAIN_1","$lang::MSG_SSWAP_MENU_POLYRHYTHMFOUNTAIN_2"],
 	 'lowerHeightOnTempo'    => ["$lang::MSG_SSWAP_MENU_LOWERHEIGHTONTEMPO_1","$lang::MSG_SSWAP_MENU_LOWERHEIGHTONTEMPO_2"],
 	 'MHAsyncBasicMap' => ["$lang::MSG_SSWAP_MENU_MHASYNCBASICMAP_1","$lang::MSG_SSWAP_MENU_MHASYNCBASICMAP_2"],
  	 'MHAsyncChangeHSS'     => ["$lang::MSG_SSWAP_MENU_MHASYNCCHANGEHSS_1","$lang::MSG_SSWAP_MENU_MHASYNCCHANGEHSS_2"],
@@ -8815,7 +8815,7 @@ sub genSSProbert
 
 
 # Retun all possible Throws Arrangement for a given period
-sub __genPolyrythmOld_in
+sub __genPolyrhythmOld_in
 {
     my @throws = @{$_[0]};
     my @l = @{$_[1]};
@@ -8853,11 +8853,11 @@ sub __genPolyrythmOld_in
 	&common::hideComputingPrompt();
     }
     
-    &__genPolyrythmOld_in(\@throws,\@res, $nbthrows-1);	
+    &__genPolyrhythmOld_in(\@throws,\@res, $nbthrows-1);	
 }
 
 
-sub genPolyrythmOld
+sub genPolyrhythmOld
 {
     my $nbObjects = $_[0];
     my $right_ratio = $_[1];
@@ -8875,7 +8875,7 @@ sub genPolyrythmOld
 	}
     }
     
-    my $title = '-- POLYRYTHMS SITESWAPS --';
+    my $title = '-- POLYRHYTHMS SITESWAPS --';
     my $color_check = "N";
     my $sym_check = "N";
     my $perm_check = "Y";
@@ -8949,9 +8949,9 @@ sub genPolyrythmOld
 	}
     }
     
-    my @throws_right_l=@{&__genPolyrythmOld_in(\@throws,\@in,$nb_right_throws)};
+    my @throws_right_l=@{&__genPolyrhythmOld_in(\@throws,\@in,$nb_right_throws)};
     @in = ();
-    my @throws_left_l=@{&__genPolyrythmOld_in(\@throws,\@in,$nb_left_throws)};  
+    my @throws_left_l=@{&__genPolyrhythmOld_in(\@throws,\@in,$nb_left_throws)};  
     for(my $i=0; $i < scalar @throws_right_l; $i++)
     {
 	if(scalar @_ >= 5)
@@ -9047,7 +9047,7 @@ sub genPolyrythmOld
 	    print FILE_JML "<line display=\'".$title."\'"."/>\n";	   
 	    print FILE_JML "<line display=\"\"/>\n";	   
 	    print FILE_JML "<line display=\"========================================\""."/>\n";	   
-	    print FILE_JML "<line display=\"$lang::MSG_SSWAP_POLYRYTHM_MSG1"." : ".$right_ratio.':'.$left_ratio."\"/>\n";     
+	    print FILE_JML "<line display=\"$lang::MSG_SSWAP_POLYRHYTHM_MSG1"." : ".$right_ratio.':'.$left_ratio."\"/>\n";     
 	    if ($nbObjects == int($nbObjects)) {
 		print FILE_JML "<line display=\"$lang::MSG_SSWAP_GENERAL2"." : ".$nbObjects."\"/>\n";     
 	    }
@@ -9067,7 +9067,7 @@ sub genPolyrythmOld
 	    open(FILE,"> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ; 
 	    print FILE $title."<BR/>\n";
 	    print FILE "\n================================================================<BR/>\n";	   
-	    print FILE $lang::MSG_SSWAP_POLYRYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."<BR/>\n";     
+	    print FILE $lang::MSG_SSWAP_POLYRHYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."<BR/>\n";     
 	    if ($nbObjects == int($nbObjects)) {
 		print FILE $lang::MSG_SSWAP_GENERAL2." : ".$nbObjects."<BR/>\n";     
 	    }
@@ -9083,7 +9083,7 @@ sub genPolyrythmOld
 	    open(FILE,"> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;   
 	    print FILE $title."\n";
 	    print FILE "\n================================================================\n";	   
-	    print FILE $lang::MSG_SSWAP_POLYRYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."\n";     
+	    print FILE $lang::MSG_SSWAP_POLYRHYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."\n";     
 	    if ($nbObjects == int($nbObjects)) {
 		print FILE $lang::MSG_SSWAP_GENERAL2." : ".$nbObjects."\n";     
 	    }
@@ -9094,7 +9094,7 @@ sub genPolyrythmOld
     } elsif(scalar @_ == 5) {	    
 	print colored [$common::COLOR_RESULT], $title."\n";
 	print colored [$common::COLOR_RESULT], "\n================================================================\n";     
-	print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_POLYRYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."\n";
+	print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_POLYRHYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."\n";
 	if ($nbObjects == int($nbObjects)) {
 	    print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_GENERAL2." : ".$nbObjects."\n";     
 	}
@@ -9117,7 +9117,7 @@ sub genPolyrythmOld
 }
 
 
-sub __genPolyrythm
+sub __genPolyrhythm
 {
     my $max_height = $_[0];
     my $beat = $_[1];
@@ -9300,7 +9300,7 @@ sub __genPolyrythm
 		    my $nsum = $sum -$i -$j;
 		    if($nsum >=0)
 		    {
-			&__genPolyrythm($max_height, $beat+1, $period,
+			&__genPolyrhythm($max_height, $beat+1, $period,
 					\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
 					$nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
 		    }
@@ -9369,7 +9369,7 @@ sub __genPolyrythm
 		    my $nsum = $sum -$i -$j;
 		    if($nsum >=0)
 		    {
-			&__genPolyrythm($max_height, $beat+1, $period,
+			&__genPolyrhythm($max_height, $beat+1, $period,
 					\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
 					$nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
 		    }
@@ -9438,7 +9438,7 @@ sub __genPolyrythm
 		    my $nsum = $sum -$i -$j;
 		    if($nsum >=0)
 		    {
-			&__genPolyrythm($max_height, $beat+1, $period,
+			&__genPolyrhythm($max_height, $beat+1, $period,
 					\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
 					$nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
 		    }
@@ -9508,7 +9508,7 @@ sub __genPolyrythm
 		    my $nsum = $sum -$i -$j;
 		    if($nsum >=0)
 		    {
-			&__genPolyrythm($max_height, $beat+1, $period,
+			&__genPolyrhythm($max_height, $beat+1, $period,
 					\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
 					$nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
 		    }
@@ -9563,7 +9563,7 @@ sub __genPolyrythm
 		my $nsum = $sum -$i;
 		if($nsum >=0)
 		{
-		    &__genPolyrythm($max_height, $beat+1, $period,
+		    &__genPolyrhythm($max_height, $beat+1, $period,
 				    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
 				    $nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
 		}
@@ -9606,7 +9606,7 @@ sub __genPolyrythm
 		my $nsum = $sum -$i;
 		if($nsum >=0)
 		{
-		    &__genPolyrythm($max_height, $beat+1, $period,
+		    &__genPolyrhythm($max_height, $beat+1, $period,
 				    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
 				    $nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
 		}
@@ -9660,7 +9660,7 @@ sub __genPolyrythm
 		my $nsum = $sum -$i;
 		if($nsum >=0)
 		{
-		    &__genPolyrythm($max_height, $beat+1, $period,
+		    &__genPolyrhythm($max_height, $beat+1, $period,
 				    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
 				    $nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
 		}
@@ -9703,7 +9703,7 @@ sub __genPolyrythm
 		my $nsum = $sum -$i;
 		if($nsum >=0)
 		{
-		    &__genPolyrythm($max_height, $beat+1, $period,
+		    &__genPolyrhythm($max_height, $beat+1, $period,
 				    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
 				    $nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
 		}
@@ -9713,14 +9713,14 @@ sub __genPolyrythm
 
     else
     {
-	&__genPolyrythm($max_height, $beat+1, $period,
+	&__genPolyrhythm($max_height, $beat+1, $period,
 			\@map_throw_r, \@map_throw_l, \@map_catch_r, \@map_catch_l,
 			$sum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
     }      
 }
 
 
-sub genPolyrythm
+sub genPolyrhythm
 {
     my $nbObjects = $_[0];
     my $max_height = $_[1];
@@ -9739,7 +9739,7 @@ sub genPolyrythm
 	}
     }
     
-    my $title = '-- POLYRYTHMS SITESWAPS --';
+    my $title = '-- POLYRHYTHMS SITESWAPS --';
     my $color_check = "N";
     my $sym_check = "N";
     my $perm_check = "Y";
@@ -9871,7 +9871,7 @@ sub genPolyrythm
     @map_catch_r = @map_throw_r;
     @map_catch_l = @map_throw_l;
 
-    &__genPolyrythm($max_height, $beat, $period, \@map_throw_r,\@map_throw_l, \@map_catch_r, \@map_catch_l,
+    &__genPolyrhythm($max_height, $beat, $period, \@map_throw_r,\@map_throw_l, \@map_catch_r, \@map_catch_l,
 		    $expected_sum, \@res, $direct_print, \@exclude_throws, $double_tempo_enable);        
 
     if (scalar @_ >= 7 && $_[6] ne "-1") {	    	    	    	    
@@ -9887,7 +9887,7 @@ sub genPolyrythm
 	    print FILE_JML "<line display=\'".$title."\'"."/>\n";	   
 	    print FILE_JML "<line display=\"\"/>\n";	   
 	    print FILE_JML "<line display=\"========================================\""."/>\n";	   
-	    print FILE_JML "<line display=\"$lang::MSG_SSWAP_POLYRYTHM_MSG1"." : ".$right_ratio.':'.$left_ratio."\"/>\n";     
+	    print FILE_JML "<line display=\"$lang::MSG_SSWAP_POLYRHYTHM_MSG1"." : ".$right_ratio.':'.$left_ratio."\"/>\n";     
 	    if ($nbObjects == int($nbObjects)) {
 		print FILE_JML "<line display=\"$lang::MSG_SSWAP_GENERAL2"." : ".$nbObjects."\"/>\n";     
 	    }
@@ -9907,7 +9907,7 @@ sub genPolyrythm
 	    open(FILE,"> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ; 
 	    print FILE $title."<BR/>\n";
 	    print FILE "\n================================================================<BR/>\n";	   
-	    print FILE $lang::MSG_SSWAP_POLYRYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."<BR/>\n";     
+	    print FILE $lang::MSG_SSWAP_POLYRHYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."<BR/>\n";     
 	    if ($nbObjects == int($nbObjects)) {
 		print FILE $lang::MSG_SSWAP_GENERAL2." : ".$nbObjects."<BR/>\n";     
 	    }
@@ -9935,7 +9935,7 @@ sub genPolyrythm
 	    open(FILE,"> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;   
 	    print FILE $title."\n";
 	    print FILE "\n================================================================\n";	   
-	    print FILE $lang::MSG_SSWAP_POLYRYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."\n";     
+	    print FILE $lang::MSG_SSWAP_POLYRHYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."\n";     
 	    if ($nbObjects == int($nbObjects)) {
 		print FILE $lang::MSG_SSWAP_GENERAL2." : ".$nbObjects."\n";     
 	    }
@@ -9946,7 +9946,7 @@ sub genPolyrythm
     } elsif(scalar @_ == 6) {	    
 	print colored [$common::COLOR_RESULT], $title."\n";
 	print colored [$common::COLOR_RESULT], "\n================================================================\n";     
-	print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_POLYRYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."\n";
+	print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_POLYRHYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."\n";
 	if ($nbObjects == int($nbObjects)) {
 	    print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_GENERAL2." : ".$nbObjects."\n";     
 	}
@@ -9969,8 +9969,8 @@ sub genPolyrythm
 
 
 
-# Polyrythm Generation taking into account Multiplex. This is a separate function to keep speed for the one without multiplex
-sub __genPolyrythmMult
+# Polyrhythm Generation taking into account Multiplex. This is a separate function to keep speed for the one without multiplex
+sub __genPolyrhythmMult
 {
     my $max_height = $_[0];
     my $beat = $_[1];
@@ -10291,7 +10291,7 @@ sub __genPolyrythmMult
 		    {
 			if($gonextbeat == 1)
 			{
-			    &__genPolyrythmMult($max_height, $beat+1, $period,
+			    &__genPolyrhythmMult($max_height, $beat+1, $period,
 						\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
 						\@map_catch_r_tmp, \@map_catch_l_tmp,
 						$nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
@@ -10299,7 +10299,7 @@ sub __genPolyrythmMult
 			}
 			else
 			{
-			    &__genPolyrythmMult($max_height, $beat, $period,
+			    &__genPolyrhythmMult($max_height, $beat, $period,
 						\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
 						\@map_catch_r_tmp, \@map_catch_l_tmp,
 						$nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
@@ -10383,7 +10383,7 @@ sub __genPolyrythmMult
 		    {
 			if($gonextbeat == 1)
 			{
-			    &__genPolyrythmMult($max_height, $beat+1, $period,
+			    &__genPolyrhythmMult($max_height, $beat+1, $period,
 						\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
 						\@map_catch_r_tmp, \@map_catch_l_tmp,
 						$nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
@@ -10391,7 +10391,7 @@ sub __genPolyrythmMult
 			}
 			else
 			{
-			    &__genPolyrythmMult($max_height, $beat, $period,
+			    &__genPolyrhythmMult($max_height, $beat, $period,
 						\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
 						\@map_catch_r_tmp, \@map_catch_l_tmp,
 						$nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
@@ -10476,7 +10476,7 @@ sub __genPolyrythmMult
 		    {
 			if($gonextbeat == 1)
 			{
-			    &__genPolyrythmMult($max_height, $beat+1, $period,
+			    &__genPolyrhythmMult($max_height, $beat+1, $period,
 						\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
 						\@map_catch_r_tmp, \@map_catch_l_tmp,
 						$nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
@@ -10484,7 +10484,7 @@ sub __genPolyrythmMult
 			}
 			else
 			{
-			    &__genPolyrythmMult($max_height, $beat, $period,
+			    &__genPolyrhythmMult($max_height, $beat, $period,
 						\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
 						\@map_catch_r_tmp, \@map_catch_l_tmp,
 						$nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
@@ -10569,7 +10569,7 @@ sub __genPolyrythmMult
 		    {
 			if($gonextbeat == 1)
 			{
-			    &__genPolyrythmMult($max_height, $beat+1, $period,
+			    &__genPolyrhythmMult($max_height, $beat+1, $period,
 						\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
 						\@map_catch_r_tmp, \@map_catch_l_tmp,
 						$nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
@@ -10577,7 +10577,7 @@ sub __genPolyrythmMult
 			}
 			else
 			{
-			    &__genPolyrythmMult($max_height, $beat, $period,
+			    &__genPolyrhythmMult($max_height, $beat, $period,
 						\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
 						\@map_catch_r_tmp, \@map_catch_l_tmp,
 						$nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
@@ -10645,7 +10645,7 @@ sub __genPolyrythmMult
 		{
 		    if($gonextbeat == 1)
 		    {
-			&__genPolyrythmMult($max_height, $beat+1, $period,
+			&__genPolyrhythmMult($max_height, $beat+1, $period,
 					    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
 					    \@map_catch_r_tmp, \@map_catch_l_tmp,
 					    $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
@@ -10653,7 +10653,7 @@ sub __genPolyrythmMult
 		    }
 		    else
 		    {
-			&__genPolyrythmMult($max_height, $beat, $period,
+			&__genPolyrhythmMult($max_height, $beat, $period,
 					    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
 					    \@map_catch_r_tmp, \@map_catch_l_tmp,
 					    $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
@@ -10709,7 +10709,7 @@ sub __genPolyrythmMult
 		{
 		    if($gonextbeat == 1)
 		    {
-			&__genPolyrythmMult($max_height, $beat+1, $period,
+			&__genPolyrhythmMult($max_height, $beat+1, $period,
 					    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
 					    \@map_catch_r_tmp, \@map_catch_l_tmp,
 					    $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
@@ -10717,7 +10717,7 @@ sub __genPolyrythmMult
 		    }
 		    else
 		    {
-			&__genPolyrythmMult($max_height, $beat, $period,
+			&__genPolyrhythmMult($max_height, $beat, $period,
 					    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
 					    \@map_catch_r_tmp, \@map_catch_l_tmp,
 					    $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
@@ -10786,7 +10786,7 @@ sub __genPolyrythmMult
 		{
 		    if($gonextbeat == 1)
 		    {
-			&__genPolyrythmMult($max_height, $beat+1, $period,
+			&__genPolyrhythmMult($max_height, $beat+1, $period,
 					    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
 					    \@map_catch_r_tmp, \@map_catch_l_tmp,
 					    $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
@@ -10794,7 +10794,7 @@ sub __genPolyrythmMult
 		    }
 		    else
 		    {
-			&__genPolyrythmMult($max_height, $beat, $period,
+			&__genPolyrhythmMult($max_height, $beat, $period,
 					    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
 					    \@map_catch_r_tmp, \@map_catch_l_tmp,
 					    $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
@@ -10850,7 +10850,7 @@ sub __genPolyrythmMult
 		{
 		    if($gonextbeat == 1)
 		    {
-			&__genPolyrythmMult($max_height, $beat+1, $period,
+			&__genPolyrhythmMult($max_height, $beat+1, $period,
 					    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
 					    \@map_catch_r_tmp, \@map_catch_l_tmp,
 					    $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
@@ -10858,7 +10858,7 @@ sub __genPolyrythmMult
 		    }
 		    else
 		    {
-			&__genPolyrythmMult($max_height, $beat, $period,
+			&__genPolyrhythmMult($max_height, $beat, $period,
 					    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
 					    \@map_catch_r_tmp, \@map_catch_l_tmp,
 					    $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
@@ -10871,14 +10871,14 @@ sub __genPolyrythmMult
 
     else
     {
-	&__genPolyrythmMult($max_height, $beat+1, $period,
+	&__genPolyrhythmMult($max_height, $beat+1, $period,
 			    \@map_throw_r, \@map_throw_l, \@map_cpt_throw_r, \@map_cpt_throw_l, \@map_catch_r, \@map_catch_l,
 			    $sum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
     }      
 }
 
 
-sub genPolyrythmMult
+sub genPolyrhythmMult
 {
     my $nbObjects = $_[0];
     my $max_height = $_[1];
@@ -10899,7 +10899,7 @@ sub genPolyrythmMult
 	}
     }
     
-    my $title = '-- POLYRYTHMS SITESWAPS WITH MULTIPLEX --';
+    my $title = '-- POLYRHYTHMS SITESWAPS WITH MULTIPLEX --';
     my $color_check = "N";
     my $sym_check = "N";
     my $perm_check = "Y";
@@ -11046,7 +11046,7 @@ sub genPolyrythmMult
 	}	
     }
     
-    &__genPolyrythmMult($max_height, $beat, $period, \@map_throw_r,\@map_throw_l, \@map_cpt_throw_r, \@map_cpt_throw_l, \@map_catch_r, \@map_catch_l,
+    &__genPolyrhythmMult($max_height, $beat, $period, \@map_throw_r,\@map_throw_l, \@map_cpt_throw_r, \@map_cpt_throw_l, \@map_catch_r, \@map_catch_l,
 			$expected_sum, \@res, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);        
 
     if (scalar @_ >= 8 && $_[7] ne "-1") {	    	    	    	    
@@ -11062,7 +11062,7 @@ sub genPolyrythmMult
 	    print FILE_JML "<line display=\'".$title."\'"."/>\n";	   
 	    print FILE_JML "<line display=\"\"/>\n";	   
 	    print FILE_JML "<line display=\"========================================\""."/>\n";	   
-	    print FILE_JML "<line display=\"$lang::MSG_SSWAP_POLYRYTHM_MSG1"." : ".$right_ratio.':'.$left_ratio."\"/>\n";     
+	    print FILE_JML "<line display=\"$lang::MSG_SSWAP_POLYRHYTHM_MSG1"." : ".$right_ratio.':'.$left_ratio."\"/>\n";     
 	    if ($nbObjects == int($nbObjects)) {
 		print FILE_JML "<line display=\"$lang::MSG_SSWAP_GENERAL2"." : ".$nbObjects."\"/>\n";     
 	    }
@@ -11082,7 +11082,7 @@ sub genPolyrythmMult
 	    open(FILE,"> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ; 
 	    print FILE $title."<BR/>\n";
 	    print FILE "\n================================================================<BR/>\n";	   
-	    print FILE $lang::MSG_SSWAP_POLYRYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."<BR/>\n";     
+	    print FILE $lang::MSG_SSWAP_POLYRHYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."<BR/>\n";     
 	    if ($nbObjects == int($nbObjects)) {
 		print FILE $lang::MSG_SSWAP_GENERAL2." : ".$nbObjects."<BR/>\n";     
 	    }
@@ -11110,7 +11110,7 @@ sub genPolyrythmMult
 	    open(FILE,"> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;   
 	    print FILE $title."\n";
 	    print FILE "\n================================================================\n";	   
-	    print FILE $lang::MSG_SSWAP_POLYRYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."\n";     
+	    print FILE $lang::MSG_SSWAP_POLYRHYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."\n";     
 	    if ($nbObjects == int($nbObjects)) {
 		print FILE $lang::MSG_SSWAP_GENERAL2." : ".$nbObjects."\n";     
 	    }
@@ -11121,7 +11121,7 @@ sub genPolyrythmMult
     } elsif(scalar @_ == 7) {	    
 	print colored [$common::COLOR_RESULT], $title."\n";
 	print colored [$common::COLOR_RESULT], "\n================================================================\n";     
-	print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_POLYRYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."\n";
+	print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_POLYRHYTHM_MSG1." : ".$right_ratio.':'.$left_ratio."\n";
 	if ($nbObjects == int($nbObjects)) {
 	    print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_GENERAL2." : ".$nbObjects."\n";     
 	}
@@ -23373,7 +23373,7 @@ sub genSSPrime
 }
 
 
-sub polyrythmFountain
+sub polyrhythmFountain
 {
     my $pwd = cwd();
     if ($common::OS eq "MSWin32") {
@@ -28512,11 +28512,11 @@ sub __test_jonglage_net_list_slide
 
 
 #################################################
-#  Tests functions to generate Polyrythm from 3:2 Lists for 4 Objects of Sylvain Garnavault and HTML Results Generation
+#  Tests functions to generate Polyrhythm from 3:2 Lists for 4 Objects of Sylvain Garnavault and HTML Results Generation
 #################################################
-sub __test_polyrythm_list_3_2
+sub __test_polyrhythm_list_3_2
 {    
-    my $f="test_polyrythm_list_3-2.html";
+    my $f="test_polyrhythm_list_3-2.html";
     my $cpt = 1;
     my $pics="pics_png.png";
     my $pics_true="pics_green_tick.png";
@@ -28525,20 +28525,20 @@ sub __test_polyrythm_list_3_2
     copy("./data/pics/".$pics_true,$conf::RESULTS."/".$pics_true);
     copy("./data/pics/".$pics_false,$conf::RESULTS."/".$pics_false);
 
-    &common::gen_HTML_head1($f,"Polyrythms Lists 3:2 for 4 Objects - Exemples");
+    &common::gen_HTML_head1($f,"Polyrhythms Lists 3:2 for 4 Objects - Exemples");
     open(HTML, ">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;	
     print HTML "\n";
     print HTML "<BODY>\n";
-    print HTML "<p>&nbsp;</p><p>&nbsp;</p><h1>Polyrythms Lists 3:2 for 4 Objects - Exemples</h1><p>&nbsp;</p>\n";
-    print HTML "<p>Here are a few Lists for 3:2 Polyrythms with 4 objects, generated by Sylvain Garnavault in MHN Notation and corresponding MultiSync Notation.<br/>\n";
+    print HTML "<p>&nbsp;</p><p>&nbsp;</p><h1>Polyrhythms Lists 3:2 for 4 Objects - Exemples</h1><p>&nbsp;</p>\n";
+    print HTML "<p>Here are a few Lists for 3:2 Polyrhythms with 4 objects, generated by Sylvain Garnavault in MHN Notation and corresponding MultiSync Notation.<br/>\n";
     print HTML "Ladder Diagrams and JML files for JugglingLab have been generated by a few scripts I developed for my own needs. You just have to load JML in JugglingLab to view Patterns Lists.</p>";
     
     print HTML "\n\n\n";    
     
     for(my $l=7;$l <= 7; $l++)
     {
-	my $flist="test_polyrythm_list_3-2_list".$l.".txt";
-	my $fjml="test_polyrythm_list_3-2_list".$l;
+	my $flist="test_polyrhythm_list_3-2_list".$l.".txt";
+	my $fjml="test_polyrhythm_list_3-2_list".$l;
 	open(FH, '>', "$conf::TMPDIR/$flist") or die ("$lang::MSG_GENERAL_ERR1 <$conf::TMPDIR/$flist> $lang::MSG_GENERAL_ERR1b") ;
 
 	print HTML "<p>&nbsp;</p><p>&nbsp;</p><h2>== List $l ==</h2><p>&nbsp;</p>\n";
@@ -28610,7 +28610,7 @@ sub __test_polyrythm_list_3_2
 	
 	print HTML "</table></p>"."\n";
 	close(FH); 
-	&printSSList('',"-t \"Polyrythms 3:2 with 4 Objects - List $l\"","JML:".$fjml,"$conf::TMPDIR/$flist");
+	&printSSList('',"-t \"Polyrhythms 3:2 with 4 Objects - List $l\"","JML:".$fjml,"$conf::TMPDIR/$flist");
 	print HTML "<p>&nbsp;</p><p>&nbsp;&nbsp;<strong>JML File :</strong> <a href=\"".$fjml.".jml\" target=\"_blank\"><img src=\"".$pics."\" alt=\"".$fjml.".jml\" width=\"25\"/></a></p>"."\n";
 	if ($SSWAP_DEBUG <= 0) {
 	    unlink "$conf::TMPDIR\\$flist";
@@ -28628,11 +28628,11 @@ sub __test_polyrythm_list_3_2
 
 
 #################################################
-#  Test function to generate extended info from Polyrythms Lists
+#  Test function to generate extended info from Polyrhythms Lists
 #################################################
 
 
-sub __test_polyrythm_mult_info_gen
+sub __test_polyrhythm_mult_info_gen
 {
     my $dir = $_[0];
     my $mult = $_[1];
@@ -28641,14 +28641,14 @@ sub __test_polyrythm_mult_info_gen
 	for(my $j=1; $j <= 5; $j++) {
 	    for(my $k=1; $k <= 5; $k++) {
 
-		my $filenameIn = $dir.'/polyrythms-'.$i.'objects_mult'.$mult.'_'.$j.'!'.$k.'.txt';
+		my $filenameIn = $dir.'/polyrhythms-'.$i.'objects_mult'.$mult.'_'.$j.'!'.$k.'.txt';
 		if(-e $filenameIn)
 		{
-		    my $filenameOut = $conf::RESULTS.'/polyrythms-'.$i.'objects_mult'.$mult.'_'.$j.'!'.$k.'.txt';
+		    my $filenameOut = $conf::RESULTS.'/polyrhythms-'.$i.'objects_mult'.$mult.'_'.$j.'!'.$k.'.txt';
 		    
 		    open(my $fhin, '<:encoding(UTF-8)', $filenameIn)
 			or die "Could not open file $filenameIn $!";
-		    print "==== polyrythms-".$i.'objects_mult'.$mult.'_'.$j.'!'.$k.".txt ===="."\n";
+		    print "==== polyrhythms-".$i.'objects_mult'.$mult.'_'.$j.'!'.$k.".txt ===="."\n";
 		    
 		    open(my $fhout, '>:encoding(UTF-8)', $filenameOut)
 			or die "Could not open file $filenameOut $!";
@@ -28681,21 +28681,21 @@ sub __test_polyrythm_mult_info_gen
 
 
 #################################################
-#  Test function to generate Polyrythms Lists 
+#  Test function to generate Polyrhythms Lists 
 #################################################
-sub __test_polyrythm_list_gen
+sub __test_polyrhythm_list_gen
 {
     for(my $i=1; $i <= 5; $i++) {
 	for(my $d=1; $d <= 5; $d++) {
 	    for(my $g=1; $g <= 5; $g++) {
-		my $filename = 'polyrythms-'.$i.'objects_'.$d.'!'.$g.'.txt';
+		my $filename = 'polyrhythms-'.$i.'objects_'.$d.'!'.$g.'.txt';
 		print "==== ".$filename.' ===='."\n";
 		#if($d == 1 || $g == 1)
 		#{
-		#    &genPolyrythm($i,'f',$d,$g,'','-J Y',$filename);
+		#    &genPolyrhythm($i,'f',$d,$g,'','-J Y',$filename);
 		#}
 		#else {
-		&genPolyrythm($i,'f',$d,$g,'','',$filename);
+		&genPolyrhythm($i,'f',$d,$g,'','',$filename);
 		#}		
 	    }
 	}
@@ -28704,22 +28704,22 @@ sub __test_polyrythm_list_gen
 
 
 #################################################
-#  Test function to generate Multiplexes Polyrythms Lists 
+#  Test function to generate Multiplexes Polyrhythms Lists 
 #################################################
-sub __test_polyrythm_mult_list_gen
+sub __test_polyrhythm_mult_list_gen
 {
     for(my $i=1; $i <= 5; $i++) {
 	for(my $j=2; $j <= 2; $j++) {
 	    for(my $d=1; $d <= 5; $d++) {
 		for(my $g=1; $g <= 5; $g++) {
-		    my $filename = 'polyrythms-'.$i.'objects_mult'.$j.'_'.$d.'!'.$g.'.txt';
+		    my $filename = 'polyrhythms-'.$i.'objects_mult'.$j.'_'.$d.'!'.$g.'.txt';
 		    print "==== ".$filename.' ===='."\n";
 		    #if($d == 1 || $g == 1)
 		    #{
-		    #     &genPolyrythmMult($i,'f',$j,$d,$g,'','-J Y',$filename);
+		    #     &genPolyrhythmMult($i,'f',$j,$d,$g,'','-J Y',$filename);
 		    #}
 		    #else {
-		    &genPolyrythmMult($i,'f',$j,$d,$g,'','',$filename);
+		    &genPolyrhythmMult($i,'f',$j,$d,$g,'','',$filename);
 		    #}		
 		}
 	    }

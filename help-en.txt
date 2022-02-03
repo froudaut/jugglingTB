@@ -462,7 +462,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       issue an Excel file with extension .xlsx 
 
 
-  - genPolyrythm :            Polyrythms Generation. 
+  - genPolyrhythm :            Polyrhythms Generation. 
       Parameters : 
       
       - <int> : Number of objects. 
@@ -512,7 +512,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       
       	-u <y|n> : Prime Only (Default:n). 
       
-      	-J <y|n> : Double the Tempo for polyrythms 1:M mainly to avoid
+      	-J <y|n> : Double the Tempo for polyrhythms 1:M mainly to avoid
       squeezes (Default:n). 
       
       - ["file"] Optional, file to write results in. 
@@ -527,7 +527,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       related JML Files. 
 
 
-  - genPolyrythmMult :        Polyrythms Generation with
+  - genPolyrhythmMult :        Polyrhythms Generation with
                               Multiplexes. 
       Parameters : 
       
@@ -579,7 +579,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       
       	-u <y|n> : Prime Only (Default:n). 
       
-      	-J <y|n> : Double the Tempo for polyrythms 1:M mainly to avoid
+      	-J <y|n> : Double the Tempo for polhyrythms 1:M mainly to avoid
       squeezes (Default:n). 
       
       - ["file"] Optional, file to write results in. 
@@ -1768,7 +1768,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
   - lowerHeightOnTempo :      Siteswaps transformation for lower
                               throws, keeping the Tempo of throws
                               but adding extra Hold Times. 
-      Interesting to simplify Polyrythms. 
+      Interesting to simplify Polyrhythms. 
       
       Parameters : 
       
@@ -1790,7 +1790,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       (Default:n). 
 
 
-  - polyrythmFountain :       Polyrythmic Fountain Tool from Josh
+  - polyrhythmFountain :       Polyrhythmic Fountain Tool from Josh
                               Mermelstein. 
       Parameters : 
       

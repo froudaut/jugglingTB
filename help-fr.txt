@@ -1489,7 +1489,7 @@ Differents parametres de configuration peuvent egalement etre positionnes dans <
       genere un fichier Excel en y ajoutant l'extension .xlsx 
 
 
-  - genPolyrythm :            Generation de Polyrythmes. 
+  - genPolyrhythm :            Generation de Polyrythmes. 
       Parametres : 
       
       - <int> : Nombre d'objets. 
@@ -1557,7 +1557,7 @@ Differents parametres de configuration peuvent egalement etre positionnes dans <
       		hauteurs et les fichiers JML associes. 
 
 
-  - genPolyrythmMult :        Generation de Polyrythmes avec
+  - genPolyrhythmMult :        Generation de Polyrythmes avec
                               Multiplexes. 
       Parametres : 
       
@@ -2887,7 +2887,7 @@ Differents parametres de configuration peuvent egalement etre positionnes dans <
       (Defaut:n) 
 
 
-  - polyrythmFountain :       Outil Fontaine Polyrythmique de
+  - polyrhythmFountain :       Outil Fontaine Polyrythmique de
                               Josh Mermelstein. 
       Parametres : 
       

@@ -27,7 +27,7 @@ For my personal needs I added others tools:
 - PowerJuggler from Marco Tarini
 - Poï Flowers from David Lyons
 - realsim from Pedro Teodoro
-- Polyrythm-Fountain from Josh Mermelstein
+- Polyrhythm-Fountain from Josh Mermelstein
 	      
 All of them may be launched from jugglingTB
 
