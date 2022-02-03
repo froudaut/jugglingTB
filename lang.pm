@@ -6,7 +6,7 @@
 ## lang.pm   -  language package for jugglingTB                             ##
 ##                                                                          ##
 ##                                                                          ##
-## Copyright (C) 2008-2021  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
+## Copyright (C) 2008-2022  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
 ##                                                                          ##
 ##                                                                          ##
 ## This program is free software; you can redistribute it and/or modify it  ##
@@ -28,6 +28,8 @@
 #      \x{e0} : à
 #      \x{ea} : ê
 #      \x{e7} : ç
+#      \x{ef} : ï
+
 #).
 
 package lang;
@@ -385,7 +387,7 @@ sub initLang
 	our $MSG_SSWAP_MENU_ISREVERSIBLE_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap \x{e0} tester.\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher.";    
 	our $MSG_SSWAP_MENU_ISPALINDROME_1 = "Teste si un Siteswap est un Palindrome.";
 	our $MSG_SSWAP_MENU_ISPALINDROME_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap \x{e0} tester.\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher.";    
-	our $MSG_SSWAP_MENU_ISSQUEEZE_1 = "Teste si un Siteswap Multiplexe, Synchrone Multiplexe ou Multisynchrone est un Squeeze.";
+	our $MSG_SSWAP_MENU_ISSQUEEZE_1 = "Teste si un Siteswap Multiplexe, Synchrone Multiplexe ou MultiSynchrone est un Squeeze.";
 	our $MSG_SSWAP_MENU_ISSQUEEZE_2 = "Lancers de m\x{ea}me hauteur et tenue en main ne sont pas consid\x{e9}r\x{e9}s.\n\nParam\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap \x{e0} tester.\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher.";    
 	our $MSG_SSWAP_MENU_ISSCRAMBLABLE_1 = "Teste si un Siteswap est Scramblable.";
 	our $MSG_SSWAP_MENU_ISSCRAMBLABLE_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap \x{e0} tester (V,M,S ou MS).\n\- [\"options\"] : Diff\x{e9}rentes options \-[k|l|v]:\n\t\-k <y|n> : option pour Siteswaps S et MS: pour les Siteswaps sym\x{e9}triques finissant par *, le statut Scramblable est consid\x{e9}r\x{e9} uniquement sur la premi\x{e8}re portion. (D\x{e9}faut:y).\n\t\-l <y|n> : option pour limiter la p\x{e9}riode des Siteswaps pour \x{e9}viter de saturer M\x{e9}moire/CPU (D\x{e9}faut:y).\n\t\-v <int> : P\x{e9}riode Maximum \x{e0} consid\x{e9}rer (D\x{e9}faut:8).\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher.";    
@@ -403,6 +405,11 @@ sub initLang
 	our $MSG_SSWAP_MENU_SLIDESWITCHSYNC_1 = "Donne les Siteswaps associ\x{e9}s en changeant la Synchronisation.";
 	our $MSG_SSWAP_MENU_SLIDESWITCHSYNC_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap.\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher.";
 
+	our $MSG_SSWAP_MENU_MHASYNCBASICMAP_1 = "Cartographie des types de Siteswaps Multi-Mains Asynchrone de Base, nombre Mains x Objets.";
+	our $MSG_SSWAP_MENU_MHASYNCBASICMAP_2 = "Param\x{e8}tres :\n\n\- [int] : Nombre Max de Mains (D\x{e9}faut:15).\n\n\- [int] : Nombre Max d'Objets (D\x{e9}faut:15).";
+	our $MSG_SSWAP_MENU_MHASYNCCHANGEHSS_1 = "Donne le Siteswap obtenu en changeant l'HSS \x{e0} 2 mains mais en conservant les Mains pour les throws et catchs [Exp\x{e9}rimental].";
+	our $MSG_SSWAP_MENU_MHASYNCCHANGEHSS_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap Asynchrone.\n\n\- <hss> : Hand Siteswap Initial.\n\n\- <hss> : Hand Siteswap Final.";
+	    
 	our $MSG_SSWAP_MENU_POLYRYTHMFOUNTAIN_1 = "Outil Fontaine Polyrythmique de Josh Mermelstein.";
 	our $MSG_SSWAP_MENU_POLYRYTHMFOUNTAIN_2 = "Param\x{e8}tres :\n\n\- Aucun.";
 
@@ -446,8 +453,8 @@ sub initLang
 	our $MSG_SSWAP_ISVALID_MSG1b = "Contient des R\x{e9}ceptions Simultan\x{e9}es en Main Gauche.\n";
 	our $MSG_SSWAP_ISVALID_MSG2 = "Contient des Lancers en grappes de m\x{ea}me valeur\n";
 	our $MSG_SSWAP_ISVALID_MSG3 = "Vrai Multiplexes Uniquement\n";
-	our $MSG_SSWAP_ISVALID_MSG4 = "Multisync R\x{e9}duit : ";	
-	our $MSG_SSWAP_ISVALID_MSG4b = "Multisync Etendu : ";	
+	our $MSG_SSWAP_ISVALID_MSG4 = "MultiSync R\x{e9}duit : ";	
+	our $MSG_SSWAP_ISVALID_MSG4b = "MultiSync Etendu : ";	
 	our $MSG_SSWAP_ISVALID_MSG5a = "Multiplexe";
 	our $MSG_SSWAP_ISVALID_MSG5b = "et Squeeze";
 	our $MSG_SSWAP_ISVALID_MSG5c = "ne correspondent pas pour : ";
@@ -614,6 +621,8 @@ sub initLang
 	our $MSG_SPYRO_MENU_ANIMATE_2 = "Param\x{e8}tres :\n\n\- Aucun ou optionnellement le port du serveur HTTP.";
 	our $MSG_SPYRO_MENU_STAFFSIMMCP_1 = "Lance le Simulateur de Staffs de MCP.";
 	our $MSG_SPYRO_MENU_STAFFSIMMCP_2 = "Param\x{e8}tres :\n\n\- Aucun.";
+	our $MSG_SPYRO_MENU_POIFLOWERS_1 = "Lance le Simulateur de Po\x{ef} de David Lyons.";
+	our $MSG_SPYRO_MENU_POIFLOWERS_2 = "Param\x{e8}tres :\n\n\- Aucun.";
 
 
 	################################################"
@@ -971,7 +980,7 @@ sub initLang
 	our $MSG_SSWAP_MENU_ISREVERSIBLE_2 = "Parameters :\n\n\- <\"siteswap\"> : Siteswap To check.\n\- [\-1] Optional, return the result, but do not print it.";
 	our $MSG_SSWAP_MENU_ISPALINDROME_1 = "Check if a given Siteswap is a Palindrome.";
 	our $MSG_SSWAP_MENU_ISPALINDROME_2 = "Parameters :\n\n\- <\"siteswap\"> : Siteswap To check.\n\- [\-1] Optional, return the result, but do not print it.";
-	our $MSG_SSWAP_MENU_ISSQUEEZE_1 = "Check if a Multiplex, Synchronous Multiplex or Multisynchronous is a Squeeze.";
+	our $MSG_SSWAP_MENU_ISSQUEEZE_1 = "Check if a Multiplex, Synchronous Multiplex or MultiSynchronous is a Squeeze.";
 	our $MSG_SSWAP_MENU_ISSQUEEZE_2 = "Thows of same height and holds are not considered.\n\nParameters :\n\n\- <\"siteswap\"> : Siteswap To check.\n\- [\-1] Optional, return the result, but do not print it.";	
 	our $MSG_SSWAP_MENU_ISSCRAMBLABLE_1 = "Check if a given Siteswap is Scramblable.";
 	our $MSG_SSWAP_MENU_ISSCRAMBLABLE_2 = "Parameters :\n\n\- <\"siteswap\"> : Siteswap To check (V,M,S or MS).\n\- [\"options\"] : Several options among [k|l|v]:\n\t\-k <y|n> : option for Siteswaps S and MS: for symetric Siteswaps ending with *, the Scramblable status is considered only on the first part. (Default:y).\n\t\-l <y|n> : option to limit the siteswap Period to avoid Memory/CPU exhausting (Default:y).\n\t\-v <int> : Maximum Period to consider (Default:8).\n\- [\-1] Optional, return the result, but do not print it (Default:y).";	
@@ -1024,6 +1033,11 @@ sub initLang
 	our $MSG_SSWAP_MENU_POLYRYTHMFOUNTAIN_1 = "Polyrythmic Fountain Tool from Josh Mermelstein.";
 	our $MSG_SSWAP_MENU_POLYRYTHMFOUNTAIN_2 = "Parameters :\n\n\- None.";
 
+	our $MSG_SSWAP_MENU_MHASYNCBASICMAP_1 = "Map of Asynchronous MultiHand Siteswaps Basic types, Hands x Objects number.";
+	our $MSG_SSWAP_MENU_MHASYNCBASICMAP_2 = "Parameters :\n\n\- [int] : Max number of Hands (Default:15).\n\n\- [int] : Max number of Objects (Default:15).";
+	our $MSG_SSWAP_MENU_MHASYNCCHANGEHSS_1 = "Give Siteswap get by swapping hands (HSS with 2 hands) but keeping throw and catch hands. [Experimental]";
+	our $MSG_SSWAP_MENU_MHASYNCCHANGEHSS_2 = "Parameters :\n\n\- <\"siteswap\"> : Asynchronous Siteswap.\n\n\- <hss> : Initial Hand Siteswap.\n\n\- <hss> : Ending Hand Siteswap.";
+	
 	our $MSG_SSWAP_MENU_LOWERHEIGHTONTEMPO_1 = "Siteswaps transformation for lower throws, keeping the Tempo of throws but adding extra Hold Times.";
 	our $MSG_SSWAP_MENU_LOWERHEIGHTONTEMPO_2 = "Interesting to simplify Polyrythms.\n\nParameters :\n\n\- <\"siteswap\"> : Siteswap to adapt.\n\n\- [\"options\"] Several options \-[f|j|m] described hereafter:\n\t\-f <int> : Number of Minimum Free Beats during transformation between two consecutive throws (Default:1). As the object is catch a small time before being throwed, with a Dwell time around 1 in general a lower value implies Squeezes.\n\t\-j <y|n> : JugglingLab Adaptation. JugglingLab only render Hold Times for throws 1x or 2. It then convert Hold Times with greater values.\n\t\-m <int> : Minimum value for throw on same hand after transformation in order to avoid for example a transformation of throw into hold (Default:3).\n\n[\-1] Optional, return the result, but do not print it (Default:n).";
 	
@@ -1068,8 +1082,8 @@ sub initLang
 	our $MSG_SSWAP_ISVALID_MSG1b = "Contains Simultaneous Catches in Left Hand.\n";
 	our $MSG_SSWAP_ISVALID_MSG2 = "Contains Clustered Multiplex(es) Throws\n";
 	our $MSG_SSWAP_ISVALID_MSG3 = "True Multiplexing Only\n";	
-	our $MSG_SSWAP_ISVALID_MSG4 = "Multisync Reduced : ";	
-	our $MSG_SSWAP_ISVALID_MSG4b = "Multisync Extended : ";	
+	our $MSG_SSWAP_ISVALID_MSG4 = "MultiSync Reduced : ";	
+	our $MSG_SSWAP_ISVALID_MSG4b = "MultiSync Extended : ";	
 	our $MSG_SSWAP_ISVALID_MSG5a = "Multiplex";
 	our $MSG_SSWAP_ISVALID_MSG5b = "and Squeeze";
 	our $MSG_SSWAP_ISVALID_MSG5c = "does not correspond for : ";
@@ -1234,6 +1248,8 @@ sub initLang
 	our $MSG_SPYRO_MENU_ANIMATE_2 = "Parameters :\n\n\- None or optionaly the HTTP Server Port.";
 	our $MSG_SPYRO_MENU_STAFFSIMMCP_1 = "Start the MCP's Staffs Simulator.";
 	our $MSG_SPYRO_MENU_STAFFSIMMCP_2 = "Parameters :\n\n\- None.";
+	our $MSG_SPYRO_MENU_POIFLOWERS_1 = "Start David Lyons's Po\x{ef} Simulator.";
+	our $MSG_SPYRO_MENU_POIFLOWERS_2 = "Parameters :\n\n\- None.";
 
 
 	

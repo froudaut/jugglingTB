@@ -25,6 +25,7 @@ For my personal needs I added others tools:
 - LABInfinite from MCP
 - juggleSpyro, another personnal project
 - PowerJuggler from Marco Tarini
+- Poï Flowers from David Lyons
 - realsim from Pedro Teodoro
 - Polyrythm-Fountain from Josh Mermelstein
 	      

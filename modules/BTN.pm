@@ -6,7 +6,7 @@
 ## BTN.pm   -   Perl Implementation of the BTN juggling Notation            ##
 ##                                                                          ##
 ##                                                                          ##
-## Copyright (C) 2008-2020  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
+## Copyright (C) 2008-2022  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
 ##                                                                          ##
 ##                                                                          ##
 ## This program is free software; you can redistribute it and/or modify it  ##

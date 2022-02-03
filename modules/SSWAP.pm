@@ -6,7 +6,7 @@
 ## SSWAP.pm   - Perl Implementation of the Siteswap juggling Notation       ##
 ##                                                                          ##
 ##                                                                          ##
-## Copyright (C) 2010-2021  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
+## Copyright (C) 2010-2022  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
 ##                                                                          ##
 ##                                                                          ##
 ## This program is free software; you can redistribute it and/or modify it  ##
@@ -112,6 +112,8 @@ our %SSWAP_CMDS =
  	 'slideSwitchSync'       => ["$lang::MSG_SSWAP_MENU_SLIDESWITCHSYNC_1","$lang::MSG_SSWAP_MENU_SLIDESWITCHSYNC_2"],
 	 'polyrythmFountain'     => ["$lang::MSG_SSWAP_MENU_POLYRYTHMFOUNTAIN_1","$lang::MSG_SSWAP_MENU_POLYRYTHMFOUNTAIN_2"],
 	 'lowerHeightOnTempo'    => ["$lang::MSG_SSWAP_MENU_LOWERHEIGHTONTEMPO_1","$lang::MSG_SSWAP_MENU_LOWERHEIGHTONTEMPO_2"],
+	 'MHAsyncBasicMap' => ["$lang::MSG_SSWAP_MENU_MHASYNCBASICMAP_1","$lang::MSG_SSWAP_MENU_MHASYNCBASICMAP_2"],
+ 	 'MHAsyncChangeHSS'     => ["$lang::MSG_SSWAP_MENU_MHASYNCCHANGEHSS_1","$lang::MSG_SSWAP_MENU_MHASYNCCHANGEHSS_2"],
     );
 
 
@@ -119,6 +121,9 @@ print "SSWAP $SSWAP::SSWAP_VERSION loaded\n";
 
 # To add debug behaviour 
 our $SSWAP_DEBUG=1;
+
+my $LINK_GUNSWAP='N'; # To add Gunswap Link for jonglage.net in generation
+my $LINK_JUGGLINGLAB_GIF='N'; # To add JugglingLab GIF Server Link for jonglage.net in generation
 
 # Parameters for Excel writing
 # It supports Excel 2007 with 1,048,576 rows x 16,384 columns.
@@ -8549,6 +8554,7 @@ sub genDiagProbert
 }
 
 
+
 sub genSSProbert
 {
     my $nb_objs=$_[0];		# Objects Number
@@ -11144,13 +11150,16 @@ sub lowerHeightOnTempo
     my $free_beat = 1;
     my $min_heigh_same_hand = 3;
     my $jugglinglab_interop = 'N';
+    my $holding = 'Y';
+    
     my $ret = &GetOptionsFromString(uc($_[1]),
 				    # Set number of free Beats between Throws on same hand upon lowering height. Default is 1 Since Dwell time is ~1 also
 				    "-F:i" => \$free_beat,
 				    # Do not lower SS on same hand more than defined throw. Default is 3 to avoid to transform throw in hold 
 				    "-M:i" => \$min_heigh_same_hand,
 				    # Set to Y to set new holding time as 1x, 2 combination. Useful for viewing in JugglingLab 
-				    "-J:s" => \$jugglinglab_interop,  
+				    "-J:s" => \$jugglinglab_interop,
+				    
 	);
 
     my $period_in = &getPeriod($ss,-1);
@@ -13085,6 +13094,11 @@ sub printSSListHTML
     }
     
     print HTML "\n";
+    if(uc($LINK_GUNSWAP) eq 'Y')
+    {
+	print HTML "<script type=\"text/javascript\" src=\"/js/visualisation_siteswap.js\"></script>\n\n";
+    }
+
     print HTML "<BODY>\n";
     print HTML "<p>&nbsp;</p><h1>".$title."</h1><p>&nbsp;</p>\n";    
     print HTML "\n\n\n";    
@@ -13131,16 +13145,27 @@ sub printSSListHTML
 	    print "\n\n\n";
 	    print colored [$common::COLOR_RESULT], "==== Diagram : ".$ss."\n";
 	    &draw($simpl_ss, $nss.".png","-M 0 -E E");
-	    print FILELIST $simpl_ss."\n";	 
-	    print HTML "<td class=table_content>".$simpl_ss."</td>"."\n";
+	    print FILELIST $simpl_ss."\n";
+	    if(uc($LINK_GUNSWAP) eq 'Y')
+	    {
+		print HTML "<td class=table_content><a href=\"javascript:visualiserSiteswap('$simpl_ss')\">$simpl_ss</a></td>"."\n";
+	    }
+	    elsif(uc($LINK_JUGGLINGLAB_GIF) eq 'Y')
+	    {		
+		print HTML "<td class=table_content><a href=\"https://jugglinglab.org/anim?pattern=$simpl_ss;colors=mixed\" target=\"_blank\">$simpl_ss</a></td>"."\n";
+	    }		      
+	    else
+	    {
+		print HTML "<td class=table_content>".$simpl_ss."</td>"."\n";
+	    }
 	    print HTML "<td class=table_content><a href=\"".$nss.".png\" target=\"_blank\"><img src=\"".$pics."\" alt=\"".$nss.".png\" width=\"25\"/></a></td>"."\n";
 	    if(&isValid($ss,-1) > 0)
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	    }
 	    else
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"35\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"35\"/></td>"."\n"; 
 	    }
 	    if(uc($simpl_list) eq 'Y')
 	    {
@@ -13158,16 +13183,27 @@ sub printSSListHTML
 		
 		if(&isEquivalent($ss,$ss_height,'','-1') <0)
 		{
-		    print HTML "<td class=table_content>".$ss_height_simpl."</td>"."\n";		
+		    if(uc($LINK_GUNSWAP) eq 'Y')
+		    {
+			print HTML "<td class=table_content><a href=\"javascript:visualiserSiteswap('$ss_height_simpl')\">$ss_height_simpl</a></td>"."\n";
+		    }
+		    elsif(uc($LINK_JUGGLINGLAB_GIF) eq 'Y')
+		    {		
+			print HTML "<td class=table_content><a href=\"https://jugglinglab.org/anim?pattern=$ss_height_simpl;colors=mixed\" target=\"_blank\">$ss_height_simpl</a></td>"."\n";
+		    }		      
+		    else
+		    {
+			print HTML "<td class=table_content>".$ss_height_simpl."</td>"."\n";
+		    }
 		    &draw($ss_height_simpl, $nss_height_simpl.".png","-M 0 -E E");
 		    print HTML "<td class=table_content><a href=\"".$nss_height_simpl.".png\" target=\"_blank\"><img src=\"".$pics."\" alt=\"".$nss_height_simpl.".png\" width=\"25\"/></a></td>"."\n";
 		    if(&isValid($ss_height,-1) > 0)
 		    {
-			print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+			print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 		    }
 		    else
 		    {
-			print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"35\"/></a></td>"."\n"; 
+			print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"35\"/></td>"."\n"; 
 		    }
 		}
 		else
@@ -13190,17 +13226,28 @@ sub printSSListHTML
 		print FILELISTHEIGHTJL $ss_height_JL_simpl."\n";	 
 		
 		if((uc($lower_height_list) eq 'Y' && &isEquivalent($ss_height,$ss_height_JL,'','-1') <0) || (uc($lower_height_list) eq 'N' && &isEquivalent($ss,$ss_height_JL,'','-1') <0))
-		{		
-		    print HTML "<td class=table_content>".$ss_height_JL_simpl."</td>"."\n";
+		{
+		    if(uc($LINK_GUNSWAP) eq 'Y')
+		    {
+			print HTML "<td class=table_content><a href=\"javascript:visualiserSiteswap('$ss_height_JL_simpl')\">$ss_height_JL_simpl</a></td>"."\n";
+		    }
+		    elsif(uc($LINK_JUGGLINGLAB_GIF) eq 'Y')
+		    {		
+			print HTML "<td class=table_content><a href=\"https://jugglinglab.org/anim?pattern=$ss_height_JL_simpl;colors=mixed\" target=\"_blank\">$ss_height_JL_simpl</a></td>"."\n";
+		    }		      
+		    else
+		    {
+			print HTML "<td class=table_content>".$ss_height_JL_simpl."</td>"."\n";
+		    }
 		    &draw($ss_height_JL_simpl, $nss_height_JL_simpl.".png","-M 0 -E E");
 		    print HTML "<td class=table_content><a href=\"".$nss_height_JL_simpl.".png\" target=\"_blank\"><img src=\"".$pics."\" alt=\"".$nss_height_JL_simpl.".png\" width=\"25\"/></a></td>"."\n";
 		    if(&isValid($ss_height_JL,-1) > 0)
 		    {
-			print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+			print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 		    }
 		    else
 		    {
-			print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"35\"/></a></td>"."\n"; 
+			print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"35\"/></td>"."\n"; 
 		    }
 		}
 		else
@@ -13924,7 +13971,19 @@ sub printSSListInfoHTMLWithoutHeaders
 	####################### Classical Part	
 	print HTML "<tr>"."\n";	    	    
 	print HTML "<td class=table_header>$nb</td>"."\n";
-	print HTML "<td class=table_header><strong>$ss</strong></td>"."\n";
+
+	if(uc($LINK_GUNSWAP) eq 'Y')
+	{
+	    print HTML "<td class=table_content><strong><a href=\"javascript:visualiserSiteswap('$ss')\">$ss</a></strong></td>"."\n";
+	}
+	elsif(uc($LINK_JUGGLINGLAB_GIF) eq 'Y')
+	{		
+	    print HTML "<td class=table_content><strong><a href=\"https://jugglinglab.org/anim?pattern=$ss;colors=mixed\" target=\"_blank\">$ss</a></strong></td>"."\n";
+	}		      
+	else
+	{
+	    print HTML "<td class=table_header><strong>$ss</strong></td>"."\n";
+	}
 	
 	&LADDER::draw($ss,$nss."-ladder.png");
 
@@ -13934,11 +13993,11 @@ sub printSSListInfoHTMLWithoutHeaders
 	
 	if(&isValid($ss,-1)==1)
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	}
 	else
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	}	   	
 	
 	print HTML "<td class=table_content>".&getSSType($ss,-1)."</td>\n";
@@ -13990,11 +14049,11 @@ sub printSSListInfoHTMLWithoutHeaders
 
 	if(&isPrime($ss,-1)==1)
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	}
 	elsif(&isPrime($ss,-1)==-1)
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	}	   	
 	else
 	{
@@ -14003,11 +14062,11 @@ sub printSSListInfoHTMLWithoutHeaders
 	
 	if(&isReversible($ss,-1)==1)
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	}
 	elsif(&isReversible($ss,-1)==-1)
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	}	   	
 	else
 	{
@@ -14016,11 +14075,11 @@ sub printSSListInfoHTMLWithoutHeaders
 
 	if(&isScramblable($ss,'',-1)==1)
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	}
 	elsif(&isScramblable($ss,'',-1)==-1)
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	}	   	
 	else
 	{
@@ -14076,11 +14135,11 @@ sub printSSListInfoHTMLWithoutHeaders
 
 	if(&isEquivalent($ss,$sym_ss,"",-1)==1)
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	}
 	else
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	}	   	
 	if (uc($extra_info) eq "Y") {
 	    print HTML "<td class=table_header>".&LADDER::sym($ss,$nss."-ladder.png")."</td>\n";	    
@@ -14088,11 +14147,11 @@ sub printSSListInfoHTMLWithoutHeaders
 	    
 	    if(&isValid($sym_ss,-1)==1)
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	    }
 	    else
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	    }	   	
 	    
 	    print HTML "<td class=table_content>".&getSSType($sym_ss,-1)."</td>\n";
@@ -14146,11 +14205,11 @@ sub printSSListInfoHTMLWithoutHeaders
 
 	    if(&isPrime($ss,-1)==1)
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	    }
 	    elsif(&isPrime($ss,-1)==-1)
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	    }	   	
 	    else
 	    {
@@ -14159,11 +14218,11 @@ sub printSSListInfoHTMLWithoutHeaders
 
 	    if(&isReversible($ss,-1)==1)
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	    }
 	    elsif(&isReversible($ss,-1)==-1)
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	    }	   	
 	    else
 	    {
@@ -14172,11 +14231,11 @@ sub printSSListInfoHTMLWithoutHeaders
 
 	    if(&isScramblable($ss,'',-1)==1)
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	    }
 	    elsif(&isScramblable($ss,'',-1)==-1)
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	    }	   	
 	    else
 	    {
@@ -14215,11 +14274,11 @@ sub printSSListInfoHTMLWithoutHeaders
 	
 	if(&isEquivalent($ss,$inv_ss,"",-1)==1)
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	}
 	else
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	}	   	
 	
 	if (uc($extra_info) eq "Y") {
@@ -14229,11 +14288,11 @@ sub printSSListInfoHTMLWithoutHeaders
 	    
 	    if(&isValid($inv_ss,-1)==1)
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	    }
 	    else
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	    }	   	
 	    
 	    print HTML "<td class=table_content>".&getSSType($inv_ss,-1)."</td>\n";
@@ -14287,11 +14346,11 @@ sub printSSListInfoHTMLWithoutHeaders
 
 	    if(&isPrime($ss,-1)==1)
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	    }
 	    elsif(&isPrime($ss,-1)==-1)
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	    }	   	
 	    else
 	    {
@@ -14300,11 +14359,11 @@ sub printSSListInfoHTMLWithoutHeaders
 
 	    if(&isReversible($ss,-1)==1)
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	    }
 	    elsif(&isReversible($ss,-1)==-1)
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	    }	   	
 	    else
 	    {
@@ -14313,11 +14372,11 @@ sub printSSListInfoHTMLWithoutHeaders
 
 	    if(&isScramblable($ss,'',-1)==1)
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	    }
 	    elsif(&isScramblable($ss,'',-1)==-1)
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	    }	   	
 	    else
 	    {
@@ -14361,11 +14420,11 @@ sub printSSListInfoHTMLWithoutHeaders
 	    
 	    if(&isValid($multisync_ss,-1)==1)
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	    }
 	    else
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	    }	   	
 	    
 	    print HTML "<td class=table_content>".&getSSType($multisync_ss,-1)."</td>\n";
@@ -14441,11 +14500,11 @@ sub printSSListInfoHTMLWithoutHeaders
 	if (uc($extra_info) eq "Y") {
 	    if(&isEquivalent($ss,$sym_ss,"",-1)==1 && &isEquivalent($ss,$inv_ss,"",-1)==1 && &isEquivalent($ss,$multisync_ss,"",-1)==1)
 	    {
-		print HTML "<td class=table_header><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+		print HTML "<td class=table_header><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	    }
 	    else
 	    {
-		print HTML "<td class=table_header><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+		print HTML "<td class=table_header><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	    }	   	
 	}		
 
@@ -23326,9 +23385,292 @@ sub polyrythmFountain
 }
 
 
+sub MHAsyncChangeHSS
+{
+    my $ss = $_[0];
+    my $hss = $_[1];
+    my $nhss = $_[2];
+    my $nss = '';
+    
+    my $hand_period = 40;  # Must be multiple of hands and greater than SS period
+    my @hss_map = '' x $hand_period;
+    my @nhss_map = '' x $hand_period;
+    my @ss_map_r = '' x $hand_period;
+    my @ss_map_l = '' x $hand_period;
+    my $cur_hand = 'R';
+    my $cpt_r = 0;
+    my $cpt_l = 0;
+    
+    for(my $i=0; $i<$hand_period;$i++)
+    {
+	my $th=substr($hss,$i%length($hss),1);
+	if($hss_map[$i] eq '')
+	{	   
+	    if($cur_hand eq 'R')
+	    {
+		$hss_map[$i] = $cur_hand.$cpt_r;
+		$cur_hand = 'L';
+	    }
+	    else
+	    {
+		$hss_map[$i] = $cur_hand.$cpt_l;
+		$cur_hand = 'R';
+	    }	    
+	}
+
+	if(($hss_map[($i+int($th))%$hand_period]) eq '')
+	{
+	    if(substr($hss_map[$i],0,1) eq 'R')
+	    {
+		$cpt_r++;
+		$hss_map[($i+int($th))%$hand_period] = substr($hss_map[$i],0,1).$cpt_r;
+	    }
+	    else
+	    {
+		$cpt_l++;
+		$hss_map[($i+int($th))%$hand_period] = substr($hss_map[$i],0,1).$cpt_l;
+	    }
+	}		    
+    }
+
+    print "=== HSS MAP ===\n";
+    for(my $i=0; $i < scalar(@hss_map);$i ++)
+    {
+	print $hss_map[$i]." ";
+    }
+    print "\n\n";
+
+    $cpt_r = 0;
+    $cpt_l = 0;
+    for(my $i = 0; $i < $hand_period; $i++)
+    {
+	my $val=int(substr($ss,$i%length($ss),1));
+	if(substr($hss_map[$i],0,1) eq 'R')
+	{	    
+	    $ss_map_r[$cpt_r] = $hss_map[($i+$val)%$hand_period];
+	    $cpt_r++;
+	}
+	else
+	{	    
+	    $ss_map_l[$cpt_l] = $hss_map[($i+$val)%$hand_period];
+	    $cpt_l++;
+	}
+	   
+    }
+
+    print "=== OSS MAP (Right) ===\n";
+    for(my $i = 0; $i < $hand_period; $i++)
+    {
+	if ($ss_map_r[$i] eq '')
+	{
+	    print " _ ";
+	}
+	else
+	{
+	    print $ss_map_r[$i]." ";
+	}
+    }
+    print "\n\n";
+
+    print "=== OSS MAP (Left) ===\n";
+    for(my $i = 0; $i < $hand_period; $i++)
+    {
+	if ($ss_map_l[$i] eq '')
+	{
+	    print " _ ";
+	}
+	else
+	{
+	    print $ss_map_l[$i]." ";
+	}
+    }
+    print "\n\n";
+
+
+    $cur_hand = 'R';
+    $cpt_r = 0;
+    $cpt_l = 0;
+    for(my $i=0; $i<$hand_period;$i++)
+    {
+	my $th=substr($nhss,$i%length($nhss),1);
+	if($nhss_map[$i] eq '')
+	{	   
+	    if($cur_hand eq 'R')
+	    {
+		$nhss_map[$i] = $cur_hand.$cpt_r;
+		$cur_hand = 'L';
+	    }
+	    else
+	    {
+		$nhss_map[$i] = $cur_hand.$cpt_l;
+		$cur_hand = 'R';
+	    }	    
+	}
+
+	if(($nhss_map[($i+int($th))%$hand_period]) eq '')
+	{
+	    if(substr($nhss_map[$i],0,1) eq 'R')
+	    {
+		$cpt_r++;
+		$nhss_map[($i+int($th))%$hand_period] = substr($nhss_map[$i],0,1).$cpt_r;
+	    }
+	    else
+	    {
+		$cpt_l++;
+		$nhss_map[($i+int($th))%$hand_period] = substr($nhss_map[$i],0,1).$cpt_l;
+	    }
+	}		    
+    }
+
+    print "=== NEW HSS MAP ===\n";
+    for(my $i=0; $i < scalar(@nhss_map);$i ++)
+    {
+	print $nhss_map[$i]." ";
+    }
+    print "\n\n";
+
+
+    for(my $i=0; $i<$hand_period;$i++)
+    {
+	my $dest = '';
+	if(substr($nhss_map[$i],0,1) eq 'R')
+	{
+	    $dest = $ss_map_r[substr($nhss_map[$i],1)];
+	}
+	else
+	{
+	    $dest = $ss_map_l[substr($nhss_map[$i],1)];
+	}
+
+	my $found = -1;
+	for(my $j=0; $j < scalar(@nhss_map); $j++)
+	{
+	    if($nhss_map[$j] eq $dest)
+	    {		
+		my $val = $j - $i;
+		if($j < $i)
+		{
+		    $val = scalar(@nhss_map) + $val;
+		}
+		if($val > 16)
+		{
+		    $val = '_';		    
+		}
+		else
+		{
+		    $val = sprintf("%X", $val);
+		}
+		$nss = $nss.''.$val;
+		$found = 1;
+		last;
+	    }
+	}
+	if($found == -1)
+	{
+	    $nss = $nss.'_';
+	}       	
+
+    }
+
+    print $nss." ...\n";
+
+}
+
+
+
+
+sub MHAsyncBasicMap
+{
+    my $max_objs=15;
+    my $max_hands=15;
+ 
+    if(scalar @_ >= 1)
+    {
+	$max_hands = $_[0];
+	if(scalar @_ >= 2)
+	{
+	    $max_objs = $_[1];
+	}
+    }
+    
+    print "\n\n\t row : nb Hands\n\t column: nb Objects\n\n";
+    print "\t Cn : Cascade Next-Hand\n";
+    print "\t Cp : Cascade Previous-Hand\n";
+    print "\t Fs : Fountain Same-Hand\n";
+    print "\t C : Other Cascade\n";
+    print "\t F : Fountain Crossed\n\n\n";    
+    
+    print '    |';    
+    for(my $n=1; $n <= $max_objs; $n ++)
+    {       
+	if($n<10)
+	{
+	    print "  $n |";
+	}
+	else
+	{
+	    print " $n |";
+	}		    
+    }
+    print "\n ";
+    print "-----" x $max_objs ;
+    print "----\n";
+
+    for(my $h=1; $h <= $max_hands; $h ++)
+    {
+	for(my $n=1; $n <= $max_objs; $n++)
+	{
+	    if ($n == 1)
+	    {
+		if($h<10)
+		{
+		    print "  $h |";
+		}
+		else
+		{
+		    print " $h |";
+		}		    
+	    }
+	    
+	    if($n%$h == 0)
+	    {
+		print ' Fs |';      		
+	    }
+	    elsif($n%$h == 1)
+	    {
+		print ' Cn |';
+	    }
+	    elsif($n%$h == $h-1)
+	    {
+		print ' Cp |';
+	    }
+	    else
+	    {
+		if(&__pgcd($n,$h) == 1)
+		{
+		    print '  C |';
+		}
+		else
+		{
+		    print '  F |';
+		}
+		    
+	    }		
+	}
+
+	print "\n ";
+	print "-----" x $max_objs ;
+	print "----\n";
+    }
+    print "\n";
+}
+
+
+
+
 ######################################################################
 #
-# TO DO : The Followings procedure uses OLE and thus are dedicated to Windows (With Excel License set)
+# The Followings procedure uses OLE and thus are dedicated to Windows (With Excel License set)
 #
 ######################################################################
 
@@ -27981,6 +28323,10 @@ sub __test_jonglage_net_list_slide
     &common::gen_HTML_head1($f,"SSWAP Notation : Sliding Exemples : Async&lt;=&gt;Sync");
     open(HTML, ">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;	
     print HTML "\n";
+    if(uc($LINK_GUNSWAP) eq 'Y')
+    {
+	print HTML "<script type=\"text/javascript\" src=\"/js/visualisation_siteswap.js\"></script>\n\n";
+    }
     print HTML "<BODY>\n";
     print HTML "<p>&nbsp;</p><p>&nbsp;</p><h1>Siteswap Notation : Sliding Exemples Async &lt;=&gt; Sync</h1><p>&nbsp;</p>\n";
     print HTML "<p>Vous trouverez ci-dessous de nombreux exemples de Sliding Synchrones &lt;=&gt; Asynchrones. <br/>Les Siteswaps obtenus par décalage sont indiqués lorsque ceux-ci sont possibles:\n";    
@@ -28027,8 +28373,20 @@ sub __test_jonglage_net_list_slide
 
 	print HTML "<tr>"."\n";	    	    
 	print HTML "<td class=table_header>$cpt</td>"."\n";
-	print HTML "<td class=table_header><strong>$ss</strong></td>"."\n";
-	
+
+	if(uc($LINK_GUNSWAP) eq 'Y')
+	{
+	    print HTML "<td class=table_header><strong><a href=\"javascript:visualiserSiteswap('$ss')\">$ss</a></strong></td>"."\n";
+	}
+	elsif(uc($LINK_JUGGLINGLAB_GIF) eq 'Y')
+	{
+	    
+	    print HTML "<td class=table_header><strong><a href=\"https://jugglinglab.org/anim?pattern=$ss;colors=mixed\" target=\"_blank\">$ss</a></strong></td>"."\n";
+	}		      
+	else
+	{
+	    print HTML "<td class=table_header><strong>$ss</strong></td>"."\n";
+	}
 	print "\n\n\n";
 	print colored [$common::COLOR_RESULT], "==== Diagram : ".$ss."\n";
 	&draw($ss, $nss.".png","-E=E");	    		   
@@ -28037,62 +28395,106 @@ sub __test_jonglage_net_list_slide
 	my($res1,$res2,$res3,$res4)=&slideSwitchSync($ss, -1);
 	if ($res1 != -1)
 	{
-	    print HTML "<td class=table_content>".$res1."</td>"."\n";
+	    if(uc($LINK_GUNSWAP) eq 'Y')
+	    {
+		print HTML "<td class=table_content><a href=\"javascript:visualiserSiteswap('$res1')\">$res1</a></td>"."\n";
+	    }
+	    elsif(uc($LINK_JUGGLINGLAB_GIF) eq 'Y')
+	    {		
+		print HTML "<td class=table_content><a href=\"https://jugglinglab.org/anim?pattern=$res1;colors=mixed\" target=\"_blank\">$res1</a></td>"."\n";
+	    }
+	    else
+	    {
+		print HTML "<td class=table_content>".$res1."</td>"."\n";
+	    }
 	}
 	else
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	}
 	if ($res2 != -1)
 	{
-	    print HTML "<td class=table_content>$res2</td>"."\n";
+	    if(uc($LINK_GUNSWAP) eq 'Y')
+	    {
+		print HTML "<td class=table_content><a href=\"javascript:visualiserSiteswap('$res2')\">$res2</a></td>"."\n";
+	    }
+	    elsif(uc($LINK_JUGGLINGLAB_GIF) eq 'Y')
+	    {		
+		print HTML "<td class=table_content><a href=\"https://jugglinglab.org/anim?pattern=$res2;colors=mixed\" target=\"_blank\">$res2</a></td>"."\n";
+	    }
+	    else
+	    {
+		print HTML "<td class=table_content>$res2</td>"."\n";
+	    }
 	}
 	else
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	}
 
 	if ($res3 != -1)	    
 	{
-	    print HTML "<td class=table_content>$res3</td>"."\n";
+	    if(uc($LINK_GUNSWAP) eq 'Y')
+	    {
+		print HTML "<td class=table_content><a href=\"javascript:visualiserSiteswap('$res3')\">$res3</a></td>"."\n";
+	    }
+	    elsif(uc($LINK_JUGGLINGLAB_GIF) eq 'Y')
+	    {		
+		print HTML "<td class=table_content><a href=\"https://jugglinglab.org/anim?pattern=$res3;colors=mixed\" target=\"_blank\">$res3</a></td>"."\n";
+	    }
+	    else
+	    {
+		print HTML "<td class=table_content>$res3</td>"."\n";
+	    }
 	}
 	else
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	}
 
 	if ($res4 != -1)
 	{
-	    print HTML "<td class=table_content>$res4</td>"."\n";
+	    if(uc($LINK_GUNSWAP) eq 'Y')
+	    {
+		print HTML "<td class=table_content><a href=\"javascript:visualiserSiteswap('$res4')\">$res4</a></td>"."\n";
+	    }
+	    elsif(uc($LINK_JUGGLINGLAB_GIF) eq 'Y')
+	    {		
+		print HTML "<td class=table_content><a href=\"https://jugglinglab.org/anim?pattern=$res4;colors=mixed\" target=\"_blank\">$res4</a></td>"."\n";
+	    }
+	    else
+	    {
+		print HTML "<td class=table_content>$res4</td>"."\n";
+	    }
 	}
 	else
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	}
 
 	if($res1 != -1 && $res4 != -1 && &isEquivalent($res1,$res4,'',-1)==1)
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	}
 	elsif($res1 == -1 && $res4 == -1)
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"30\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	}
 	else
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	}
 	if($res2 != -1 && $res3 != -1 && &isEquivalent($res2,$res3,'',-1)==1)
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	}
 	elsif($res3 == -1 && $res2 == -1)
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"30\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	}
 	else
 	{
-	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></a></td>"."\n"; 
+	    print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"30\"/></td>"."\n"; 
 	}
 
 	print HTML "</tr>"."\n";	    	    
@@ -28195,11 +28597,11 @@ sub __test_polyrythm_list_3_2
 	    print HTML "<td class=table_content><a href=\"".$nss.".png\" target=\"_blank\"><img src=\"".$pics."\" alt=\"".$nss.".png\" width=\"25\"/></a></td>"."\n";
 	    if(&isValid($ss,-1) > 0)
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_true."\" alt=\"True\" width=\"35\"/></td>"."\n"; 
 	    }
 	    else
 	    {
-		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"35\"/></a></td>"."\n"; 
+		print HTML "<td class=table_content><img src=\"".$pics_false."\" alt=\"False\" width=\"35\"/></td>"."\n"; 
 	    }
 	    
 	    print HTML "</tr>"."\n";
@@ -28228,22 +28630,25 @@ sub __test_polyrythm_list_3_2
 #################################################
 #  Test function to generate extended info from Polyrythms Lists
 #################################################
-sub __test_polyrythm_info_gen
+
+
+sub __test_polyrythm_mult_info_gen
 {
     my $dir = $_[0];
+    my $mult = $_[1];
     
     for(my $i=1; $i <= 5; $i++) {
 	for(my $j=1; $j <= 5; $j++) {
 	    for(my $k=1; $k <= 5; $k++) {
 
-		my $filenameIn = $dir.'/polyrythms-'.$i.'objects_'.$j.'!'.$k.'.txt';
+		my $filenameIn = $dir.'/polyrythms-'.$i.'objects_mult'.$mult.'_'.$j.'!'.$k.'.txt';
 		if(-e $filenameIn)
 		{
-		    my $filenameOut = $conf::RESULTS.'/polyrythms-'.$i.'objects_'.$j.'!'.$k.'.txt';
+		    my $filenameOut = $conf::RESULTS.'/polyrythms-'.$i.'objects_mult'.$mult.'_'.$j.'!'.$k.'.txt';
 		    
 		    open(my $fhin, '<:encoding(UTF-8)', $filenameIn)
 			or die "Could not open file $filenameIn $!";
-		    print "==== polyrythms-".$i.'objects_'.$j.'!'.$k.".txt ===="."\n";
+		    print "==== polyrythms-".$i.'objects_mult'.$mult.'_'.$j.'!'.$k.".txt ===="."\n";
 		    
 		    open(my $fhout, '>:encoding(UTF-8)', $filenameOut)
 			or die "Could not open file $filenameOut $!";
@@ -28285,13 +28690,13 @@ sub __test_polyrythm_list_gen
 	    for(my $g=1; $g <= 5; $g++) {
 		my $filename = 'polyrythms-'.$i.'objects_'.$d.'!'.$g.'.txt';
 		print "==== ".$filename.' ===='."\n";
-		if($d == 1 || $g == 1)
-		{
-		    &genPolyrythm($i,'f',$d,$g,'','-J Y',$filename);
-		}
-		else {
-		    &genPolyrythm($i,'f',$d,$g,'','',$filename);
-		}		
+		#if($d == 1 || $g == 1)
+		#{
+		#    &genPolyrythm($i,'f',$d,$g,'','-J Y',$filename);
+		#}
+		#else {
+		&genPolyrythm($i,'f',$d,$g,'','',$filename);
+		#}		
 	    }
 	}
     }
@@ -28303,98 +28708,25 @@ sub __test_polyrythm_list_gen
 #################################################
 sub __test_polyrythm_mult_list_gen
 {
-    for(my $i=2; $i <= 5; $i++) {
+    for(my $i=1; $i <= 5; $i++) {
 	for(my $j=2; $j <= 2; $j++) {
 	    for(my $d=1; $d <= 5; $d++) {
 		for(my $g=1; $g <= 5; $g++) {
 		    my $filename = 'polyrythms-'.$i.'objects_mult'.$j.'_'.$d.'!'.$g.'.txt';
 		    print "==== ".$filename.' ===='."\n";
-		    if($d == 1 || $g == 1)
-		    {
-			&genPolyrythmMult($i,'f',$j,$d,$g,'','-J Y',$filename);
-		    }
-		    else {
-			&genPolyrythmMult($i,'f',$j,$d,$g,'','',$filename);
-		    }		
+		    #if($d == 1 || $g == 1)
+		    #{
+		    #     &genPolyrythmMult($i,'f',$j,$d,$g,'','-J Y',$filename);
+		    #}
+		    #else {
+		    &genPolyrythmMult($i,'f',$j,$d,$g,'','',$filename);
+		    #}		
 		}
 	    }
 	}
     }
 }
 
-sub __test_polyrythm_mult_list_gen2
-{
-    for(my $i=2; $i <= 2; $i++) {
-	for(my $j=2; $j <= 2; $j++) {
-	    for(my $d=4; $d <= 4; $d++) {
-		for(my $g=4; $g <= 5; $g++) {
-		    my $filename = 'polyrythms-'.$i.'objects_mult'.$j.'_'.$d.'!'.$g.'.txt';
-		    print "==== ".$filename.' ===='."\n";
-		    if($d == 1 || $g == 1)
-		    {
-			&genPolyrythmMult($i,'f',$j,$d,$g,'','-J Y',$filename);
-		    }
-		    else {
-			&genPolyrythmMult($i,'f',$j,$d,$g,'','',$filename);
-		    }		
-		}
-	    }
-	    for(my $d=5; $d <= 5; $d++) {
-		for(my $g=1; $g <= 5; $g++) {
-		    my $filename = 'polyrythms-'.$i.'objects_mult'.$j.'_'.$d.'!'.$g.'.txt';
-		    print "==== ".$filename.' ===='."\n";
-		    if($d == 1 || $g == 1)
-		    {
-			&genPolyrythmMult($i,'f',$j,$d,$g,'','-J Y',$filename);
-		    }
-		    else {
-			&genPolyrythmMult($i,'f',$j,$d,$g,'','',$filename);
-		    }		
-		}
-	    }
-	}
-    }
-
-
-    for(my $i=3; $i <= 3; $i++) {
-	for(my $j=2; $j <= 2; $j++) {
-	    for(my $d=3; $d <= 5; $d++) {
-		for(my $g=4; $g <= 5; $g++) {
-		    my $filename = 'polyrythms-'.$i.'objects_mult'.$j.'_'.$d.'!'.$g.'.txt';
-		    print "==== ".$filename.' ===='."\n";
-		    if($d == 1 || $g == 1)
-		    {
-			&genPolyrythmMult($i,'f',$j,$d,$g,'','-J Y',$filename);
-		    }
-		    else {
-			&genPolyrythmMult($i,'f',$j,$d,$g,'','',$filename);
-		    }		
-		}
-	    }
-	}
-    }
-
-
-    for(my $i=4; $i <= 4; $i++) {
-	for(my $j=2; $j <= 2; $j++) {
-	    for(my $d=2; $d <= 5; $d++) {
-		for(my $g=4; $g <= 5; $g++) {
-		    my $filename = 'polyrythms-'.$i.'objects_mult'.$j.'_'.$d.'!'.$g.'.txt';
-		    print "==== ".$filename.' ===='."\n";
-		    if($d == 1 || $g == 1)
-		    {
-			&genPolyrythmMult($i,'f',$j,$d,$g,'','-J Y',$filename);
-		    }
-		    else {
-			&genPolyrythmMult($i,'f',$j,$d,$g,'','',$filename);
-		    }		
-		}
-	    }
-	}
-    }
-
-
-}
 
 
 

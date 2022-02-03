@@ -6,7 +6,7 @@
 ## jugglingTB.pl -   Perl Implementation of the Juggling Notations Toolbox  ##
 ##                                                                          ##
 ##                                                                          ##
-## Copyright (C) 2008-2021  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
+## Copyright (C) 2008-2022  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
 ##                                                                          ##
 ##                                                                          ##
 ## This program is free software; you can redistribute it and/or modify it  ##

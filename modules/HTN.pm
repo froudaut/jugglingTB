@@ -6,7 +6,7 @@
 ## HTN.pm   - Harmonic Throws Notation (3-Layers Notation) for jugglingTB   ##
 ##                                                                          ##
 ##                                                                          ##
-## Copyright (C) 2015-2021  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
+## Copyright (C) 2015-2022  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
 ##                                                                          ##
 ##                                                                          ##
 ## This program is free software; you can redistribute it and/or modify it  ##
@@ -851,10 +851,10 @@ sub HTNMaker
 {
     my $pwd = cwd();
     if ($common::OS eq "MSWin32") {
-	system("start /b cmd /c \"$conf::HTTP_BROWSER\" ${pwd}/data/HTNMaker/HTNMaker.html");
+	system("start /b cmd /c \"$conf::HTTP_BROWSER\" ${pwd}/data/HTNMaker/HTNMaker.htm");
     } else {
 	# Unix-like OS
-	system("$conf::HTTP_BROWSER ${pwd}/data/HTNMaker/HTNMaker.html &");
+	system("$conf::HTTP_BROWSER ${pwd}/data/HTNMaker/HTNMaker.htm &");
     }
 }
 

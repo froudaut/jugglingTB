@@ -4,7 +4,8 @@ SOU v1.4 loaded
 MMSTD v1.4 loaded
 LADDER v2.1 loaded
 SSWAP v1.5 loaded
-SPYRO v0.3 loaded
+No Excel licence detected. Some functions will not be available.
+SPYRO v0.4 loaded
 STACK v0.0 loaded
 HTN v0.6 loaded
 
@@ -87,27 +88,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
 
 ============ MODULES CONTEXT ============
 
-	Modules Available : SPYRO SSWAP BTN MMSTD STACK HTN SOU LADDER 
-
-
-  SPYRO  - Juggling SPYROGRAPH (v0.3)
------------------------------------------
-      SPYRO defines a Spyrograph for jugglers to model Spins,
-      Antispins, Hybrids, Extensions, Isolations in a single plane. 
-
-
-  - anim :                    Start JuggleSpyro HTML5. 
-      Parameters : 
-      
-      - None or optionaly the HTTP Server Port. 
-
-
-  - staffSimMCP :             Start the MCP's Staffs Simulator. 
-      Parameters : 
-      
-      - None. 
-
-
+	Modules Available : SSWAP SOU HTN LADDER STACK BTN SPYRO MMSTD 
 
 
   SSWAP  - SITESWAP juggling Notation (v1.5)
@@ -141,6 +122,28 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       asynchronous reprsentation; 
       	- The objects height will be in hexadecimal excepted if it is 
       	explicitely written. 
+
+
+  - MHAsyncBasicMap :         Map of Asynchronous MultiHand
+                              Siteswaps Basic types, Hands x
+                              Objects number. 
+      Parameters : 
+      
+      - [int] : Max number of Hands (Default:15). 
+      
+      - [int] : Max number of Objects (Default:15). 
+
+
+  - MHAsyncChangeHSS :        Give Siteswap get by swapping hands
+                              (HSS with 2 hands) but keeping throw
+                              and catch hands. [Experimental] 
+      Parameters : 
+      
+      - <"siteswap"> : Asynchronous Siteswap. 
+      
+      - <hss> : Initial Hand Siteswap. 
+      
+      - <hss> : Ending Hand Siteswap. 
 
 
   - anim :                    Animate a designated Siteswap
@@ -1701,7 +1704,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
 
 
   - isSqueeze :               Check if a Multiplex, Synchronous
-                              Multiplex or Multisynchronous is a
+                              Multiplex or MultiSynchronous is a
                               Squeeze. 
       Thows of same height and holds are not considered. 
       
@@ -2198,249 +2201,6 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
 
 
 
-  BTN  - BTN juggling Notation (v1.2.2)
------------------------------------------
-      In this module a BTN throw will be made of a list of holes AC, AL, BOL
-      and the OP operator (Uppercase/Lowercase). 
-      
-      	Examples : OPALAC, BOLAL, OPALOPAC ... 
-
-
-  - BTNParity :               Give the BTN Parity. 
-      Parameters : 
-      
-      - <Throw> : Throw. 
-      - [-1] Optional, return the result, but do not print it (0: even, 1:
-      odd) 
-
-
-  - gen :                     Give all BTN throws limited by the
-                              number of holes encountered. 
-      Parameters : 
-      
-      - <int> : Maximum number of holes to go through [>4 is for
-      Extra-Terrestrial ;-)]. 
-      - ["file"] Optional, file to write results in. 
-
-
-  - gen2 :                    Give all BTN throws, excepted throws
-                              that contains two same successive
-                              holes in the body. 
-      Parameters : 
-      
-      - <int> : Maximum number of holes to go through [>4 is for
-      Extra-Terrestrial ;-)]. 
-      - ["file"] Optional, file to write results in. 
-
-
-  - inv :                     Give the BTN Time Reversed throw
-                              related. 
-      Parameters : 
-      
-      - <Throw> : Throw to Time Reversered. 
-      - <Parity> : Siteswap parity (0: even, 1: odd). 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - isValid :                 Test if the BTN Throw is valid. 
-      Parameters : 
-      
-      - <Throw> : Throw to check. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - size :                    Give the Throw Length in Hole Unit. 
-      Parameters : 
-      
-      - <Throw> : Throw that we want to get the length. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-
-
-  MMSTD  - MMSTD (Mills Mess State Transition) juggling Notation (v1.4)
------------------------------------------
-      In this module a SOU pattern will be made of a states (Ur, Ul, Rl, Rr,
-      Lr, Lr) and exchanges (<in>, <out>) sequence. 
-      
-      	Example : Ur -o-> Ll -+> Ur , Rr -+-> Ul -o-> 
-
-
-  - gen :                     Generation of all patterns with
-                              duplication removal. 
-      Parameters : 
-      
-      - <cpt> : Number of Passages per State 
-      - <pathLenMax> : Path Length Maximum (-1 : any length) 
-      - ["file"] Optional, file to write results in. 
-
-
-  - genByState :              Generation of all patterns
-                              classified per state. 
-      Parameters : 
-      
-      - <cpt> : Number of Passages per State 
-      - <pathLenMax> : Path Length Maximum (-1 : any length) 
-      - ["file"] Optional, file to write results in. 
-
-
-  - graph :                   Display the MMSTD Graph of valid
-                              transitions. 
-      Parameters : 
-      
-      - None otherwise Graphviz MUST be installed prior and its Path
-      correctly set in <conf.ini>. 
-      
-      - <"file"> : file for results. 
-      
-      - ["Format"] Optional, image format (Default:png) through : bmp
-      (Windows Bitmap Format), cmapx (client-side imagemap for use in
-      html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated
-      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
-      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
-      pcl (Laserjet printers), imap (imagemap files for httpd servers
-      for each node or edge that has a non-null "href" attribute.), jpg,
-      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
-      Document Format), png (Portable Network Graphics format), ps
-      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
-      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
-      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
-      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
-      langage), plain , plain-ext (Output in plain text) 
-      
-      - ["Generator"] Optional, Graphviz generation filter
-      (Default:dot) through : circo (circular layout), dot(directed
-      graphs), neato (undirected graphs), twopi (radial layouts),
-      fdp (undirected graphs), sfdp (large undirected graphs), osage
-      (clustered graphs). 
-
-
-  - inv :                     Compute inversion of a designated
-                              pattern. 
-      Parameters : 
-      
-      - <pattern> : pattern that we want to get the inversion 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - isEquivalent :            Test equivalence between 2
-                              patterns. 
-      Parameters : 
-      
-      - <pattern1> <pattern2> : patterns to compare. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - isSymetric :              Test if two patterns are symetric. 
-      Parameters : 
-      
-      - <pattern1> <pattern2> : patterns to check. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - isValid :                 Test if the pattern is valid. 
-      Parameters : 
-      
-      - <pattern> : pattern to test. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - size :                    Give the Pattern Length in State
-                              Unit. 
-      Parameters : 
-      
-      - <pattern> : pattern that we want to get the length. One Unit is
-      considered only if it is composed of a State and a Transition. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - sym :                     Compute symetry of a designated
-                              pattern. 
-      Parameters : 
-      
-      - <pattern> : pattern that we want to get the symetry 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - toSOU :                   Give the corresponding SOU
-                              Notation. 
-      Parameters : 
-      
-      - <pattern> : pattern that we want to get the MMSTD Notation. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-
-
-  STACK  - STACK juggling Notation (v0.0)
------------------------------------------
-     
-
-
-
-  HTN  - Harmonic Throws Notation (3-Layers Notation) (v0.6)
------------------------------------------
-      Harmonic Throws Notation (3-Layers Notation). 
-
-
-  - HTNMaker :                HTNMaker made by Shawn Pinciara to
-                              build Harmonic Grids. 
-      Parameters : 
-      
-      - None. 
-
-
-  - drawGrid :                Draw the grid related to the given
-                              Siteswap. Gnuplot and eventually
-                              Ghostscript and ImageMagick
-                              (converter) have to be installed
-                              prior (images are only PostScript
-                              otherwise). 
-      Parameters : 
-      
-      - <"siteswap"> : Siteswap to draw. 
-      
-      - <"file"> : Image file for the result. 
-      
-      - ["options"] Several options among
-      -[a|b|c|d|e|h|l|p|r|s|t|u|v|y|z] : 
-      
-      	-a <dec> : Staple height for throw on same hand (Default:0.4). 
-      
-      	-b <color> : Staple color (Default:green). 
-      
-      	-c <color> : Circle color (Default:#a935bd). 
-      
-      	-d <color> : Sync color (Default:blue). 
-      
-      	-e <color> : Hand Mode color (Default:blue). 
-      
-      	-h <r|l> : Hand Mode (Default:r). 
-      
-      	-l <y|n> : Print Labels on axis (Default:y). 
-      
-      	-p <int> : Period to draw (Default:10). 
-      
-      	-r <dec> : Circles Radius (Default:0.2). 
-      
-      	-s <int> : Print the result (Default:0) 
-      		'0' : Print the result; 
-      		'1' : No printing. 
-      
-      	-t <y|n> : Print the title (Default:y). 
-      
-      	-u <y|n> : Print the Hand Mode in title (Default:y). 
-      
-      	-v <"string"> : Title Value to set. 
-      
-      	-y <dec> : Y Shift for overlapping throws (Default:0.25). 
-      
-      	-z <"string"> : Terminal Driver. Set Value to empty to see
-      possibilities (Default:auto). 
-
-
-
-
   SOU  - Extended S,O,U juggling Notation (v1.4)
 -----------------------------------------
       In this module a SOU pattern will be made of a states (O, Ob, U, Ub, S,
@@ -2528,6 +2288,69 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       
       - <pattern> : pattern that we want to get the MMSTD Notation. 
       - [-1] Optional, return the result, but do not print it. 
+
+
+
+
+  HTN  - Harmonic Throws Notation (3-Layers Notation) (v0.6)
+-----------------------------------------
+      Harmonic Throws Notation (3-Layers Notation). 
+
+
+  - HTNMaker :                HTNMaker made by Shawn Pinciara to
+                              build Harmonic Grids. 
+      Parameters : 
+      
+      - None. 
+
+
+  - drawGrid :                Draw the grid related to the given
+                              Siteswap. Gnuplot and eventually
+                              Ghostscript and ImageMagick
+                              (converter) have to be installed
+                              prior (images are only PostScript
+                              otherwise). 
+      Parameters : 
+      
+      - <"siteswap"> : Siteswap to draw. 
+      
+      - <"file"> : Image file for the result. 
+      
+      - ["options"] Several options among
+      -[a|b|c|d|e|h|l|p|r|s|t|u|v|y|z] : 
+      
+      	-a <dec> : Staple height for throw on same hand (Default:0.4). 
+      
+      	-b <color> : Staple color (Default:green). 
+      
+      	-c <color> : Circle color (Default:#a935bd). 
+      
+      	-d <color> : Sync color (Default:blue). 
+      
+      	-e <color> : Hand Mode color (Default:blue). 
+      
+      	-h <r|l> : Hand Mode (Default:r). 
+      
+      	-l <y|n> : Print Labels on axis (Default:y). 
+      
+      	-p <int> : Period to draw (Default:10). 
+      
+      	-r <dec> : Circles Radius (Default:0.2). 
+      
+      	-s <int> : Print the result (Default:0) 
+      		'0' : Print the result; 
+      		'1' : No printing. 
+      
+      	-t <y|n> : Print the title (Default:y). 
+      
+      	-u <y|n> : Print the Hand Mode in title (Default:y). 
+      
+      	-v <"string"> : Title Value to set. 
+      
+      	-y <dec> : Y Shift for overlapping throws (Default:0.25). 
+      
+      	-z <"string"> : Terminal Driver. Set Value to empty to see
+      possibilities (Default:auto). 
 
 
 
@@ -3166,6 +2989,212 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       	-t <y|n> : Draw the image title (Default:y) 
       
       	-v <"string"> : Value to use for the title 
+
+
+
+
+  STACK  - STACK juggling Notation (v0.0)
+-----------------------------------------
+     
+
+
+
+  BTN  - BTN juggling Notation (v1.2.2)
+-----------------------------------------
+      In this module a BTN throw will be made of a list of holes AC, AL, BOL
+      and the OP operator (Uppercase/Lowercase). 
+      
+      	Examples : OPALAC, BOLAL, OPALOPAC ... 
+
+
+  - BTNParity :               Give the BTN Parity. 
+      Parameters : 
+      
+      - <Throw> : Throw. 
+      - [-1] Optional, return the result, but do not print it (0: even, 1:
+      odd) 
+
+
+  - gen :                     Give all BTN throws limited by the
+                              number of holes encountered. 
+      Parameters : 
+      
+      - <int> : Maximum number of holes to go through [>4 is for
+      Extra-Terrestrial ;-)]. 
+      - ["file"] Optional, file to write results in. 
+
+
+  - gen2 :                    Give all BTN throws, excepted throws
+                              that contains two same successive
+                              holes in the body. 
+      Parameters : 
+      
+      - <int> : Maximum number of holes to go through [>4 is for
+      Extra-Terrestrial ;-)]. 
+      - ["file"] Optional, file to write results in. 
+
+
+  - inv :                     Give the BTN Time Reversed throw
+                              related. 
+      Parameters : 
+      
+      - <Throw> : Throw to Time Reversered. 
+      - <Parity> : Siteswap parity (0: even, 1: odd). 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - isValid :                 Test if the BTN Throw is valid. 
+      Parameters : 
+      
+      - <Throw> : Throw to check. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - size :                    Give the Throw Length in Hole Unit. 
+      Parameters : 
+      
+      - <Throw> : Throw that we want to get the length. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+
+
+  SPYRO  - Juggling SPYROGRAPH (v0.4)
+-----------------------------------------
+      SPYRO defines a Spyrograph for jugglers to model Spins,
+      Antispins, Hybrids, Extensions, Isolations in a single plane. 
+
+
+  - anim :                    Start JuggleSpyro HTML5. 
+      Parameters : 
+      
+      - None or optionaly the HTTP Server Port. 
+
+
+  - poiFlowers :              Start David Lyons's Poï Simulator. 
+      Parameters : 
+      
+      - None. 
+
+
+  - staffSimMCP :             Start the MCP's Staffs Simulator. 
+      Parameters : 
+      
+      - None. 
+
+
+
+
+  MMSTD  - MMSTD (Mills Mess State Transition) juggling Notation (v1.4)
+-----------------------------------------
+      In this module a SOU pattern will be made of a states (Ur, Ul, Rl, Rr,
+      Lr, Lr) and exchanges (<in>, <out>) sequence. 
+      
+      	Example : Ur -o-> Ll -+> Ur , Rr -+-> Ul -o-> 
+
+
+  - gen :                     Generation of all patterns with
+                              duplication removal. 
+      Parameters : 
+      
+      - <cpt> : Number of Passages per State 
+      - <pathLenMax> : Path Length Maximum (-1 : any length) 
+      - ["file"] Optional, file to write results in. 
+
+
+  - genByState :              Generation of all patterns
+                              classified per state. 
+      Parameters : 
+      
+      - <cpt> : Number of Passages per State 
+      - <pathLenMax> : Path Length Maximum (-1 : any length) 
+      - ["file"] Optional, file to write results in. 
+
+
+  - graph :                   Display the MMSTD Graph of valid
+                              transitions. 
+      Parameters : 
+      
+      - None otherwise Graphviz MUST be installed prior and its Path
+      correctly set in <conf.ini>. 
+      
+      - <"file"> : file for results. 
+      
+      - ["Format"] Optional, image format (Default:png) through : bmp
+      (Windows Bitmap Format), cmapx (client-side imagemap for use in
+      html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text) 
+      
+      - ["Generator"] Optional, Graphviz generation filter
+      (Default:dot) through : circo (circular layout), dot(directed
+      graphs), neato (undirected graphs), twopi (radial layouts),
+      fdp (undirected graphs), sfdp (large undirected graphs), osage
+      (clustered graphs). 
+
+
+  - inv :                     Compute inversion of a designated
+                              pattern. 
+      Parameters : 
+      
+      - <pattern> : pattern that we want to get the inversion 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - isEquivalent :            Test equivalence between 2
+                              patterns. 
+      Parameters : 
+      
+      - <pattern1> <pattern2> : patterns to compare. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - isSymetric :              Test if two patterns are symetric. 
+      Parameters : 
+      
+      - <pattern1> <pattern2> : patterns to check. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - isValid :                 Test if the pattern is valid. 
+      Parameters : 
+      
+      - <pattern> : pattern to test. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - size :                    Give the Pattern Length in State
+                              Unit. 
+      Parameters : 
+      
+      - <pattern> : pattern that we want to get the length. One Unit is
+      considered only if it is composed of a State and a Transition. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - sym :                     Compute symetry of a designated
+                              pattern. 
+      Parameters : 
+      
+      - <pattern> : pattern that we want to get the symetry 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - toSOU :                   Give the corresponding SOU
+                              Notation. 
+      Parameters : 
+      
+      - <pattern> : pattern that we want to get the MMSTD Notation. 
+      - [-1] Optional, return the result, but do not print it. 
 
 
 

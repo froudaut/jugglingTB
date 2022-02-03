@@ -6,7 +6,7 @@
 ## MODTEST.pm   - Module Example for jugglingTB                             ##
 ##                                                                          ##
 ##                                                                          ##
-## Copyright (C) 2008-2016  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
+## Copyright (C) 2008-2022  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
 ##                                                                          ##
 ##                                                                          ##
 ## This program is free software; you can redistribute it and/or modify it  ##

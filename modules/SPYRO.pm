@@ -6,7 +6,7 @@
 ## SPYRO.pm   - Module SPYRO for jugglingTB                                 ##
 ##                                                                          ##
 ##                                                                          ##
-## Copyright (C) 2015-2021  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
+## Copyright (C) 2015-2022  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
 ##                                                                          ##
 ##                                                                          ##
 ## This program is free software; you can redistribute it and/or modify it  ##
@@ -36,12 +36,13 @@ $Term::ANSIColor::AUTORESET = 1;
 
 our $SPYRO_INFO = "Juggling SPYROGRAPH";
 our $SPYRO_HELP = $lang::MSG_SPYRO_MENU_HELP;
-our $SPYRO_VERSION = "v0.3";
+our $SPYRO_VERSION = "v0.4";
 
 our %SPYRO_CMDS = 
     (    
 	 'anim'                  => ["$lang::MSG_SPYRO_MENU_ANIMATE_1","$lang::MSG_SPYRO_MENU_ANIMATE_2"],
 	 'staffSimMCP'           => ["$lang::MSG_SPYRO_MENU_STAFFSIMMCP_1","$lang::MSG_SPYRO_MENU_STAFFSIMMCP_2"],  
+	 'poiFlowers'            => ["$lang::MSG_SPYRO_MENU_POIFLOWERS_1","$lang::MSG_SPYRO_MENU_POIFLOWERS_2"],  
     );
 
 print "SPYRO $SPYRO::SPYRO_VERSION loaded\n";
@@ -136,6 +137,21 @@ sub staffSimMCP
 	chdir $conf::TMPDIR;
 	system("$conf::JAVA_CMD -jar LABinfinite.jar &");
 	chdir "..";
+    }
+}
+
+
+sub poiFlowers
+    #Run Poi Flower by David Lyons
+{
+    my $pwd = cwd();
+    
+    # start the server	
+    if ($common::OS eq "MSWin32") {	    
+	system("start /b cmd /c \"$conf::HTTP_BROWSER\" $pwd/data/PoiFlowers/PoiFlowers.htm");
+    } else {
+	# Unix-like OS
+	system("$conf::HTTP_BROWSER $pwd/data/PoiFlowers/PoiFlowers.htm &");
     }
 }
 

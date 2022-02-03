@@ -6,7 +6,7 @@
 ## conf.pm   - configuration Manager for jugglingTB                         ##
 ##                                                                          ##
 ##                                                                          ##
-## Copyright (C) 2008-2021  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
+## Copyright (C) 2008-2022  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
 ##                                                                          ##
 ##                                                                          ##
 ## This program is free software; you can redistribute it and/or modify it  ##
@@ -46,10 +46,10 @@ if($common::OS eq "MSWin32")
 }
 
 # JugglingLab Path (Start with [CWD] for a relative Path)
-our $JUGGLING_LAB_PATH="[CWD]/data/JugglingLab/v1.4";
+our $JUGGLING_LAB_PATH="[CWD]/data/JugglingLab/v1.6.1";
 
 # JugglingLab JL Version
-our $JUGGLING_LAB_JML_VERSION="1.2";
+our $JUGGLING_LAB_JML_VERSION="2";
 
 #Columns Size for display
 our $XSIZE = 60;
@@ -83,6 +83,9 @@ our $GRAPHVIZ_BIN = 'C:/Program Files/Graphviz/bin/';
 
 # GNUPLOT binary (needed to draw graphs such as HTN Grids) (Mod HTN)
 our $GNUPLOT_BIN = 'C:/Program Files/Gnuplot/bin/gnuplot.exe';
+
+# Java binary (Mod SPYRO)
+our $JAVA_CMD="java";
 
 
 ##  MODULES PARAMETERS                                                   
@@ -180,7 +183,11 @@ sub init
 	    elsif($ligns[0] =~ "GNUPLOT_BIN")
 	    {
 		$GNUPLOT_BIN=$v;
-	    }	   
+	    }
+	    elsif($ligns[0] =~ "JAVA_CMD")
+	    {
+		$JAVA_CMD=$v;
+	    }
 	    elsif($ligns[0] =~ "RESULTS")
 	    {
 		$RESULTS=$v;	

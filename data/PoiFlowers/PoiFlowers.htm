@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><script async="" src="PoiFlowers_fichiers/js"></script><script>if("localhost"!=document.location.hostname){function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-CQHKB4VCNV")}</script><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="author" content="David Lyons"><meta name="description" content="Poi flower pattern visualizer"><meta name="keywords" content="poi, glowstringing, fire spinning, flow arts, performance art, object manipulation, dance, hoop, rope dart, staff, double staff, dragon staff, fans, clubs, juggling, three.js, webgl, react"><link rel="icon" href="https://flowarts.xyz/favicon.ico"><link rel="icon" href="https://flowarts.xyz/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="https://flowarts.xyz/apple-touch-icon.png"><title>Poi Flowers</title><meta property="og:title" content="Poi Flowers"><meta property="og:type" content="website"><meta property="og:url" content="https://flowarts.xyz"><meta property="og:image" content="https://flowarts.xyz/thumb.png"><meta property="og:description" content="Poi flower pattern visualizer"><meta name="theme-color" content="#00d4ff"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Poi Flowers"><meta name="twitter:description" content="Poi flower pattern visualizer"><meta name="twitter:image" content="https://flowarts.xyz/thumb.png"><link rel="preconnect" href="https://fonts.gstatic.com/"><link href="PoiFlowers_fichiers/css2.css" rel="stylesheet"><script defer="defer" src="PoiFlowers_fichiers/bundle.js"></script><link href="PoiFlowers_fichiers/main.css" rel="stylesheet"><style data-jss="" data-meta="PrivateValueLabel">
+.jss1.jss2 .jss3 {
+  transform: scale(1) translateY(-10px);
+}
+.jss3 {
+  top: -34px;
+  z-index: 1;
+  position: absolute;
+  font-size: 0.75rem;
+  transform: scale(0);
+  transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.01071em;
+  transform-origin: bottom center;
+}
+.jss4 {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  transform: rotate(-45deg);
+  align-items: center;
+  border-radius: 50% 50% 50% 0;
+  justify-content: center;
+  background-color: currentColor;
+}
+.jss5 {
+  color: #fff;
+  transform: rotate(45deg);
+}
+</style><style data-jss="" data-meta="MuiSlider">
+.MuiSlider-root {
+  color: #3f51b5;
+  width: 100%;
+  cursor: pointer;
+  height: 2px;
+  display: inline-block;
+  padding: 13px 0;
+  position: relative;
+  box-sizing: content-box;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.MuiSlider-root.Mui-disabled {
+  color: #bdbdbd;
+  cursor: default;
+  pointer-events: none;
+}
+.MuiSlider-root.MuiSlider-vertical {
+  width: 2px;
+  height: 100%;
+  padding: 0 13px;
+}
+@media (pointer: coarse) {
+  .MuiSlider-root {
+    padding: 20px 0;
+  }
+  .MuiSlider-root.MuiSlider-vertical {
+    padding: 0 20px;
+  }
+}
+@media print {
+  .MuiSlider-root {
+    color-adjust: exact;
+  }
+}
+.MuiSlider-colorSecondary {
+  color: #f50057;
+}
+.MuiSlider-marked {
+  margin-bottom: 20px;
+}
+.MuiSlider-marked.MuiSlider-vertical {
+  margin-right: 20px;
+  margin-bottom: auto;
+}
+.MuiSlider-rail {
+  width: 100%;
+  height: 2px;
+  display: block;
+  opacity: 0.38;
+  position: absolute;
+  border-radius: 1px;
+  background-color: currentColor;
+}
+.MuiSlider-vertical .MuiSlider-rail {
+  width: 2px;
+  height: 100%;
+}
+.MuiSlider-track {
+  height: 2px;
+  display: block;
+  position: absolute;
+  border-radius: 1px;
+  background-color: currentColor;
+}
+.MuiSlider-vertical .MuiSlider-track {
+  width: 2px;
+}
+.MuiSlider-trackFalse .MuiSlider-track {
+  display: none;
+}
+.MuiSlider-trackInverted .MuiSlider-track {
+  background-color: rgb(182, 188, 226);
+}
+.MuiSlider-trackInverted .MuiSlider-rail {
+  opacity: 1;
+}
+.MuiSlider-thumb {
+  width: 12px;
+  height: 12px;
+  display: flex;
+  outline: 0;
+  position: absolute;
+  box-sizing: border-box;
+  margin-top: -5px;
+  transition: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  align-items: center;
+  margin-left: -6px;
+  border-radius: 50%;
+  justify-content: center;
+  background-color: currentColor;
+}
+.MuiSlider-thumb::after {
+  top: -15px;
+  left: -15px;
+  right: -15px;
+  bottom: -15px;
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+.MuiSlider-thumb.Mui-focusVisible, .MuiSlider-thumb:hover {
+  box-shadow: 0px 0px 0px 8px rgba(63, 81, 181, 0.16);
+}
+.MuiSlider-thumb.MuiSlider-active {
+  box-shadow: 0px 0px 0px 14px rgba(63, 81, 181, 0.16);
+}
+.MuiSlider-thumb.Mui-disabled {
+  width: 8px;
+  height: 8px;
+  margin-top: -3px;
+  margin-left: -4px;
+}
+.MuiSlider-vertical .MuiSlider-thumb {
+  margin-left: -5px;
+  margin-bottom: -6px;
+}
+.MuiSlider-vertical .MuiSlider-thumb.Mui-disabled {
+  margin-left: -3px;
+  margin-bottom: -4px;
+}
+.MuiSlider-thumb.Mui-disabled:hover {
+  box-shadow: none;
+}
+@media (hover: none) {
+  .MuiSlider-thumb.Mui-focusVisible, .MuiSlider-thumb:hover {
+    box-shadow: none;
+  }
+}
+.MuiSlider-thumbColorSecondary.Mui-focusVisible, .MuiSlider-thumbColorSecondary:hover {
+  box-shadow: 0px 0px 0px 8px rgba(245, 0, 87, 0.16);
+}
+.MuiSlider-thumbColorSecondary.MuiSlider-active {
+  box-shadow: 0px 0px 0px 14px rgba(245, 0, 87, 0.16);
+}
+.MuiSlider-valueLabel {
+  left: calc(-50% - 4px);
+}
+.MuiSlider-mark {
+  width: 2px;
+  height: 2px;
+  position: absolute;
+  border-radius: 1px;
+  background-color: currentColor;
+}
+.MuiSlider-markActive {
+  opacity: 0.8;
+  background-color: #fff;
+}
+.MuiSlider-markLabel {
+  top: 26px;
+  color: rgba(0, 0, 0, 0.54);
+  position: absolute;
+  font-size: 0.875rem;
+  transform: translateX(-50%);
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  line-height: 1.43;
+  white-space: nowrap;
+  letter-spacing: 0.01071em;
+}
+.MuiSlider-vertical .MuiSlider-markLabel {
+  top: auto;
+  left: 26px;
+  transform: translateY(50%);
+}
+@media (pointer: coarse) {
+  .MuiSlider-markLabel {
+    top: 40px;
+  }
+  .MuiSlider-vertical .MuiSlider-markLabel {
+    left: 31px;
+  }
+}
+.MuiSlider-markLabelActive {
+  color: rgba(0, 0, 0, 0.87);
+}
+</style><style data-jss="" data-meta="MuiTouchRipple">
+.MuiTouchRipple-root {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  overflow: hidden;
+  position: absolute;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.MuiTouchRipple-ripple {
+  opacity: 0;
+  position: absolute;
+}
+.MuiTouchRipple-rippleVisible {
+  opacity: 0.3;
+  animation: MuiTouchRipple-keyframes-enter 550ms cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1);
+}
+.MuiTouchRipple-ripplePulsate {
+  animation-duration: 200ms;
+}
+.MuiTouchRipple-child {
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 1;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+.MuiTouchRipple-childLeaving {
+  opacity: 0;
+  animation: MuiTouchRipple-keyframes-exit 550ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.MuiTouchRipple-childPulsate {
+  top: 0;
+  left: 0;
+  position: absolute;
+  animation: MuiTouchRipple-keyframes-pulsate 2500ms cubic-bezier(0.4, 0, 0.2, 1) 200ms infinite;
+}
+@-moz-keyframes MuiTouchRipple-keyframes-enter {
+  0% {
+    opacity: 0.1;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+}
+@-moz-keyframes MuiTouchRipple-keyframes-exit {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-moz-keyframes MuiTouchRipple-keyframes-pulsate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.92);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+</style><style data-jss="" data-meta="MuiButtonBase">
+.MuiButtonBase-root {
+  color: inherit;
+  border: 0;
+  cursor: pointer;
+  margin: 0;
+  display: inline-flex;
+  outline: 0;
+  padding: 0;
+  position: relative;
+  align-items: center;
+  border-radius: 0;
+  vertical-align: middle;
+  -moz-appearance: none;
+  justify-content: center;
+  text-decoration: none;
+  -moz-user-select: none;
+  background-color: transparent;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.MuiButtonBase-root::-moz-focus-inner {
+  border-style: none;
+}
+.MuiButtonBase-root.Mui-disabled {
+  cursor: default;
+  pointer-events: none;
+}
+@media print {
+  .MuiButtonBase-root {
+    color-adjust: exact;
+  }
+}
+</style><style data-jss="" data-meta="MuiFab">
+.MuiFab-root {
+  color: rgba(0, 0, 0, 0.87);
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  font-size: 0.875rem;
+  min-width: 0;
+  box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12);
+  box-sizing: border-box;
+  min-height: 36px;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 500;
+  line-height: 1.75;
+  border-radius: 50%;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+  background-color: #e0e0e0;
+}
+.MuiFab-root:active {
+  box-shadow: 0px 7px 8px -4px rgba(0,0,0,0.2),0px 12px 17px 2px rgba(0,0,0,0.14),0px 5px 22px 4px rgba(0,0,0,0.12);
+}
+.MuiFab-root:hover {
+  text-decoration: none;
+  background-color: #d5d5d5;
+}
+.MuiFab-root.Mui-focusVisible {
+  box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12);
+}
+.MuiFab-root.Mui-disabled {
+  color: rgba(0, 0, 0, 0.26);
+  box-shadow: none;
+  background-color: rgba(0, 0, 0, 0.12);
+}
+@media (hover: none) {
+  .MuiFab-root:hover {
+    background-color: #e0e0e0;
+  }
+}
+.MuiFab-root:hover.Mui-disabled {
+  background-color: rgba(0, 0, 0, 0.12);
+}
+.MuiFab-label {
+  width: 100%;
+  display: inherit;
+  align-items: inherit;
+  justify-content: inherit;
+}
+.MuiFab-primary {
+  color: #fff;
+  background-color: #3f51b5;
+}
+.MuiFab-primary:hover {
+  background-color: #303f9f;
+}
+@media (hover: none) {
+  .MuiFab-primary:hover {
+    background-color: #3f51b5;
+  }
+}
+.MuiFab-secondary {
+  color: #fff;
+  background-color: #f50057;
+}
+.MuiFab-secondary:hover {
+  background-color: #c51162;
+}
+@media (hover: none) {
+  .MuiFab-secondary:hover {
+    background-color: #f50057;
+  }
+}
+.MuiFab-extended {
+  width: auto;
+  height: 48px;
+  padding: 0 16px;
+  min-width: 48px;
+  min-height: auto;
+  border-radius: 24px;
+}
+.MuiFab-extended.MuiFab-sizeSmall {
+  width: auto;
+  height: 34px;
+  padding: 0 8px;
+  min-width: 34px;
+  border-radius: 17px;
+}
+.MuiFab-extended.MuiFab-sizeMedium {
+  width: auto;
+  height: 40px;
+  padding: 0 16px;
+  min-width: 40px;
+  border-radius: 20px;
+}
+.MuiFab-colorInherit {
+  color: inherit;
+}
+.MuiFab-sizeSmall {
+  width: 40px;
+  height: 40px;
+}
+.MuiFab-sizeMedium {
+  width: 48px;
+  height: 48px;
+}
+</style><style data-jss="" data-meta="MuiPopover">
+.MuiPopover-paper {
+  outline: 0;
+  position: absolute;
+  max-width: calc(100% - 32px);
+  min-width: 16px;
+  max-height: calc(100% - 32px);
+  min-height: 16px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+</style></head><body><div id="root"><div class="FullScreen" style="height: 100%; width: 100%;"><div id="panel" style=""><div id="panel-column"><h1>Flowers</h1><h2>Timing &amp; Direction</h2>Split Same<div id="modes"><div class="mode-row"><div class="mode active"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 70" class="mode-icon"><defs><style>.SS_svg__a{fill:none;stroke:currentColor;stroke-miterlimit:10}.SS_svg__b{fill:#151515}</style></defs><circle class="SS_svg__a" cx="35" cy="35" r="25"></circle><circle class="SS_svg__b" cx="35" cy="60" r="5.9"></circle><circle class="SS_svg__b" cx="60" cy="35" r="5.9"></circle><circle class="SS_svg__b" cx="35" cy="10" r="5.9"></circle><circle class="SS_svg__a" cx="35" cy="10" r="4"></circle><circle class="SS_svg__a" cx="35" cy="60" r="4"></circle><circle class="SS_svg__a" cx="60" cy="35" r="4"></circle><circle class="SS_svg__b" cx="10" cy="35" r="5.9"></circle><circle class="SS_svg__a" cx="10" cy="35" r="4"></circle></svg><div class="mode-label">SS</div></div><div class="mode"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 70" class="mode-icon"><defs><style>.TO_svg__a{fill:none;stroke:currentColor;stroke-miterlimit:10}.TO_svg__b{fill:#151515}</style></defs><circle class="TO_svg__a" cx="35" cy="35" r="25"></circle><circle class="TO_svg__b" cx="41" cy="10" r="5.9"></circle><circle class="TO_svg__b" cx="60" cy="35" r="5.9"></circle><circle class="TO_svg__b" cx="41" cy="60" r="5.9"></circle><circle class="TO_svg__b" cx="29" cy="60" r="5.9"></circle><circle class="TO_svg__b" cx="10" cy="35" r="5.9"></circle><circle class="TO_svg__a" cx="41" cy="10" r="4"></circle><circle class="TO_svg__b" cx="29.05" cy="10" r="5.9"></circle><circle class="TO_svg__a" cx="29" cy="10" r="4"></circle><circle class="TO_svg__a" cx="41" cy="60" r="4"></circle><circle class="TO_svg__a" cx="29" cy="60" r="4"></circle><circle class="TO_svg__a" cx="60" cy="35" r="4"></circle><circle class="TO_svg__a" cx="10" cy="35" r="4"></circle></svg><div class="mode-label">TO</div></div></div><div class="mode-row"><div class="mode"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 70" class="mode-icon"><defs><style>.SO_svg__a{fill:none;stroke:currentColor;stroke-miterlimit:10}.SO_svg__b{fill:#151515}</style></defs><circle class="SO_svg__a" cx="35" cy="35" r="25"></circle><circle class="SO_svg__b" cx="35" cy="60" r="5.9"></circle><circle class="SO_svg__b" cx="10" cy="29" r="5.9"></circle><circle class="SO_svg__a" cx="10" cy="29" r="4"></circle><circle class="SO_svg__a" cx="35" cy="60" r="4"></circle><circle class="SO_svg__b" cx="35" cy="10" r="5.9"></circle><circle class="SO_svg__a" cx="35" cy="10" r="4"></circle><circle class="SO_svg__b" cx="10" cy="41" r="5.9"></circle><circle class="SO_svg__a" cx="10" cy="41" r="4"></circle><circle class="SO_svg__b" cx="60" cy="29" r="5.9"></circle><circle class="SO_svg__a" cx="60" cy="29" r="4"></circle><circle class="SO_svg__b" cx="60" cy="41" r="5.9"></circle><circle class="SO_svg__a" cx="60" cy="41" r="4"></circle></svg><div class="mode-label">SO</div></div><div class="mode"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 70" class="mode-icon"><defs><style>.TS_svg__a{fill:none;stroke:currentColor;stroke-miterlimit:10}.TS_svg__b{fill:#151515}</style></defs><circle class="TS_svg__a" cx="35" cy="35" r="25"></circle><circle class="TS_svg__b" cx="10" cy="29" r="5.9"></circle><circle class="TS_svg__a" cx="10" cy="29" r="4"></circle><circle class="TS_svg__b" cx="10" cy="41" r="5.9"></circle><circle class="TS_svg__a" cx="10" cy="41" r="4"></circle><circle class="TS_svg__b" cx="60" cy="29" r="5.9"></circle><circle class="TS_svg__a" cx="60" cy="29" r="4"></circle><circle class="TS_svg__b" cx="60" cy="41" r="5.9"></circle><circle class="TS_svg__a" cx="60" cy="41" r="4"></circle><circle class="TS_svg__b" cx="41" cy="10" r="5.9"></circle><circle class="TS_svg__b" cx="41" cy="60" r="5.9"></circle><circle class="TS_svg__b" cx="29" cy="60" r="5.9"></circle><circle class="TS_svg__a" cx="41" cy="10" r="4"></circle><circle class="TS_svg__b" cx="29.05" cy="10" r="5.9"></circle><circle class="TS_svg__a" cx="29" cy="10" r="4"></circle><circle class="TS_svg__a" cx="41" cy="60" r="4"></circle><circle class="TS_svg__a" cx="29" cy="60" r="4"></circle></svg><div class="mode-label">TS</div></div></div></div><h2>Left</h2><div class="control"><div>Circles</div><span class="MuiSlider-root MuiSlider-colorPrimary" style="color: rgb(0, 212, 255);"><span class="MuiSlider-rail"></span><span class="MuiSlider-track" style="left: 0%; width: 16.6667%;"></span><input type="hidden" value="-3"><span style="left: 0%;" data-index="0" class="MuiSlider-mark MuiSlider-markActive"></span><span style="left: 8.33333%;" data-index="1" class="MuiSlider-mark MuiSlider-markActive"></span><span style="left: 16.6667%;" data-index="2" class="MuiSlider-mark MuiSlider-markActive"></span><span style="left: 25%;" data-index="3" class="MuiSlider-mark"></span><span style="left: 33.3333%;" data-index="4" class="MuiSlider-mark"></span><span style="left: 50%;" data-index="5" class="MuiSlider-mark"></span><span style="left: 58.3333%;" data-index="6" class="MuiSlider-mark"></span><span style="left: 66.6667%;" data-index="7" class="MuiSlider-mark"></span><span style="left: 75%;" data-index="8" class="MuiSlider-mark"></span><span style="left: 83.3333%;" data-index="9" class="MuiSlider-mark"></span><span style="left: 91.6667%;" data-index="10" class="MuiSlider-mark"></span><span style="left: 100%;" data-index="11" class="MuiSlider-mark"></span><span class="MuiSlider-thumb MuiSlider-thumbColorPrimary jss1" tabindex="0" role="slider" style="left: 16.6667%;" data-index="0" aria-orientation="horizontal" aria-valuemax="7" aria-valuemin="-5" aria-valuenow="-3"><span class="jss3 MuiSlider-valueLabel"><span class="jss4"><span class="jss5">-3</span></span></span></span></span></div><div class="control"><div>Color</div><button class="MuiButtonBase-root MuiFab-root MuiFab-primary" tabindex="0" type="button" aria-label="add" style="background-color: rgb(0, 212, 255); width: 18px; height: 18px; min-height: 18px;"><span class="MuiFab-label"> </span><span class="MuiTouchRipple-root"></span></button></div><div class="control control-spacer"><div>Start Angle</div><button class="btn"><svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"><style>.start-out_svg__st0{fill:none;stroke:#fff;stroke-linecap:round;stroke-miterlimit:10}</style><path class="start-out_svg__st0" d="M12.5 10h6M18.5 10l-2.1-2M18.5 10l-2.1 2"></path><path d="M5.9 17.6c2.6-1.6 4.3-4.4 4.3-7.6 0-3.2-1.7-6-4.3-7.6" opacity="0.5" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10"></path></svg></button></div><h2>Right</h2><div class="control"><div>Circles</div><span class="MuiSlider-root MuiSlider-colorPrimary" style="color: rgb(255, 118, 0);"><span class="MuiSlider-rail"></span><span class="MuiSlider-track" style="left: 0%; width: 0%;"></span><input type="hidden" value="-5"><span style="left: 0%;" data-index="0" class="MuiSlider-mark MuiSlider-markActive"></span><span style="left: 8.33333%;" data-index="1" class="MuiSlider-mark"></span><span style="left: 16.6667%;" data-index="2" class="MuiSlider-mark"></span><span style="left: 25%;" data-index="3" class="MuiSlider-mark"></span><span style="left: 33.3333%;" data-index="4" class="MuiSlider-mark"></span><span style="left: 50%;" data-index="5" class="MuiSlider-mark"></span><span style="left: 58.3333%;" data-index="6" class="MuiSlider-mark"></span><span style="left: 66.6667%;" data-index="7" class="MuiSlider-mark"></span><span style="left: 75%;" data-index="8" class="MuiSlider-mark"></span><span style="left: 83.3333%;" data-index="9" class="MuiSlider-mark"></span><span style="left: 91.6667%;" data-index="10" class="MuiSlider-mark"></span><span style="left: 100%;" data-index="11" class="MuiSlider-mark"></span><span class="MuiSlider-thumb MuiSlider-thumbColorPrimary jss1" tabindex="0" role="slider" style="left: 0%;" data-index="0" aria-orientation="horizontal" aria-valuemax="7" aria-valuemin="-5" aria-valuenow="-5"><span class="jss3 MuiSlider-valueLabel"><span class="jss4"><span class="jss5">-5</span></span></span></span></span></div><div class="control"><div>Color</div><button class="MuiButtonBase-root MuiFab-root MuiFab-primary" tabindex="0" type="button" aria-label="add" style="background-color: rgb(255, 118, 0); width: 18px; height: 18px; min-height: 18px;"><span class="MuiFab-label"> </span><span class="MuiTouchRipple-root"></span></button></div><div class="control control-spacer"><div>Start Angle</div><button class="btn"><svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"><style>.start-out_svg__st0{fill:none;stroke:#fff;stroke-linecap:round;stroke-miterlimit:10}</style><path class="start-out_svg__st0" d="M12.5 10h6M18.5 10l-2.1-2M18.5 10l-2.1 2"></path><path d="M5.9 17.6c2.6-1.6 4.3-4.4 4.3-7.6 0-3.2-1.7-6-4.3-7.6" opacity="0.5" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10"></path></svg></button></div><div class="control"><div>String Length</div><span class="MuiSlider-root MuiSlider-colorPrimary"><span class="MuiSlider-rail"></span><span class="MuiSlider-track" style="left: 0%; width: 30%;"></span><input type="hidden" value="0.8"><span class="MuiSlider-thumb MuiSlider-thumbColorPrimary jss1" tabindex="0" role="slider" style="left: 30%;" data-index="0" aria-orientation="horizontal" aria-valuemax="1.5" aria-valuemin="0.5" aria-valuenow="0.8"><span class="jss3 MuiSlider-valueLabel"><span class="jss4"><span class="jss5">0.8</span></span></span></span></span></div><div class="control"><div>Duration</div><span class="MuiSlider-root MuiSlider-colorPrimary"><span class="MuiSlider-rail"></span><span class="MuiSlider-track" style="left: 0%; width: 42.8571%;"></span><input type="hidden" value="4000"><span class="MuiSlider-thumb MuiSlider-thumbColorPrimary jss1" tabindex="0" role="slider" style="left: 42.8571%;" data-index="0" aria-orientation="horizontal" aria-valuemax="8000" aria-valuemin="1000" aria-valuenow="4000"><span class="jss3 MuiSlider-valueLabel"><span class="jss4"><span class="jss5">4000</span></span></span></span></span></div><div class="control"><div>Lines</div><div><button class="btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="eye_svg__bi eye_svg__bi-eye" viewBox="0 0 16 16"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 011.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0114.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 011.172 8z"></path><path d="M8 5.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM4.5 8a3.5 3.5 0 117 0 3.5 3.5 0 01-7 0z"></path></svg></button></div></div><div class="control control-spacer"><div>Trails</div><div><button class="btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="eye_svg__bi eye_svg__bi-eye" viewBox="0 0 16 16"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 011.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0114.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 011.172 8z"></path><path d="M8 5.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM4.5 8a3.5 3.5 0 117 0 3.5 3.5 0 01-7 0z"></path></svg></button></div></div><div id="links"><a href="https://davidlyons.dev/" title="David Lyons" target="_blank">davidlyons.dev</a></div></div></div><div id="viewer"><div id="toggle-panel"><a href="#" title="Toggle Panel"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="x_svg__bi x_svg__bi-x" viewBox="0 0 16 16"><path d="M4.646 4.646a.5.5 0 01.708 0L8 7.293l2.646-2.647a.5.5 0 01.708.708L8.707 8l2.647 2.646a.5.5 0 01-.708.708L8 8.707l-2.646 2.647a.5.5 0 01-.708-.708L7.293 8 4.646 5.354a.5.5 0 010-.708z"></path></svg></a><a href="#" title="Toggle Fullscreen"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="fullscreen_svg__bi fullscreen_svg__bi-fullscreen"><path d="M1.5 1a.5.5 0 00-.5.5v4a.5.5 0 01-1 0v-4A1.5 1.5 0 011.5 0h4a.5.5 0 010 1h-4zM10 .5a.5.5 0 01.5-.5h4A1.5 1.5 0 0116 1.5v4a.5.5 0 01-1 0v-4a.5.5 0 00-.5-.5h-4a.5.5 0 01-.5-.5zM.5 10a.5.5 0 01.5.5v4a.5.5 0 00.5.5h4a.5.5 0 010 1h-4A1.5 1.5 0 010 14.5v-4a.5.5 0 01.5-.5zm15 0a.5.5 0 01.5.5v4a1.5 1.5 0 01-1.5 1.5h-4a.5.5 0 010-1h4a.5.5 0 00.5-.5v-4a.5.5 0 01.5-.5z"></path></svg></a></div><canvas style="display: block; width: 980px; height: 547px; touch-action: none;" data-engine="three.js r136" width="1470" height="820"></canvas></div></div></div></body></html>

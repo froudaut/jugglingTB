@@ -6,7 +6,7 @@
 ## LADDER.pm   - LADDER Module for jugglingTB                               ##
 ##                                                                          ##
 ##                                                                          ##
-## Copyright (C) 2008-2021  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
+## Copyright (C) 2008-2022  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
 ##                                                                          ##
 ##                                                                          ##
 ## This program is free software; you can redistribute it and/or modify it  ##
@@ -43,7 +43,7 @@ our $LADDER_VERSION = "v2.1";
 our %LADDER_CMDS = 
     (    
 	 'draw'                 => ["$lang::MSG_LADDER_MENU_DRAW_1", "$lang::MSG_LADDER_MENU_DRAW_2"], 			 
-	 'removeObj'            => ["$lang::MSG_LADDER_MENU_REMOVE_OBJ_1", "$lang::MSG_LADDER_MENU_REMOVE_OBJ_2"], 			 
+	 'removeObj'            => ["$lang::MSG_LADDER_MENU_REMOVE_OBJ_1", "$lang::MSG_LADDER_MENU_REMOVE_OBJ_2"], 
 	 'sym'                  => ["$lang::MSG_LADDER_MENU_SYM_1", "$lang::MSG_LADDER_MENU_SYM_2"], 			 
 	 'inv'                  => ["$lang::MSG_LADDER_MENU_INV_1", "$lang::MSG_LADDER_MENU_INV_2"], 			 
 	 'slide'                => ["$lang::MSG_LADDER_MENU_SLIDE_1", "$lang::MSG_LADDER_MENU_SLIDE_2"],   
@@ -55,6 +55,9 @@ print "LADDER $LADDER::LADDER_VERSION loaded\n";
 
 # To add debug behaviour 
 our $LADDER_DEBUG=1;
+
+my $LINK_GUNSWAP='N'; # To add Gunswap Link for jonglage.net in generation
+my $LINK_JUGGLINGLAB_GIF='N'; # To add JugglingLab GIF Server Link for jonglage.net in generation
 
 my $PERIOD_MAX = 25;
 my $MAX_MULT = 15;
@@ -3701,8 +3704,13 @@ sub __test_jonglage_net_list
     my $cpt = 0;
     if (scalar @_ == 1 &&  ($_[0] eq "-1" || $_[0] eq "-2")) {
 	&common::gen_HTML_head1($f,"Ladder Notation : Exemples");
-	open(HTML, ">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;	
+	open(HTML, ">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;
+	
 	print HTML "\n";
+	if(uc($LINK_GUNSWAP) eq 'Y')
+	{
+	    print HTML "<script type=\"text/javascript\" src=\"/js/visualisation_siteswap.js\"></script>\n\n";
+	}
 	print HTML "<BODY>\n";
 	print HTML "<p>&nbsp;</p><p>&nbsp;</p><h1>Ladder Notation : Exemples</h1><p>&nbsp;</p>\n";
 	print HTML "Vous trouverez ci-dessous de nombreux exemples de diagrammes en échelle:\n";
@@ -3765,7 +3773,19 @@ sub __test_jonglage_net_list
 	if (scalar @_ == 1 &&  ($_[0] eq "-1" || $_[0] eq "-2")) {
 	    print HTML "<tr>"."\n";	    	    
 	    print HTML "<td class=table_header>$nb</td>"."\n";
-	    print HTML "<td class=table_header><strong>$ss</strong></td>"."\n";
+	    if(uc($LINK_GUNSWAP) eq 'Y')
+	    {
+		print HTML "<td class=table_header><strong><a href=\"javascript:visualiserSiteswap('$ss')\">$ss</a></strong></td>"."\n";
+	    }
+	    elsif(uc($LINK_JUGGLINGLAB_GIF) eq 'Y')
+	    {
+		
+		print HTML "<td class=table_header><strong><a href=\"https://jugglinglab.org/anim?pattern=$ss;colors=mixed\" target=\"_blank\">$ss</a></strong></td>"."\n";
+	    }		      
+	    else
+	    {
+		print HTML "<td class=table_header><strong>$ss</strong></td>"."\n";
+	    }
 	}
 	print "\n\n\n";
 	print colored [$common::COLOR_RESULT], "==== Diagram : ".$ss."\n";

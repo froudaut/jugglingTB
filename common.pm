@@ -6,7 +6,7 @@
 ## common.pm   -  common package for jugglingTB                             ##
 ##                                                                          ##
 ##                                                                          ##
-## Copyright (C) 2008-2021  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
+## Copyright (C) 2008-2022  Frederic Roudaut  <frederic.roudaut@free.fr>    ##
 ##                                                                          ##
 ##                                                                          ##
 ## This program is free software; you can redistribute it and/or modify it  ##
@@ -464,7 +464,6 @@ our @SS_list_jonglage_net = (
     "6626152",
     "7362613",
     "5716261",
-    "63641",
     "5363641", 
     );
 
@@ -541,9 +540,12 @@ sub gen_HTML_head1
 {
     my $f=$_[0];
     
-    open(HTML, ">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;	
+    open(HTML, ">> $conf::RESULTS/$f") || die ("$lang::MSG_GENERAL_ERR1 <$f> $lang::MSG_GENERAL_ERR1b") ;
+    print HTML "<!DOCTYPE html>\n";
+    print HTML "<html lang=\"fr\">\n\n";
     print HTML "<HEAD>\n";
     print HTML "<TITLE>".$_[1]."</TITLE>\n";
+    print HTML "<meta http-equiv=\"Content-Type\" content=\"text/html;charset=ISO-8859-1\">\n"; 
     print HTML "<STYLE type=\"text/css\">\n";	
     print HTML ".table_header\n";
     print HTML "{padding-top:1px;\n";
