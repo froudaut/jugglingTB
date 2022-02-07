@@ -112,8 +112,6 @@ our %SSWAP_CMDS =
  	 'slideSwitchSync'       => ["$lang::MSG_SSWAP_MENU_SLIDESWITCHSYNC_1","$lang::MSG_SSWAP_MENU_SLIDESWITCHSYNC_2"],
 	 'polyrhythmFountain'     => ["$lang::MSG_SSWAP_MENU_POLYRHYTHMFOUNTAIN_1","$lang::MSG_SSWAP_MENU_POLYRHYTHMFOUNTAIN_2"],
 	 'lowerHeightOnTempo'    => ["$lang::MSG_SSWAP_MENU_LOWERHEIGHTONTEMPO_1","$lang::MSG_SSWAP_MENU_LOWERHEIGHTONTEMPO_2"],
-	 'MHAsyncBasicMap' => ["$lang::MSG_SSWAP_MENU_MHASYNCBASICMAP_1","$lang::MSG_SSWAP_MENU_MHASYNCBASICMAP_2"],
- 	 'MHAsyncChangeHSS'     => ["$lang::MSG_SSWAP_MENU_MHASYNCCHANGEHSS_1","$lang::MSG_SSWAP_MENU_MHASYNCCHANGEHSS_2"],
     );
 
 
@@ -9301,8 +9299,8 @@ sub __genPolyrhythm
 		    if($nsum >=0)
 		    {
 			&__genPolyrhythm($max_height, $beat+1, $period,
-					\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
-					$nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
+					 \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
+					 $nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
 		    }
 		}
 
@@ -9370,8 +9368,8 @@ sub __genPolyrhythm
 		    if($nsum >=0)
 		    {
 			&__genPolyrhythm($max_height, $beat+1, $period,
-					\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
-					$nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
+					 \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
+					 $nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
 		    }
 		}
 		
@@ -9439,8 +9437,8 @@ sub __genPolyrhythm
 		    if($nsum >=0)
 		    {
 			&__genPolyrhythm($max_height, $beat+1, $period,
-					\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
-					$nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
+					 \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
+					 $nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
 		    }
 		}
 		
@@ -9509,8 +9507,8 @@ sub __genPolyrhythm
 		    if($nsum >=0)
 		    {
 			&__genPolyrhythm($max_height, $beat+1, $period,
-					\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
-					$nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
+					 \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
+					 $nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
 		    }
 		}
 	    }
@@ -9564,8 +9562,8 @@ sub __genPolyrhythm
 		if($nsum >=0)
 		{
 		    &__genPolyrhythm($max_height, $beat+1, $period,
-				    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
-				    $nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
+				     \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
+				     $nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
 		}
 	    }
 	    
@@ -9607,8 +9605,8 @@ sub __genPolyrhythm
 		if($nsum >=0)
 		{
 		    &__genPolyrhythm($max_height, $beat+1, $period,
-				    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
-				    $nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
+				     \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
+				     $nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
 		}
 	    }
 	}
@@ -9661,8 +9659,8 @@ sub __genPolyrhythm
 		if($nsum >=0)
 		{
 		    &__genPolyrhythm($max_height, $beat+1, $period,
-				    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
-				    $nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
+				     \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
+				     $nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
 		}
 	    }
 	    
@@ -9704,8 +9702,8 @@ sub __genPolyrhythm
 		if($nsum >=0)
 		{
 		    &__genPolyrhythm($max_height, $beat+1, $period,
-				    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
-				    $nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
+				     \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_catch_r_tmp, \@map_catch_l_tmp,
+				     $nsum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
 		}
 	    }
 	}
@@ -9714,8 +9712,8 @@ sub __genPolyrhythm
     else
     {
 	&__genPolyrhythm($max_height, $beat+1, $period,
-			\@map_throw_r, \@map_throw_l, \@map_catch_r, \@map_catch_l,
-			$sum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
+			 \@map_throw_r, \@map_throw_l, \@map_catch_r, \@map_catch_l,
+			 $sum, \@{$_[8]}, $direct_print, \@exclude_throws, $double_tempo_enable);
     }      
 }
 
@@ -9872,7 +9870,7 @@ sub genPolyrhythm
     @map_catch_l = @map_throw_l;
 
     &__genPolyrhythm($max_height, $beat, $period, \@map_throw_r,\@map_throw_l, \@map_catch_r, \@map_catch_l,
-		    $expected_sum, \@res, $direct_print, \@exclude_throws, $double_tempo_enable);        
+		     $expected_sum, \@res, $direct_print, \@exclude_throws, $double_tempo_enable);        
 
     if (scalar @_ >= 7 && $_[6] ne "-1") {	    	    	    	    
 	if ("JML:"=~substr(uc($_[6]),0,4)) {
@@ -10292,17 +10290,17 @@ sub __genPolyrhythmMult
 			if($gonextbeat == 1)
 			{
 			    &__genPolyrhythmMult($max_height, $beat+1, $period,
-						\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
-						\@map_catch_r_tmp, \@map_catch_l_tmp,
-						$nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
+						 \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
+						 \@map_catch_r_tmp, \@map_catch_l_tmp,
+						 $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
 			    $gonextbeat = -1;
 			}
 			else
 			{
 			    &__genPolyrhythmMult($max_height, $beat, $period,
-						\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
-						\@map_catch_r_tmp, \@map_catch_l_tmp,
-						$nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
+						 \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
+						 \@map_catch_r_tmp, \@map_catch_l_tmp,
+						 $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
 			}
 		    }
 		}
@@ -10384,17 +10382,17 @@ sub __genPolyrhythmMult
 			if($gonextbeat == 1)
 			{
 			    &__genPolyrhythmMult($max_height, $beat+1, $period,
-						\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
-						\@map_catch_r_tmp, \@map_catch_l_tmp,
-						$nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
+						 \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
+						 \@map_catch_r_tmp, \@map_catch_l_tmp,
+						 $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
 			    $gonextbeat = -1;
 			}
 			else
 			{
 			    &__genPolyrhythmMult($max_height, $beat, $period,
-						\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
-						\@map_catch_r_tmp, \@map_catch_l_tmp,
-						$nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
+						 \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
+						 \@map_catch_r_tmp, \@map_catch_l_tmp,
+						 $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
 			}
 		    }
 		    
@@ -10477,17 +10475,17 @@ sub __genPolyrhythmMult
 			if($gonextbeat == 1)
 			{
 			    &__genPolyrhythmMult($max_height, $beat+1, $period,
-						\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
-						\@map_catch_r_tmp, \@map_catch_l_tmp,
-						$nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
+						 \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
+						 \@map_catch_r_tmp, \@map_catch_l_tmp,
+						 $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
 			    $gonextbeat = -1;
 			}
 			else
 			{
 			    &__genPolyrhythmMult($max_height, $beat, $period,
-						\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
-						\@map_catch_r_tmp, \@map_catch_l_tmp,
-						$nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
+						 \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
+						 \@map_catch_r_tmp, \@map_catch_l_tmp,
+						 $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
 			}
 		    }
 		}
@@ -10570,17 +10568,17 @@ sub __genPolyrhythmMult
 			if($gonextbeat == 1)
 			{
 			    &__genPolyrhythmMult($max_height, $beat+1, $period,
-						\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
-						\@map_catch_r_tmp, \@map_catch_l_tmp,
-						$nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
+						 \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
+						 \@map_catch_r_tmp, \@map_catch_l_tmp,
+						 $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
 			    $gonextbeat = -1;
 			}
 			else
 			{
 			    &__genPolyrhythmMult($max_height, $beat, $period,
-						\@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
-						\@map_catch_r_tmp, \@map_catch_l_tmp,
-						$nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
+						 \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
+						 \@map_catch_r_tmp, \@map_catch_l_tmp,
+						 $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
 			}
 		    }
 		}
@@ -10646,17 +10644,17 @@ sub __genPolyrhythmMult
 		    if($gonextbeat == 1)
 		    {
 			&__genPolyrhythmMult($max_height, $beat+1, $period,
-					    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
-					    \@map_catch_r_tmp, \@map_catch_l_tmp,
-					    $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
+					     \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
+					     \@map_catch_r_tmp, \@map_catch_l_tmp,
+					     $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
 			$gonextbeat = -1;
 		    }
 		    else
 		    {
 			&__genPolyrhythmMult($max_height, $beat, $period,
-					    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
-					    \@map_catch_r_tmp, \@map_catch_l_tmp,
-					    $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
+					     \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
+					     \@map_catch_r_tmp, \@map_catch_l_tmp,
+					     $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
 		    }
 		}
 	    }
@@ -10710,17 +10708,17 @@ sub __genPolyrhythmMult
 		    if($gonextbeat == 1)
 		    {
 			&__genPolyrhythmMult($max_height, $beat+1, $period,
-					    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
-					    \@map_catch_r_tmp, \@map_catch_l_tmp,
-					    $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
+					     \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
+					     \@map_catch_r_tmp, \@map_catch_l_tmp,
+					     $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
 			$gonextbeat = -1;
 		    }
 		    else
 		    {
 			&__genPolyrhythmMult($max_height, $beat, $period,
-					    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
-					    \@map_catch_r_tmp, \@map_catch_l_tmp,
-					    $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
+					     \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
+					     \@map_catch_r_tmp, \@map_catch_l_tmp,
+					     $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
 		    }
 		    
 		}
@@ -10787,17 +10785,17 @@ sub __genPolyrhythmMult
 		    if($gonextbeat == 1)
 		    {
 			&__genPolyrhythmMult($max_height, $beat+1, $period,
-					    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
-					    \@map_catch_r_tmp, \@map_catch_l_tmp,
-					    $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
+					     \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
+					     \@map_catch_r_tmp, \@map_catch_l_tmp,
+					     $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
 			$gonextbeat = -1;
 		    }
 		    else
 		    {
 			&__genPolyrhythmMult($max_height, $beat, $period,
-					    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
-					    \@map_catch_r_tmp, \@map_catch_l_tmp,
-					    $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
+					     \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
+					     \@map_catch_r_tmp, \@map_catch_l_tmp,
+					     $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
 		    }
 		}
 	    }
@@ -10851,17 +10849,17 @@ sub __genPolyrhythmMult
 		    if($gonextbeat == 1)
 		    {
 			&__genPolyrhythmMult($max_height, $beat+1, $period,
-					    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
-					    \@map_catch_r_tmp, \@map_catch_l_tmp,
-					    $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
+					     \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
+					     \@map_catch_r_tmp, \@map_catch_l_tmp,
+					     $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
 			$gonextbeat = -1;
 		    }
 		    else
 		    {
 			&__genPolyrhythmMult($max_height, $beat, $period,
-					    \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
-					    \@map_catch_r_tmp, \@map_catch_l_tmp,
-					    $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
+					     \@map_throw_r_tmp, \@map_throw_l_tmp, \@map_cpt_throw_r_tmp, \@map_cpt_throw_l_tmp,
+					     \@map_catch_r_tmp, \@map_catch_l_tmp,
+					     $nsum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
 		    }
 
 		}
@@ -10872,8 +10870,8 @@ sub __genPolyrhythmMult
     else
     {
 	&__genPolyrhythmMult($max_height, $beat+1, $period,
-			    \@map_throw_r, \@map_throw_l, \@map_cpt_throw_r, \@map_cpt_throw_l, \@map_catch_r, \@map_catch_l,
-			    $sum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
+			     \@map_throw_r, \@map_throw_l, \@map_cpt_throw_r, \@map_cpt_throw_l, \@map_catch_r, \@map_catch_l,
+			     $sum, \@{$_[10]}, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);
     }      
 }
 
@@ -11047,7 +11045,7 @@ sub genPolyrhythmMult
     }
     
     &__genPolyrhythmMult($max_height, $beat, $period, \@map_throw_r,\@map_throw_l, \@map_cpt_throw_r, \@map_cpt_throw_l, \@map_catch_r, \@map_catch_l,
-			$expected_sum, \@res, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);        
+			 $expected_sum, \@res, $direct_print, \@exclude_throws, \@exclude_throws_final, $double_tempo_enable, $mult);        
 
     if (scalar @_ >= 8 && $_[7] ne "-1") {	    	    	    	    
 	if ("JML:"=~substr(uc($_[7]),0,4)) {
@@ -23384,286 +23382,6 @@ sub polyrhythmFountain
     }
 }
 
-
-sub MHAsyncChangeHSS
-{
-    my $ss = $_[0];
-    my $hss = $_[1];
-    my $nhss = $_[2];
-    my $nss = '';
-    
-    my $hand_period = 40;  # Must be multiple of hands and greater than SS period
-    my @hss_map = '' x $hand_period;
-    my @nhss_map = '' x $hand_period;
-    my @ss_map_r = '' x $hand_period;
-    my @ss_map_l = '' x $hand_period;
-    my $cur_hand = 'R';
-    my $cpt_r = 0;
-    my $cpt_l = 0;
-    
-    for(my $i=0; $i<$hand_period;$i++)
-    {
-	my $th=substr($hss,$i%length($hss),1);
-	if($hss_map[$i] eq '')
-	{	   
-	    if($cur_hand eq 'R')
-	    {
-		$hss_map[$i] = $cur_hand.$cpt_r;
-		$cur_hand = 'L';
-	    }
-	    else
-	    {
-		$hss_map[$i] = $cur_hand.$cpt_l;
-		$cur_hand = 'R';
-	    }	    
-	}
-
-	if(($hss_map[($i+int($th))%$hand_period]) eq '')
-	{
-	    if(substr($hss_map[$i],0,1) eq 'R')
-	    {
-		$cpt_r++;
-		$hss_map[($i+int($th))%$hand_period] = substr($hss_map[$i],0,1).$cpt_r;
-	    }
-	    else
-	    {
-		$cpt_l++;
-		$hss_map[($i+int($th))%$hand_period] = substr($hss_map[$i],0,1).$cpt_l;
-	    }
-	}		    
-    }
-
-    print "=== HSS MAP ===\n";
-    for(my $i=0; $i < scalar(@hss_map);$i ++)
-    {
-	print $hss_map[$i]." ";
-    }
-    print "\n\n";
-
-    $cpt_r = 0;
-    $cpt_l = 0;
-    for(my $i = 0; $i < $hand_period; $i++)
-    {
-	my $val=int(substr($ss,$i%length($ss),1));
-	if(substr($hss_map[$i],0,1) eq 'R')
-	{	    
-	    $ss_map_r[$cpt_r] = $hss_map[($i+$val)%$hand_period];
-	    $cpt_r++;
-	}
-	else
-	{	    
-	    $ss_map_l[$cpt_l] = $hss_map[($i+$val)%$hand_period];
-	    $cpt_l++;
-	}
-	   
-    }
-
-    print "=== OSS MAP (Right) ===\n";
-    for(my $i = 0; $i < $hand_period; $i++)
-    {
-	if ($ss_map_r[$i] eq '')
-	{
-	    print " _ ";
-	}
-	else
-	{
-	    print $ss_map_r[$i]." ";
-	}
-    }
-    print "\n\n";
-
-    print "=== OSS MAP (Left) ===\n";
-    for(my $i = 0; $i < $hand_period; $i++)
-    {
-	if ($ss_map_l[$i] eq '')
-	{
-	    print " _ ";
-	}
-	else
-	{
-	    print $ss_map_l[$i]." ";
-	}
-    }
-    print "\n\n";
-
-
-    $cur_hand = 'R';
-    $cpt_r = 0;
-    $cpt_l = 0;
-    for(my $i=0; $i<$hand_period;$i++)
-    {
-	my $th=substr($nhss,$i%length($nhss),1);
-	if($nhss_map[$i] eq '')
-	{	   
-	    if($cur_hand eq 'R')
-	    {
-		$nhss_map[$i] = $cur_hand.$cpt_r;
-		$cur_hand = 'L';
-	    }
-	    else
-	    {
-		$nhss_map[$i] = $cur_hand.$cpt_l;
-		$cur_hand = 'R';
-	    }	    
-	}
-
-	if(($nhss_map[($i+int($th))%$hand_period]) eq '')
-	{
-	    if(substr($nhss_map[$i],0,1) eq 'R')
-	    {
-		$cpt_r++;
-		$nhss_map[($i+int($th))%$hand_period] = substr($nhss_map[$i],0,1).$cpt_r;
-	    }
-	    else
-	    {
-		$cpt_l++;
-		$nhss_map[($i+int($th))%$hand_period] = substr($nhss_map[$i],0,1).$cpt_l;
-	    }
-	}		    
-    }
-
-    print "=== NEW HSS MAP ===\n";
-    for(my $i=0; $i < scalar(@nhss_map);$i ++)
-    {
-	print $nhss_map[$i]." ";
-    }
-    print "\n\n";
-
-
-    for(my $i=0; $i<$hand_period;$i++)
-    {
-	my $dest = '';
-	if(substr($nhss_map[$i],0,1) eq 'R')
-	{
-	    $dest = $ss_map_r[substr($nhss_map[$i],1)];
-	}
-	else
-	{
-	    $dest = $ss_map_l[substr($nhss_map[$i],1)];
-	}
-
-	my $found = -1;
-	for(my $j=0; $j < scalar(@nhss_map); $j++)
-	{
-	    if($nhss_map[$j] eq $dest)
-	    {		
-		my $val = $j - $i;
-		if($j < $i)
-		{
-		    $val = scalar(@nhss_map) + $val;
-		}
-		if($val > 16)
-		{
-		    $val = '_';		    
-		}
-		else
-		{
-		    $val = sprintf("%X", $val);
-		}
-		$nss = $nss.''.$val;
-		$found = 1;
-		last;
-	    }
-	}
-	if($found == -1)
-	{
-	    $nss = $nss.'_';
-	}       	
-
-    }
-
-    print $nss." ...\n";
-
-}
-
-
-
-
-sub MHAsyncBasicMap
-{
-    my $max_objs=15;
-    my $max_hands=15;
- 
-    if(scalar @_ >= 1)
-    {
-	$max_hands = $_[0];
-	if(scalar @_ >= 2)
-	{
-	    $max_objs = $_[1];
-	}
-    }
-    
-    print "\n\n\t row : nb Hands\n\t column: nb Objects\n\n";
-    print "\t Cn : Cascade Next-Hand\n";
-    print "\t Cp : Cascade Previous-Hand\n";
-    print "\t Fs : Fountain Same-Hand\n";
-    print "\t C : Other Cascade\n";
-    print "\t F : Fountain Crossed\n\n\n";    
-    
-    print '    |';    
-    for(my $n=1; $n <= $max_objs; $n ++)
-    {       
-	if($n<10)
-	{
-	    print "  $n |";
-	}
-	else
-	{
-	    print " $n |";
-	}		    
-    }
-    print "\n ";
-    print "-----" x $max_objs ;
-    print "----\n";
-
-    for(my $h=1; $h <= $max_hands; $h ++)
-    {
-	for(my $n=1; $n <= $max_objs; $n++)
-	{
-	    if ($n == 1)
-	    {
-		if($h<10)
-		{
-		    print "  $h |";
-		}
-		else
-		{
-		    print " $h |";
-		}		    
-	    }
-	    
-	    if($n%$h == 0)
-	    {
-		print ' Fs |';      		
-	    }
-	    elsif($n%$h == 1)
-	    {
-		print ' Cn |';
-	    }
-	    elsif($n%$h == $h-1)
-	    {
-		print ' Cp |';
-	    }
-	    else
-	    {
-		if(&__pgcd($n,$h) == 1)
-		{
-		    print '  C |';
-		}
-		else
-		{
-		    print '  F |';
-		}
-		    
-	    }		
-	}
-
-	print "\n ";
-	print "-----" x $max_objs ;
-	print "----\n";
-    }
-    print "\n";
-}
 
 
 

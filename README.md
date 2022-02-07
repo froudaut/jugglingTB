@@ -17,13 +17,14 @@ Currently it supports the following notations :
 - STACK: Stack Notation
 - HTN: 3-Layers Notation/Harmonic Throws Notation
 - SPYRO: Spyrograph for Spin/Antispin/Hybrids/Isolations ...
+- HSS: Hand Siteswap
 
 The SSWAP module contains the great Tool JugglingLab from Jack Boyce.
 For my personal needs I added others tools:
 - jdeep from Jack Boyce
 - HTNMaker from Shawn Pinciara
 - LABInfinite from MCP
-- juggleSpyro, another personnal project
+- juggleSpyro, another personal project
 - PowerJuggler from Marco Tarini
 - Poï Flowers from David Lyons
 - realsim from Pedro Teodoro

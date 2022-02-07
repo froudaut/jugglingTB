@@ -405,10 +405,6 @@ sub initLang
 	our $MSG_SSWAP_MENU_SLIDESWITCHSYNC_1 = "Donne les Siteswaps associ\x{e9}s en changeant la Synchronisation.";
 	our $MSG_SSWAP_MENU_SLIDESWITCHSYNC_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap.\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher.";
 
-	our $MSG_SSWAP_MENU_MHASYNCBASICMAP_1 = "Cartographie des types de Siteswaps Multi-Mains Asynchrone de Base, nombre Mains x Objets.";
-	our $MSG_SSWAP_MENU_MHASYNCBASICMAP_2 = "Param\x{e8}tres :\n\n\- [int] : Nombre Max de Mains (D\x{e9}faut:15).\n\n\- [int] : Nombre Max d'Objets (D\x{e9}faut:15).";
-	our $MSG_SSWAP_MENU_MHASYNCCHANGEHSS_1 = "Donne le Siteswap obtenu en changeant l'HSS \x{e0} 2 mains mais en conservant les Mains pour les throws et catchs [Exp\x{e9}rimental].";
-	our $MSG_SSWAP_MENU_MHASYNCCHANGEHSS_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap Asynchrone.\n\n\- <hss> : Hand Siteswap Initial.\n\n\- <hss> : Hand Siteswap Final.";
 	    
 	our $MSG_SSWAP_MENU_POLYRHYTHMFOUNTAIN_1 = "Outil Fontaine Polyrythmique de Josh Mermelstein.";
 	our $MSG_SSWAP_MENU_POLYRHYTHMFOUNTAIN_2 = "Param\x{e8}tres :\n\n\- Aucun.";
@@ -641,6 +637,31 @@ sub initLang
 	our $MSG_HTN_DRAWGRID_1 = "Grille g\x{e9}n\x{e9}r\x{e9}e";
 	our $MSG_HTN_ERR_OVERLAP_1 = "Overlapping de cercles sur l'affichage. R\x{e9}duiser YShift pour am\x{e9}liorer cela."; 
 	our $MSG_HTN_ERR_DRAWGRID_1 = "Error : Pas de points dans la grille."; 
+
+
+	################################################"
+	#
+	# HSS Module Messages 
+	#
+	################################################"
+
+	our $MSG_HSS_MENU_HELP = "Hand Siteswap Notation (HSS). Supporte actuellement uniquement le HSS Vanille.\n"; 
+
+	our $MSG_HSS_MENU_BASICMAP_1 = "Cartographie des types de Siteswaps Multi-Mains Asynchrone de Base, nombre Mains x Objets.";
+	our $MSG_HSS_MENU_BASICMAP_2 = "Param\x{e8}tres :\n\n\- [int] : Nombre Max de Mains (D\x{e9}faut:15).\n\n\- [int] : Nombre Max d'Objets (D\x{e9}faut:15).";
+	our $MSG_HSS_MENU_CHANGEHSS_1 = "Donne le Siteswap obtenu en changeant l'HSS \x{e0} 2 mains mais en conservant les Mains pour les throws et catchs [Exp\x{e9}rimental].";
+	our $MSG_HSS_MENU_CHANGEHSS_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap Asynchrone.\n\n\- <hss> : Hand Siteswap Initial.\n\n\- <hss> : Hand Siteswap Final.";
+
+	our $MSG_HSS_MENU_GETHANDSSEQ_1 = "Donne le s\x{e9}quencement des mains selon l'HSS d'entr\x{e9}e.";
+	our $MSG_HSS_MENU_GETHANDSSEQ_2 = "Param\x{e8}tres :\n\n\- <hss> : Hand Siteswap.\n\n\- <\"string\"> : Mains impliqu\x{e9}es s\x{e9}par\x{e9}es par des , .";
+
+	our $MSG_HSS_CHANGEHSS_ERROR1 = "Siteswap Invalide."; 
+	our $MSG_HSS_CHANGEHSS_ERROR2 = "HSS Invalide."; 
+
+	our $MSG_HSS_ERROR1 = "HSS Invalide."; 
+	our $MSG_HSS_ERROR2 = "Seul HSS de type Vanille support\x{e9}."; 
+	our $MSG_HSS_ERROR3 = "Le nombre de mains en param\x{e8}tre doit \x{ea}tre identique au nombre de mains du HSS."; 
+
 
 	
 	################################################"
@@ -1032,11 +1053,6 @@ sub initLang
 
 	our $MSG_SSWAP_MENU_POLYRHYTHMFOUNTAIN_1 = "Polyrhythmic Fountain Tool from Josh Mermelstein.";
 	our $MSG_SSWAP_MENU_POLYRHYTHMFOUNTAIN_2 = "Parameters :\n\n\- None.";
-
-	our $MSG_SSWAP_MENU_MHASYNCBASICMAP_1 = "Map of Asynchronous MultiHand Siteswaps Basic types, Hands x Objects number.";
-	our $MSG_SSWAP_MENU_MHASYNCBASICMAP_2 = "Parameters :\n\n\- [int] : Max number of Hands (Default:15).\n\n\- [int] : Max number of Objects (Default:15).";
-	our $MSG_SSWAP_MENU_MHASYNCCHANGEHSS_1 = "Give Siteswap get by swapping hands (HSS with 2 hands) but keeping throw and catch hands. [Experimental]";
-	our $MSG_SSWAP_MENU_MHASYNCCHANGEHSS_2 = "Parameters :\n\n\- <\"siteswap\"> : Asynchronous Siteswap.\n\n\- <hss> : Initial Hand Siteswap.\n\n\- <hss> : Ending Hand Siteswap.";
 	
 	our $MSG_SSWAP_MENU_LOWERHEIGHTONTEMPO_1 = "Siteswaps transformation for lower throws, keeping the Tempo of throws but adding extra Hold Times.";
 	our $MSG_SSWAP_MENU_LOWERHEIGHTONTEMPO_2 = "Interesting to simplify Polyrhythms.\n\nParameters :\n\n\- <\"siteswap\"> : Siteswap to adapt.\n\n\- [\"options\"] Several options \-[f|j|m] described hereafter:\n\t\-f <int> : Number of Minimum Free Beats during transformation between two consecutive throws (Default:1). As the object is catch a small time before being throwed, with a Dwell time around 1 in general a lower value implies Squeezes.\n\t\-j <y|n> : JugglingLab Adaptation. JugglingLab only render Hold Times for throws 1x or 2. It then convert Hold Times with greater values.\n\t\-m <int> : Minimum value for throw on same hand after transformation in order to avoid for example a transformation of throw into hold (Default:3).\n\n[\-1] Optional, return the result, but do not print it (Default:n).";
@@ -1200,6 +1216,7 @@ sub initLang
 
 	our $MSG_SSWAP_POLYRHYTHM_MSG1 = "Ratio";
 
+	
 	################################################"
 	#
 	# LADDER Module Messages 
@@ -1251,6 +1268,30 @@ sub initLang
 	our $MSG_SPYRO_MENU_POIFLOWERS_1 = "Start David Lyons's Po\x{ef} Simulator.";
 	our $MSG_SPYRO_MENU_POIFLOWERS_2 = "Parameters :\n\n\- None.";
 
+
+	################################################"
+	#
+	# HSS Module Messages 
+	#
+	################################################"
+
+	our $MSG_HSS_MENU_HELP = "Hand Siteswap Notation (HSS). It currently support only Vanilla HSS.\n"; 
+
+	our $MSG_SSWAP_MENU_MHASYNCBASICMAP_1 = "Map of Asynchronous MultiHand Siteswaps Basic types, Hands x Objects number.";
+	our $MSG_SSWAP_MENU_MHASYNCBASICMAP_2 = "Parameters :\n\n\- [int] : Max number of Hands (Default:15).\n\n\- [int] : Max number of Objects (Default:15).";
+	our $MSG_SSWAP_MENU_MHASYNCCHANGEHSS_1 = "Give Siteswap get by swapping hands (HSS with 2 hands) but keeping throw and catch hands. [Experimental]";
+	our $MSG_SSWAP_MENU_MHASYNCCHANGEHSS_2 = "Parameters :\n\n\- <\"siteswap\"> : Asynchronous Siteswap.\n\n\- <hss> : Initial Hand Siteswap.\n\n\- <hss> : Ending Hand Siteswap.";
+
+	our $MSG_HSS_MENU_GETHANDSSEQ_1 = "Give Hands sequence according to input HSS.";
+	our $MSG_HSS_MENU_GETHANDSSEQ_2 = "Param\x{e8}tres :\n\n\- <hss> : Hand Siteswap.\n\n\- <\"string\"> : Hands involved separated by , .";
+
+
+	our $MSG_HSS_CHANGEHSS_ERROR1 = "Invalid Siteswap."; 
+	our $MSG_HSS_CHANGEHSS_ERROR2 = "Invalid HSS."; 
+	
+	our $MSG_HSS_ERROR1 = "Invalid HSS."; 
+	our $MSG_HSS_ERROR2 = "Only Vanilla HSS is handled."; 
+	our $MSG_HSS_ERROR3 = "Number of hands in parameter must be equal to the number of hands in HSS."; 
 
 	
 	################################################"

@@ -198,9 +198,10 @@ use modules::LADDER;
 use modules::SPYRO;
 use modules::STACK;
 use modules::HTN;
+use modules::HSS;
 #use modules::MODTEST;
 
-my @MODULES= ("BTN", "SOU", "MMSTD", "LADDER", "SSWAP", "SPYRO", "HTN", "STACK");
+my @MODULES= ("BTN", "SOU", "MMSTD", "LADDER", "SSWAP", "SPYRO", "HTN", "HSS", "STACK");
 ###########################################################################################################
 
 # Set the Debug Mode in each module

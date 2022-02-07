@@ -79,6 +79,7 @@
 	    &nbsp;&nbsp;&nbsp;<a href="#chapAnnexe1.6">A6 - SSWAP</a><br/>
 	    &nbsp;&nbsp;&nbsp;<a href="#chapAnnexe1.7">A7 - HTN</a><br/>
 	    &nbsp;&nbsp;&nbsp;<a href="#chapAnnexe1.8">A8 - SPYRO</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chapAnnexe1.9">A9 - HSS</a><br/>
 	    
 	    &nbsp;
 	  </p>
@@ -103,6 +104,7 @@
 	      <li>STACK: Stack Notation </li>
 	      <li>HTN: 3-Layers Notation/Harmonic Throws Notation</li>
 	      <li>SPYRO: Spyrograph pour Spin/Antispin/Hybrides/Isolations ...  </li>
+	      <li>HSS: Hand Siteswap Notation  </li>
 
 	    </ul>
 	  </p>
@@ -1035,7 +1037,7 @@
 		    
 		    <span class="Style1">isSymetric</span>                 : Teste la symétrie de 2 patterns.<br/>
 		    Paramètres :<br/>
-		    - &lt;pattern1&gt; &lt;pattern2&gt;> : patterns à comparer.<br/>
+		    - &lt;pattern1&gt; &lt;pattern2&gt; : patterns à comparer.<br/>
 		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
 		    <br/>
 		    
@@ -2306,22 +2308,7 @@
 		    <br/><br/>
 		    [-1] Optionnel, retourne le resultat sans l'afficher.<br/>
 		    <br/>
-
 		    
-		    <span class="Style1">MHAsyncBasicMap</span>  :             Cartographie des types de Siteswaps Multi-Mains Asynchrone de
-		    Base, nombre Mains x Objets.  <br/>
-		    Paramètres : 		    <br/>
-		    - [int] : Nombre Max de Mains (Défaut:15). 		    <br/>
-		    - [int] : Nombre Max d' Objets (Défaut:15). 		    <br/>
-		    <br/>
-
-		    <span class="Style1">MHAsyncChangeHSS</span>  :              Donne le Siteswap obtenu en changeant l'HSS à 2 mains mais en conservant les Mains pour les throws et catchs [Experimental].  <br/>
-		    Paramètres : 		    <br/>
-		    - &lt;siteswap&gt; : Siteswap. <br/><br/>
-		    - &lt;hss&gt; : Hand Siteswap Initial. 		    <br/>
-		    - &lt;hss&gt;> : Hand Siteswap Final. 		    <br/>
-		    <br/>
-
 		    
 		    <span class="Style1">polyrhythmFountain</span>  :            Outil Fontaine Polyrythmique de Josh Mermelstein.   <br/>
 		    Paramètres : 		    <br/>
@@ -2588,6 +2575,43 @@
 	      </tbody>
 	    </table>
 	  </div>
+
+
+	  <h3>HSS</h3><a name="chapAnnexe1.9" id="chapAnnexe1.9"></a>
+	  <p>
+	     Hand Siteswap Notation (HSS). Supporte actuellement
+	     uniquement le HSS Vanille.	    
+	  </p>
+	  
+	  <div class="windowCode">
+	    <table>
+	      <tbody>
+		<tr>
+		  <td> 
+		    <span class="Style1">HSS  - HSS juggling Notation (v0.1)</span><br/>
+		    <span class="Style1">-----------------------------------------</span><br/>
+		    <br/>
+		    <span class="Style1">basicMap</span>  :             Cartographie des types de Siteswaps Multi-Mains Asynchrone de
+		    Base, nombre Mains x Objets.  <br/>
+		    Paramètres : 		    <br/>
+		    - [int] : Nombre Max de Mains (Défaut:15). 		    <br/>
+		    - [int] : Nombre Max d' Objets (Défaut:15). 		    <br/>
+		    <br/>
+
+		    <span class="Style1">changeHSS</span>  :              Donne le Siteswap obtenu en changeant l'HSS à 2 mains mais en conservant les Mains pour les throws et catchs [Experimental].  <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;siteswap&gt; : Siteswap. <br/>
+		    - &lt;hss&gt; : Hand Siteswap Initial. 		    <br/>
+		    - &lt;hss&gt; : Hand Siteswap Final. 		    <br/>
+		    <br/>
+
+		    <span class="Style1">getHandsSeq</span>  :             Donne le séquencement des mains
+                              selon l'HSS d'entrée.
+		    Paramètres : 		    <br/>
+		    - &lt;hss&gt; : Hand Siteswap. 		    <br/>
+		    - &lt;"string"&gt; : Mains impliquées séparées par des , . 		    <br/>
+		    <br/>
+
 	  
 	  <div class="pied-canevas">	  
 	    
