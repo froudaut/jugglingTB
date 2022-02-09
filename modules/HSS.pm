@@ -385,15 +385,25 @@ sub getHandsSeq
     {
 	if($hands_map[$i] eq '')
 	{
-	    $hands_map[$i] = $hands[$cpt];
-	    $cpt++;
+	    if(substr($hss,$i,1) != 0)
+	    {
+		$hands_map[$i] = $hands[$cpt];
+		$cpt++;
+	    }
 	}
 	$hands_map[$i+hex(substr($hss,$i,1))]=$hands_map[$i];	
     }
 
     for(my $i=0; $i < scalar @hands_map; $i++)
     {
-	print $hands_map[$i]." ";
+	if($hands_map[$i] eq '')
+	{
+	    print "- ";
+	}
+	else
+	{
+	    print $hands_map[$i]." ";
+	}
     }
 
     print "\n\n";
