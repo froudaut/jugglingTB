@@ -46,7 +46,7 @@ if($common::OS eq "MSWin32")
 }
 
 # JugglingLab Path (Start with [CWD] for a relative Path)
-our $JUGGLING_LAB_PATH="[CWD]/data/JugglingLab/v1.6.1";
+our $JUGGLING_LAB_PATH="[CWD]/data/JugglingLab/v1.6.2";
 
 # JugglingLab JL Version
 our $JUGGLING_LAB_JML_VERSION="2";

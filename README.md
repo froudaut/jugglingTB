@@ -1,4 +1,4 @@
-#  ==== README for jugglingTB v1.5 ====
+#  ==== README for jugglingTB v1.6 ====
 
 Author : Frederic Roudaut  
 
@@ -17,7 +17,8 @@ Currently it supports the following notations :
 - STACK: Stack Notation
 - HTN: 3-Layers Notation/Harmonic Throws Notation
 - SPYRO: Spyrograph for Spin/Antispin/Hybrids/Isolations ...
-- HSS: Hand Siteswap
+- HSS: Object/Hand Siteswap Notationx
+- MHN: Multi-Hand Notation 
 
 The SSWAP module contains the great Tool JugglingLab from Jack Boyce.
 For my personal needs I added others tools:

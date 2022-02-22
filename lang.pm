@@ -333,7 +333,7 @@ sub initLang
 	our $MSG_SSWAP_MENU_TIMEREVDIAG_1 = "Calcule l'inversion (Time-Reversed) d'un Siteswap par M\x{e9}thode des Diagrammes.";
 	our $MSG_SSWAP_MENU_TIMEREVDIAG_2 = "Le Siteswap obtenu ne prend pas en compte la colorisation; le diagramme la consid\x{e8}re, cependant le Siteswap obtenu peut\-\x{ea}tre moins synth\x{e9}tique que celui rendu par la function timeRev.\n\nParam\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap\n\n\- [\"fichier\"] Optionnel, fichier de r\x{e9}sultats. Si -1, retourne le r\x{e9}sultat sans l'afficher.\n\n".$MSG_GRAPHVIZ_OPTS_a1.$MSG_GRAPHVIZ_OPTS_b1; 
 	our $MSG_SSWAP_MENU_SYM_1 = "Calcule la sym\x{e9}trie d'un Siteswap.";
-	our $MSG_SSWAP_MENU_SYM_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap\n\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher."; 
+	our $MSG_SSWAP_MENU_SYM_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher."; 
 	our $MSG_SSWAP_MENU_SYMDIAG_1 = "Calcule la sym\x{e9}trie d'un Siteswap par M\x{e9}thode des Diagrammes.";
 	our $MSG_SSWAP_MENU_SYMDIAG_2 = "Le Siteswap obtenu peut\-\x{ea}tre moins synth\x{e9}tique que celui rendu par la function sym.\n\nParam\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap\n\n\- [\"fichier\"] Optionnel, fichier de r\x{e9}sultats. Si -1, retourne le r\x{e9}sultat sans l'afficher;\n\n".$MSG_GRAPHVIZ_OPTS_a1.$MSG_GRAPHVIZ_OPTS_b1; 
 	our $MSG_SSWAP_MENU_GETORBITS_1 = "Donne les Orbites d'un Siteswap.";
@@ -395,6 +395,10 @@ sub initLang
 	our $MSG_SSWAP_MENU_GENSSPRIME_2 = "Param\x{e8}tres :\n\n\- <type> : Type de g\x{e9}n\x{e9}rateur parmi 'V' (Vanille), 'S' (Synchrone), 'M' (Multiplexe), 'MS' (Multiplexe Synchrone), 'MULTI' (MultiSynchrone).\n\n== cas 'V', 'S' ==\n\t\- <int> : Nombre d'objets.\n\t\- <nb> : Valeur du lancer max en h\x{e9}xad\x{e9}cimal.\n\n== cas 'M', 'MS', 'MULTI' ==\n\t\- <int> : Nombre d'objets.\n\t\- <nb> : Valeur du lancer max en h\x{e9}xad\x{e9}cimal.\n\t\- <int> : Nombre Max de lancers Simultan\x{e9}s.\n\n".$MSG_SSWAP_PRINTSS_OPTS_a2.$MSG_SSWAP_PRINTSS_OPTS_b2.$MSG_SSWAP_PRINTSS_OPTS_c2."\n\n\- [\"fichier\"] Optionnel, fichier XLS Matrice Etats/Transitions (R\x{e9}duite ou non) valide en entr\x{e9}e pour acc\x{e9}l\x{e9}rer les calculs (chemin absolu)."; 
 	our $MSG_SSWAP_MENU_TOSTACK_1 = "Donne la Notation Stack correspondante [Exp\x{e9}rimental].";
 	our $MSG_SSWAP_MENU_TOSTACK_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap.\n\n\- [\"options\"] Diff\x{e9}rentes options \-[m|s] pr\x{e9}cis\x{e9}es ci-dessous :\n\n\t\-m <int> : Mode de Calcul des trous pour les multiplexes\n\t(D\x{e9}faut:1)\n\t\t'0' : Pas de trou entre les lancers multiplex [D\x{e9}mo];\n\t\t'1' : Ordre Croissant d'arriv\x{e9}e;\n\t\t'2' : Ordre D\x{e9}croissant d'arriv\x{e9}e.\n\n\t\-s <n|r|l> : Mode de Calcul des trous pour les Synchrones \n\t(D\x{e9}faut:r)\n\t\t'n' : Synchro totale. Pas de consid\x{e9}ration entre les mains, \n\t\tstacks ind\x{e9}pendantes [D\x{e9}mo];\n\t\t'r' : Main droite en premier;\n\t\t'l' : Main gauche en premier.\n\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher.";
+	our $MSG_SSWAP_MENU_TOMHN_1 = "Donne la Notation MHN correspondante.";
+	our $MSG_SSWAP_MENU_TOMHN_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap.\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher."; 
+	our $MSG_SSWAP_MENU_TOHSS_1 = "Donne la Notation OSS/HSS correspondante si possible (i.e Async. Transformation).";
+	our $MSG_SSWAP_MENU_TOHSS_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap.\n\- [\"options\"] : Option disponible \-z <y|n> : Z\x{e9}ro possible dans le calcul HSS ((D\x{e9}faut:y).\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher."; 
 
 	our $MSG_SSWAP_MENU_JDEEP_1 = "G\x{e9}n\x{e9}ration de Siteswaps Premiers (jdeep from Jack Boyce).";
 	our $MSG_SSWAP_MENU_JDEEP_2 = "jdeep version 5.1, Jack Boyce\n(02/17/99) jboyce@users.sourceforge.net\n\nCe programme a pour but la recherche des longs Siteswaps Premiers.\n\nformat : \n\tjdeep (\'<# objects> <max. throw> [<min. length>] [options]\')\n\navec :\n\t<# objects>   = Nombre d'objets dans les patterns trouv\x{e9}s.\n\t<max. throw>  = plus grand lancer \x{e0} utiliser.\n\t<min. length> = plus petits patterns \x{e0} trouver (optionnel, pour acc\x{e9}l\x{e9}rer les recherches)\n\nDiverses options sont disponibles :\n\t-block <skips> : donne les patterns en block form, en\n\t\t\t autorisant le nombre de skips sp\x{e9}cifi\x{e9}s.\n\t-super <shifts> : trouve (presque) les patterns superprim\x{e9}, en\n\t\t\t autorisant le nombre de lancer shift sp\x{e9}cifi\x{e9}s.\n\t-inverse : affiche l'inverse \x{e9}galement, en mode -super.\n\t-g : donne les patterns ground-state (fondamentaux)\n\t\t\t uniquement.\n\t-ng : donne les patterns excit\x{e9}s uniquement.\n\t-full : donne tous les patterns; sinon seuls les patterns aussi\n\t\t\t longs que les patterns les plus longs sont affich\x{e9}s.\n\t-noprint : suprime l'affichage des patterns.\n\t-exact : affiche les patterns de la longueur sp\x{e9}cifi\x{e9}e\n\t\t\t (pas plus long).\n\t-x <throw1 throw2 ...> : exclu les lancers list\x{e9}s \n\t\t\t (pour acc\x{e9}l\x{e9}rer les recherches).\n\t-trim : active l'algorithme de graph trimming.\n\t-notrim : d\x{e9}sactive l'algorithme de graph trimming.\n\t-fichier : mode de sortie fichier.\n\t-temps <secs> : temps maximum d'ex\x{e9}cution de la fonction.";
@@ -405,7 +409,7 @@ sub initLang
 	our $MSG_SSWAP_MENU_SLIDESWITCHSYNC_1 = "Donne les Siteswaps associ\x{e9}s en changeant la Synchronisation.";
 	our $MSG_SSWAP_MENU_SLIDESWITCHSYNC_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap.\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher.";
 
-	    
+	
 	our $MSG_SSWAP_MENU_POLYRHYTHMFOUNTAIN_1 = "Outil Fontaine Polyrythmique de Josh Mermelstein.";
 	our $MSG_SSWAP_MENU_POLYRHYTHMFOUNTAIN_2 = "Param\x{e8}tres :\n\n\- Aucun.";
 
@@ -523,7 +527,11 @@ sub initLang
 	our $MSG_SSWAP_GENSSPRIME_MSG11 = "Etat Initial";
 
 	our $MSG_SSWAP_TOSTACK_MSG1 = "Erreur : Siteswap MultiSynchrone (non impl\x{e9}ment\x{e9}) ou Siteswap Invalide.";
+	our $MSG_SSWAP_TOMHN_MSG1 = "Erreur : Siteswap Invalide.";
+	our $MSG_SSWAP_TOHSS_MSG0 = "Erreur : Siteswap non Asynchrone.";
+	our $MSG_SSWAP_TOHSS_MSG1 = "Erreur : Siteswap Invalide.";
 
+	
 	our $MSG_SSWAP_GETSTATES_FROM_XLS_MSG1 = "Matrice Etats/Transitions charg\x{e9}e.";
 
 	our $MSG_SSWAP_CHECK_XLS_FILE_1 = "Attention : le fichier XLS n'est pas celui escompt\x{e9} ";
@@ -553,10 +561,10 @@ sub initLang
 	our $MSG_SSWAP_GENERAL18 = "Pas de license Excel d\x{e9}tect\x{e9}e. Certaines fonctions ne seront pas disponibles.";
 	our $MSG_SSWAP_GENERAL19 = "Sym\x{e9}trie";
 
-	our $MSG_SSWAP_PRINTSS_OPTS_a1 = "\- [\"options\"] Diff\x{e9}rentes options \-[b|c|d|g|i|n|o|p|r|s|t|u] pr\x{e9}cis\x{e9}es ci-dessous :";
+	our $MSG_SSWAP_PRINTSS_OPTS_a1 = "\- [\"options\"] Diff\x{e9}rentes options \-[b|c|d|g|i|n|o|p|q|r|s|t|u] pr\x{e9}cis\x{e9}es ci-dessous :";
 	our $MSG_SSWAP_PRINTSS_OPTS_a1_ssListHTML = "ainsi que les options d'affichages \-[b|c|d|g|i|n|o|p|r|s|t|u] pr\x{e9}cis\x{e9}es ci-dessous :";
 	our $MSG_SSWAP_PRINTSS_OPTS_a2 = "\- [\"options\"] Diff\x{e9}rentes options \-[b|c|d|g|h|i|l|n|o|p|s|t] pr\x{e9}cis\x{e9}es ci-dessous :";
-	our $MSG_SSWAP_PRINTSS_OPTS_b1 = "\n\n\t\-r <0|1|2> :  suppression des redondances (D\x{e9}faut:0):\n\t\t'0' : Pas de suppression;\n\t\t'1' : Suppression des redondances avec conservation \n\t\tdes Siteswaps Ground prioritairement;\n\t\t'2' : Suppression des redondances selon l'ordre de la liste.\n\n\t\-c <y|n> : Consid\x{e8}re la colorisation des multiplexes pour la \n\tsuppression des redondances (D\x{e9}faut:n).\n\n\t\-g <y|n> : Ground Seulement (D\x{e9}faut:n).\n\n\t\-b <y|n> : Reversible Seulement (D\x{e9}faut:n).\n\n\t\-d <y|n> : Scramblable Seulement (D\x{e9}faut:n).\n\n\t\-i <y|n> : Donne des Informations suppl\x{e9}mentaires (D\x{e9}faut:n).\n\n\t\-n <y|n> : Palindrome Seulement (D\x{e9}faut:n).\n\n\t\-q <y|n> : Non Squeeze Seulement (D\x{e9}faut:n).\n\n\t\-o <0|1|2|3> : Arrangement du R\x{e9}sultat (D\x{e9}faut:1).\n\t\t'0' : Pas d'arrangement;\n\t\t'1' : Tri Alphanum\x{e9}rique;\n\t\t'2' : Classification par nombre d'objets;\n\t\t'3' : Classification par p\x{e9}riode.\n\n\t\-p <y|n> : Consid\x{e8}re les permutations de Siteswap pour la \n\tsuppression des redondances, la sym\x{e9}trie en fait partie (D\x{e9}faut:y).\n\n\t\-s <y|n> : Consid\x{e8}re la sym\x{e9}trie pour la \n\tsuppression des redondances (D\x{e9}faut:n).\n\n\t\-t <\"string\"> : Titre.\n\n\t\-u <y|n> : Premiers Seulement (D\x{e9}faut:n)";
+	our $MSG_SSWAP_PRINTSS_OPTS_b1 = "\n\n\t\-r <0|1|2> :  suppression des redondances (D\x{e9}faut:0):\n\t\t'0' : Pas de suppression;\n\t\t'1' : Suppression des redondances avec conservation \n\t\tdes Siteswaps Ground prioritairement;\n\t\t'2' : Suppression des redondances selon l'ordre de la liste.\n\n\t\-c <y|n> : Consid\x{e8}re la colorisation des multiplexes pour la \n\tsuppression des redondances (D\x{e9}faut:n).\n\n\t\-g <y|n> : Ground Seulement (D\x{e9}faut:n).\n\n\t\-b <y|n> : Reversible Seulement (D\x{e9}faut:n).\n\n\t\-d <y|n> : Scramblable Seulement (D\x{e9}faut:n).\n\n\t\-i <y|n> : Donne des Informations suppl\x{e9}mentaires (D\x{e9}faut:n).\n\n\t\-n <y|n> : Palindrome Seulement (D\x{e9}faut:n).\n\n\t\-q <y|n> : Non Squeeze Seulement (D\x{e9}faut:n).\n\n\t\-o <0|1|2|3> : Arrangement du R\x{e9}sultat (D\x{e9}faut:1).\n\t\t'0' : Pas d'arrangement;\n\t\t'1' : Tri Alphanum\x{e9}rique;\n\t\t'2' : Classification par nombre d'objets;\n\t\t'3' : Classification par p\x{e9}riode.\n\n\t\-p <y|n> : Consid\x{e8}re les permutations de Siteswap pour la \n\tsuppression des redondances, la sym\x{e9}trie en fait partie (D\x{e9}faut:y).\n\n\t\-s <y|n> : Consid\x{e8}re la sym\x{e9}trie pour la \n\tsuppression des redondances (D\x{e9}faut:n).\n\n\t\-t <\"string\"> : Titre.\n\n\t\-u <y|n> : Premiers Seulement (D\x{e9}faut:n).<br/>";
 	our $MSG_SSWAP_PRINTSS_OPTS_b2 = "\n\n\t\-r <0|1|2> :  suppression des redondances (D\x{e9}faut:0):\n\t\t'0' : Pas de suppression;\n\t\t'1' : Suppression des redondances avec conservation \n\t\tdes Siteswaps Ground prioritairement;\n\t\t'2' : Suppression des redondances selon l'ordre de la liste.\n\n\t\-c <y|n> : Consid\x{e8}re la colorisation des multiplexes pour la \n\tsuppression des redondances (D\x{e9}faut:n).\n\n\t\-g <y|n> : Ground Seulement (D\x{e9}faut:n).\n\n\t\-b <y|n> : Reversible Seulement (D\x{e9}faut:n).\n\n\t\-d <y|n> : Scramblable Seulement (D\x{e9}faut:n).\n\n\t\-i <y|n> : Donne des Informations suppl\x{e9}mentaires (D\x{e9}faut:n).\n\n\t\-n <y|n> : Palindrome Seulement (D\x{e9}faut:n).\n\n\t\-q <y|n> : Non Squeeze Seulement (D\x{e9}faut:n).\n\n\t\-o <0|1|2|3> : Arrangement du R\x{e9}sultat (D\x{e9}faut:1).\n\t\t'0' : Pas d'arrangement;\n\t\t'1' : Tri Alphanum\x{e9}rique;\n\t\t'2' : Classification par nombre d'objets;\n\t\t'3' : Classification par p\x{e9}riode.\n\n\t\-p <y|n> : Consid\x{e8}re les permutations de Siteswap pour la \n\tsuppression des redondances, la sym\x{e9}trie en fait partie (D\x{e9}faut:y).\n\n\t\-s <y|n> : Consid\x{e8}re la sym\x{e9}trie pour la \n\tsuppression des redondances (D\x{e9}faut:n).\n\n\t\-t <\"string\"> : Titre.\n\n\t\-h <y|n> : histogrammes & circuits utilis\x{e9}s (D\x{e9}faut:n).\n\n\t\-l <y|n> : Synth\x{e8}se de R\x{e9}sultats & plus longs Siteswaps Premiers (D\x{e9}faut:y).";
 	our $MSG_SSWAP_PRINTSS_OPTS_c = "\n\n\- [\"fichier\"] Optionnel, fichier de r\x{e9}sultats. \nSi -1, retourne le r\x{e9}sultat sans l'afficher. \nSi le fichier commence par : \n\t\- \'JML:\', g\x{e9}n\x{e8}re un fichier pour une vue JugglingLab \n\t\ten JML en y ajoutant l'extension .jml; \n\t\tLes Siteswaps invalides sont masqu\x{e9}s.\n\t\- \'SSHTML:\', g\x{e9}n\x{e8}re un fichier HTML, en y ajoutant l'extension \n\t\t.html et contenant diff\x{e9}rentes informations sur \n\t\tles Siteswaps.";
 	our $MSG_SSWAP_PRINTSS_OPTS_c1 = "\n\n\- [\"fichier\"] Optionnel, fichier de r\x{e9}sultats. \nSi -1, retourne le r\x{e9}sultat sans l'afficher. \nSi le fichier commence par : \n\t\- \'JML:\', g\x{e9}n\x{e8}re un fichier constitu\x{e9} de siteswaps complets pour une vue JugglingLab \n\t\ten JML en y ajoutant l'extension .jml; \n\t\tLes Siteswaps invalides sont masqu\x{e9}s.\n\t\- \'SSHTML:\', g\x{e9}n\x{e8}re un fichier HTML constitu\x{e9} de siteswaps complets, en y ajoutant l'extension \n\t\t.html et contenant diff\x{e9}rentes informations sur \n\t\tles Siteswaps.";
@@ -591,7 +599,7 @@ sub initLang
 	our $MSG_LADDER_MENU_REMOVE_OBJ_1 = "Dessine le Diagramme en Echelle associ\x{e9} au Siteswap apr\x{e8}s suppression d'un ou plusieurs objets.";
 	our $MSG_LADDER_MENU_REMOVE_OBJ_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap.\n\n\- <int ou \"[list]\"> : Num\x{e9}ro de l'objet \x{e0} supprimer (en commen\x{e7}ant \x{e0} 0) ou liste d'objets s\x{e9}par\x{e9}s par des \",\".\n\n\- <\"fichier\"> : fichier image de r\x{e9}sultats.\n\n".$MSG_GRAPHVIZ_OPTS_a1.$MSG_GRAPHVIZ_OPTS_b1; 
 	our $MSG_LADDER_MENU_SYM_1 = "Dessine le Sym\x{e9}trique du Diagramme en Echelle associ\x{e9} au Siteswap.";
-	our $MSG_LADDER_MENU_SYM_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap.\n\n\- <\"fichier\"> : fichier image de r\x{e9}sultats.\n\n".$MSG_GRAPHVIZ_OPTS_a1.$MSG_GRAPHVIZ_OPTS_b1; 
+	our $MSG_LADDER_MENU_SYM_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap.\n\- <\"fichier\"> : fichier image de r\x{e9}sultats.\n\n".$MSG_GRAPHVIZ_OPTS_a1.$MSG_GRAPHVIZ_OPTS_b1; 
 	our $MSG_LADDER_MENU_INV_1 = "Dessine le Diagramme Time-Reversed du Diagramme en Echelle associ\x{e9} au Siteswap.";
 	our $MSG_LADDER_MENU_INV_2 = "Le Siteswap obtenu ne prend pas en compte la colorisation; le diagramme la consid\x{e8}re.\n\nParam\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap.\n\n\- <\"fichier\"> : fichier image de r\x{e9}sultats.\n\n".$MSG_GRAPHVIZ_OPTS_a1.$MSG_GRAPHVIZ_OPTS_b1;
 	our $MSG_LADDER_MENU_MERGE_1 = "Superpose 2 Siteswaps et dessine le Diagramme associ\x{e9}.";
@@ -645,23 +653,86 @@ sub initLang
 	#
 	################################################"
 
-	our $MSG_HSS_MENU_HELP = "Hand Siteswap Notation (HSS). Supporte actuellement uniquement le HSS Vanille.\n"; 
+	our $MSG_HSS_MENU_HELP = "Object Siteswap/Hand Siteswap Notation (OSS/HSS).\n"; 
 
 	our $MSG_HSS_MENU_BASICMAP_1 = "Cartographie des types de Siteswaps Multi-Mains Asynchrone de Base, nombre Mains x Objets.";
-	our $MSG_HSS_MENU_BASICMAP_2 = "Param\x{e8}tres :\n\n\- [int] : Nombre Max de Mains (D\x{e9}faut:15).\n\n\- [int] : Nombre Max d'Objets (D\x{e9}faut:15).";
-	our $MSG_HSS_MENU_CHANGEHSS_1 = "Donne le Siteswap obtenu en changeant l'HSS \x{e0} 2 mains mais en conservant les Mains pour les throws et catchs [Exp\x{e9}rimental].";
-	our $MSG_HSS_MENU_CHANGEHSS_2 = "Param\x{e8}tres :\n\n\- <\"siteswap\"> : Siteswap Asynchrone.\n\n\- <hss> : Hand Siteswap Initial.\n\n\- <hss> : Hand Siteswap Final.";
-
+	our $MSG_HSS_MENU_BASICMAP_2 = "Param\x{e8}tres :\n\n\- [int] : Nombre Max de Mains (D\x{e9}faut:15).\n\- [int] : Nombre Max d'Objets (D\x{e9}faut:15).";
+	our $MSG_HSS_MENU_CHANGEHSS_1 = "Donne l'OSS obtenu en changeant l'HSS \x{e0} 2 mains mais en conservant les Mains pour les throws et catchs [Exp\x{e9}rimental].";
+	our $MSG_HSS_MENU_CHANGEHSS_2 = "Param\x{e8}tres :\n\n\- <\"oss\"> : Siteswap Asynchrone.\n\- <\"hss\"> : Hand Siteswap Initial.\n\- <\"hss\"> : Hand Siteswap Final.\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher.";
 	our $MSG_HSS_MENU_GETHANDSSEQ_1 = "Donne le s\x{e9}quencement des mains selon l'HSS d'entr\x{e9}e.";
-	our $MSG_HSS_MENU_GETHANDSSEQ_2 = "Param\x{e8}tres :\n\n\- <hss> : Hand Siteswap.\n\n\- <\"string\"> : Mains impliqu\x{e9}es s\x{e9}par\x{e9}es par des , .";
+	our $MSG_HSS_MENU_GETHANDSSEQ_2 = "Param\x{e8}tres :\n\n\- <\"hss\"> : Hand Siteswap.\n\- <\"string\"> : Mains impliqu\x{e9}es s\x{e9}par\x{e9}es par des , .\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher.";
+	our $MSG_HSS_MENU_ISVALID_1 = "Teste la validit\x{e9} de la combinaison OSS/HSS.";
+	our $MSG_HSS_MENU_ISVALID_2 = "Param\x{e8}tres :\n\n\- <\"oss\"> : OSS\n\- <\"hss\"> : HSS\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher.";	
+	our $MSG_HSS_MENU_DRAW_1 = "Dessine le Diagramme associ\x{e9} au OSS/HSS.";
+	our $MSG_HSS_MENU_DRAW_2 = "Param\x{e8}tres :\n\n\- <\"oss\"> : OSS \x{e0} dessiner.\n\n\- <\"hss\"> : HSS \x{e0} dessiner.\n\n\- <\"fichier\"> : fichier image de r\x{e9}sultats.\n\n".$MSG_GRAPHVIZ_OPTS_a4.$MSG_GRAPHVIZ_OPTS_b1."\n\n\t\-a <y|n> : dessine HSS (D\x{e9}faut:y).\n\n\t\-b <\"string\"> : base de nommage des mains (D\x{e9}faut:M).\n\n\n\- [\\%hash] : Optionnel, hash des transitions. Dans ce cas le Siteswap n'est utilis\x{e9} que pour le titre. Chaque Cl\x{e9}/Valeur est de la forme : Ri:j pour une transition amorc\x{e9}e \x{e0} droite ou Li:j lorsqu'il s'agit de la gauche. i correspond au Beat du lancer et j est le num\x{e9}ro de l'objet lors du lancer (en commen\x{e7}ant \x{e0} 0) pour aider \x{e0} la colorisation. \n\tEx :  %hash = (
+	\t'L2:0' => 'R4:0',
+	\t'R2:0' => 'R4:1',
+	\t'L4:0' => 'R6:0',
+	\t'R4:0' => 'R5:0',
+	\t'R4:1' => 'L6:0',
+	\t'R6:0' => 'R6:0'
+	\t);";
+	our $MSG_HSS_MENU_TOMHN_1 = "Donne la Notation MHN correspondante.";
+	our $MSG_HSS_MENU_TOMHN_2 = "Param\x{e8}tres :\n\n\- <\"oss\"> : OSS.\n\- <\"hss\"> : HSS.\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher."; 
+	our $MSG_HSS_MENU_TOSS_1 = "Donne la Notation Siteswap correspondante si possible (i.e au max 2 Mains).";
+	our $MSG_HSS_MENU_TOSS_2 = "Param\x{e8}tres :\n\n\- <\"oss\"> : OSS.\n\- <\"hss\"> : HSS.\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher."; 
+
+	
+	our $MSG_HSS_TOMHN_ERROR1 = "Invalide OSS/HSS.";
+	our $MSG_HSS_TOSS_ERROR0 = "Erreur : 2 Mains Max.";
 
 	our $MSG_HSS_CHANGEHSS_ERROR1 = "Siteswap Invalide."; 
 	our $MSG_HSS_CHANGEHSS_ERROR2 = "HSS Invalide."; 
 
-	our $MSG_HSS_ERROR1 = "HSS Invalide."; 
-	our $MSG_HSS_ERROR2 = "Seul HSS de type Vanille support\x{e9}."; 
-	our $MSG_HSS_ERROR3 = "Le nombre de mains en param\x{e8}tre doit \x{ea}tre identique au nombre de mains du HSS."; 
+	our $MSG_HSS_GETHANDSSEQ_ERROR1 = "HSS Invalide."; 
+	our $MSG_HSS_GETHANDSSEQ_ERROR2 = "HSS doit \x{ea}tre un Siteswap Vanille."; 
+	our $MSG_HSS_GETHANDSSEQ_ERROR3 = "Le nombre de mains en param\x{e8}tre doit \x{ea}tre identique au nombre de mains du HSS."; 
 
+	our $MSG_HSS_ISVALID_ERROR1 = "OSS Invalide.";
+	our $MSG_HSS_ISVALID_ERROR2 = "OSS doit \x{ea}tre un Siteswap Vanille ou Multiplex.";
+	our $MSG_HSS_ISVALID_ERROR3 = "HSS Invalide.";
+	our $MSG_HSS_ISVALID_ERROR4 = "HSS doit \x{ea}tre un Siteswap Vanille.";
+	our $MSG_HSS_ISVALID_ERROR5 = "Zero dans HSS doit correspondre \x{e0} Zero dans OSS.";
+
+
+	################################################"
+	#
+	# MHN Module Messages 
+	#
+	################################################"
+
+	our $MSG_MHN_MENU_HELP = "Multi-Hand Siteswap Notation (MHN). \n\nLe format utilis\x{e9} est le suivant :\n(Juggler 0)(Juggler 1)...(Juggler h-1)\nAvec pour chaque Juggler la liste des lancers sur les diff\x{e9}rents beats, i.e . Juggler i => T0,T1,...,Tp-1\nChaque lancer utilise le format : Valeur:Main. Les lancers sont des valeurs hexad\x{e9}cimales. Le Num\x{e9}ro de la main est \x{e9}galement en hexad\x{e9}cimal et les mains sont num\x{e9}rot\x{e9}es \x{e0} partir de 0. Si la Main de destination est identique \x{e0} la main du lancer, il n'est pas utile de l'indiquer (i.e juste Valeur).\nLes multiplexes au sein d'un lancer sont simplement accol\x{e9}s sans utiliser '[',']'.\n\nVoici pour exemple la notation utilis\x{e9}e pour la Cascade Asynchrone 4 Mains, 5 objets : (5:1,0,0,0)(0,5:2,0,0)(0,0,5:3,0)(0,0,0,5:0)\nLe Multiplexe \x{e0} 5 objets 24[54] donne en MHN : (2,0,5:14,0,4,0)(0,4,0,2,0,5:04)";
+	
+	our $MSG_MHN_MENU_ISVALID_1 = "Teste la validit\x{e9} du MHN.";
+	our $MSG_MHN_MENU_ISVALID_2 = "Param\x{e8}tres :\n\n\- <\"mhn\"> : MHN \x{e0} tester\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher.";
+	our $MSG_MHN_MENU_ISSYNTAXVALID_1 = "Teste la syntaxe grammaticale du MHN.";
+	our $MSG_MHN_MENU_ISSYNTAXVALID_2 = "Param\x{e8}tres :\n\n\- <\"mhn\"> : MHN \x{e0} tester\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher.";
+	our $MSG_MHN_MENU_ISASYNC_1 = "Teste le caract\x{e8}re Asynchrone du MHN.";
+	our $MSG_MHN_MENU_ISASYNC_2 = "Param\x{e8}tres :\n\n\- <\"mhn\"> : MHN \x{e0} tester\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher.";
+	our $MSG_MHN_MENU_GETPERIOD_1 = "Donne la P\x{e9}riode du MHN.";
+	our $MSG_MHN_MENU_GETPERIOD_2 = "Param\x{e8}tres :\n\n\- <\"mhn\"> : MHN \x{e0} analyser.\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher.";
+	our $MSG_MHN_MENU_GETOBJNUMBER_1 = "Donne le nombre d'objets du MHN.";
+	our $MSG_MHN_MENU_GETOBJNUMBER_2 = "Param\x{e8}tres :\n\n\- <\"mhn\"> : MHN \x{e0} analyser.\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher.";
+	our $MSG_MHN_MENU_GETHANDSNUMBER_1 = "Donne le nombre de mains du MHN.";
+	our $MSG_MHN_MENU_GETHANDSNUMBER_2 = "Param\x{e8}tres :\n\n\- <\"mhn\"> : MHN \x{e0} analyser.\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher.";
+	our $MSG_MHN_MENU_DRAW_1 = "Dessine le Diagramme associ\x{e9} au MHN.";
+	our $MSG_MHN_MENU_DRAW_2 = "Param\x{e8}tres :\n\n\- <\"mhn\"> : MHN \x{e0} dessiner.\n\n\- <\"fichier\"> : fichier image de r\x{e9}sultats.\n\n".$MSG_GRAPHVIZ_OPTS_a3.$MSG_GRAPHVIZ_OPTS_b3."\n\n\- [\\%hash] : Optionnel, hash des transitions. Dans ce cas le Siteswap n'est utilis\x{e9} que pour le titre. Chaque Cl\x{e9}/Valeur est de la forme : Ri:j pour une transition amorc\x{e9}e \x{e0} droite ou Li:j lorsqu'il s'agit de la gauche. i correspond au Beat du lancer et j est le num\x{e9}ro de l'objet lors du lancer (en commen\x{e7}ant \x{e0} 0) pour aider \x{e0} la colorisation. \n\tEx :  %hash = (
+	\t'L2:0' => 'R4:0',
+	\t'R2:0' => 'R4:1',
+	\t'L4:0' => 'R6:0',
+	\t'R4:0' => 'R5:0',
+	\t'R4:1' => 'L6:0',
+	\t'R6:0' => 'R6:0'
+	\t);";
+	our $MSG_MHN_MENU_TOHSS_1 = "Donne la Notation OSS/HSS correspondante si possible (i.e Async. Transformation).";
+	our $MSG_MHN_MENU_TOHSS_2 = "Param\x{e8}tres :\n\n\- <\"mhn\"> : MHN.\n\- [\"options\"] : Option disponible \-z <y|n> : Z\x{e9}ro possible dans le calcul HSS ((D\x{e9}faut:y).\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher."; 
+	our $MSG_MHN_MENU_TOSS_1 = "Donne la Notation Siteswap correspondante si possible (i.e au max 2 Mains).";
+	our $MSG_MHN_MENU_TOSS_2 = "Param\x{e8}tres :\n\n\- <\"mhn\"> : MHN.\n\- [\-1] Optionnel, retourne le r\x{e9}sultat sans l'afficher."; 
+
+	
+	our $MSG_MHN_ISVALID_ERR0 = "MHN Invalide"; 
+	our $MSG_MHN_TOHSS_ERR0 = "Erreur : Siteswap non Asynchrone.";
+	our $MSG_MHN_TOSS_ERR0 = "Erreur : 2 Mains au Maximum.";
 
 	
 	################################################"
@@ -678,9 +749,14 @@ sub initLang
 	our $MSG_MOD_VERSION_1 = "Retourne la version du Module.";
 	our $MSG_MOD_VERSION_2 = "Pas de Param\x{e8}tre.";
 	
-	our $MSG_GRAPHVIZ_OPTS_a1 = "\- [\"options\"] Diff\x{e9}rentes options \-[c|d|e|g|h|i|l|m|n|o|p|s|t|v] pr\x{e9}cis\x{e9}es ci-dessous :";
-	our $MSG_GRAPHVIZ_OPTS_a2="\- [\"options\"] Diff\x{e9}rentes options \-[c|d|h|l|m|n|o|p|r|s|t|v] pr\x{e9}cis\x{e9}es ci-dessous :";
-	our $MSG_GRAPHVIZ_OPTS_b1 = "\n\n\t\-c <int> :  Mode de colorisation (D\x{e9}faut:2)\n\t\t'0' : pas de colorisation;\n\t\t'1' : Multiplexe dans l'ordre croissant des valeurs \n\t\t Siteswap des lancers pr\x{e9}c\x{e9}dents;\n\t\t'2' : Multiplexe dans l'ordre d\x{e9}croissant des valeurs\n\t\t Siteswap des lancers pr\x{e9}c\x{e9}dents.\n\n\t\-d <int> :  Synchronous Hack (D\x{e9}faut:0)\n\t\t'0' : Suppression des 0 dans le diagramme apr\x{e8}s les lancers \n\t\tsynchrones puisqu'il s'agit des r\x{e9}ceptions;\n\t\t'1' : Pas de hack.\n\n\t\-e <\"string\"> : Couleur du Label de la fl\x{e8}che selon le codage X11 \n\tde Graphviz (ex : dodgerblue, red, springgreen, darkviolet, \n\tmagenta, goldenrod, saddlebrown, azure4, khaki4, \n\tdarkorange, olivedrab1, turquoise4, black, peru, \n\tmediumslateblue). E pour couleur identique \x{e0} la fl\x{e8}che \n\t(D\x{e9}faut:E).\n\n\t\-g <y|n> : Conserve Fichier Graphviz pour g\x{e9}n\x{e9}ration (D\x{e9}faut:n).\n\n\t\-h <y|n> : Affichage des Mains.\n\n\t\-i \"Liste avec ,\": Enumeration des mains pour les diagrammes Vanille.\n\n\t\-l <pos> : Position du label de Siteswap (D\x{e9}faut:s)\n\t\t't': tail, pr\x{e8}s de la queue de la fl\x{e8}che; \n\t\t'h': head, pr\x{e8}s de la t\x{ea}te; \n\t\t'm': middle, au centre de la fl\x{e8}che; \n\t\t'x': external, au centre de la fl\x{e8}che apr\x{e8}s trac\x{e9}; \n\t\t's': state, pr\x{e8}s de l'Etat; \n\t\t'n': Pas de label de Siteswap.\n\n\t\-m <0|1|2> : Mod\x{e8}le de diagramme (D\x{e9}faut: selon le type de Siteswap)\n\t\t'0' : Ladder;\n\t\t'1' : Applanissement de Ladder (Siteswap Asynchrone);\n\t\t'2' : Ladder avec suppression des Beats impairs en \n\t\tcommen\x{e7}ant \x{e0} 0 (Siteswap Synchrone).\n\n\t\-n <y|n> : Affichage des lancers n\x{e9}gatifs [Exp\x{e9}rimental] \n\t\t(D\x{e9}faut:n).\n\n\t\-o <type> : format d'image (D\x{e9}faut:png) parmi : bmp (Windows Bitmap Format), cmapx (client-side imagemap for use in html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and pcl (Laserjet printers), imap (imagemap files for httpd servers for each node or edge that has a non\-null \"href\" attribute.), jpg, jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable Document Format), png (Portable Network Graphics format), ps (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT langage), plain , plain\-ext (Output in plain text).\n\n\t\-p <int> : P\x{e9}riode minimum \x{e0} afficher (D\x{e9}faut:25).\n\n\t\-s <int> : Affichage du r\x{e9}sultat (D\x{e9}faut:0)\n\t\t'0' : Affiche le r\x{e9}sultat;\n\t\t'1' : Pas d'affichage.\n\n\t\-t <y|n> : Affichage du titre de l'image (D\x{e9}faut:y).\n\n\t\-v <\"string\"> : Force la valeur du Titre de l'image";
+	our $MSG_GRAPHVIZ_OPTS_a1 = "\- [\"options\"] Diff\x{e9}rentes options \-[c|d|e|g|h|i|l|m|n|o|p|q|s|t|v] pr\x{e9}cis\x{e9}es ci-dessous :";
+	our $MSG_GRAPHVIZ_OPTS_a2="\- [\"options\"] Diff\x{e9}rentes options \-[c|d|h|l|m|n|o|p|q|r|s|t|v] pr\x{e9}cis\x{e9}es ci-dessous :";
+	our $MSG_GRAPHVIZ_OPTS_a3 = "\- [\"options\"] Diff\x{e9}rentes options \-[a|b|c|d|e|f|g|h|i|l|m|n|o|p|q|s|t|v|z] pr\x{e9}cis\x{e9}es ci-dessous :";
+	our $MSG_GRAPHVIZ_OPTS_a4 = "\- [\"options\"] Diff\x{e9}rentes options \-[a|b|c|d|e|g|h|i|l|m|n|o|p|q|s|t|v] pr\x{e9}cis\x{e9}es ci-dessous :";
+	our $MSG_GRAPHVIZ_OPTS_b1 = "\n\n\t\-c <int> :  Mode de colorisation (D\x{e9}faut:2)\n\t\t'0' : pas de colorisation;\n\t\t'1' : Multiplexe dans l'ordre croissant des valeurs \n\t\t Siteswap des lancers pr\x{e9}c\x{e9}dents;\n\t\t'2' : Multiplexe dans l'ordre d\x{e9}croissant des valeurs\n\t\t Siteswap des lancers pr\x{e9}c\x{e9}dents.\n\n\t\-d <int> :  Synchronous Hack (D\x{e9}faut:0)\n\t\t'0' : Suppression des 0 dans le diagramme apr\x{e8}s les lancers \n\t\tsynchrones puisqu'il s'agit des r\x{e9}ceptions;\n\t\t'1' : Pas de hack.\n\n\t\-e <\"string\"> : Couleur du Label de la fl\x{e8}che selon le codage X11 \n\tde Graphviz (ex : dodgerblue, red, springgreen, darkviolet, \n\tmagenta, goldenrod, saddlebrown, azure4, khaki4, \n\tdarkorange, olivedrab1, turquoise4, black, peru, \n\tmediumslateblue). E pour couleur identique \x{e0} la fl\x{e8}che \n\t(D\x{e9}faut:E).\n\n\t\-g <y|n> : Conserve Fichier Graphviz pour g\x{e9}n\x{e9}ration (D\x{e9}faut:n).\n\n\t\-h <y|n> : Affichage des Mains.\n\n\t\-i \"Liste avec ,\": Enumeration des mains pour les diagrammes Vanille.\n\n\t\-l <pos> : Position du label de Siteswap\n\t\t't': tail, pr\x{e8}s de la queue de la fl\x{e8}che; \n\t\t'h': head, pr\x{e8}s de la t\x{ea}te; \n\t\t'm': middle, au centre de la fl\x{e8}che; \n\t\t'x': external, au centre de la fl\x{e8}che apr\x{e8}s trac\x{e9}; \n\t\t's': state, pr\x{e8}s de l'Etat; \n\t\t'n': Pas de label de Siteswap.\n\n\t\-m <0|1|2> : Mod\x{e8}le de diagramme (D\x{e9}faut: selon le type de Siteswap)\n\t\t'0' : Ladder;\n\t\t'1' : Applanissement de Ladder (Siteswap Asynchrone);\n\t\t'2' : Ladder avec suppression des Beats impairs en \n\t\tcommen\x{e7}ant \x{e0} 0 (Siteswap Synchrone).\n\n\t\-n <y|n> : Affichage des lancers n\x{e9}gatifs [Exp\x{e9}rimental] \n\t\t(D\x{e9}faut:n).\n\n\t\-o <type> : format d'image (D\x{e9}faut:png) parmi : bmp (Windows Bitmap Format), cmapx (client-side imagemap for use in html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and pcl (Laserjet printers), imap (imagemap files for httpd servers for each node or edge that has a non\-null \"href\" attribute.), jpg, jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable Document Format), png (Portable Network Graphics format), ps (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT langage), plain , plain\-ext (Output in plain text).\n\n\t\-p <int> : P\x{e9}riode minimum \x{e0} afficher (D\x{e9}faut:25).\n\n\t\-q <y|n> : Trac\x{e9} Rapide au d\x{e9}pend de la qualit\x{e9} (D\x{e9}faut:n).\n\n\t\-s <int> : Affichage du r\x{e9}sultat (D\x{e9}faut:0)\n\t\t'0' : Affiche le r\x{e9}sultat;\n\t\t'1' : Pas d'affichage.\n\n\t\-t <y|n> : Affichage du titre de l'image (D\x{e9}faut:y).\n\n\t\-v <\"string\"> : Force la valeur du Titre de l'image";
+
+	our $MSG_GRAPHVIZ_OPTS_b3 = "\n\n\t\-a <y|n> : Repr\x{e9}sentation Asynchrone (OSS/HSS) si possible (D\x{e9}faut:n)\n\n\t\-b <\"string\"> : base de nommage des mains (D\x{e9}faut:M).\n\n\t\-c <int> : Mode de colorisation en Asynchrone (D\x{e9}faut:2). Sinon la colorisation est calcul\x{e9}e selon le beat le plus petit et l'ordre des Mains. \n\t\t'0' : pas de colorisation;\n\t\t'1' : Multiplexe dans l'ordre croissant des valeurs \n\t\t Siteswap des lancers pr\x{e9}c\x{e9}dents;\n\t\t'2' : Multiplexe dans l'ordre d\x{e9}croissant des valeurs\n\t\t Siteswap des lancers pr\x{e9}c\x{e9}dents.\n\n\t\-d <int> :  Synchronous Hack (D\x{e9}faut:0)\n\t\t'0' : Suppression des 0 dans le diagramme apr\x{e8}s les lancers \n\t\tsynchrones puisqu'il s'agit des r\x{e9}ceptions;\n\t\t'1' : Pas de hack.\n\n\t\-e <\"string\"> : Couleur du Label de la fl\x{e8}che selon le codage X11 \n\tde Graphviz (ex : dodgerblue, red, springgreen, darkviolet, \n\tmagenta, goldenrod, saddlebrown, azure4, khaki4, \n\tdarkorange, olivedrab1, turquoise4, black, peru, \n\tmediumslateblue). E pour couleur identique \x{e0} la fl\x{e8}che \n\t(D\x{e9}faut:E).\n\n\t\-f <0|1|2> : Splines Mode : 0: spline, 1:curved, 2:line (D\x{e9}faut:2).\n\n\t\-g <y|n> : Conserve Fichier Graphviz pour g\x{e9}n\x{e9}ration (D\x{e9}faut:n).\n\n\t\-h <y|n> : Affichage des Mains.\n\n\t\-i \"Liste avec ,\": Enumeration des mains pour les diagrammes Vanille.\n\n\t\-l <pos> : Position du label de Siteswap\n\t\t't': tail, pr\x{e8}s de la queue de la fl\x{e8}che; \n\t\t'h': head, pr\x{e8}s de la t\x{ea}te; \n\t\t'm': middle, au centre de la fl\x{e8}che; \n\t\t'x': external, au centre de la fl\x{e8}che apr\x{e8}s trac\x{e9}; \n\t\t's': state, pr\x{e8}s de l'Etat; \n\t\t'n': Pas de label de Siteswap.\n\n\t\-m <0|1|2> : Mod\x{e8}le de diagramme (D\x{e9}faut: selon le type de Siteswap)\n\t\t'0' : Ladder;\n\t\t'1' : Applanissement de Ladder (Siteswap Asynchrone);\n\t\t'2' : Ladder avec suppression des Beats impairs en \n\t\tcommen\x{e7}ant \x{e0} 0 (Siteswap Synchrone).\n\n\t\-n <y|n> : Affichage des lancers n\x{e9}gatifs [Exp\x{e9}rimental] \n\t\t(D\x{e9}faut:n).\n\n\t\-o <type> : format d'image (D\x{e9}faut:png) parmi : bmp (Windows Bitmap Format), cmapx (client-side imagemap for use in html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and pcl (Laserjet printers), imap (imagemap files for httpd servers for each node or edge that has a non\-null \"href\" attribute.), jpg, jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable Document Format), png (Portable Network Graphics format), ps (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT langage), plain , plain\-ext (Output in plain text).\n\n\t\-p <int> : P\x{e9}riode minimum \x{e0} afficher (D\x{e9}faut:25).\n\n\t\-s <int> : Affichage du r\x{e9}sultat (D\x{e9}faut:0)\n\t\t'0' : Affiche le r\x{e9}sultat;\n\t\t'1' : Pas d'affichage.\n\n\t\-q <y|n> : Trac\x{e9} Rapide au d\x{e9}pend de la qualit\x{e9} (D\x{e9}faut:n).\n\n\t\-t <y|n> : Affichage du titre de l'image (D\x{e9}faut:y).\n\n\t\-v <\"string\"> : Force la valeur du Titre de l'image.\n\n\t\-z <\"y|n\"> : Z\x{e9}ro possible dans la repr\x{e9}sentation HSS ((D\x{e9}faut:y).";
+
 	our $MSG_GRAPHVIZ_FORMAT = "\- [\"Format\"] Optionnel, format d'image (D\x{e9}faut:png) parmi : bmp (Windows Bitmap Format), cmapx (client-side imagemap for use in html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and pcl (Laserjet printers), imap (imagemap files for httpd servers for each node or edge that has a non\-null \"href\" attribute.), jpg, jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable Document Format), png (Portable Network Graphics format), ps (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT langage), plain, plain\-ext (Output in plain text)\n\n\- [\"G\x{e9}n\x{e9}rateur\"] Optionnel, filtre g\x{e9}n\x{e9}rateur Graphviz (D\x{e9}faut:dot) parmi : circo (circular layout), dot(directed graphs), neato (undirected graphs), twopi (radial layouts), fdp (undirected graphs), sfdp (large undirected graphs), osage (clustered graphs).";
 	
 
@@ -740,6 +816,7 @@ sub initLang
 	
 	our $MSG_MAIN_WINDOWS_CHARSET = "You Should have defined the Police <Lucida Console> if you use Cmd.\n";
 
+	
 	################################################"
 	#
 	# BTN Module Messages 
@@ -1024,15 +1101,15 @@ sub initLang
 	our $MSG_SSWAP_MENU_GETORBITSAGGR_2 = "Parameters :\n\n\- <\"siteswap\"> : Siteswap\n\n\- <int> :  Colorization Model (Default:2)\n\t\t'0' : No colorization;\n\t\t'1' : Multiplex in increasing order of\n\t\t Siteswap values of previous throws;\n\t\t'2' : Multiplexe in increasing order of \n\t\t Siteswap values of previous throws.\n\n\-[\"file\"] Optional, File for result. if -1 return the result, but do not print it."; 
 	our $MSG_SSWAP_MENU_GETINFO_1 = "Give information on the Siteswap.";
 	our $MSG_SSWAP_MENU_GETINFO_2 = "Parameters :\n\n\- <\"siteswap\"> : Siteswap to check.\n\- [\-1] Optional, return the result, but do not print it.";
-	our $MSG_SSWAP_MENU_GETHEIGHTMAX_1 = "Give the Max Height of the Siteswap";
+	our $MSG_SSWAP_MENU_GETHEIGHTMAX_1 = "Give the Max Height of the Siteswap.";
 	our $MSG_SSWAP_MENU_GETHEIGHTMAX_2 = "Parameters :\n\n\- <\"siteswap\"> : Siteswap to analyze.\n\- [\-1] Optional, return the result, but do not print it.";	
-	our $MSG_SSWAP_MENU_GETHEIGHTMIN_1 = "Give the Min Height of the Siteswap";
+	our $MSG_SSWAP_MENU_GETHEIGHTMIN_1 = "Give the Min Height of the Siteswap.";
 	our $MSG_SSWAP_MENU_GETHEIGHTMIN_2 = "Parameters :\n\n\- <\"siteswap\"> : Siteswap to analyze.\n\- [\-1] Optional, return the result, but do not print it.";	
 	our $MSG_SSWAP_MENU_GETSSTYPE_1 = "Give the Siteswap family : V (Vanilla), M (Multiplex), S (Synchronous), MS (Multiplex-Synchronous), MULTI (MultiSynchronous).";
 	our $MSG_SSWAP_MENU_GETSSTYPE_2 = "Parameters :\n\n\- <\"siteswap\"> : Siteswap to analyze.\n\- [\-1] Optional, return the result, but do not print it.";
-	our $MSG_SSWAP_MENU_GETNUMBER_1 = "Give the number of objects needed for the Siteswap";
+	our $MSG_SSWAP_MENU_GETNUMBER_1 = "Give the number of objects needed for the Siteswap.";
 	our $MSG_SSWAP_MENU_GETNUMBER_2 = "Parameters :\n\n\- <\"siteswap\"> : Siteswap to analyze.\n\- [\-1] Optional, return the result, but do not print it.";	
-	our $MSG_SSWAP_MENU_GETPERIOD_1 = "Give the Siteswap Period";
+	our $MSG_SSWAP_MENU_GETPERIOD_1 = "Give the Siteswap Period.";
 	our $MSG_SSWAP_MENU_GETPERIOD_2 = "Parameters :\n\n\- <\"siteswap\"> : Siteswap to analyze.\n\- [\-1] Optional, return the result, but do not print it.";
 	our $MSG_SSWAP_MENU_GETANAGRAMMES_1 = "Give Anagrammes of a Siteswap.";
 	our $MSG_SSWAP_MENU_GETANAGRAMMES_2 = "Parameters :\n\n\- <\"siteswap\"> : Siteswap (V,M,S or MS).\n\- [\"options\"] Different options \-[r|k]:\n\t\-r <y|n> : remove equivalent Siteswaps (Default:y).\n\t\-k <y|n> : option for Siteswaps S and MS: for symetric Siteswaps ending with *, the Scramblable status is considered only on the first part (Default:y).\n\- [\-1] Optional, return the result, but do not print it.";	
@@ -1048,6 +1125,12 @@ sub initLang
 	our $MSG_SSWAP_MENU_JDEEP_2 = "jdeep version 5.1 by Jack Boyce\n(02/17/99) jboyce@users.sourceforge.net\n\nThe purpose of this program is to search for long prime asynch siteswap patterns.\n\nCall format is: \n\tjdeep (\'<# objects> <max. throw> [<min. length>] [options]\')\n\nwhere :\n\t<# objects>   = number of objects in the patterns found.\n\t<max. throw>  = largest throw value to use.\n\t<min. length> = shortest patterns to find (optional, speeds search)\n\nThe various options are :\n\t-block <skips> : find patterns in block form, allowing\n\t\t\t the specified number of skips.\n\t-super <shifts> : find (nearly) superprime patterns, allowing\n\t\t\t the specified number of shift throws.\n\t-inverse : print inverse also, in -super mode.\n\t-g : find ground-state patterns only.\n\t-ng : find excited-state patterns only.\n\t-full : print all patterns; otherwise only patterns as long\n\t\t\t currently-longest one found are printed.\n\t-noprint : suppress printing of patterns.\n\t-exact : prints patterns of exact length specified (no longer).\n\t-x <throw1 throw2 ...> : exclude listed throws (speeds search).\n\t-trim : force graph trimming algorithm on.\n\t-notrim : force graph trimming algorithm off.\n\t-file : run in file output mode.\n\t-time <secs> : run for specified time before stopping.";
 	our $MSG_SSWAP_MENU_TOSTACK_1 = "Give the corresponding Stack Notation [Experimental].";
 	our $MSG_SSWAP_MENU_TOSTACK_2 = "Parameters :\n\n\- <\"siteswap\"> : Siteswap.\n\n\- [\"options\"] Several options \-[m|s] defined hereafter :\n\n\t\-m <int> : Computation Mode for Holes in Multiplexes\n\t(Default:1)\n\t\t'0' : No Hole between Multiplexes Throws [Demo Purpose];\n\t\t'1' : Increasing Order for arrival;\n\t\t'2' : Decreasing order for arrival.\n\n\t\-s <n|r|l> : Computation Mode for Holes in Synchonous \n\t(Defaut:r)\n\t\t'n' : Complete Synchro. Independant Stacks [Demo Purpose];\n\t\t'r' : Right Hand first;\n\t\t'l' : Left Hand first.\n\n\- [\-1] Optional, return the result, but do not print it.";
+
+	
+	our $MSG_SSWAP_MENU_TOMHN_1 = "Give the corresponding MHN Notation.";
+	our $MSG_SSWAP_MENU_TOMHN_2 = "Parameters :\n\n\- <\"siteswap\"> : Siteswap.\n\- [\-1] Optional, return the result, but do not print it.";      
+	our $MSG_SSWAP_MENU_TOHSS_1 = "Give the corresponding OSS/HSS Notation when possible (i.e Async. Transform).";
+	our $MSG_SSWAP_MENU_TOHSS_2 = "Parameters :\n\n\- <\"siteswap\"> : Siteswap.\n\- [\"options\"] : Available option \-z <y|n> : possible Zero in HSS computation ((Default:y).\n\- [\-1] Optional, return the result, but do not print it.";      
 	our $MSG_SSWAP_MENU_SLIDESWITCHSYNC_1 = "Give related Siteswaps with Synchonization switching.";
 	our $MSG_SSWAP_MENU_SLIDESWITCHSYNC_2 = "Parameters :\n\n\- <\"siteswap\"> : Siteswap.\n\- [\-1] Optional, return the result, but do not print it.";
 
@@ -1172,9 +1255,11 @@ sub initLang
 	our $MSG_SSWAP_GENSSPRIME_MSG10 = "Length";
 	our $MSG_SSWAP_GENSSPRIME_MSG11 = "Initial State";
 
-
 	our $MSG_SSWAP_TOSTACK_MSG1 = "MultiSynchronous Siteswap (not implemented) or Invalid Siteswap.";
-
+	our $MSG_SSWAP_TOMHN_MSG1 = "Error : Invalid Siteswap.";
+	our $MSG_SSWAP_TOHSS_MSG0 = "Error : Siteswap not Asynchronous.";
+	our $MSG_SSWAP_TOHSS_MSG1 = "Error : Invalid Siteswap.";
+	
 	our $MSG_SSWAP_GETSTATES_FROM_XLS_MSG1 = "States/Transitions Matrix Loaded.";
 
 	our $MSG_SSWAP_CHECK_XLS_FILE_1 = "Warning : The XLS File is not the one awaited ";
@@ -1260,7 +1345,6 @@ sub initLang
 	################################################"
 
 	our $MSG_SPYRO_MENU_HELP = "SPYRO defines a Spyrograph for jugglers to model Spins, Antispins, Hybrids, Extensions, Isolations in a single plane.\n";
-
 	our $MSG_SPYRO_MENU_ANIMATE_1 = "Start JuggleSpyro HTML5.";
 	our $MSG_SPYRO_MENU_ANIMATE_2 = "Parameters :\n\n\- None or optionaly the HTTP Server Port.";
 	our $MSG_SPYRO_MENU_STAFFSIMMCP_1 = "Start the MCP's Staffs Simulator.";
@@ -1275,24 +1359,88 @@ sub initLang
 	#
 	################################################"
 
-	our $MSG_HSS_MENU_HELP = "Hand Siteswap Notation (HSS). It currently support only Vanilla HSS.\n"; 
+	our $MSG_HSS_MENU_HELP = "Object Siteswap/Hand Siteswap Notation (OSS/HSS).\n"; 
 
-	our $MSG_SSWAP_MENU_MHASYNCBASICMAP_1 = "Map of Asynchronous MultiHand Siteswaps Basic types, Hands x Objects number.";
-	our $MSG_SSWAP_MENU_MHASYNCBASICMAP_2 = "Parameters :\n\n\- [int] : Max number of Hands (Default:15).\n\n\- [int] : Max number of Objects (Default:15).";
-	our $MSG_SSWAP_MENU_MHASYNCCHANGEHSS_1 = "Give Siteswap get by swapping hands (HSS with 2 hands) but keeping throw and catch hands. [Experimental]";
-	our $MSG_SSWAP_MENU_MHASYNCCHANGEHSS_2 = "Parameters :\n\n\- <\"siteswap\"> : Asynchronous Siteswap.\n\n\- <hss> : Initial Hand Siteswap.\n\n\- <hss> : Ending Hand Siteswap.";
-
+	our $MSG_HSS_MENU_BASICMAP_1 = "Map of Asynchronous MultiHand Siteswaps Basic types, Hands x Objects number.";
+	our $MSG_HSS_MENU_BASICMAP_2 = "Parameters :\n\n\- [int] : Max number of Hands (Default:15).\n\- [int] : Max number of Objects (Default:15).";
+	our $MSG_HSS_MENU_CHANGEHSS_1 = "Give Siteswap get by swapping hands (HSS with 2 hands) but keeping throw and catch hands. [Experimental]";
+	our $MSG_HSS_MENU_CHANGEHSS_2 = "Parameters :\n\n\- <\"oss\"> : Asynchronous Siteswap.\n\- <\"hss\"> : Initial Hand Siteswap.\n\- <\"hss\"> : Ending Hand Siteswap.\n\- [\-1] Optional, return the result, but do not print it.";
 	our $MSG_HSS_MENU_GETHANDSSEQ_1 = "Give Hands sequence according to input HSS.";
-	our $MSG_HSS_MENU_GETHANDSSEQ_2 = "Param\x{e8}tres :\n\n\- <hss> : Hand Siteswap.\n\n\- <\"string\"> : Hands involved separated by , .";
+	our $MSG_HSS_MENU_GETHANDSSEQ_2 = "Parameters :\n\n\- <\"hss\"> : Hand Siteswap.\n\- <\"string\"> : Hands involved separated by , .\n\- [\-1] Optional, return the result, but do not print it.";
+	our $MSG_HSS_MENU_ISVALID_1 = "Check OSS/HSS combination validity.";
+	our $MSG_HSS_MENU_ISVALID_2 = "Parameters :\n\n\- <\"oss\"> : OSS\n\- <\"hss\"> : HSS\n\- [\-1] Optional, return the result, but do not print it.";
+	our $MSG_HSS_MENU_DRAW_1 = "Draw the Diagram of a given OSS/HSS.";
+	our $MSG_HSS_MENU_DRAW_2 = "Parameters :\n\n\- <\"oss\"> : OSS to draw.\n\n\- <\"hss\"> : HSS to draw.\n\n\- <\"file\"> : image file for the result.\n\n".$MSG_GRAPHVIZ_OPTS_a4.$MSG_GRAPHVIZ_OPTS_b1."\n\n\t\-a <y|n> :  draw HSS (Default:y).\n\n\t\-b <\"string\"> :  naming core for hands (Default:M).\n\n\n\- [\\%hash] : Optional, transitions hash. In this case the Siteswap is used for the title only. Each key is Ri:j for a right transition or Li:j for a left one. i is the throw Beat and j is the numero of the thrown object (starting from 0) to help the colorization\n\tEx :  %hash = (
+	\t'L2:0' => 'R4:0',
+	\t'R2:0' => 'R4:1',
+	\t'L4:0' => 'R6:0',
+	\t'R4:0' => 'R5:0',
+	\t'R4:1' => 'L6:0',
+	\t'R6:0' => 'R6:0'
+	\t);";
+	our $MSG_HSS_MENU_TOMHN_1 = "Give the corresponding MHN Notation.";
+	our $MSG_HSS_MENU_TOMHN_2 = "Parameters :\n\n\- <\"oss\"> : OSS.\n\- <\"hss\"> : HSS.\n\- [\-1] Optional, return the result, but do not print it.";
+	our $MSG_HSS_MENU_TOSS_1 = "Give the corresponding Siteswap Notation when possible (i.e At most 2 Hands).";
+	our $MSG_HSS_MENU_TOSS_2 = "Parameters :\n\n\- <\"oss\"> : OSS.\n\- <\"hss\"> : HSS.\n\- [\-1] Optional, return the result, but do not print it."; 
 
-
+	
+	our $MSG_HSS_TOMHN_ERROR1 = "Invalid OSS/HSS.";
+	our $MSG_HSS_TOSS_ERROR0 = "Error : 2 Hands Max.";
+	
 	our $MSG_HSS_CHANGEHSS_ERROR1 = "Invalid Siteswap."; 
 	our $MSG_HSS_CHANGEHSS_ERROR2 = "Invalid HSS."; 
 	
-	our $MSG_HSS_ERROR1 = "Invalid HSS."; 
-	our $MSG_HSS_ERROR2 = "Only Vanilla HSS is handled."; 
-	our $MSG_HSS_ERROR3 = "Number of hands in parameter must be equal to the number of hands in HSS."; 
+	our $MSG_HSS_GETHANDSSEQ_ERROR1 = "Invalid HSS."; 
+	our $MSG_HSS_GETHANDSSEQ_ERROR2 = "HSS must be a Vanilla Siteswap."; 
+	our $MSG_HSS_GETHANDSSEQ_ERROR3 = "Number of hands in parameter must be equal to the number of hands in HSS."; 
 
+	our $MSG_HSS_ISVALID_ERROR1 = "Invalid OSS.";
+	our $MSG_HSS_ISVALID_ERROR2 = "OSS must be a Vanilla or a Multiplex Siteswap.";
+	our $MSG_HSS_ISVALID_ERROR3 = "Invalid HSS.";
+	our $MSG_HSS_ISVALID_ERROR4 = "HSS must be a Vanilla Siteswap.";
+	our $MSG_HSS_ISVALID_ERROR5 = "Zero in HSS must correspond to Zero in OSS.";
+	
+
+	
+	################################################"
+	#
+	# MHN Module Messages 
+	#
+	################################################"
+
+	our $MSG_MHN_MENU_HELP = "Multi-Hand Siteswap Notation (MHN). \n\nUsed format is the following :\n(Juggler 0)(Juggler 1)...(Juggler h-1)\nWith for each Juggler the throws list on the different beats : Juggler i => T0,T1,...,Tp-1\nEach throw is : Value:Hand. Throws are in hexadecimal. Hands start at number 0 and are in hexadecimal also. If destination hand is same than source hand, we do not have to precise it (i.e only Value). \nMultiplexes in a throw does not use '[',']'..\n\nHere is an example with the Asynchronous Cascade 4 Hands, 5 Objects : (5:1,0,0,0)(0,5:2,0,0)(0,0,5:3,0)(0,0,0,5:0)\nthe 5 objects Multiplex 24[54] gives in MHN : (2,0,5:14,0,4,0)(0,4,0,2,0,5:04)";
+	our $MSG_MHN_MENU_ISVALID_1 = "Check the MHN validity.";
+	our $MSG_MHN_MENU_ISVALID_2 = "Parameters :\n\n\- <\"mhn\"> : MHN to check.\n\n\- [\-1] Optional, return the result, but do not print it.";
+	our $MSG_MHN_MENU_ISSYNTAXVALID_1 = "Check the MHN grammar syntax.";
+	our $MSG_MHN_MENU_ISSYNTAXVALID_2 = "Parameters :\n\n\- <\"mhn\"> : MHN to check.\n\- [\-1] Optional, return the result, but do not print it.";
+	our $MSG_MHN_MENU_ISASYNC_1 = "Check if MHN is Asynchronous.";
+	our $MSG_MHN_MENU_ISASYNC_2 = "Parameters :\n\n\- <\"mhn\"> : MHN to check.\n\- [\-1] Optional, return the result, but do not print it.";
+	our $MSG_MHN_MENU_GETPERIOD_1 = "Give the MHN Period";
+	our $MSG_MHN_MENU_GETPERIOD_2 = "Parameters :\n\n\- <\"mhn\"> : MHN to analyze.\n\- [\-1] Optional, return the result, but do not print it.";
+	our $MSG_MHN_MENU_GETOBJNUMBER_1 = "Give the number of objects needed for the MHN.";
+	our $MSG_MHN_MENU_GETOBJNUMBER_2 = "Parameters :\n\n\- <\"mhn\"> : MHN to analyze.\n\- [\-1] Optional, return the result, but do not print it.";   
+	our $MSG_MHN_MENU_GETHANDSNUMBER_1 = "Give the number of hands needed for the MHN.";
+	our $MSG_MHN_MENU_GETHANDSNUMBER_2 = "Parameters :\n\n\- <\"mhn\"> : MHN to analyze.\n\- [\-1] Optional, return the result, but do not print it."; 
+	our $MSG_MHN_MENU_DRAW_1 = "draw the Diagram of a given MHN.";
+	our $MSG_MHN_MENU_DRAW_2 = "Param\x{e8}tres :\n\n\- <\"mhn\"> : MHN to draw.\n\n\- <\"file\"> : image file for the result.\n\n".$MSG_GRAPHVIZ_OPTS_a3.$MSG_GRAPHVIZ_OPTS_b3."\n\n\t\-a <y|n> : draw HSS (Default:y)\n\n\t\-b <y|n> : naming core for hands (Default:M)\n\n\n\- [\\%hash] : Optional, transitions hash. In this case the Siteswap is used for the title only. Each key is Ri:j for a right transition or Li:j for a left one. i is the throw Beat and j is the numero of the thrown object (starting from 0) to help the colorization\n\tEx :  %hash = (
+	\t'L2:0' => 'R4:0',
+	\t'R2:0' => 'R4:1',
+	\t'L4:0' => 'R6:0',
+	\t'R4:0' => 'R5:0',
+	\t'R4:1' => 'L6:0',
+	\t'R6:0' => 'R6:0'
+	\t);";
+	our $MSG_MHN_MENU_TOHSS_1 = "Give the corresponding OSS/HSS Notation when possible (i.e Async. Transform).";
+	our $MSG_MHN_MENU_TOHSS_2 = "Parameters :\n\n\- <\"mhn\"> : MHN.\n\- [\"options\"] : Available option \-z <y|n> : possible Zero in HSS computation ((Default:y).\n\- [\-1] Optional, return the result, but do not print it.";      
+	our $MSG_MHN_MENU_TOSS_1 = "Give the corresponding Siteswap Notation when possible (i.e At most 2 Hands).";
+	our $MSG_MHN_MENU_TOSS_2 = "Parameters :\n\n\- <\"mhn\"> : MHN.\n\- [\-1] Optional, return the result, but do not print it.";      
+
+	
+	our $MSG_MHN_ISVALID_ERR0 = "Invalid MHN";
+	
+	our $MSG_MHN_TOHSS_ERR0 = "Error : Siteswap not Asynchronous.";
+	our $MSG_MHN_TOSS_ERR0 = "Error : 2 Hands Max.";
+	
 	
 	################################################"
 	#
@@ -1328,9 +1476,16 @@ sub initLang
 	our $MSG_MOD_VERSION_1 = "Give the Module Version.";
 	our $MSG_MOD_VERSION_2 = "No Parameter.";
 
-	our $MSG_GRAPHVIZ_OPTS_a1="\- [\"options\"] Several options among \-[c|d|e|g|h|i|l|m|n|o|p|s|t|v] :";
-	our $MSG_GRAPHVIZ_OPTS_a2="\- [\"options\"] Several options among \-[c|d|h|l|m|n|o|p|r|s|t|v]";
-	our $MSG_GRAPHVIZ_OPTS_b1="\n\n\t\-c <int> :  Colorization Model (Default:2)\n\t\t'0' : No colorization;\n\t\t'1' : Multiplex in increasing order of\n\t\t Siteswap values of previous throws;\n\t\t'2' : Multiplexe in increasing order of \n\t\t Siteswap values of previous throws.\n\n\t\-d <int> :  Synchronous Hack (Default:0)\n\t\t'0' : Remove 0 in the drawing after sync throw since \n\t\tit is catches beats;\n\t\t'1' : No hack.\n\n\t\-e <\"string\"> : Label Edge Color according to the Graphviz X11 \n\tscheme (ex : dodgerblue, red, springgreen, darkviolet, \n\tmagenta, goldenrod, saddlebrown, azure4, khaki4, \n\tdarkorange, olivedrab1, turquoise4, black, peru, \n\tmediumslateblue). E for same as the arrow \n\t(Default:E).\n\n\t\-g <y|n> : Keep Graphviz File used for generating (Default:n).\n\n\t\-h <y|n> : Print Hands.\n\n\t\-i \"list using ,\" : Print Hands Enumeration for Vanilla Flat diagram.\n\n\t\-l <pos> : Position of the Siteswap label (Default:s)\n\t\t't': near arrow tail; \n\t\t'h': near arrow head; \n\t\t'm': middle of the arrow; \n\t\t'x': middle of the arrow after drawing; \n\t\t's': around the State; \n\t\t'n': No Siteswap label.\n\n\t\-m <0|1|2> : Diagram Model (Default: According to the Siteswap Type)\n\t\t'0' : Ladder;\n\t\t'1' : Flattened Ladder (Asynchronous Siteswap);\n\t\t'2' : Ladder with odd Beats removed starting from 0\n\t\t\t(Synchronous Siteswap).\n\n\t\-n <y|n> : Draw negatives throws [Experimental] \n\t\t(Default:n).\n\n\t\-p : Periode min to draw (Default:25).\n\n\t\-o <type> : image format (Default:png) through : bmp (Windows Bitmap Format), cmapx (client-side imagemap for use in html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and pcl (Laserjet printers), imap (imagemap files for httpd servers for each node or edge that has a non\-null \"href\" attribute.), jpg, jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable Document Format), png (Portable Network Graphics format), ps (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT langage), plain , plain\-ext (Output in plain text).\n\n\t\-s <int> : Print or not the result (Default:0)\n\t\t'0' : print the result;\n\t\t'1' : Silence the result.\n\n\t\-t <y|n> : Draw the image title (Default:y)\n\n\t\-v <\"string\"> : Value to use for the title";
+	our $MSG_GRAPHVIZ_OPTS_a1="\- [\"options\"] Several options among \-[c|d|e|g|h|i|l|m|n|o|p|q|s|t|v] :";
+	our $MSG_GRAPHVIZ_OPTS_a2="\- [\"options\"] Several options among \-[c|d|h|l|m|n|o|p|q|r|s|t|v]";
+	our $MSG_GRAPHVIZ_OPTS_a3="\- [\"options\"] Several options among \-[a|b|c|d|e|f|g|h|i|l|m|n|o|p|q|s|t|v|z] :";	
+	our $MSG_GRAPHVIZ_OPTS_a4="\- [\"options\"] Several options among \-[a|b|c|d|e|g|h|i|l|m|n|o|p|q|s|t|v] :";
+	
+	our $MSG_GRAPHVIZ_OPTS_b1="\n\n\t\-c <int> :  Colorization Model (Default:2)\n\t\t'0' : No colorization;\n\t\t'1' : Multiplex in increasing order of\n\t\t Siteswap values of previous throws;\n\t\t'2' : Multiplexe in increasing order of \n\t\t Siteswap values of previous throws.\n\n\t\-d <int> :  Synchronous Hack (Default:0)\n\t\t'0' : Remove 0 in the drawing after sync throw since \n\t\tit is catches beats;\n\t\t'1' : No hack.\n\n\t\-e <\"string\"> : Label Edge Color according to the Graphviz X11 \n\tscheme (ex : dodgerblue, red, springgreen, darkviolet, \n\tmagenta, goldenrod, saddlebrown, azure4, khaki4, \n\tdarkorange, olivedrab1, turquoise4, black, peru, \n\tmediumslateblue). E for same as the arrow \n\t(Default:E).\n\n\t\-g <y|n> : Keep Graphviz File used for generating (Default:n).\n\n\t\-h <y|n> : Print Hands.\n\n\t\-i \"list using ,\" : Print Hands Enumeration for Vanilla Flat diagram.\n\n\t\-l <pos> : Position of the Siteswap label\n\t\t't': near arrow tail; \n\t\t'h': near arrow head; \n\t\t'm': middle of the arrow; \n\t\t'x': middle of the arrow after drawing; \n\t\t's': around the State; \n\t\t'n': No Siteswap label.\n\n\t\-m <0|1|2> : Diagram Model (Default: According to the Siteswap Type)\n\t\t'0' : Ladder;\n\t\t'1' : Flattened Ladder (Asynchronous Siteswap);\n\t\t'2' : Ladder with odd Beats removed starting from 0\n\t\t\t(Synchronous Siteswap).\n\n\t\-n <y|n> : Draw negatives throws [Experimental] \n\t\t(Default:n).\n\n\t\-p : Periode min to draw (Default:25).\n\n\t\-o <type> : image format (Default:png) through : bmp (Windows Bitmap Format), cmapx (client-side imagemap for use in html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and pcl (Laserjet printers), imap (imagemap files for httpd servers for each node or edge that has a non\-null \"href\" attribute.), jpg, jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable Document Format), png (Portable Network Graphics format), ps (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT langage), plain , plain\-ext (Output in plain text).\n\n\t\-q <y|n> : Quick drawing without quality respect(Default:n).\n\n\t\-s <int> : Print or not the result (Default:0)\n\t\t'0' : print the result;\n\t\t'1' : Silence the result.\n\n\t\-t <y|n> : Draw the image title (Default:y)\n\n\t\-v <\"string\"> : Value to use for the title";
+
+	our $MSG_GRAPHVIZ_OPTS_b3="\n\n\t\-a <y|n> : Asynchronous drawing (OSS/HSS) if possible (Default:n)\n\n\t\-b <\"string\"> : naming core for hands (Default:M).\n\n\t\-c <int> : Colorization Model for Asynchronous Drawing (Default:2). Otherwise Colorization is done according to beats and hands order.\n\t\t'0' : No colorization;\n\t\t'1' : Multiplex in increasing order of\n\t\t Siteswap values of previous throws;\n\t\t'2' : Multiplexe in increasing order of \n\t\t Siteswap values of previous throws.\n\n\t\-d <int> :  Synchronous Hack (Default:0)\n\t\t'0' : Remove 0 in the drawing after sync throw since \n\t\tit is catches beats;\n\t\t'1' : No hack.\n\n\t\-e <\"string\"> : Label Edge Color according to the Graphviz X11 \n\tscheme (ex : dodgerblue, red, springgreen, darkviolet, \n\tmagenta, goldenrod, saddlebrown, azure4, khaki4, \n\tdarkorange, olivedrab1, turquoise4, black, peru, \n\tmediumslateblue). E for same as the arrow \n\t(Default:E).\n\n\t\-f <0|1|2> : Splines Mode : 0: spline, 1:curved, 2:line (D\x{e9}faut:2).\n\n\t\-g <y|n> : Keep Graphviz File used for generating (Default:n).\n\n\t\-h <y|n> : Print Hands.\n\n\t\-i \"list using ,\" : Print Hands Enumeration for Vanilla Flat diagram.\n\n\t\-l <pos> : Position of the Siteswap label\n\t\t't': near arrow tail; \n\t\t'h': near arrow head; \n\t\t'm': middle of the arrow; \n\t\t'x': middle of the arrow after drawing; \n\t\t's': around the State; \n\t\t'n': No Siteswap label.\n\n\t\-m <0|1|2> : Diagram Model (Default: According to the Siteswap Type)\n\t\t'0' : Ladder;\n\t\t'1' : Flattened Ladder (Asynchronous Siteswap);\n\t\t'2' : Ladder with odd Beats removed starting from 0\n\t\t\t(Synchronous Siteswap).\n\n\t\-n <y|n> : Draw negatives throws [Experimental] \n\t\t(Default:n).\n\n\t\-p : Periode min to draw (Default:25).\n\n\t\-o <type> : image format (Default:png) through : bmp (Windows Bitmap Format), cmapx (client-side imagemap for use in html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and pcl (Laserjet printers), imap (imagemap files for httpd servers for each node or edge that has a non\-null \"href\" attribute.), jpg, jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable Document Format), png (Portable Network Graphics format), ps (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT langage), plain , plain\-ext (Output in plain text).\n\n\t\-q <y|n> : Quick drawing without quality respect(Default:n).\n\n\t\-s <int> : Print or not the result (Default:0)\n\t\t'0' : print the result;\n\t\t'1' : Silence the result.\n\n\t\-t <y|n> : Draw the image title (Default:y)\n\n\t\-v <\"string\"> : Value to use for the title.\n\n\t\-z <\"y|n\"> : possible Zero in HSS computation ((Default:y).";
+
+	
 	our $MSG_GRAPHVIZ_FORMAT= "\- [\"Format\"] Optional, image format (D\x{e9}fault:png) through : bmp (Windows Bitmap Format), cmapx (client-side imagemap for use in html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and pcl (Laserjet printers), imap (imagemap files for httpd servers for each node or edge that has a non\-null \"href\" attribute.), jpg, jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable Document Format), png (Portable Network Graphics format), ps (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT langage), plain , plain\-ext (Output in plain text)\n\n\- [\"Generator\"] Optional, Graphviz generation filter (D\x{e9}fault:dot) through : circo (circular layout), dot(directed graphs), neato (undirected graphs), twopi (radial layouts), fdp (undirected graphs), sfdp (large undirected graphs), osage (clustered graphs).";
 
     }

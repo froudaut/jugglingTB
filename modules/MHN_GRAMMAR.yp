@@ -1,0 +1,128 @@
+%%
+input : 
+      MHN
+{
+    # Return is : 
+    # Error : -1    
+    return 1;
+}
+| lexerror
+{
+    return -1;
+};
+
+
+MHN : 
+    '(' hand_throws ')' 
+{
+}
+| '(' hand_throws ')' MHN 
+{ 
+};
+
+
+hand_throws :
+    throw
+{
+}
+| throw ',' hand_throws
+{
+}
+;
+
+
+throw : 
+    digit 
+{
+}
+| digit ':' digit
+{
+}
+| digit throw 
+{
+}
+| digit ':' digit throw
+{
+}
+;
+
+
+
+%%
+
+my $Input = "";
+my $In="";
+my $verbose = "0";
+
+sub parse 
+{
+    $Input="$_[0]";        
+    $In="$_[0]";
+    if (scalar @_ > 1 && $_[1] eq '-1')
+    {
+	$verbose = "$_[1]";
+    }
+    else
+    {
+	$verbose = "0";
+    }
+    my $p = new MHN_GRAMMAR();        
+    my $res = $p->YYParse( yylex => \&yylex, yyerror => \&yyerror);
+    if($res==-1) {
+	return $res;
+    }
+    elsif($p->YYNberr() != 0) {
+	return -1;
+    }
+    else {
+	return $res;
+    }	
+}
+
+sub yyerror {
+    my $e=join(", ",$_[0]->YYExpect);
+    if($e ne "") {
+    	if($verbose ne "-1") {
+		printf STDERR ('Error: a "%s" was found in <"%s"> where "%s" was expected'."\n", $_[0]->YYCurtok, $In, $_[0]->YYExpect);
+	}
+    }
+    else		
+	{
+	 if($verbose ne "-1") {
+	    printf STDERR ('Error: a "%s" was found in "%s"'."\n", $_[0]->YYCurtok, $In);	    
+	 }
+    	}
+}
+
+
+sub init_lexical_file{
+    my $file = shift;
+    local $/;
+    undef $/;
+    if ($file) {
+	open F, $file or die "$!";
+	$Input = <F>;
+	close F;
+    } else {
+	$Input = <>
+	    }
+}
+
+sub yylex{
+    for($Input){
+	# Advance spaces
+	    1 while (s!^(\s+|\n)!!g);
+	# EOF
+	    return ("","") if $_ eq "";
+	# Tokens
+	    s!^([A-Fa-f0-9])!! and return ("digit", $1);
+	s!^([\[\]():,])!! and return ($1, $1);
+    	if($verbose ne "-1") {
+		print STDERR "Unexpected symbols: $Input\n" and return ("lexerror",$1);
+	}
+	else
+	{
+		return ("lexerror",$1);
+	}
+    }
+}

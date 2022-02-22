@@ -41,7 +41,7 @@ $Term::ANSIColor::AUTORESET = 1;
 
 our $SSWAP_INFO = "SITESWAP juggling Notation";
 our $SSWAP_HELP = $lang::MSG_SSWAP_MENU_HELP;
-our $SSWAP_VERSION = "v1.5";
+our $SSWAP_VERSION = "v1.6";
 
 
 our %SSWAP_CMDS = 
@@ -106,12 +106,15 @@ our %SSWAP_CMDS =
 	 'writeStates_xls'       => ["$lang::MSG_SSWAP_MENU_WRITESTATES_1","$lang::MSG_SSWAP_MENU_WRITESTATES_2"],
 	 'printSSList'           => ["$lang::MSG_SSWAP_MENU_PRINTSSLIST_1","$lang::MSG_SSWAP_MENU_PRINTSSLIST_2"],
 	 'printSSListHTML'       => ["$lang::MSG_SSWAP_MENU_PRINTSSLISTHTML_1","$lang::MSG_SSWAP_MENU_PRINTSSLISTHTML_2"],	 
-	 'toStack'               => ["$lang::MSG_SSWAP_MENU_TOSTACK_1","$lang::MSG_SSWAP_MENU_TOSTACK_2"],	 
 	 'jdeep'                 => ["$lang::MSG_SSWAP_MENU_JDEEP_1","$lang::MSG_SSWAP_MENU_JDEEP_2"],
 	 'dual'                  => ["$lang::MSG_SSWAP_MENU_DUAL_1","$lang::MSG_SSWAP_MENU_DUAL_2"],
  	 'slideSwitchSync'       => ["$lang::MSG_SSWAP_MENU_SLIDESWITCHSYNC_1","$lang::MSG_SSWAP_MENU_SLIDESWITCHSYNC_2"],
-	 'polyrhythmFountain'     => ["$lang::MSG_SSWAP_MENU_POLYRHYTHMFOUNTAIN_1","$lang::MSG_SSWAP_MENU_POLYRHYTHMFOUNTAIN_2"],
+	 'polyrhythmFountain'    => ["$lang::MSG_SSWAP_MENU_POLYRHYTHMFOUNTAIN_1","$lang::MSG_SSWAP_MENU_POLYRHYTHMFOUNTAIN_2"],
 	 'lowerHeightOnTempo'    => ["$lang::MSG_SSWAP_MENU_LOWERHEIGHTONTEMPO_1","$lang::MSG_SSWAP_MENU_LOWERHEIGHTONTEMPO_2"],
+	 'toMHN'                 => ["$lang::MSG_SSWAP_MENU_TOMHN_1","$lang::MSG_SSWAP_MENU_TOMHN_2"],
+	 'toMultiSync'           => ["$lang::MSG_LADDER_MENU_TO_MULTISYNC_1", "$lang::MSG_LADDER_MENU_TO_MULTISYNC_2"],
+	 'toStack'               => ["$lang::MSG_SSWAP_MENU_TOSTACK_1","$lang::MSG_SSWAP_MENU_TOSTACK_2"],	 
+	 'toHSS'                 => ["$lang::MSG_SSWAP_MENU_TOHSS_1","$lang::MSG_SSWAP_MENU_TOHSS_2"],	 
     );
 
 
@@ -1764,7 +1767,6 @@ sub isEquivalent
 	
 	return 1;
     }
-
 
     my $ss0 = &LADDER::toMultiSync($_[0],2,-1);
     my $ss1 = &LADDER::toMultiSync($_[1],2,-1);
@@ -6244,7 +6246,7 @@ sub expandSync
     # the Syntax is not necessary valid
     my $pattern = uc($_[0]);
     $pattern =~ s/\s+//g;
-    if(&getSSType($pattern,-1) ne "S" && &getSSType($pattern,-1) ne "MS")
+    if(&getSSType($pattern,-1) ne "S" && &getSSType($pattern,-1) ne "MS" && &getSSType($pattern,-1) ne "MULTI")
     {
 	if ((scalar @_ == 1) || ($_[1] ne "-1")) {
 	    print colored [$common::COLOR_RESULT], $pattern."\n";
@@ -6252,29 +6254,15 @@ sub expandSync
 
 	return $pattern;
     }
+    
+    if(&getSSType($pattern,-1) eq "MULTI")
+    {
+	if(length($pattern) >2 && substr($pattern,length($pattern)-2,2) eq '*!')
+     	{
+     	    $pattern = substr($pattern,0,length($pattern)-2).'!*';
+     	}
+    }
 
-    # if(&getSSType($pattern,-1) eq "MULTI")
-    # {
-    # 	my $res = '';
-    # 	if(length($pattern) >1 && substr($pattern,length($pattern)-1,1) eq '*')
-    # 	{
-    # 	    $res = substr($pattern,0,length($pattern)-1).substr($pattern,0,length($pattern)-1);
-    # 	    if ((scalar @_ == 1) || ($_[1] ne "-1")) {
-    # 		print colored [$common::COLOR_RESULT], $res."\n";
-    # 	    }
-    # 	    return $res;
-    # 	}
-    
-    # 	if(length($pattern) >2 && substr($pattern,length($pattern)-2,2) eq '*!')
-    # 	{
-    # 	    $res = substr($pattern,0,length($pattern)-2).'!'.substr($pattern,0,length($pattern)-2).'!';
-    # 	    if ((scalar @_ == 1) || ($_[1] ne "-1")) {
-    # 		print colored [$common::COLOR_RESULT], $res."\n";
-    # 	    }
-    # 	    return $res;
-    # 	}
-    # }
-    
     my @src=split('', $pattern);
     if ($src[scalar @src -1] ne "*") {
 	if ((scalar @_ == 1) || ($_[1] ne "-1")) {
@@ -6294,15 +6282,12 @@ sub expandSync
 	    $res = "";
 	    $tmp1 = "";
 	    $tmp2 = "";
-
+	    
 	    while ($src[$i] ne "(" && $i < scalar @src) {
 		$res = $res.$src[$i];
 		$i++;	    
 		if ($i >= scalar @src) {
-		    if ((scalar @_ == 1) || ($_[1] ne "-1")) {
-			print colored [$common::COLOR_RESULT], $res."\n";
-		    }
-		    return $res;
+		    last;
 		}
 	    }
 
@@ -6319,6 +6304,7 @@ sub expandSync
 			return $res."(".$tmp2;
 		    }
 		}
+		
 		if ($src[$i] eq ",") {
 		    $i++;
 		}
@@ -6327,12 +6313,14 @@ sub expandSync
 		    $i++;
 		    if ($i >= scalar @src) {
 			if ((scalar @_ == 1) || ($_[1] ne "-1")) {
-			    print colored [$common::COLOR_RESULT], $res."(".$tmp1.",s".$tmp2.")"."\n";
+			    print colored [$common::COLOR_RESULT], $res."(".$tmp1.",".$tmp2.")"."\n";
 			}
-			return $res."(".$tmp1.",s".$tmp2.")";
+			return $res."(".$tmp1.",".$tmp2.")";
 		    }
 		}
-		$res=$res."(".$tmp1.",".$tmp2.")";
+
+		$res=$res."(".$tmp1.",".$tmp2.")";		
+		
 		$i++;
 	    }	
 
@@ -7980,6 +7968,7 @@ sub draw
     ##           - &getSSType
 
     require modules::LADDER;
+
     my $opts = "";
     if (scalar @_ >= 3 && uc($_[2]) =~ "-M")
     {
@@ -21407,6 +21396,558 @@ sub __gen_transit_btwn_states_aggr
 }
 
 
+sub toHSS
+{
+    my $ss = $_[0];
+    my $zero_hand="Y";   # Y to have eventual 0 in HSS
+
+    my $ret = &GetOptionsFromString(uc($_[1]),    
+				    "-Z:s" => \$zero_hand,
+	);
+
+    my $mod = &getSSType($ss,-1);
+    if ($mod eq "V" || $mod eq "M")
+    {
+	if(scalar @_ <= 1 || $_[1] ne "-1")
+	{
+	    print colored [$common::COLOR_RESULT], "OSS: $ss"."\n";
+	    print colored [$common::COLOR_RESULT], "HSS: 2"."\n\n";
+	}
+
+	return ($ss,2);
+    }
+
+    elsif ($mod eq "S" || $mod eq "MS" || $mod eq "SM" || $mod eq "MULTI")
+    {
+	use modules::MHN;
+	my $mhn = &toMHN($ss,-1);        
+	my ($oss,$hss) = &MHN::toHSS($mhn,"-Z $zero_hand",-1);
+
+	if($oss == -1)
+	{
+	    if(scalar @_ <= 2 || $_[2] ne "-1")
+	    {
+		print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_TOHSS_MSG0."\n";	    
+	    }
+
+	    return (-1,-1);	
+	}
+	
+	if(scalar @_ <= 2 || $_[2] ne "-1")
+	{
+	    print colored [$common::COLOR_RESULT], "OSS: $oss"."\n";
+	    print colored [$common::COLOR_RESULT], "HSS: $hss"."\n\n";
+	}
+	
+	return ($oss,$hss);
+    }
+
+    else
+    {
+	if(scalar @_ <= 2 || $_[2] ne "-1")
+	{
+	    print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_TOHSS_MSG1."\n";	    
+	}
+	
+	return (-1,-1);
+    }	
+}
+
+
+
+sub toMHN
+{
+    my $ss = $_[0];
+    my $mod = &getSSType($ss,-1);
+    if ($mod eq "V" || $mod eq "M")
+    {
+	return &__toMHN_async(@_);	
+    }	
+    elsif ($mod eq "S" || $mod eq "MS" || $mod eq "SM" )
+    {
+     	return &__toMHN_sync(@_);	
+    }	
+    elsif ($mod eq "MULTI" )
+    {
+     	return &__toMHN_multisync(@_);	
+    }	
+    else
+    {
+	if(scalar @_ <= 1 || $_[1] ne "-1")
+	{
+	    print colored [$common::COLOR_RESULT], $lang::MSG_SSWAP_TOMHN_MSG1."\n";
+	}
+	return -1;
+    }
+}
+
+
+sub __toMHN_async
+{
+    my $ss=$_[0];
+    my $res = '';
+    my $side = 'R';
+    my $mhn_rh = '';
+    my $mhn_lh = '';
+    my $val_rh = '';		    
+    my $val_lh = '';		    
+
+    if(&getPeriod($ss,-1) %2 != 0) {
+	$ss = $ss.$ss;
+    }
+    
+    for (my $i=0; $i<length($ss); $i++)
+    {
+	if(substr($ss,$i,1) eq '[')
+	{
+	    $i++;
+	    $val_rh = '';		    
+	    $val_lh = '';
+
+	    while(substr($ss,$i,1) ne ']' && $i<length($ss))
+	    {
+		if(substr($ss,$i,1) %2 == 0)
+		{
+		    if($side eq 'R')
+		    {
+			$val_rh .= substr($ss,$i,1);
+			$val_lh = '0';
+
+		    }
+		    else
+		    {
+			$val_lh .= substr($ss,$i,1);
+			$val_rh = '0';
+		    }
+		}
+		else {
+		    if($side eq 'R')
+		    {
+			$val_rh .= substr($ss,$i,1).':1';
+			$val_lh = '0';
+		    }
+		    else
+		    {
+			$val_lh .= substr($ss,$i,1).':0';
+			$val_rh = '0';
+
+		    }
+		}
+		$i++;
+	    }
+
+	    if($mhn_rh eq '') {
+		$mhn_rh .= $val_rh;
+	    }
+	    else
+	    {
+		$mhn_rh .= ','.$val_rh;
+	    }
+	    if($mhn_lh eq '') {
+		$mhn_lh .= $val_lh;
+	    }
+	    else
+	    {
+		$mhn_lh .= ','.$val_lh;
+	    }		
+	    
+	    if($side eq 'R') {
+		$side = 'L';
+	    }
+	    else {
+		$side = 'R';
+	    }			
+	}
+
+	else
+	{
+	    if(substr($ss,$i,1) %2 == 0)
+	    {
+		if($side eq 'R')
+		{
+		    $val_rh = substr($ss,$i,1);
+		    $val_lh = '0';		    
+		}
+		else
+		{
+		    $val_lh = substr($ss,$i,1);
+		    $val_rh = '0';		    
+		}
+	    }
+	    else {
+		if($side eq 'R')
+		{
+		    $val_rh = substr($ss,$i,1).':1';
+		    $val_lh = '0';		    
+		}
+		else
+		{
+		    $val_lh = substr($ss,$i,1).':0';
+		    $val_rh = '0';
+		}
+	    }
+
+	    if($mhn_rh eq '') {
+		$mhn_rh .= $val_rh;
+	    }
+	    else
+	    {
+		$mhn_rh .= ','.$val_rh;
+	    }
+	    if($mhn_lh eq '') {
+		$mhn_lh .= $val_lh;
+	    }
+	    else
+	    {
+		$mhn_lh .= ','.$val_lh;
+	    }		
+	    
+	    if($side eq 'R') {
+		$side = 'L';
+	    }
+	    else {
+		$side = 'R';
+	    }			   
+	}
+    }
+
+    $res = '('.$mhn_rh.')'.'('.$mhn_lh.')';
+
+    if(scalar @_ <= 1 || $_[1] ne "-1")
+    {
+	print colored [$common::COLOR_RESULT], $res."\n";
+    }
+
+    return $res;
+}
+
+
+sub __toMHN_sync
+{
+
+    my $ss=&expandSync($_[0],-1);
+    my $res = '';
+    my $mhn_rh = '';
+    my $mhn_lh = '';
+    my $side = 'R';
+    
+    my @ss_l = split(/\)/,$ss);
+    for (my $i=0; $i < scalar @ss_l; $i++)
+    {
+	$side = 'R';
+	for (my $j=0; $j < length($ss_l[$i]); $j++)
+	{
+	    if(substr($ss_l[$i],$j,1) eq '(')
+	    {
+		# Do Nothing
+	    }
+	    elsif(substr($ss_l[$i],$j,1) eq ',')
+	    {
+		$side = 'L';
+	    }
+	    elsif(substr($ss_l[$i],$j,1) eq '[')
+	    {
+		if($side eq 'R')
+		{
+		    if($mhn_rh ne '')
+		    {
+			$mhn_rh .= ',';
+		    }			
+		}
+		else{
+		    if($mhn_lh ne '')
+		    {
+			$mhn_lh .= ',';
+		    }		    
+		}			
+		
+		while(substr($ss_l[$i],$j,1) ne ']')
+		{
+		    if($j<length($ss_l[$i]) && uc(substr($ss_l[$i],$j+1,1)) eq 'X')
+		    {
+			if($side eq 'R')
+			{
+			    $mhn_rh .= substr($ss_l[$i],$j,1).':1';
+			}
+			else{
+			    $mhn_lh .= substr($ss_l[$i],$j,1).':0';
+			}
+			$j++;
+		    }
+		    else {
+			if($side eq 'R')
+			{
+			    $mhn_rh .= substr($ss_l[$i],$j,1);
+			}
+			else{
+			    $mhn_lh .= substr($ss_l[$i],$j,1);
+			}			
+		    }
+		    $j++;
+		}
+
+		if($side eq 'R')
+		{
+		    $side = 'L';
+		}
+		else{
+		    $side = 'R';
+		}			
+	    }
+
+	    else {
+		my $val = '';
+		if($j<length($ss_l[$i]) && uc(substr($ss_l[$i],$j+1,1)) eq 'X')
+		{
+		    if($side eq 'R')
+		    {
+			$val = substr($ss_l[$i],$j,1).':1';
+		    }
+		    else{
+			$val = substr($ss_l[$i],$j,1).':0';
+		    }
+		    $j++;
+		}
+		else {
+		    if($side eq 'R')
+		    {
+			$val = substr($ss_l[$i],$j,1);
+		    }
+		    else{
+			$val = substr($ss_l[$i],$j,1);
+		    }			
+		}
+		
+		if($side eq 'R')
+		{
+		    if($mhn_rh eq '')
+		    {
+			$mhn_rh .= $val;
+		    }
+		    else {
+			$mhn_rh .= ','.$val;
+		    }
+		    
+		    $side = 'L';
+		}
+		else{
+		    if($mhn_lh eq '')
+		    {
+			$mhn_lh .= $val;
+		    }
+		    else {
+			$mhn_lh .= ','.$val;
+		    }
+
+		    $side = 'R';
+		}			
+		
+	    }
+	}
+
+	$mhn_rh.= ',0';
+	$mhn_lh.= ',0';	
+    }
+
+    $res = '('.$mhn_rh.')'.'('.$mhn_lh.')';
+
+
+    if(scalar @_ <= 1 || $_[1] ne "-1")
+    {
+	print colored [$common::COLOR_RESULT], $res."\n";
+    }
+
+    return $res;
+}
+
+
+
+sub __toMHN_multisync
+{
+    my $ss=&expandSync(&toMultiSync($_[0],3,-1),-1);
+    my $res = '';
+    my $side = 'R';
+    my $mhn_rh = '';
+    my $mhn_lh = '';
+
+    my @ss_l = split(/\(/,$ss);
+    for (my $i=1; $i < scalar @ss_l; $i++)
+    {
+	$side = 'R';
+	my $donotaddemptybeat = -1;
+
+	for (my $j=0; $j < length($ss_l[$i]); $j++)
+	{
+	    if(substr($ss_l[$i],$j,1) eq ')')
+	    {
+		# Do Nothing
+	    }
+	    elsif(substr($ss_l[$i],$j,1) eq '!')
+	    {
+		$donotaddemptybeat = 1;
+	    }
+	    elsif(substr($ss_l[$i],$j,1) eq ',')
+	    {
+		$side = 'L';
+	    }
+	    elsif(substr($ss_l[$i],$j,1) eq '[')
+	    {
+		if($side eq 'R')
+		{
+		    if($mhn_rh ne '')
+		    {
+			$mhn_rh .= ',';
+		    }			
+		}
+		else{
+		    if($mhn_lh ne '')
+		    {
+			$mhn_lh .= ',';
+		    }		    
+		}			
+		
+		while(substr($ss_l[$i],$j,1) ne ']')
+		{
+		    if($j<length($ss_l[$i]) && uc(substr($ss_l[$i],$j+1,1)) eq 'X')
+		    {
+			if($side eq 'R'
+			   && substr($ss_l[$i],$j,1)!=0 
+			   && substr($ss_l[$i],$j,1) %2 ==0)
+			{
+			    $mhn_rh .= substr($ss_l[$i],$j,1).':1';
+			}
+			elsif($side eq 'L'
+			      && substr($ss_l[$i],$j,1)!=0 
+			      && substr($ss_l[$i],$j,1) %2 ==0)
+			{
+			    $mhn_lh .= substr($ss_l[$i],$j,1).':0';
+			}
+			elsif($side eq 'R')
+			{
+			    $mhn_rh .= substr($ss_l[$i],$j,1);
+			}
+			elsif($side eq 'L')
+			{
+			    $mhn_lh .= substr($ss_l[$i],$j,1);
+			}
+			$j++;
+		    }
+		    else {
+			if($side eq 'R'
+			   && substr($ss_l[$i],$j,1) %2 !=0)
+			{
+			    $mhn_rh .= substr($ss_l[$i],$j,1).':1'
+			}
+			elsif($side eq 'L'
+			      && substr($ss_l[$i],$j,1) %2 !=0)
+			{
+			    $mhn_lh .= substr($ss_l[$i],$j,1).':0';
+			}
+			elsif($side eq 'R')
+			{
+			    $mhn_rh .= substr($ss_l[$i],$j,1);
+			}
+			elsif($side eq 'L')
+			{
+			    $mhn_lh .= substr($ss_l[$i],$j,1);
+			}
+		    }
+		    $j++;
+		}
+
+		if($side eq 'R')
+		{
+		    $side = 'L';
+		}
+		else{
+		    $side = 'R';
+		}			
+	    }
+
+	    else {
+		my $val = '';
+		if($j<length($ss_l[$i]) && uc(substr($ss_l[$i],$j+1,1)) eq 'X')
+		{
+		    if($side eq 'R'
+		       && substr($ss_l[$i],$j,1)!=0
+		       && substr($ss_l[$i],$j,1) %2 ==0 )
+		    {
+			$val = substr($ss_l[$i],$j,1).':1';
+		    }
+		    elsif($side eq 'L'
+			  && substr($ss_l[$i],$j,1)!=0
+			  && substr($ss_l[$i],$j,1) %2 ==0)
+		    {
+			$val = substr($ss_l[$i],$j,1).':0';
+		    }
+		    else{
+			$val = substr($ss_l[$i],$j,1);
+		    }
+		    $j++;
+		}
+		else {
+		    if($side eq 'R'
+		       && substr($ss_l[$i],$j,1) %2 !=0)
+		    {
+			$val = substr($ss_l[$i],$j,1).':1';
+		    }
+		    elsif($side eq 'L'
+			  && substr($ss_l[$i],$j,1) %2 !=0)
+		    {
+			$val = substr($ss_l[$i],$j,1).':0';
+		    }
+		    else{
+			$val = substr($ss_l[$i],$j,1);
+		    }
+		}
+		
+		if($side eq 'R')
+		{
+		    if($mhn_rh eq '')
+		    {
+			$mhn_rh .= $val;
+		    }
+		    else {
+			$mhn_rh .= ','.$val;
+		    }
+		    
+		    $side = 'L';
+		}
+		else{
+		    if($mhn_lh eq '')
+		    {
+			$mhn_lh .= $val;
+		    }
+		    else {
+			$mhn_lh .= ','.$val;
+		    }
+
+		    $side = 'R';
+		}			
+		
+	    }
+	}
+
+	if ($donotaddemptybeat != 1)
+	{
+	    $mhn_rh.= ',0';
+	    $mhn_lh.= ',0';
+	}
+    }
+
+    $res = '('.$mhn_rh.')'.'('.$mhn_lh.')';
+
+
+    if(scalar @_ <= 1 || $_[1] ne "-1")
+    {
+	print colored [$common::COLOR_RESULT], $res."\n";
+    }
+
+    return $res;
+}
+
+
+
 sub toStack 
 {
     my $ss = $_[0];
@@ -22427,6 +22968,12 @@ sub __toStack_multiplex_sync
     }
     
     return $stack_notation;
+}
+
+
+sub toMultiSync
+{
+    &LADDER::toMultiSync(@_);
 }
 
 

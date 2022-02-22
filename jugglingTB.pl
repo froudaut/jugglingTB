@@ -191,17 +191,18 @@ BEGIN
 ###
 
 use modules::BTN;
-use modules::SOU;
-use modules::MMSTD;
-use modules::SSWAP;
-use modules::LADDER;
-use modules::SPYRO;
-use modules::STACK;
-use modules::HTN;
 use modules::HSS;
+use modules::HTN;
+use modules::LADDER;
+use modules::MHN;
+use modules::MMSTD;
+use modules::SOU;
+use modules::SPYRO;
+use modules::SSWAP;
+use modules::STACK;
 #use modules::MODTEST;
 
-my @MODULES= ("BTN", "SOU", "MMSTD", "LADDER", "SSWAP", "SPYRO", "HTN", "HSS", "STACK");
+my @MODULES= ("BTN", "HSS", "HTN", "LADDER", "MHN", "MMSTD", "SOU", "SPYRO", "SSWAP", "STACK");
 ###########################################################################################################
 
 # Set the Debug Mode in each module
@@ -218,7 +219,7 @@ foreach my $v (@MODULES)
 ###
 ###########################################################################################################
 
-my $JUGGLINGTB_VERSION = "v1.5";
+my $JUGGLINGTB_VERSION = "v1.6";
 
 my %JUGGLINGTB_CMDS = 
     (    
@@ -328,39 +329,39 @@ sub runEnv
   MAINLOOP:
     
     while(1)
-    {
-	
-	$SIG{INT} = 'killFunction'; # traps keyboard interrupt
-	#(&flush(STDOUT), ($tty && print colored [$common::COLOR_PROMPT], $ps1), defined($_=<STDIN>)) { 
-	&flush(STDOUT);
-	print colored [$common::COLOR_PROMPT], $ps1;		
-	
-	if($common::Autocompletion == 0)
-	{	    
-	    if(defined($_=<STDIN>) && $tty)
-	    {
-		&__runEnv();		
-	    }
-	}
-	
-	else
-	{	
-	    if(defined($_=Complete("", (@GLOBAL_CONTEXT,@LOCAL_CONTEXT))) && $tty)	    
-	    {
-		#Add local Context to autocompletion (ie without MOD::)	
-		if(!(${currentSubMenu} eq "main"))
-		{
-		    @LOCAL_CONTEXT = Devel::Symdump->new(($currentSubMenu)) ->functions;
-		    for(my $i=0; $i < scalar @LOCAL_CONTEXT; $i ++)
-		    {
-			$LOCAL_CONTEXT[$i] =~ s/${currentSubMenu}:://ig;		
-		    }
-		}
-		
-		&__runEnv();		
-	    }
-	}
-    }
+  {
+      
+      $SIG{INT} = 'killFunction'; # traps keyboard interrupt
+      #(&flush(STDOUT), ($tty && print colored [$common::COLOR_PROMPT], $ps1), defined($_=<STDIN>)) { 
+      &flush(STDOUT);
+      print colored [$common::COLOR_PROMPT], $ps1;		
+      
+      if($common::Autocompletion == 0)
+      {	    
+	  if(defined($_=<STDIN>) && $tty)
+	  {
+	      &__runEnv();		
+	  }
+      }
+      
+      else
+      {	
+	  if(defined($_=Complete("", (@GLOBAL_CONTEXT,@LOCAL_CONTEXT))) && $tty)	    
+	  {
+	      #Add local Context to autocompletion (ie without MOD::)	
+	      if(!(${currentSubMenu} eq "main"))
+	      {
+		  @LOCAL_CONTEXT = Devel::Symdump->new(($currentSubMenu)) ->functions;
+		  for(my $i=0; $i < scalar @LOCAL_CONTEXT; $i ++)
+		  {
+		      $LOCAL_CONTEXT[$i] =~ s/${currentSubMenu}:://ig;		
+		  }
+	      }
+	      
+	      &__runEnv();		
+	  }
+      }
+  }
     
     # Exit the program
     $tty && print "\n";    
@@ -846,216 +847,216 @@ sub help
 	# Get basic help on the SubMenu main
 
 	if ($_[0] =~ "main")
-{
-    # Get Basic Help on Commands in Main Module
-    my $containLength = $conf::XSIZE -5;
-    &common::displayInfo($lang::MSG_MAIN_LSC, 5, $containLength); 
-    
-    print colored [$common::COLOR_HELPMENU], "\n=============  $lang::MSG_MAIN_LSC_MAINCMDS =============\n\n";
-    foreach my $cmd (sort keys %JUGGLINGTB_CMDS)
-    {
-	print colored [$common::COLOR_HELPCMD], "  $cmd";
-	$text = $JUGGLINGTB_CMDS{$cmd};
-	print (' ' x ($menuLength - length($cmd))); 
-	my $containLength = $conf::XSIZE - $menuLength -2;
-	&common::displayInfo($text->[0], $menuLength + 2, $containLength);
-    }
-    
-    print colored [$common::COLOR_HELPMENU], "\n============ $lang::MSG_MAIN_LSC_MOD ============\n\n"; 
-    if($JUGGLINGTB_MODULES->size==0)
-    {
-	print $lang::MSG_MAIN_LSC_NOMODA;
-    }
-    else
-    {
-	print $lang::MSG_MAIN_LSC_MODA;
-	while (defined(my $menu = $JUGGLINGTB_MODULES->each)) 
 	{
-	    print colored [$common::COLOR_HELPMENU], "$menu ";
+	    # Get Basic Help on Commands in Main Module
+	    my $containLength = $conf::XSIZE -5;
+	    &common::displayInfo($lang::MSG_MAIN_LSC, 5, $containLength); 
+	    
+	    print colored [$common::COLOR_HELPMENU], "\n=============  $lang::MSG_MAIN_LSC_MAINCMDS =============\n\n";
+	    foreach my $cmd (sort keys %JUGGLINGTB_CMDS)
+	    {
+		print colored [$common::COLOR_HELPCMD], "  $cmd";
+		$text = $JUGGLINGTB_CMDS{$cmd};
+		print (' ' x ($menuLength - length($cmd))); 
+		my $containLength = $conf::XSIZE - $menuLength -2;
+		&common::displayInfo($text->[0], $menuLength + 2, $containLength);
+	    }
+	    
+	    print colored [$common::COLOR_HELPMENU], "\n============ $lang::MSG_MAIN_LSC_MOD ============\n\n"; 
+	    if($JUGGLINGTB_MODULES->size==0)
+	    {
+		print $lang::MSG_MAIN_LSC_NOMODA;
+	    }
+	    else
+	    {
+		print $lang::MSG_MAIN_LSC_MODA;
+		while (defined(my $menu = $JUGGLINGTB_MODULES->each)) 
+		{
+		    print colored [$common::COLOR_HELPMENU], "$menu ";
+		}
+		print "\n\n";					
+	    }
+
+
 	}
-	print "\n\n";					
-    }
 
-
-}
-
-foreach my $v (@MODULES)
-{
-    # Get basic help on the SubMenu
-    if($v =~ $_[0])
-    {
-	my $h=eval("\$${v}::${v}_HELP");		    	    	    		
-	if(defined ("${v}::${v}_INFO"))
-	{		   
-	    my $menuInfo=eval("\$${v}::${v}_INFO");		    
-	    print colored [$common::COLOR_HELPMENU], "\n - $menuInfo ";		    
-	}
-	
-	if(defined ("${v}::${v}_VERSION"))
+	foreach my $v (@MODULES)
 	{
-	    my $menuVersion = eval("\$${v}::${v}_VERSION");
-	    print colored [$common::COLOR_HELPMENU], "($menuVersion)";		    
-	}
-	print colored [$common::COLOR_HELPMENU], "\n-----------------------------------------\n";
-	
-	my $containLength = $conf::XSIZE - 5 ;
-	print (' ' x 5); 
-	&common::displayInfo($h,5,$containLength);
-	print "\n\n";
-	
-	my %menuCmd=eval("\%${v}::${v}_CMDS");		    		
-	foreach my $cmd (sort keys %menuCmd)
-	{
-	    $text = $menuCmd{$cmd};	    		    
-	    print colored [$common::COLOR_HELPCMD], "  - $cmd";
-	    print (' ' x ($submenuLength - length($cmd))); 
-	    print " : ";
-	    my $containLength = $conf::XSIZE - $submenuLength -7;
-	    &common::displayInfo($text->[0], $submenuLength + 7, $containLength);		
-	}
-	
-	print "\n\n";	
-	return;
-    }
-    
-    # Get Advanced help on a command in absolute format
-    elsif($_[0] =~$v && $_[0] =~/::/)
-    {		
-	my $smenufunc = (split(/::/,$_[0]))[1];
-	my %menuCmd=eval("\%${v}::${v}_CMDS");	
-	$text = $menuCmd{$smenufunc};
+	    # Get basic help on the SubMenu
+	    if($v =~ $_[0])
+	    {
+		my $h=eval("\$${v}::${v}_HELP");		    	    	    		
+		if(defined ("${v}::${v}_INFO"))
+		{		   
+		    my $menuInfo=eval("\$${v}::${v}_INFO");		    
+		    print colored [$common::COLOR_HELPMENU], "\n - $menuInfo ";		    
+		}
+		
+		if(defined ("${v}::${v}_VERSION"))
+		{
+		    my $menuVersion = eval("\$${v}::${v}_VERSION");
+		    print colored [$common::COLOR_HELPMENU], "($menuVersion)";		    
+		}
+		print colored [$common::COLOR_HELPMENU], "\n-----------------------------------------\n";
+		
+		my $containLength = $conf::XSIZE - 5 ;
+		print (' ' x 5); 
+		&common::displayInfo($h,5,$containLength);
+		print "\n\n";
+		
+		my %menuCmd=eval("\%${v}::${v}_CMDS");		    		
+		foreach my $cmd (sort keys %menuCmd)
+		{
+		    $text = $menuCmd{$cmd};	    		    
+		    print colored [$common::COLOR_HELPCMD], "  - $cmd";
+		    print (' ' x ($submenuLength - length($cmd))); 
+		    print " : ";
+		    my $containLength = $conf::XSIZE - $submenuLength -7;
+		    &common::displayInfo($text->[0], $submenuLength + 7, $containLength);		
+		}
+		
+		print "\n\n";	
+		return;
+	    }
+	    
+	    # Get Advanced help on a command in absolute format
+	    elsif($_[0] =~$v && $_[0] =~/::/)
+	    {		
+		my $smenufunc = (split(/::/,$_[0]))[1];
+		my %menuCmd=eval("\%${v}::${v}_CMDS");	
+		$text = $menuCmd{$smenufunc};
 
-	print colored [$common::COLOR_HELPCMD], "\n  <$_[0]>\n\n"; 
-	my $containLength = $conf::XSIZE - 5 ;
-	print (' ' x 5); 
-	&common::displayInfo($text->[0],5,$containLength, $common::COLOR_HELPPARAMCMD);
-	print "\n";
-	print (' ' x 5); 
-	&common::displayInfo($text->[1],5,$containLength);
-	print "\n\n";	
-	return;
-    }	    
-}	
+		print colored [$common::COLOR_HELPCMD], "\n  <$_[0]>\n\n"; 
+		my $containLength = $conf::XSIZE - 5 ;
+		print (' ' x 5); 
+		&common::displayInfo($text->[0],5,$containLength, $common::COLOR_HELPPARAMCMD);
+		print "\n";
+		print (' ' x 5); 
+		&common::displayInfo($text->[1],5,$containLength);
+		print "\n\n";	
+		return;
+	    }	    
+	}	
 
-# Get Advanced help on a command in Main Module
-if ($currentSubMenu eq "main")
-{	
-    $text = $JUGGLINGTB_CMDS{$_[0]};	    
+	# Get Advanced help on a command in Main Module
+	if ($currentSubMenu eq "main")
+	{	
+	    $text = $JUGGLINGTB_CMDS{$_[0]};	    
 
-    print colored [$common::COLOR_HELPCMD], "\n  <$_[0]>\n\n"; 	    
-    my $containLength = $conf::XSIZE - 5 ;
-    print (' ' x 5); 
-    &common::displayInfo($text->[0],5,$containLength, $common::COLOR_HELPPARAMCMD);
-    print "\n";
-    print (' ' x 5); 
-    &common::displayInfo($text->[1],5,$containLength);
-    print "\n\n";	
-    return;
-}
-
-# Get Advanced help on a command in Current Module
-else
-{
-    my %menuCmd=eval("%${currentSubMenu}::${currentSubMenu}_CMDS");		    
-    $text = $menuCmd{$_[0]};	
-
-    print colored [$common::COLOR_HELPCMD], "\n  <$_[0]>\n\n"; 
-    my $containLength = $conf::XSIZE - 5 ;
-    print (' ' x 5); 
-    &common::displayInfo($text->[0],5,$containLength, $common::COLOR_HELPPARAMCMD);
-    print "\n";
-    print (' ' x 5); 
-    &common::displayInfo($text->[1],5,$containLength);
-    print "\n\n";	
-    return;
-}	
-    }
-
-# No Argument in Help Call
-else
-{
-    # Get Basic Help on Commands in Main Module
-    my $containLength = $conf::XSIZE -5;
-    &common::displayInfo($lang::MSG_MAIN_LSC, 5, $containLength); 
-    
-    print colored [$common::COLOR_HELPMENU], "\n=============  $lang::MSG_MAIN_LSC_MAINCMDS =============\n\n";
-    foreach my $cmd (sort keys %JUGGLINGTB_CMDS)
-    {
-	print colored [$common::COLOR_HELPCMD], "  $cmd";
-	$text = $JUGGLINGTB_CMDS{$cmd};
-	print (' ' x ($menuLength - length($cmd))); 
-	my $containLength = $conf::XSIZE - $menuLength -2;
-	&common::displayInfo($text->[0], $menuLength + 2, $containLength);
-    }
-    
-    print colored [$common::COLOR_HELPMENU], "\n============ $lang::MSG_MAIN_LSC_MOD ============\n\n"; 
-    if($JUGGLINGTB_MODULES->size==0)
-    {
-	print $lang::MSG_MAIN_LSC_NOMODA;
-    }
-    else
-    {
-	print $lang::MSG_MAIN_LSC_MODA;
-	while (defined(my $menu = $JUGGLINGTB_MODULES->each)) 
-	{
-	    print colored [$common::COLOR_HELPMENU], "$menu ";
-	}
-	print "\n\n";					
-    }
-    
-    if ($currentSubMenu eq "main")
-    {			    
-	# All is already done
-	print "\n";					
-	return;
-    }
-    
-    # Get Basic Help on Commands in Current Module
-    else
-    {
-	my %subMenu=eval("%${currentSubMenu}::${currentSubmenu}_CMDS");
-	print colored [$common::COLOR_HELPMENU], "\n  ${currentSubMenu} ";
-	
-	if(defined ("${currentSubMenu}::${currentSubMenu}_INFO"))
-	{		   
-	    my $menuInfo=eval("\$${currentSubMenu}::${currentSubMenu}_INFO");		    
-	    print colored [$common::COLOR_HELPMENU], " - $menuInfo ";		    
-	}
-	
-	if(defined ("${currentSubMenu}::${currentSubMenu}_VERSION"))
-	{
-	    my $menuVersion = eval("\$${currentSubMenu}::${currentSubMenu}_VERSION");
-	    print colored [$common::COLOR_HELPMENU], "($menuVersion)";		    
-	}
-	
-	print colored [$common::COLOR_HELPMENU], "\n-----------------------------------------\n";
-	
-	if(defined ("${currentSubMenu}::${currentSubMenu}_HELP"))
-	{
-	    my $h=eval("\$${currentSubMenu}::${currentSubMenu}_HELP");		    	    	    
+	    print colored [$common::COLOR_HELPCMD], "\n  <$_[0]>\n\n"; 	    
 	    my $containLength = $conf::XSIZE - 5 ;
 	    print (' ' x 5); 
-	    &common::displayInfo($h,5,$containLength);
-	    print "\n\n";
+	    &common::displayInfo($text->[0],5,$containLength, $common::COLOR_HELPPARAMCMD);
+	    print "\n";
+	    print (' ' x 5); 
+	    &common::displayInfo($text->[1],5,$containLength);
+	    print "\n\n";	
+	    return;
 	}
 
-	my %menuCmd=eval("\%${currentSubMenu}::${currentSubMenu}_CMDS");		    
-	
-	foreach my $cmd (sort keys %menuCmd)
+	# Get Advanced help on a command in Current Module
+	else
 	{
-	    $text = $menuCmd{$cmd};	    
-	    
-	    print colored [$common::COLOR_HELPCMD], "  - $cmd";
-	    print (' ' x ($submenuLength - length($cmd))); 
-	    print " : ";
-	    my $containLength = $conf::XSIZE - $submenuLength -7;
-	    &common::displayInfo($text->[0], $submenuLength + 7, $containLength);		
+	    my %menuCmd=eval("%${currentSubMenu}::${currentSubMenu}_CMDS");		    
+	    $text = $menuCmd{$_[0]};	
+
+	    print colored [$common::COLOR_HELPCMD], "\n  <$_[0]>\n\n"; 
+	    my $containLength = $conf::XSIZE - 5 ;
+	    print (' ' x 5); 
+	    &common::displayInfo($text->[0],5,$containLength, $common::COLOR_HELPPARAMCMD);
+	    print "\n";
+	    print (' ' x 5); 
+	    &common::displayInfo($text->[1],5,$containLength);
+	    print "\n\n";	
+	    return;
 	}	
-	
-	print "\n\n";	
-	return;
     }
-}
+
+    # No Argument in Help Call
+    else
+    {
+	# Get Basic Help on Commands in Main Module
+	my $containLength = $conf::XSIZE -5;
+	&common::displayInfo($lang::MSG_MAIN_LSC, 5, $containLength); 
+	
+	print colored [$common::COLOR_HELPMENU], "\n=============  $lang::MSG_MAIN_LSC_MAINCMDS =============\n\n";
+	foreach my $cmd (sort keys %JUGGLINGTB_CMDS)
+	{
+	    print colored [$common::COLOR_HELPCMD], "  $cmd";
+	    $text = $JUGGLINGTB_CMDS{$cmd};
+	    print (' ' x ($menuLength - length($cmd))); 
+	    my $containLength = $conf::XSIZE - $menuLength -2;
+	    &common::displayInfo($text->[0], $menuLength + 2, $containLength);
+	}
+	
+	print colored [$common::COLOR_HELPMENU], "\n============ $lang::MSG_MAIN_LSC_MOD ============\n\n"; 
+	if($JUGGLINGTB_MODULES->size==0)
+	{
+	    print $lang::MSG_MAIN_LSC_NOMODA;
+	}
+	else
+	{
+	    print $lang::MSG_MAIN_LSC_MODA;
+	    while (defined(my $menu = $JUGGLINGTB_MODULES->each)) 
+	    {
+		print colored [$common::COLOR_HELPMENU], "$menu ";
+	    }
+	    print "\n\n";					
+	}
+	
+	if ($currentSubMenu eq "main")
+	{			    
+	    # All is already done
+	    print "\n";					
+	    return;
+	}
+	
+	# Get Basic Help on Commands in Current Module
+	else
+	{
+	    my %subMenu=eval("%${currentSubMenu}::${currentSubmenu}_CMDS");
+	    print colored [$common::COLOR_HELPMENU], "\n  ${currentSubMenu} ";
+	    
+	    if(defined ("${currentSubMenu}::${currentSubMenu}_INFO"))
+	    {		   
+		my $menuInfo=eval("\$${currentSubMenu}::${currentSubMenu}_INFO");		    
+		print colored [$common::COLOR_HELPMENU], " - $menuInfo ";		    
+	    }
+	    
+	    if(defined ("${currentSubMenu}::${currentSubMenu}_VERSION"))
+	    {
+		my $menuVersion = eval("\$${currentSubMenu}::${currentSubMenu}_VERSION");
+		print colored [$common::COLOR_HELPMENU], "($menuVersion)";		    
+	    }
+	    
+	    print colored [$common::COLOR_HELPMENU], "\n-----------------------------------------\n";
+	    
+	    if(defined ("${currentSubMenu}::${currentSubMenu}_HELP"))
+	    {
+		my $h=eval("\$${currentSubMenu}::${currentSubMenu}_HELP");		    	    	    
+		my $containLength = $conf::XSIZE - 5 ;
+		print (' ' x 5); 
+		&common::displayInfo($h,5,$containLength);
+		print "\n\n";
+	    }
+
+	    my %menuCmd=eval("\%${currentSubMenu}::${currentSubMenu}_CMDS");		    
+	    
+	    foreach my $cmd (sort keys %menuCmd)
+	    {
+		$text = $menuCmd{$cmd};	    
+		
+		print colored [$common::COLOR_HELPCMD], "  - $cmd";
+		print (' ' x ($submenuLength - length($cmd))); 
+		print " : ";
+		my $containLength = $conf::XSIZE - $submenuLength -7;
+		&common::displayInfo($text->[0], $submenuLength + 7, $containLength);		
+	    }	
+	    
+	    print "\n\n";	
+	    return;
+	}
+    }
 
 }
 
@@ -1065,233 +1066,233 @@ sub help2
     if(scalar @_ == 1)
     {	
 	if($_[0] =~"main")
-{
-    my $containLength = $conf::XSIZE -5;
-    &common::displayInfo($lang::MSG_MAIN_LSC, 5, $containLength); 
-    
-    print colored [$common::COLOR_HELPMENU], "\n=============  $lang::MSG_MAIN_LSC_MAINCMDS =============\n\n";
-    foreach my $cmd (sort keys %JUGGLINGTB_CMDS)
-    {
-	print colored [$common::COLOR_HELPCMD], "  $cmd";
-	$text = $JUGGLINGTB_CMDS{$cmd};
-	print (' ' x ($menuLength - length($cmd))); 
-	my $containLength = $conf::XSIZE - $menuLength -2;
-	&common::displayInfo($text->[0], $menuLength + 2, $containLength, $common::COLOR_HELPPARAMCMD );		    
-	my $containLength = $conf::XSIZE - $menuLength - 5;
-	print (' ' x ($menuLength + 5)); 
-	&common::displayInfo($text->[1], $menuLength + 5, $containLength );
-	print "\n";
-    }
-    
-    print colored [$common::COLOR_HELPMENU], "\n============ $lang::MSG_MAIN_LSC_MOD ============\n\n"; 
-    if($JUGGLINGTB_MODULES->size==0)
-    {
-	print $lang::MSG_MAIN_LSC_NOMODA;
-    }
-    else
-    {
-	print $lang::MSG_MAIN_LSC_MODA;
-	while (defined(my $menu = $JUGGLINGTB_MODULES->each)) 
 	{
-	    print colored [$common::COLOR_HELPMENU], "$menu ";
-	}
-	print "\n\n";					
-    }
-    
-}
-foreach my $v (@MODULES)
-{
-    # Get Advanced help on the SubMenu
-    if($v =~ $_[0])
-    {
-	my $h=eval("\$${v}::${v}_HELP");
-	
-	my %subMenu=eval("%${v}::${v}_CMDS");
-	print colored [$common::COLOR_HELPMENU], "\n  ${v} ";
-	
-	if(defined ("${v}::${v}_INFO"))
-	{		   
-	    my $menuInfo=eval("\$${v}::${v}_INFO");		    
-	    print colored [$common::COLOR_HELPMENU], " - $menuInfo ";		    
-	}
-	
-	if(defined ("${v}::${v}_VERSION"))
-	{
-	    my $menuVersion = eval("\$${v}::${v}_VERSION");
-	    print colored [$common::COLOR_HELPMENU], "($menuVersion)";		    
-	}
-	
-	print colored [$common::COLOR_HELPMENU], "\n-----------------------------------------\n";
-	
-	my $containLength = $conf::XSIZE - 5 ;
-	print (' ' x 5); 
-	&common::displayInfo($h,5,$containLength);
-	print "\n\n";
-	my %menuCmd=eval("\%${v}::${v}_CMDS");		    		
-	foreach my $cmd (sort keys %menuCmd)
-	{
-	    $text = $menuCmd{$cmd};	    
+	    my $containLength = $conf::XSIZE -5;
+	    &common::displayInfo($lang::MSG_MAIN_LSC, 5, $containLength); 
 	    
-	    print colored [$common::COLOR_HELPCMD], "  - $cmd";
-	    print (' ' x ($submenuLength - length($cmd))); 
-	    print " : ";
-	    my $containLength = $conf::XSIZE - $submenuLength -7;		     
-	    &common::displayInfo($text->[0],$submenuLength + 7, $containLength, $common::COLOR_HELPPARAMCMD );		    
-	    my $containLength = $conf::XSIZE -5 ;
-	    print (' ' x (5)); 
-	    &common::displayInfo($text->[1], 5, $containLength );
-	    print "\n\n";	    				    
-	}		 		 	
-	return ;
-    }
-
-    # Get Advanced help on a command in absolute format
-    elsif($_[0] =~$v && $_[0] =~/::/)
-    {		
-	my $smenufunc = (split(/::/,$_[0]))[1];
-	my %menuCmd=eval("\%${v}::${v}_CMDS");	
-	$text = $menuCmd{$smenufunc};
-	print colored [$common::COLOR_HELPCMD], "\n  <$_[0]>\n\n"; 
-	my $containLength = $conf::XSIZE - 5 ;
-	print (' ' x 5); 
-	&common::displayInfo($text->[0],5,$containLength, $common::COLOR_HELPPARAMCMD);
-	print "\n";
-	print (' ' x 5); 
-	&common::displayInfo($text->[1],5,$containLength);
-	print "\n\n";	
-	return;
-    }	    
-}
-
-# Get Advanced help on a command in Main Module
-if ($currentSubMenu eq "main")
-{	
-    $text = $JUGGLINGTB_CMDS{$_[0]};	    
-    print colored [$common::COLOR_HELPCMD], "\n  <$_[0]>\n\n"; 
-    
-    my $containLength = $conf::XSIZE - 5 ;
-    print (' ' x 5); 
-    &common::displayInfo($text->[0],5,$containLength, $common::COLOR_HELPPARAMCMD);
-    print "\n";
-    print (' ' x 5); 
-    &common::displayInfo($text->[1],5,$containLength);
-    print "\n\n";	
-    return;
-}
-
-# Get Advanced help on a command in Current Module
-else
-{
-    my %menuCmd=eval("%${currentSubMenu}::${currentSubMenu}_CMDS");		    
-    $text = $menuCmd{$_[0]};	
-    print colored [$common::COLOR_HELPCMD], "\n  <$_[0]>\n\n"; 
-    my $containLength = $conf::XSIZE - 5 ;
-    print (' ' x 5); 
-    &common::displayInfo($text->[0],5,$containLength, $common::COLOR_HELPPARAMCMD);
-    print "\n";
-    print (' ' x 5); 
-    &common::displayInfo($text->[1],5,$containLength);
-    print "\n\n";	
-    return;
-}
-
-    }
-
-# Help without Argument
-####################################################################
-
-else
-{
-    my $containLength = $conf::XSIZE -5;
-    &common::displayInfo($lang::MSG_MAIN_LSC, 5, $containLength); 
-    
-    print colored [$common::COLOR_HELPMENU], "\n=============  $lang::MSG_MAIN_LSC_MAINCMDS =============\n\n";
-    foreach my $cmd (sort keys %JUGGLINGTB_CMDS)
-    {
-	print colored [$common::COLOR_HELPCMD], "  $cmd";
-	$text = $JUGGLINGTB_CMDS{$cmd};
-	print (' ' x ($menuLength - length($cmd))); 
-	my $containLength = $conf::XSIZE - $menuLength -2;
-	&common::displayInfo($text->[0], $menuLength + 2, $containLength, $common::COLOR_HELPPARAMCMD );		    
-	my $containLength = $conf::XSIZE - $menuLength - 5;
-	print (' ' x ($menuLength + 5)); 
-	&common::displayInfo($text->[1], $menuLength + 5, $containLength );
-	print "\n";
-    }
-    
-    print colored [$common::COLOR_HELPMENU], "\n============ $lang::MSG_MAIN_LSC_MOD ============\n\n"; 
-    if($JUGGLINGTB_MODULES->size==0)
-    {
-	print $lang::MSG_MAIN_LSC_NOMODA;
-    }
-    else
-    {
-	print $lang::MSG_MAIN_LSC_MODA;
-	while (defined(my $menu = $JUGGLINGTB_MODULES->each)) 
-	{
-	    print colored [$common::COLOR_HELPMENU], "$menu ";
+	    print colored [$common::COLOR_HELPMENU], "\n=============  $lang::MSG_MAIN_LSC_MAINCMDS =============\n\n";
+	    foreach my $cmd (sort keys %JUGGLINGTB_CMDS)
+	    {
+		print colored [$common::COLOR_HELPCMD], "  $cmd";
+		$text = $JUGGLINGTB_CMDS{$cmd};
+		print (' ' x ($menuLength - length($cmd))); 
+		my $containLength = $conf::XSIZE - $menuLength -2;
+		&common::displayInfo($text->[0], $menuLength + 2, $containLength, $common::COLOR_HELPPARAMCMD );		    
+		my $containLength = $conf::XSIZE - $menuLength - 5;
+		print (' ' x ($menuLength + 5)); 
+		&common::displayInfo($text->[1], $menuLength + 5, $containLength );
+		print "\n";
+	    }
+	    
+	    print colored [$common::COLOR_HELPMENU], "\n============ $lang::MSG_MAIN_LSC_MOD ============\n\n"; 
+	    if($JUGGLINGTB_MODULES->size==0)
+	    {
+		print $lang::MSG_MAIN_LSC_NOMODA;
+	    }
+	    else
+	    {
+		print $lang::MSG_MAIN_LSC_MODA;
+		while (defined(my $menu = $JUGGLINGTB_MODULES->each)) 
+		{
+		    print colored [$common::COLOR_HELPMENU], "$menu ";
+		}
+		print "\n\n";					
+	    }
+	    
 	}
-	print "\n\n";					
-    }
-    
-    if ($currentSubMenu eq "main")
-    {		
-	# Get Advanced help in Main Module
-	# All is already done
-	print "\n";					
-	return;
-    }
-    
-    else
-    {
-	# Get Advanced help in Current Module
-	my %subMenu=eval("%${currentSubMenu}::${currentSubmenu}_CMDS");
-	print colored [$common::COLOR_HELPMENU], "\n  ${currentSubMenu} ";
-	
-	if(defined ("${currentSubMenu}::${currentSubMenu}_INFO"))
-	{		   
-	    my $menuInfo=eval("\$${currentSubMenu}::${currentSubMenu}_INFO");		    
-	    print colored [$common::COLOR_HELPMENU], " - $menuInfo ";		    
-	}
-	
-	if(defined ("${currentSubMenu}::${currentSubMenu}_VERSION"))
+	foreach my $v (@MODULES)
 	{
-	    my $menuVersion = eval("\$${currentSubMenu}::${currentSubMenu}_VERSION");
-	    print colored [$common::COLOR_HELPMENU], "($menuVersion)";		    
+	    # Get Advanced help on the SubMenu
+	    if($v =~ $_[0])
+	    {
+		my $h=eval("\$${v}::${v}_HELP");
+		
+		my %subMenu=eval("%${v}::${v}_CMDS");
+		print colored [$common::COLOR_HELPMENU], "\n  ${v} ";
+		
+		if(defined ("${v}::${v}_INFO"))
+		{		   
+		    my $menuInfo=eval("\$${v}::${v}_INFO");		    
+		    print colored [$common::COLOR_HELPMENU], " - $menuInfo ";		    
+		}
+		
+		if(defined ("${v}::${v}_VERSION"))
+		{
+		    my $menuVersion = eval("\$${v}::${v}_VERSION");
+		    print colored [$common::COLOR_HELPMENU], "($menuVersion)";		    
+		}
+		
+		print colored [$common::COLOR_HELPMENU], "\n-----------------------------------------\n";
+		
+		my $containLength = $conf::XSIZE - 5 ;
+		print (' ' x 5); 
+		&common::displayInfo($h,5,$containLength);
+		print "\n\n";
+		my %menuCmd=eval("\%${v}::${v}_CMDS");		    		
+		foreach my $cmd (sort keys %menuCmd)
+		{
+		    $text = $menuCmd{$cmd};	    
+		    
+		    print colored [$common::COLOR_HELPCMD], "  - $cmd";
+		    print (' ' x ($submenuLength - length($cmd))); 
+		    print " : ";
+		    my $containLength = $conf::XSIZE - $submenuLength -7;		     
+		    &common::displayInfo($text->[0],$submenuLength + 7, $containLength, $common::COLOR_HELPPARAMCMD );		    
+		    my $containLength = $conf::XSIZE -5 ;
+		    print (' ' x (5)); 
+		    &common::displayInfo($text->[1], 5, $containLength );
+		    print "\n\n";	    				    
+		}		 		 	
+		return ;
+	    }
+
+	    # Get Advanced help on a command in absolute format
+	    elsif($_[0] =~$v && $_[0] =~/::/)
+	    {		
+		my $smenufunc = (split(/::/,$_[0]))[1];
+		my %menuCmd=eval("\%${v}::${v}_CMDS");	
+		$text = $menuCmd{$smenufunc};
+		print colored [$common::COLOR_HELPCMD], "\n  <$_[0]>\n\n"; 
+		my $containLength = $conf::XSIZE - 5 ;
+		print (' ' x 5); 
+		&common::displayInfo($text->[0],5,$containLength, $common::COLOR_HELPPARAMCMD);
+		print "\n";
+		print (' ' x 5); 
+		&common::displayInfo($text->[1],5,$containLength);
+		print "\n\n";	
+		return;
+	    }	    
 	}
-	
-	print colored [$common::COLOR_HELPMENU], "\n-----------------------------------------\n";
-	
-	if(defined ("${currentSubMenu}::${currentSubMenu}_HELP"))
-	{
-	    my $h=eval("\$${currentSubMenu}::${currentSubMenu}_HELP");		    	    	    
+
+	# Get Advanced help on a command in Main Module
+	if ($currentSubMenu eq "main")
+	{	
+	    $text = $JUGGLINGTB_CMDS{$_[0]};	    
+	    print colored [$common::COLOR_HELPCMD], "\n  <$_[0]>\n\n"; 
+	    
 	    my $containLength = $conf::XSIZE - 5 ;
 	    print (' ' x 5); 
-	    &common::displayInfo($h,5,$containLength);
-	    print "\n\n";
+	    &common::displayInfo($text->[0],5,$containLength, $common::COLOR_HELPPARAMCMD);
+	    print "\n";
+	    print (' ' x 5); 
+	    &common::displayInfo($text->[1],5,$containLength);
+	    print "\n\n";	
+	    return;
+	}
+
+	# Get Advanced help on a command in Current Module
+	else
+	{
+	    my %menuCmd=eval("%${currentSubMenu}::${currentSubMenu}_CMDS");		    
+	    $text = $menuCmd{$_[0]};	
+	    print colored [$common::COLOR_HELPCMD], "\n  <$_[0]>\n\n"; 
+	    my $containLength = $conf::XSIZE - 5 ;
+	    print (' ' x 5); 
+	    &common::displayInfo($text->[0],5,$containLength, $common::COLOR_HELPPARAMCMD);
+	    print "\n";
+	    print (' ' x 5); 
+	    &common::displayInfo($text->[1],5,$containLength);
+	    print "\n\n";	
+	    return;
+	}
+
+    }
+
+    # Help without Argument
+    ####################################################################
+
+    else
+    {
+	my $containLength = $conf::XSIZE -5;
+	&common::displayInfo($lang::MSG_MAIN_LSC, 5, $containLength); 
+	
+	print colored [$common::COLOR_HELPMENU], "\n=============  $lang::MSG_MAIN_LSC_MAINCMDS =============\n\n";
+	foreach my $cmd (sort keys %JUGGLINGTB_CMDS)
+	{
+	    print colored [$common::COLOR_HELPCMD], "  $cmd";
+	    $text = $JUGGLINGTB_CMDS{$cmd};
+	    print (' ' x ($menuLength - length($cmd))); 
+	    my $containLength = $conf::XSIZE - $menuLength -2;
+	    &common::displayInfo($text->[0], $menuLength + 2, $containLength, $common::COLOR_HELPPARAMCMD );		    
+	    my $containLength = $conf::XSIZE - $menuLength - 5;
+	    print (' ' x ($menuLength + 5)); 
+	    &common::displayInfo($text->[1], $menuLength + 5, $containLength );
+	    print "\n";
 	}
 	
-	my %menuCmd=eval("\%${currentSubMenu}::${currentSubMenu}_CMDS");		    
-	
-	foreach my $cmd (sort keys %menuCmd)
+	print colored [$common::COLOR_HELPMENU], "\n============ $lang::MSG_MAIN_LSC_MOD ============\n\n"; 
+	if($JUGGLINGTB_MODULES->size==0)
 	{
-	    $text = $menuCmd{$cmd};	    
-	    
-	    print colored [$common::COLOR_HELPCMD], "  - $cmd";
-	    print (' ' x ($submenuLength - length($cmd))); 
-	    my $containLength = $conf::XSIZE - $submenuLength - 7 ;
-	    &common::displayInfo($text->[0],$submenuLength + 7, $containLength, $common::COLOR_HELPPARAMCMD );		    
-	    my $containLength = $conf::XSIZE -5 ;
-	    print (' ' x (5)); 
-	    &common::displayInfo($text->[1], 5, $containLength );
-	    print "\n\n";
-	    
-	}			
+	    print $lang::MSG_MAIN_LSC_NOMODA;
+	}
+	else
+	{
+	    print $lang::MSG_MAIN_LSC_MODA;
+	    while (defined(my $menu = $JUGGLINGTB_MODULES->each)) 
+	    {
+		print colored [$common::COLOR_HELPMENU], "$menu ";
+	    }
+	    print "\n\n";					
+	}
 	
-	return;
-    }	    
-    
-}    
+	if ($currentSubMenu eq "main")
+	{		
+	    # Get Advanced help in Main Module
+	    # All is already done
+	    print "\n";					
+	    return;
+	}
+	
+	else
+	{
+	    # Get Advanced help in Current Module
+	    my %subMenu=eval("%${currentSubMenu}::${currentSubmenu}_CMDS");
+	    print colored [$common::COLOR_HELPMENU], "\n  ${currentSubMenu} ";
+	    
+	    if(defined ("${currentSubMenu}::${currentSubMenu}_INFO"))
+	    {		   
+		my $menuInfo=eval("\$${currentSubMenu}::${currentSubMenu}_INFO");		    
+		print colored [$common::COLOR_HELPMENU], " - $menuInfo ";		    
+	    }
+	    
+	    if(defined ("${currentSubMenu}::${currentSubMenu}_VERSION"))
+	    {
+		my $menuVersion = eval("\$${currentSubMenu}::${currentSubMenu}_VERSION");
+		print colored [$common::COLOR_HELPMENU], "($menuVersion)";		    
+	    }
+	    
+	    print colored [$common::COLOR_HELPMENU], "\n-----------------------------------------\n";
+	    
+	    if(defined ("${currentSubMenu}::${currentSubMenu}_HELP"))
+	    {
+		my $h=eval("\$${currentSubMenu}::${currentSubMenu}_HELP");		    	    	    
+		my $containLength = $conf::XSIZE - 5 ;
+		print (' ' x 5); 
+		&common::displayInfo($h,5,$containLength);
+		print "\n\n";
+	    }
+	    
+	    my %menuCmd=eval("\%${currentSubMenu}::${currentSubMenu}_CMDS");		    
+	    
+	    foreach my $cmd (sort keys %menuCmd)
+	    {
+		$text = $menuCmd{$cmd};	    
+		
+		print colored [$common::COLOR_HELPCMD], "  - $cmd";
+		print (' ' x ($submenuLength - length($cmd))); 
+		my $containLength = $conf::XSIZE - $submenuLength - 7 ;
+		&common::displayInfo($text->[0],$submenuLength + 7, $containLength, $common::COLOR_HELPPARAMCMD );		    
+		my $containLength = $conf::XSIZE -5 ;
+		print (' ' x (5)); 
+		&common::displayInfo($text->[1], 5, $containLength );
+		print "\n\n";
+		
+	    }			
+	    
+	    return;
+	}	    
+	
+    }    
 }
 
 

@@ -26,235 +26,235 @@ sub new {
 [
 	{#State 0
 		ACTIONS => {
-			"*" => 3,
-			'digit' => 12,
-			"!" => 9,
-			"[" => 6,
-			'lexerror' => 11,
-			"(" => 2
+			"!" => 3,
+			'lexerror' => 10,
+			'digit' => 11,
+			"[" => 2,
+			"(" => 6,
+			"*" => 1
 		},
 		GOTOS => {
-			'SS_async' => 7,
-			'SS_unitary' => 8,
-			'SS_extend' => 1,
-			'input' => 10,
-			'SS' => 4,
-			'value' => 13,
-			'SS_sync' => 5
+			'value' => 9,
+			'SS' => 12,
+			'input' => 4,
+			'SS_unitary' => 13,
+			'SS_extend' => 5,
+			'SS_sync' => 7,
+			'SS_async' => 8
 		}
 	},
 	{#State 1
 		ACTIONS => {
-			"(" => 2,
-			"[" => 6,
-			'digit' => 12
+			"!" => 3,
+			"*" => 1
 		},
+		DEFAULT => -8,
 		GOTOS => {
-			'SS' => 14,
-			'SS_sync' => 5,
-			'value' => 13,
-			'SS_async' => 7,
-			'SS_unitary' => 8
+			'SS_extend' => 14
 		}
 	},
 	{#State 2
 		ACTIONS => {
-			'digit' => 12,
-			"[" => 6
+			'digit' => 11
 		},
 		GOTOS => {
-			'SS_async' => 16,
-			'SS_multisync_in_sync' => 15,
-			'value' => 13
+			'value' => 15,
+			'SS_vanilla' => 16
 		}
 	},
 	{#State 3
 		ACTIONS => {
-			"*" => 3,
-			"!" => 9
+			"!" => 3,
+			"*" => 1
 		},
-		DEFAULT => -8,
+		DEFAULT => -10,
 		GOTOS => {
 			'SS_extend' => 17
 		}
 	},
 	{#State 4
-		DEFAULT => -1
+		ACTIONS => {
+			'' => 18
+		}
 	},
 	{#State 5
-		DEFAULT => -13
+		ACTIONS => {
+			'digit' => 11,
+			"(" => 6,
+			"[" => 2
+		},
+		GOTOS => {
+			'SS_unitary' => 13,
+			'SS_async' => 8,
+			'SS' => 19,
+			'SS_sync' => 7,
+			'value' => 9
+		}
 	},
 	{#State 6
 		ACTIONS => {
-			'digit' => 12
+			"[" => 2,
+			'digit' => 11
 		},
 		GOTOS => {
-			'value' => 19,
-			'SS_vanilla' => 18
+			'SS_multisync_in_sync' => 21,
+			'SS_async' => 20,
+			'value' => 9
 		}
 	},
 	{#State 7
-		DEFAULT => -12
+		DEFAULT => -13
 	},
 	{#State 8
-		ACTIONS => {
-			"!" => 9,
-			"(" => 2,
-			"*" => 3,
-			'digit' => 12,
-			"[" => 6
-		},
-		DEFAULT => -4,
-		GOTOS => {
-			'SS_extend' => 20,
-			'SS_unitary' => 8,
-			'SS_async' => 7,
-			'SS' => 21,
-			'value' => 13,
-			'SS_sync' => 5
-		}
+		DEFAULT => -12
 	},
 	{#State 9
-		ACTIONS => {
-			"*" => 3,
-			"!" => 9
-		},
-		DEFAULT => -10,
-		GOTOS => {
-			'SS_extend' => 22
-		}
+		DEFAULT => -14
 	},
 	{#State 10
-		ACTIONS => {
-			'' => 23
-		}
-	},
-	{#State 11
 		DEFAULT => -3
 	},
-	{#State 12
+	{#State 11
 		ACTIONS => {
-			"X" => 25,
-			"x" => 24
+			"X" => 23,
+			"x" => 22
 		},
 		DEFAULT => -23
 	},
+	{#State 12
+		DEFAULT => -1
+	},
 	{#State 13
-		DEFAULT => -14
+		ACTIONS => {
+			"(" => 6,
+			"*" => 1,
+			"[" => 2,
+			'digit' => 11,
+			"!" => 3
+		},
+		DEFAULT => -4,
+		GOTOS => {
+			'SS_async' => 8,
+			'SS_sync' => 7,
+			'SS_extend' => 24,
+			'SS_unitary' => 13,
+			'SS' => 25,
+			'value' => 9
+		}
 	},
 	{#State 14
-		DEFAULT => -2
+		DEFAULT => -9
 	},
 	{#State 15
 		ACTIONS => {
-			"," => 26
+			'digit' => 11
+		},
+		DEFAULT => -16,
+		GOTOS => {
+			'SS_vanilla' => 26,
+			'value' => 15
 		}
 	},
 	{#State 16
 		ACTIONS => {
-			"!" => 9,
-			"*" => 3,
-			'digit' => 12,
-			"[" => 6
-		},
-		DEFAULT => -18,
-		GOTOS => {
-			'value' => 13,
-			'SS_extend' => 28,
-			'SS_multisync_in_sync' => 27,
-			'SS_async' => 16
+			"]" => 27
 		}
 	},
 	{#State 17
-		DEFAULT => -9
+		DEFAULT => -11
 	},
 	{#State 18
-		ACTIONS => {
-			"]" => 29
-		}
+		DEFAULT => 0
 	},
 	{#State 19
-		ACTIONS => {
-			'digit' => 12
-		},
-		DEFAULT => -16,
-		GOTOS => {
-			'value' => 19,
-			'SS_vanilla' => 30
-		}
+		DEFAULT => -2
 	},
 	{#State 20
 		ACTIONS => {
-			'digit' => 12,
-			"(" => 2,
-			"[" => 6
+			"*" => 1,
+			"[" => 2,
+			'digit' => 11,
+			"!" => 3
 		},
-		DEFAULT => -5,
+		DEFAULT => -18,
 		GOTOS => {
-			'SS_async' => 7,
-			'SS_unitary' => 8,
-			'SS' => 31,
-			'SS_sync' => 5,
-			'value' => 13
+			'SS_extend' => 29,
+			'value' => 9,
+			'SS_async' => 20,
+			'SS_multisync_in_sync' => 28
 		}
 	},
 	{#State 21
-		DEFAULT => -6
-	},
-	{#State 22
-		DEFAULT => -11
-	},
-	{#State 23
-		DEFAULT => 0
-	},
-	{#State 24
-		DEFAULT => -24
-	},
-	{#State 25
-		DEFAULT => -25
-	},
-	{#State 26
 		ACTIONS => {
-			'digit' => 12,
-			"[" => 6
-		},
-		GOTOS => {
-			'SS_multisync_in_sync' => 32,
-			'value' => 13,
-			'SS_async' => 16
+			"," => 30
 		}
 	},
+	{#State 22
+		DEFAULT => -24
+	},
+	{#State 23
+		DEFAULT => -25
+	},
+	{#State 24
+		ACTIONS => {
+			"(" => 6,
+			'digit' => 11,
+			"[" => 2
+		},
+		DEFAULT => -5,
+		GOTOS => {
+			'value' => 9,
+			'SS_sync' => 7,
+			'SS' => 31,
+			'SS_async' => 8,
+			'SS_unitary' => 13
+		}
+	},
+	{#State 25
+		DEFAULT => -6
+	},
+	{#State 26
+		DEFAULT => -17
+	},
 	{#State 27
-		DEFAULT => -20
+		DEFAULT => -15
 	},
 	{#State 28
+		DEFAULT => -20
+	},
+	{#State 29
 		ACTIONS => {
-			'digit' => 12,
-			"[" => 6
+			'digit' => 11,
+			"[" => 2
 		},
 		DEFAULT => -19,
 		GOTOS => {
-			'SS_multisync_in_sync' => 33,
-			'value' => 13,
-			'SS_async' => 16
+			'SS_async' => 20,
+			'SS_multisync_in_sync' => 32,
+			'value' => 9
 		}
 	},
-	{#State 29
-		DEFAULT => -15
-	},
 	{#State 30
-		DEFAULT => -17
+		ACTIONS => {
+			"[" => 2,
+			'digit' => 11
+		},
+		GOTOS => {
+			'value' => 9,
+			'SS_multisync_in_sync' => 33,
+			'SS_async' => 20
+		}
 	},
 	{#State 31
 		DEFAULT => -7
 	},
 	{#State 32
+		DEFAULT => -21
+	},
+	{#State 33
 		ACTIONS => {
 			")" => 34
 		}
-	},
-	{#State 33
-		DEFAULT => -21
 	},
 	{#State 34
 		DEFAULT => -22

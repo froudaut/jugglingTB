@@ -38,7 +38,7 @@ $Term::ANSIColor::AUTORESET = 1;
 
 our $LADDER_INFO = "LADDER juggling Notation";
 our $LADDER_HELP = $lang::MSG_LADDER_MENU_HELP;
-our $LADDER_VERSION = "v2.1";
+our $LADDER_VERSION = "v2.2";
 
 our %LADDER_CMDS = 
     (    
@@ -1012,10 +1012,14 @@ sub __build_colorMAP_from_ss
 sub __build_colorMAP_from_transitionsMAP
 {
     #$_[0] : transition MAP
+    #$_[1] : Color Table (1 or 2) : default:1 
     
     my %transit_hash = %{$_[0]};
-    # my $color_mode=$_[1];
-    # my $dot_mode=$_[2];
+    my @color_table = @common::GRAPHVIZ_COLOR_TABLE; 
+    if (scalar @_ > 1)
+    {
+	@color_table = @common::GRAPHVIZ_COLOR_TABLE2;
+    }
     my $period = 0;
     
     # Compute the period
@@ -1029,7 +1033,7 @@ sub __build_colorMAP_from_transitionsMAP
 
     # Build Colorization and dicts
     my %color_hash = ();
-    my $cpt_color=0;
+    my $cpt_color = 0;
     
     for (my $i = 0; $i < $period ; $i++) {
      	for (my $j = 0; $j < $MAX_MULT; $j++) {
@@ -1040,10 +1044,10 @@ sub __build_colorMAP_from_transitionsMAP
     		} else {
 		    if($transit_hash{ "R".$i.":".$j } ne "R".$i.":".$j )
 		    {
-			$color = $common::GRAPHVIZ_COLOR_TABLE[$cpt_color];
+			$color = $color_table[$cpt_color];
 			$color_hash{"R".$i.":".$j} = $color; 
 			$cpt_color ++;
-			if ($cpt_color == scalar @common::GRAPHVIZ_COLOR_TABLE) {
+			if ($cpt_color == scalar @color_table) {
 			    $cpt_color=0;
 			}
     		    }		    
@@ -1063,10 +1067,10 @@ sub __build_colorMAP_from_transitionsMAP
     		} else {
 		    if($transit_hash{ "L".$i.":".$j } ne "L".$i.":".$j)
 		    {
-			$color = $common::GRAPHVIZ_COLOR_TABLE[$cpt_color];
+			$color = $color_table[$cpt_color];
 			$color_hash{"L".$i.":".$j} = $color; 
 			$cpt_color ++;
-			if ($cpt_color == scalar @common::GRAPHVIZ_COLOR_TABLE) {
+			if ($cpt_color == scalar @color_table) {
 			    $cpt_color=0;
 			}
 		    }
@@ -1748,7 +1752,8 @@ sub draw
     my $label_color="E";
     my $graphviz_output="N";
     my $hands_seq = "R,L";
-
+    my $quick = "N";
+    
     my $ret = &GetOptionsFromString(uc($_[2]),    
 				    "-O:s" => \$fileOutputType,
 				    "-P:i" => \$period,
@@ -1764,11 +1769,11 @@ sub draw
 				    "-I:s" => \$hands_seq,
 				    "-E:s" => \$label_edge_colorization,
 				    "-G:s" => \$graphviz_output,			
+				    "-Q:s" => \$quick,			
 	);
 
     
     my %color_hash = ();
-    my $cpt_color = 0;
     my $default_color = $common::GRAPHVIZ_COLOR_TABLE[0];
     my $new_ss = $ss;
     my @hands_seq_int = split(',',$hands_seq);
@@ -1848,7 +1853,7 @@ sub draw
     }
     
     #Build Colorization and dicts
-    %color_hash=%{&__build_colorMAP_from_transitionsMAP(\%transit_hash,$color_mode,$dot_mode)};
+    %color_hash=%{&__build_colorMAP_from_transitionsMAP(\%transit_hash)};
     
     if ($LADDER_DEBUG >= 1) {
 	print "LADDER::draw ===================== COLORS ==================\n";
@@ -1862,7 +1867,6 @@ sub draw
 	|| die ("$lang::MSG_GENERAL_ERR1 <$conf::TMPDIR\\${fileOutput}.graphviz> $lang::MSG_GENERAL_ERR1b") ;
     print GRAPHVIZ "digraph LADDER_DIAGRAM{\n";    
 
-    my $distance_label_slide = 1.5;
     my $distance_label_slide = 2.0;
     my $angle_label_slide_orig = 180;
     my $angle_label_slide = 25;
@@ -1872,7 +1876,8 @@ sub draw
     if ($model==1) { # Drawing Model : 0=LADDER, 1=SITESWAP ASYNC (Flat the LADDER), 2=SITESWAP SYNC (Remove the Silence on the LADDER)
 	print GRAPHVIZ "node [color=black, shape=point]\n";
 	print GRAPHVIZ "edge [color=".$default_color.", dir=none]\n";
-	print GRAPHVIZ "Start [label=\"\", shape=none]\n";	
+	print GRAPHVIZ "Start [label=\"\", shape=none]\n";
+	#print GRAPHVIZ "N0 [label=\"\", shape=none]\n";	
 	# With some siteswaps we got problem in generating the SS Async Diagram in Graphviz 2.28 and prior.
 	# This was because of Multiplexes with the same height. 
 	#   ($ss eq "4[22]0[32]32"
@@ -1897,6 +1902,12 @@ sub draw
 		print GRAPHVIZ "label=\"".lc($title_content)."\"\n"; 
 	    }
 	}
+	
+	if(uc($quick eq "Y"))
+	{
+	    print GRAPHVIZ "nslimit=0.1\n nslimit1=0.1\n mclimit=0.1\n maxiter=0.1\n";
+	}
+
 	print GRAPHVIZ "\n\n";
 
 	# Subgraph
@@ -1975,29 +1986,29 @@ sub draw
 
 		
 		if (uc($label_pos) eq "NONE" || uc($label_pos) eq "NULL"  || uc($label_pos) eq "N"  || uc($label_pos) eq "NO" ) {
-		    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , color=\"".$color."\"]\n";    
+		    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", color=\"".$color."\"]\n";    
 		}
 		if (uc($label_pos) eq "M") {
-		    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , label=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  	
+		    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", label=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  	
 		} elsif (uc($label_pos) eq "X") {
-		    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , xlabel=\"".$ss_hash{$k}."\"".", forcelabels=true, color=\"".$color."\"]\n";  	 
+		    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", xlabel=\"".$ss_hash{$k}."\"".", forcelabels=true, color=\"".$color."\"]\n";  	 
 		} elsif (uc($label_pos) eq "T") {		   
-		    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+		    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		} elsif (uc($label_pos) eq "S") {
 		    if(exists $label_hash{ $src })
 		    {	
 			my $angle = $label_hash{ $src } * $angle_label_slide + $angle_label_slide_orig;			
-			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  
+			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  
 			$label_hash{ $src } ++;
 		    }
 		    else
 		    {		
 			my $angle = $angle_label_slide_orig;		       
-			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n"; 			
+			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n"; 			
 			$label_hash{ $src } = 1;
 		    }
 		} elsif (uc($label_pos) eq "H") {
-		    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , headlabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+		    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", headlabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		}	    		
 	    }	    
 	}      
@@ -2114,83 +2125,83 @@ sub draw
 		
 		if ($k =~ "L" && $transit_hash{$k} =~ "L") {
 		    if (uc($label_pos) eq "NONE" || uc($label_pos) eq "NULL"  || uc($label_pos) eq "N"  || uc($label_pos) eq "NO" ) {
-			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , color=\"".$color."\"]\n";    
+			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", color=\"".$color."\"]\n";    
 		    }
 		    if (uc($label_pos) eq "M") {
-			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , label=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", label=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    } elsif (uc($label_pos) eq "X") {
-			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , xlabel=\"".$ss_hash{$k}."\"".", forcelabels=true, color=\"".$color."\"]\n";  
+			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", xlabel=\"".$ss_hash{$k}."\"".", forcelabels=true, color=\"".$color."\"]\n";  
 		    } elsif (uc($label_pos) eq "T") {
-			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    } elsif (uc($label_pos) eq "S") {
 			if(exists $label_hash{ $src })
 			{	
 			    my $angle = $label_hash{ $src } * $angle_label_slide + $angle_label_slide_orig;			
-			    print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
+			    print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
 			    $label_hash{ $src } ++;
 			}
 			else
 			{
 			    my $angle = $angle_label_slide_orig;			
-			    print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
+			    print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
 			    $label_hash{ $src } =1;
 			}
 			
 		    } elsif (uc($label_pos) eq "H") {
-			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , headlabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", headlabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    }	    
 		} elsif ($k =~ "R" && $transit_hash{$k} =~ "R") {
 		    if (uc($label_pos) eq "NONE" || uc($label_pos) eq "NULL"  || uc($label_pos) eq "N" || uc($label_pos) eq "NO") {
-			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , color=\"".$color."\"]\n";    
+			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", color=\"".$color."\"]\n";    
 		    }
 		    if (uc($label_pos) eq "M") {
-			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , label=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", label=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    } elsif (uc($label_pos) eq "X") {
-			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , xlabel=\"".$ss_hash{$k}."\"".", forcelabels=true, color=\"".$color."\"]\n"; 
+			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", xlabel=\"".$ss_hash{$k}."\"".", forcelabels=true, color=\"".$color."\"]\n"; 
 		    } elsif (uc($label_pos) eq "T") {
-			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    } elsif (uc($label_pos) eq "S") {
 			if(exists $label_hash{ $src })
 			{	
 			    my $angle = $label_hash{ $src } * $angle_label_slide + $angle_label_slide_orig;			
-			    print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".",  labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
+			    print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".",  labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
 			    $label_hash{ $src } ++;
 			}
 			else
 			{
 			    my $angle = $angle_label_slide_orig;			
-			    print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".",  labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
+			    print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".",  labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
 			    $label_hash{ $src } =1;
 			}
 		    } elsif (uc($label_pos) eq "H") {
-			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , headlabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", headlabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    }	    
 		} else {
 		    if (uc($label_pos) eq "NONE" || uc($label_pos) eq "NULL"  || uc($label_pos) eq "N" || uc($label_pos) eq "NO") {
-			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , color=\"".$color."\"]\n";    
+			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", color=\"".$color."\"]\n";    
 		    }
 		    if (uc($label_pos) eq "M") {
-			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , label=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", label=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    } elsif (uc($label_pos) eq "X") {
-			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , xlabel=\"".$ss_hash{$k}."\"".", forcelabels=true, color=\"".$color."\"]\n";  
+			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", xlabel=\"".$ss_hash{$k}."\"".", forcelabels=true, color=\"".$color."\"]\n";  
 		    } elsif (uc($label_pos) eq "T") {
-			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    } elsif (uc($label_pos) eq "S") {
 			if(exists $label_hash{ $src })
 			{	
 			    my $angle = $label_hash{ $src } * $angle_label_slide + $angle_label_slide_orig;			
-			    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".",  labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
+			    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".",  labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
 			    $label_hash{ $src } ++;
 			}
 			else
 			{
 			    my $angle = $angle_label_slide_orig;			
-			    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".",  labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
+			    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".",  labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
 			    $label_hash{ $src } =1;
 			}
 			
 		    } elsif (uc($label_pos) eq "H") {
-			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , headlabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", headlabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    }	    
 		}
 		
@@ -2302,87 +2313,87 @@ sub draw
 
 		if ($k =~ "L" && $transit_hash{$k} =~ "L") {
 		    if (uc($label_pos) eq "NONE" || uc($label_pos) eq "NULL"  || uc($label_pos) eq "N"  || uc($label_pos) eq "NO" ) {
-			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , color=\"".$color."\"]\n";    
+			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", color=\"".$color."\"]\n";    
 		    }
 		    if (uc($label_pos) eq "M") {
-			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , label=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", label=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    } elsif (uc($label_pos) eq "X") {
-			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , xlabel=\"".$ss_hash{$k}."\"".", forcelabels=true, color=\"".$color."\"]\n";  	
+			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", xlabel=\"".$ss_hash{$k}."\"".", forcelabels=true, color=\"".$color."\"]\n";  	
 		    } elsif (uc($label_pos) eq "T") {
-			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    } elsif (uc($label_pos) eq "S") {
 			if(exists $label_hash{ $src })
 			{	
 			    my $angle = $label_hash{ $src } * $angle_label_slide + $angle_label_slide_orig;			
-			    print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
+			    print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
 			    $label_hash{ $src } ++;
 			}
 			else
 			{
 			    my $angle = $angle_label_slide_orig;			
-			    print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
+			    print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
 			    $label_hash{ $src } =1;
 			}
 
 		    } elsif (uc($label_pos) eq "H") {
-			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , headlabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\":s"."->"."\"".$dest."\":s"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", headlabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    }	    
 		} elsif ($k =~ "R" && $transit_hash{$k} =~ "R") {
 		    if (uc($label_pos) eq "NONE" || uc($label_pos) eq "NULL"  || uc($label_pos) eq "N" || uc($label_pos) eq "NO") {
-			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , color=\"".$color."\"]\n";    
+			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", color=\"".$color."\"]\n";    
 		    }
 		    if (uc($label_pos) eq "M") {
-			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , label=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", label=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    } elsif (uc($label_pos) eq "X") {
-			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , xlabel=\"".$ss_hash{$k}."\"".", forcelabels=true, color=\"".$color."\"]\n";   
+			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", xlabel=\"".$ss_hash{$k}."\"".", forcelabels=true, color=\"".$color."\"]\n";   
 		    } elsif (uc($label_pos) eq "T") {
-			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    } elsif (uc($label_pos) eq "S") {
 			if(exists $label_hash{ $src })
 			{	
 			    my $angle = $label_hash{ $src } * $angle_label_slide + $angle_label_slide_orig;			
-			    print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  		
+			    print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  		
 			    $label_hash{ $src } ++;
 			}
 			else
 			{
 			    my $angle = $angle_label_slide_orig;			
-			    print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  		
+			    print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  		
 			    $label_hash{ $src } =1;
 			}				
 		    } elsif (uc($label_pos) eq "H") {
-			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , headlabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\":n"."->"."\"".$dest."\":n"." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", headlabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    }	    
 		} else {
 		    if (uc($label_pos) eq "NONE" || uc($label_pos) eq "NULL"  || uc($label_pos) eq "N" || uc($label_pos) eq "NO") {
-			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , color=\"".$color."\"]\n";    
+			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", color=\"".$color."\"]\n";    
 		    }
 		    if (uc($label_pos) eq "M") {
-			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , label=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", label=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    } elsif (uc($label_pos) eq "X") {
-			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , xlabel=\"".$ss_hash{$k}."\"".", forcelabels=true, color=\"".$color."\"]\n"; 
+			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", xlabel=\"".$ss_hash{$k}."\"".", forcelabels=true, color=\"".$color."\"]\n"; 
 		    } elsif (uc($label_pos) eq "T") {
-			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    } elsif (uc($label_pos) eq "S") {
 			if(exists $label_hash{ $src })
 			{	
 			    my $angle = $label_hash{ $src } * $angle_label_slide + $angle_label_slide_orig;			
-			    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
+			    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
 			    $label_hash{ $src } ++;
 			}
 			else
 			{			    
 			    my $angle = $angle_label_slide_orig;			
-			    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
+			    print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", taillabel=\"".$ss_hash{$k}."\"".", labeldistance=".$distance_label_slide.", labelangle=".$angle.", color=\"".$color."\"]\n";  			
 			    $label_hash{ $src } =1;			
 			}		
 		    } elsif (uc($label_pos) eq "H") {
-			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , headlabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
+			print GRAPHVIZ "\"".$src."\""."->"."\"".$dest."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", headlabel=\"".$ss_hash{$k}."\"".", color=\"".$color."\"]\n";  			
 		    }	    
 		}
 		
 		if ($css > 0 && (substr($dest_t[0],1)) < $period) {
-		    print GRAPHVIZ "\"".$dest."\""."->"."\"".$dest_t[0]."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , color=\"".$color."\"]\n";    
+		    print GRAPHVIZ "\"".$dest."\""."->"."\"".$dest_t[0]."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\", color=\"".$color."\"]\n";    
 		}
 		#elsif ((uc($nullSS) eq "Y" || uc($nullSS) eq "YES") && (substr($dest_t[0],1)) < $period) {
 		#		    print GRAPHVIZ "\"".$dest."\""."->"."\"".$dest_t[0]."\""." "."[dir=forward,  fontcolor=".$label_color.", fontname=\"Times-Bold\" , color=\"".$color."\"]\n";    
@@ -2566,7 +2577,7 @@ sub removeObj
     my ($period, $transit_hash_tmp, $ss_hash_tmp, $queue_hand) = &__build_dicts($new_ss,$color_mode,$dot_mode);
     my %transit_hash = %{$transit_hash_tmp};
     my %ss_hash = %{$ss_hash_tmp};
-    my %color_hash=%{&__build_colorMAP_from_transitionsMAP(\%transit_hash,$color_mode,$dot_mode)};
+    my %color_hash=%{&__build_colorMAP_from_transitionsMAP(\%transit_hash)};
     
     my @objList=();
     if( $objsToRemove =~ /\[/ && $objsToRemove =~ /\]/)

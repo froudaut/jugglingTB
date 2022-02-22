@@ -1,0 +1,159 @@
+Rules:
+------
+0:	$start -> input $end
+1:	input -> MHN
+2:	input -> lexerror
+3:	MHN -> '(' hand_throws ')'
+4:	MHN -> '(' hand_throws ')' MHN
+5:	hand_throws -> throw
+6:	hand_throws -> throw ',' hand_throws
+7:	throw -> digit
+8:	throw -> digit ':' digit
+9:	throw -> digit throw
+10:	throw -> digit ':' digit throw
+
+States:
+-------
+State 0:
+
+	$start -> . input $end	(Rule 0)
+
+	'('	shift, and go to state 4
+	lexerror	shift, and go to state 2
+
+	MHN	go to state 1
+	input	go to state 3
+
+State 1:
+
+	input -> MHN .	(Rule 1)
+
+	$default	reduce using rule 1 (input)
+
+State 2:
+
+	input -> lexerror .	(Rule 2)
+
+	$default	reduce using rule 2 (input)
+
+State 3:
+
+	$start -> input . $end	(Rule 0)
+
+	$end	shift, and go to state 5
+
+State 4:
+
+	MHN -> '(' . hand_throws ')'	(Rule 3)
+	MHN -> '(' . hand_throws ')' MHN	(Rule 4)
+
+	digit	shift, and go to state 7
+
+	hand_throws	go to state 6
+	throw	go to state 8
+
+State 5:
+
+	$start -> input $end .	(Rule 0)
+
+	$default	accept
+
+State 6:
+
+	MHN -> '(' hand_throws . ')'	(Rule 3)
+	MHN -> '(' hand_throws . ')' MHN	(Rule 4)
+
+	')'	shift, and go to state 9
+
+State 7:
+
+	throw -> digit .	(Rule 7)
+	throw -> digit . ':' digit	(Rule 8)
+	throw -> digit . throw	(Rule 9)
+	throw -> digit . ':' digit throw	(Rule 10)
+
+	':'	shift, and go to state 10
+	digit	shift, and go to state 7
+
+	$default	reduce using rule 7 (throw)
+
+	throw	go to state 11
+
+State 8:
+
+	hand_throws -> throw .	(Rule 5)
+	hand_throws -> throw . ',' hand_throws	(Rule 6)
+
+	','	shift, and go to state 12
+
+	$default	reduce using rule 5 (hand_throws)
+
+State 9:
+
+	MHN -> '(' hand_throws ')' .	(Rule 3)
+	MHN -> '(' hand_throws ')' . MHN	(Rule 4)
+
+	'('	shift, and go to state 4
+
+	$default	reduce using rule 3 (MHN)
+
+	MHN	go to state 13
+
+State 10:
+
+	throw -> digit ':' . digit	(Rule 8)
+	throw -> digit ':' . digit throw	(Rule 10)
+
+	digit	shift, and go to state 14
+
+State 11:
+
+	throw -> digit throw .	(Rule 9)
+
+	$default	reduce using rule 9 (throw)
+
+State 12:
+
+	hand_throws -> throw ',' . hand_throws	(Rule 6)
+
+	digit	shift, and go to state 7
+
+	throw	go to state 8
+	hand_throws	go to state 15
+
+State 13:
+
+	MHN -> '(' hand_throws ')' MHN .	(Rule 4)
+
+	$default	reduce using rule 4 (MHN)
+
+State 14:
+
+	throw -> digit ':' digit .	(Rule 8)
+	throw -> digit ':' digit . throw	(Rule 10)
+
+	digit	shift, and go to state 7
+
+	$default	reduce using rule 8 (throw)
+
+	throw	go to state 16
+
+State 15:
+
+	hand_throws -> throw ',' hand_throws .	(Rule 6)
+
+	$default	reduce using rule 6 (hand_throws)
+
+State 16:
+
+	throw -> digit ':' digit throw .	(Rule 10)
+
+	$default	reduce using rule 10 (throw)
+
+
+Summary:
+--------
+Number of rules         : 11
+Number of terminals     : 7
+Number of non-terminals : 5
+Number of states        : 17

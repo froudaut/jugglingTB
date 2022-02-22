@@ -36,10 +36,13 @@ our $COLOR_HELPCMD  = "bold magenta";
 our $COLOR_HELPPARAMCMD  = "bold yellow";
 our $COLOR_HELPMENU = "bold green";   
 
-# Color Table used by Graphviz in Modules LADDER/SSWAP
+# Color Tables used by Graphviz in Modules LADDER/SSWAP
 our @GRAPHVIZ_COLOR_TABLE = ("dodgerblue", "red", "springgreen", "darkviolet", "magenta", "goldenrod", 
 			     "saddlebrown", "azure4", "khaki4", "darkorange", "olivedrab1", "turquoise4",
 			     "black", "peru", "mediumslateblue");  
+our @GRAPHVIZ_COLOR_TABLE2 = ("chocolate1", "navajowhite3", "darkslategrey", "deeppink1", "turquoise1" , "blueviolet", 
+			      "antiquewhite3", "chartreuse2", "darkolivegreen", "gray1", "mediumorchid4",
+			      "webmaroon", "indigo", "palegreen4", "darksalmon");  
 
 # Either linux or MSWin32
 our $OS=$^O;
@@ -494,7 +497,7 @@ our @SS_experimental =
      "(a,2)(2,4x)(4x,2)*"
      #"5354x1x(4,4)(4x,5)(4x,5)*5354x54x0(4,4)(5,4x)(5,4x)535354x1x*(4,4)(4x,5)(1x,5)!353"	
     );
-     
+
 # MHN Lists 3:2 From Sylvain Garnavault
 our @MHN_list_3_2_list1 = 
     (
