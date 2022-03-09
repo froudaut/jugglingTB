@@ -1,0 +1,398 @@
+Rules:
+------
+0:	$start -> input $end
+1:	input -> MJN
+2:	input -> lexerror
+3:	MJN -> '<' jugglers '>'
+4:	MJN -> '<' jugglers '>' MJN
+5:	jugglers -> throw
+6:	jugglers -> throw '|' jugglers
+7:	throw -> digit
+8:	throw -> digit 'x'
+9:	throw -> digit 'p'
+10:	throw -> digit 'p' digit
+11:	throw -> digit 'x' 'p'
+12:	throw -> digit 'x' 'p' digit
+13:	throw -> '[' mult ']'
+14:	throw -> '(' throw ',' throw ')'
+15:	throw -> '(' throw ',' throw ')' '!'
+16:	mult -> digit
+17:	mult -> digit 'x'
+18:	mult -> digit 'p'
+19:	mult -> digit 'p' digit
+20:	mult -> digit 'x' 'p'
+21:	mult -> digit 'x' 'p' digit
+22:	mult -> digit mult
+23:	mult -> digit 'x' mult
+24:	mult -> digit 'p' '/' mult
+25:	mult -> digit 'p' digit mult
+26:	mult -> digit 'x' 'p' '/' mult
+27:	mult -> digit 'x' 'p' digit mult
+
+States:
+-------
+State 0:
+
+	$start -> . input $end	(Rule 0)
+
+	'<'	shift, and go to state 4
+	lexerror	shift, and go to state 3
+
+	input	go to state 1
+	MJN	go to state 2
+
+State 1:
+
+	$start -> input . $end	(Rule 0)
+
+	$end	shift, and go to state 5
+
+State 2:
+
+	input -> MJN .	(Rule 1)
+
+	$default	reduce using rule 1 (input)
+
+State 3:
+
+	input -> lexerror .	(Rule 2)
+
+	$default	reduce using rule 2 (input)
+
+State 4:
+
+	MJN -> '<' . jugglers '>'	(Rule 3)
+	MJN -> '<' . jugglers '>' MJN	(Rule 4)
+
+	'('	shift, and go to state 7
+	'['	shift, and go to state 10
+	digit	shift, and go to state 9
+
+	jugglers	go to state 6
+	throw	go to state 8
+
+State 5:
+
+	$start -> input $end .	(Rule 0)
+
+	$default	accept
+
+State 6:
+
+	MJN -> '<' jugglers . '>'	(Rule 3)
+	MJN -> '<' jugglers . '>' MJN	(Rule 4)
+
+	'>'	shift, and go to state 11
+
+State 7:
+
+	throw -> '(' . throw ',' throw ')'	(Rule 14)
+	throw -> '(' . throw ',' throw ')' '!'	(Rule 15)
+
+	'('	shift, and go to state 7
+	'['	shift, and go to state 10
+	digit	shift, and go to state 9
+
+	throw	go to state 12
+
+State 8:
+
+	jugglers -> throw .	(Rule 5)
+	jugglers -> throw . '|' jugglers	(Rule 6)
+
+	'|'	shift, and go to state 13
+
+	$default	reduce using rule 5 (jugglers)
+
+State 9:
+
+	throw -> digit .	(Rule 7)
+	throw -> digit . 'x'	(Rule 8)
+	throw -> digit . 'p'	(Rule 9)
+	throw -> digit . 'p' digit	(Rule 10)
+	throw -> digit . 'x' 'p'	(Rule 11)
+	throw -> digit . 'x' 'p' digit	(Rule 12)
+
+	'p'	shift, and go to state 14
+	'x'	shift, and go to state 15
+
+	$default	reduce using rule 7 (throw)
+
+State 10:
+
+	throw -> '[' . mult ']'	(Rule 13)
+
+	digit	shift, and go to state 17
+
+	mult	go to state 16
+
+State 11:
+
+	MJN -> '<' jugglers '>' .	(Rule 3)
+	MJN -> '<' jugglers '>' . MJN	(Rule 4)
+
+	'<'	shift, and go to state 4
+
+	$default	reduce using rule 3 (MJN)
+
+	MJN	go to state 18
+
+State 12:
+
+	throw -> '(' throw . ',' throw ')'	(Rule 14)
+	throw -> '(' throw . ',' throw ')' '!'	(Rule 15)
+
+	','	shift, and go to state 19
+
+State 13:
+
+	jugglers -> throw '|' . jugglers	(Rule 6)
+
+	'('	shift, and go to state 7
+	'['	shift, and go to state 10
+	digit	shift, and go to state 9
+
+	throw	go to state 8
+	jugglers	go to state 20
+
+State 14:
+
+	throw -> digit 'p' .	(Rule 9)
+	throw -> digit 'p' . digit	(Rule 10)
+
+	digit	shift, and go to state 21
+
+	$default	reduce using rule 9 (throw)
+
+State 15:
+
+	throw -> digit 'x' .	(Rule 8)
+	throw -> digit 'x' . 'p'	(Rule 11)
+	throw -> digit 'x' . 'p' digit	(Rule 12)
+
+	'p'	shift, and go to state 22
+
+	$default	reduce using rule 8 (throw)
+
+State 16:
+
+	throw -> '[' mult . ']'	(Rule 13)
+
+	']'	shift, and go to state 23
+
+State 17:
+
+	mult -> digit .	(Rule 16)
+	mult -> digit . 'x'	(Rule 17)
+	mult -> digit . 'p'	(Rule 18)
+	mult -> digit . 'p' digit	(Rule 19)
+	mult -> digit . 'x' 'p'	(Rule 20)
+	mult -> digit . 'x' 'p' digit	(Rule 21)
+	mult -> digit . mult	(Rule 22)
+	mult -> digit . 'x' mult	(Rule 23)
+	mult -> digit . 'p' '/' mult	(Rule 24)
+	mult -> digit . 'p' digit mult	(Rule 25)
+	mult -> digit . 'x' 'p' '/' mult	(Rule 26)
+	mult -> digit . 'x' 'p' digit mult	(Rule 27)
+
+	'p'	shift, and go to state 26
+	'x'	shift, and go to state 24
+	digit	shift, and go to state 17
+
+	$default	reduce using rule 16 (mult)
+
+	mult	go to state 25
+
+State 18:
+
+	MJN -> '<' jugglers '>' MJN .	(Rule 4)
+
+	$default	reduce using rule 4 (MJN)
+
+State 19:
+
+	throw -> '(' throw ',' . throw ')'	(Rule 14)
+	throw -> '(' throw ',' . throw ')' '!'	(Rule 15)
+
+	'('	shift, and go to state 7
+	'['	shift, and go to state 10
+	digit	shift, and go to state 9
+
+	throw	go to state 27
+
+State 20:
+
+	jugglers -> throw '|' jugglers .	(Rule 6)
+
+	$default	reduce using rule 6 (jugglers)
+
+State 21:
+
+	throw -> digit 'p' digit .	(Rule 10)
+
+	$default	reduce using rule 10 (throw)
+
+State 22:
+
+	throw -> digit 'x' 'p' .	(Rule 11)
+	throw -> digit 'x' 'p' . digit	(Rule 12)
+
+	digit	shift, and go to state 28
+
+	$default	reduce using rule 11 (throw)
+
+State 23:
+
+	throw -> '[' mult ']' .	(Rule 13)
+
+	$default	reduce using rule 13 (throw)
+
+State 24:
+
+	mult -> digit 'x' .	(Rule 17)
+	mult -> digit 'x' . 'p'	(Rule 20)
+	mult -> digit 'x' . 'p' digit	(Rule 21)
+	mult -> digit 'x' . mult	(Rule 23)
+	mult -> digit 'x' . 'p' '/' mult	(Rule 26)
+	mult -> digit 'x' . 'p' digit mult	(Rule 27)
+
+	'p'	shift, and go to state 30
+	digit	shift, and go to state 17
+
+	$default	reduce using rule 17 (mult)
+
+	mult	go to state 29
+
+State 25:
+
+	mult -> digit mult .	(Rule 22)
+
+	$default	reduce using rule 22 (mult)
+
+State 26:
+
+	mult -> digit 'p' .	(Rule 18)
+	mult -> digit 'p' . digit	(Rule 19)
+	mult -> digit 'p' . '/' mult	(Rule 24)
+	mult -> digit 'p' . digit mult	(Rule 25)
+
+	'/'	shift, and go to state 32
+	digit	shift, and go to state 31
+
+	$default	reduce using rule 18 (mult)
+
+State 27:
+
+	throw -> '(' throw ',' throw . ')'	(Rule 14)
+	throw -> '(' throw ',' throw . ')' '!'	(Rule 15)
+
+	')'	shift, and go to state 33
+
+State 28:
+
+	throw -> digit 'x' 'p' digit .	(Rule 12)
+
+	$default	reduce using rule 12 (throw)
+
+State 29:
+
+	mult -> digit 'x' mult .	(Rule 23)
+
+	$default	reduce using rule 23 (mult)
+
+State 30:
+
+	mult -> digit 'x' 'p' .	(Rule 20)
+	mult -> digit 'x' 'p' . digit	(Rule 21)
+	mult -> digit 'x' 'p' . '/' mult	(Rule 26)
+	mult -> digit 'x' 'p' . digit mult	(Rule 27)
+
+	'/'	shift, and go to state 34
+	digit	shift, and go to state 35
+
+	$default	reduce using rule 20 (mult)
+
+State 31:
+
+	mult -> digit 'p' digit .	(Rule 19)
+	mult -> digit 'p' digit . mult	(Rule 25)
+
+	digit	shift, and go to state 17
+
+	$default	reduce using rule 19 (mult)
+
+	mult	go to state 36
+
+State 32:
+
+	mult -> digit 'p' '/' . mult	(Rule 24)
+
+	digit	shift, and go to state 17
+
+	mult	go to state 37
+
+State 33:
+
+	throw -> '(' throw ',' throw ')' .	(Rule 14)
+	throw -> '(' throw ',' throw ')' . '!'	(Rule 15)
+
+	'!'	shift, and go to state 38
+
+	$default	reduce using rule 14 (throw)
+
+State 34:
+
+	mult -> digit 'x' 'p' '/' . mult	(Rule 26)
+
+	digit	shift, and go to state 17
+
+	mult	go to state 39
+
+State 35:
+
+	mult -> digit 'x' 'p' digit .	(Rule 21)
+	mult -> digit 'x' 'p' digit . mult	(Rule 27)
+
+	digit	shift, and go to state 17
+
+	$default	reduce using rule 21 (mult)
+
+	mult	go to state 40
+
+State 36:
+
+	mult -> digit 'p' digit mult .	(Rule 25)
+
+	$default	reduce using rule 25 (mult)
+
+State 37:
+
+	mult -> digit 'p' '/' mult .	(Rule 24)
+
+	$default	reduce using rule 24 (mult)
+
+State 38:
+
+	throw -> '(' throw ',' throw ')' '!' .	(Rule 15)
+
+	$default	reduce using rule 15 (throw)
+
+State 39:
+
+	mult -> digit 'x' 'p' '/' mult .	(Rule 26)
+
+	$default	reduce using rule 26 (mult)
+
+State 40:
+
+	mult -> digit 'x' 'p' digit mult .	(Rule 27)
+
+	$default	reduce using rule 27 (mult)
+
+
+Summary:
+--------
+Number of rules         : 28
+Number of terminals     : 15
+Number of non-terminals : 6
+Number of states        : 41

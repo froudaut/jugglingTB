@@ -37,7 +37,7 @@ $Term::ANSIColor::AUTORESET = 1;
 
 our $MHN_INFO = "Multi-Hand Notation";
 our $MHN_HELP = $lang::MSG_MHN_MENU_HELP;
-our $MHN_VERSION = "v0.2";
+our $MHN_VERSION = "v0.3";
 
 our %MHN_CMDS = 
     (
@@ -50,6 +50,7 @@ our %MHN_CMDS =
      'draw'                 => ["$lang::MSG_MHN_MENU_DRAW_1","$lang::MSG_MHN_MENU_DRAW_2"], 
      'toHSS'                => ["$lang::MSG_MHN_MENU_TOHSS_1","$lang::MSG_MHN_MENU_TOHSS_2"], 
      'toSS'                 => ["$lang::MSG_MHN_MENU_TOSS_1","$lang::MSG_MHN_MENU_TOSS_2"], 
+     'toMJN'                => ["$lang::MSG_MHN_MENU_TOMJN_1","$lang::MSG_MHN_MENU_TOMJN_2"], 
     );
 
 print "MHN $MHN::MHN_VERSION loaded\n";
@@ -202,7 +203,7 @@ sub getObjNumber
 		}
 		if(substr($matrix[$i][$j],$k,1) eq ":")
 		{
-		    $k++; #Juggler num is only one number in hexa
+		    $k++; #Hand num is only one number in hexa
 		}
 		
 	    }
@@ -240,7 +241,7 @@ sub isSyntaxValid
 
 sub isValid
 {
-    my $mhn = $_[0];   
+    my $mhn = $_[0];
     my @matrix = @{&__toMHNmatrix($mhn)};
     my @lin = @{$matrix[0]};
     my $period = scalar @lin;
@@ -287,7 +288,7 @@ sub isValid
 			    return -1;   
 			}
 			$endcount[hex(substr($entry,$k+2,1))][($j+hex(substr($entry,$k,1)))%$period]++;
-			$k+=2; #Juggler num is only one number long in hexa
+			$k+=2; #Hand num is only one number long in hexa
 		    }
 		    else
 		    {
@@ -306,7 +307,7 @@ sub isValid
 	{
 	    if($endcount[$i][$j] != $startcount[$i][$j])
 	    {
-		print "Invalid : $endcount[$i][$j] catch on Juggler: $i, Beat: $j\n";
+		print "Invalid : $endcount[$i][$j] catch on Hand: $i, Beat: $j\n";
 		$valid=-1;
 	    }
 	}
@@ -422,10 +423,6 @@ sub draw
     my $color_mode = 2;		# Colorization Mode for Multiplexes
     my $dot_mode = 0;		# if 0 : Remove 0 after sync throw (Default). Otherwise keep it as generated after a Multisync transformation 
     my $label_pos = "x";	# Label Position (t: tail, h : head, m : middle, null/none : no label)
-    my %oss_hash = ();
-    my %hss_hash = ();
-    my %oss_transit_hash  = ();
-    my %hss_transit_hash  = ();
     my $title = "Y";
     my $nullSS = "N";
     my $silence = 0;
@@ -435,11 +432,16 @@ sub draw
     my $label_edge_colorization = "E";
     my $label_color="E";
     my $graphviz_output="N";
-    my $hands_base="M";
+    my $hands_base="";
+    my $hands_base_init="H";
     my $async_mode="N";
     my $splines_mode=2;          # 0: default, 1: curved, 2: line 
     my $zero_hand="Y";           # Y to have eventual 0 in HSS
     my $quick="N";
+    my $inner_hands_seq_undef='R,L';
+    my $inner_hands_seq = '';
+    my $inner_hands = 'N';
+    my $link_hands = 0;          # To link hands by peer
     
     my $ret = &GetOptionsFromString(uc($_[2]),    
 				    "-O:s" => \$fileOutputType,
@@ -460,11 +462,24 @@ sub draw
 				    "-F:i" => \$splines_mode,
 				    "-Z:s" => \$zero_hand,
 				    "-Q:s" => \$quick,
+				    "-J:s" => \$inner_hands,
+				    "-K:s" => \$inner_hands_seq,
+				    "-I:i" => \$link_hands,
+
 	);
 
     
     my @matrix = @{&__toMHNmatrix($mhn)};
 
+    if(uc($inner_hands) eq 'Y' && $hands_base eq '')
+    {
+	$hands_base = 'J';
+    }
+    elsif($hands_base eq '')
+    {
+	$hands_base = $hands_base_init;
+    }
+    
     if (uc($async_mode) eq "Y" && &isAsync($mhn,-1) )
     {
 	my $mhnperiod = &getPeriod($mhn,-1);
@@ -570,7 +585,7 @@ sub draw
 		while($next_throw == -1)
 		{
 		    $j=($j+1);
-		    if($hands_seq_list[$i] eq  $hands_seq_list[$j%(scalar @hands_seq_list)])
+		    if($hands_seq_list[$i] eq $hands_seq_list[$j%(scalar @hands_seq_list)])
 		    {
 			$hss .= $j-$i;
 			$next_throw=1;
@@ -587,7 +602,10 @@ sub draw
 	    if(substr($_[2],$i,1) eq '-' && $i < length($_[2])
 	       && (uc(substr($_[2],$i+1,1)) eq 'A'
 		   || uc(substr($_[2],$i+1,1)) eq 'Z'
-		   || uc(substr($_[2],$i+1,1)) eq 'F'))
+		   || uc(substr($_[2],$i+1,1)) eq 'F'
+		   || uc(substr($_[2],$i+1,1)) eq 'J'
+		   || uc(substr($_[2],$i+1,1)) eq 'K')
+		)
 	    {
 		$i++;
 		while($i+1 < length($_[2]) && substr($_[2],$i+1,1) ne '-')
@@ -602,7 +620,7 @@ sub draw
 	}
 
 	
-	&SSWAP::draw($ss,$fileOutput,$opts);
+	&SSWAP::draw($ss,$fileOutput,$opts, $_[3]);
 	print colored [$common::COLOR_RESULT], "OSS : $ss\n";
 	print colored [$common::COLOR_RESULT], "HSS : $hss\n\n";
 	
@@ -623,6 +641,29 @@ sub draw
 	}
 	
 	my $nbhands = scalar @matrix;
+	my @inner_hands_seq_l = ();
+	
+	if(uc($inner_hands) eq 'Y')
+	{
+	    if($inner_hands_seq eq '')
+	    {
+		my @in = split(/,/,$inner_hands_seq_undef);
+		for(my $i=0; $i < $nbhands; $i++)
+		{
+		    $inner_hands_seq_l[$i] = \@in;
+		}
+	    }
+	    else
+	    {
+		my @in = split(/\(/,$inner_hands_seq);
+		for(my $i=0; $i < $nbhands; $i++)
+		{
+		    $in[$i+1]=substr($in[$i+1],0,length($in[$i+1]) -1);
+		    my @in_l = split(/,/,$in[$i+1]);
+		    $inner_hands_seq_l[$i] = \@in_l; 
+		}		
+	    }
+	}
 	
 	my @color_table = @common::GRAPHVIZ_COLOR_TABLE;
 	my @color_map = @{&__emptyMatrix($nbhands,$period)};	
@@ -686,18 +727,28 @@ sub draw
 	    print GRAPHVIZ "rank=same;\n";
 
 	    foreach my $j (0..($period-1)) {	    	 		
-		if($matrix[$i][$j%$mhnperiod] ne '0')
+
+		if (uc($inner_hands) eq 'Y')
 		{
-		    print GRAPHVIZ "\""."NH${i}_".${j}."\""." [label=\"\",  shape=circle, width=.2] // node NH${i}_".${j}."\n";  
-		} else {	 
-		    print GRAPHVIZ "\""."NH${i}_".${j}."\""." [label=\"\",  shape=point, width=.1] // node NH${i}_".${j}."\n";
+		    my $side = $inner_hands_seq_l[$i][$j%scalar @{$inner_hands_seq_l[$i]}];
+		    print GRAPHVIZ "\""."H${i}_".${j}."\""." [label=\"".$side."\",  shape=plain, width=.1] // node H${i}_".${j}."\n";
+		}	
+		else
+		{
+		    if($matrix[$i][$j%$mhnperiod] ne '0')
+		    {
+			print GRAPHVIZ "\""."H${i}_".${j}."\""." [label=\"\",  shape=circle, width=.2] // node H${i}_".${j}."\n";  
+		    } else {	 
+			print GRAPHVIZ "\""."H${i}_".${j}."\""." [label=\"\",  shape=point, width=.1] // node H${i}_".${j}."\n";
+		    }
 		}
+
 	    }
 	    
-	    print GRAPHVIZ " H${i} -> NH${i}_0 [style=invis]\n"; 
-	    my $rtmp = "NH${i}_0";
+	    print GRAPHVIZ " H${i} -> H${i}_0 [style=invis]\n"; 
+	    my $rtmp = "H${i}_0";
 	    for (my $j = 1; $j < $period; $j++) {
-		$rtmp = $rtmp." -> NH${i}_".$j;
+		$rtmp = $rtmp." -> H${i}_".$j;
 	    }
 	    
 	    print GRAPHVIZ $rtmp." [style=invis]\n";
@@ -705,13 +756,28 @@ sub draw
 	    print GRAPHVIZ "\n\n";   
 	}
 	
-	# Connect subgraphs
+	# Connect subgraphs     
 	foreach my $i (0..($nbhands-2)) {
-	    print GRAPHVIZ "H${i} -> H".(${i}+1)." [style=invis]\n"; 
+	    if($link_hands == 0)
+	    {
+		print GRAPHVIZ "H${i} -> H".(${i}+1)." [style=invis]\n";
+	    }
+	    else
+	    {
+		if($i%2 == 0)
+		{
+		    print GRAPHVIZ "H${i} -> H".(${i}+1)." [style=dashed]\n";
+		}
+		else
+		{
+		    print GRAPHVIZ "H${i} -> H".(${i}+1)." [style=invis]\n";		    
+		}
+	    }
+	    
 	}
 	foreach my $j (0..($period-1)) {
 	    foreach my $i (0..($nbhands-2)) {
-		print GRAPHVIZ "\"NH${i}_".${j}."\""."->"."\"NH".(${i}+1)."_".${j}."\""." "." [style=invis]\n";
+		print GRAPHVIZ "\"H${i}_".${j}."\""."->"."\"H".(${i}+1)."_".${j}."\""." "." [style=invis]\n";
 	    }
 	}
 	print GRAPHVIZ "\n\n";
@@ -720,7 +786,7 @@ sub draw
 	    foreach my $i (0..($nbhands-1)) {
 		if($matrix[$i][$j%$mhnperiod] ne '0')
 		{
-		    my $src = "NH${i}_${j}";
+		    my $src = "H${i}_${j}";
 		    my $num_throw = 0;
 		    
 		    for(my $k=0; $k < length($matrix[$i][$j%$mhnperiod]); $k++)
@@ -729,7 +795,7 @@ sub draw
 			if(substr($matrix[$i][$j%$mhnperiod],$k,1) ne ':')
 			{
 			    
-			    my $dest = "NH";
+			    my $dest = "H";
 			    my $throw = substr($matrix[$i][$j%$mhnperiod],$k,1);
 			    my $destp = $j+hex($throw);
 			    my $desth = '';
@@ -952,7 +1018,7 @@ sub draw
 sub toHSS
 {
     my $mhn = $_[0];
-    my $hands_base="M";
+    my $hands_base="H";
     my $zero_hand="Y";   # Y to have eventual 0 in HSS
 
     my $ret = &GetOptionsFromString(uc($_[1]),    
@@ -1249,7 +1315,302 @@ sub toSS
 	    print colored [$common::COLOR_RESULT], $lang::MSG_MHN_TOSS_ERR0."\n";
 	}
 	return -1;	    
+    }    
+}
+
+
+sub __isMJNasync
+{
+    my $mhn = $_[0];
+    my @matrix = @{&__toMHNmatrix($mhn)};
+
+    if(&isValid($mhn,-1) == -1)
+    {
+	return -1;
     }
+
+    my $period = &getPeriod($mhn,-1);
+    my $nbhands = &getHandsNumber($mhn,-1);
+
+    for(my $i=0; $i<$nbhands; $i+=2)
+    {
+	for(my $j=0; $j<$period;$j++)
+	{
+	    if($matrix[$i][$j] ne '0' && $matrix[$i+1][$j] ne '0')
+	    {
+
+		return -1;
+	    }
+	}
+    }
+
+    return 1;
+}
+
+
+sub toMJN
+{
+    my $mhn = $_[0];        
+    my $mode = 0; # 0: Auto, 1: Async, 2: Sync
+    my @matrix = @{&__toMHNmatrix($mhn)};
+    my $mjn = '';
+
+    if (scalar @_ > 1)
+    {
+	$mode = $_[1];
+    }
+    
+    if(&isValid($mhn,-1) == -1)
+    {
+	if ((scalar @_ <= 2) || ($_[2] ne "-1")) {
+	    print colored [$common::COLOR_RESULT], $lang::MSG_MHN_ISVALID_ERR0." : ".$_[0]."\n";
+	}
+
+	return -1;
+    }
+
+    my $nbhands = &getHandsNumber($mhn,-1);
+    my $period = &getPeriod($mhn,-1);
+    
+    # This Is an Async Model MJN
+    if(($mode == 0 && &__isMJNasync($mhn,-1) == 1) || $mode == 1)
+    {
+       	for(my $i=0; $i < $period; $i++)
+	{
+	    $mjn .= '<';
+	    
+	    for(my $j=0; $j < $nbhands; $j+=2)
+	    {
+		my $right = '';
+		my $left = '';
+		
+		my $in = $matrix[$j][$i];
+		my $cpt = 0;
+		for(my $k=0;$k<length($in);$k++)
+		{
+		    if($k+1 < length($in) && substr($in,$k+1,1) ne ':')
+		    {
+			$right .= substr($in,$k,1);
+		    }
+		    elsif($k+1 >= length($in))
+		    {
+			$right .= substr($in,$k,1);
+		    }
+		    else
+		    {
+			$right .= substr($in,$k,1);
+			my $dest = int(hex(substr($in,$k+2,1)) / 2) +1;
+			if(hex(substr($in,$k+2,1) %2 == 0))
+			{
+			    if(hex(substr($in,$k,1)) % 2 != 0)
+			    {
+				$right .= 'x';			    
+			    }
+			}
+			else
+			{
+			    if(hex(substr($in,$k,1)) % 2 == 0 && substr($in,$k,1) ne '0')
+			    {
+				$right .= 'x';			    
+			    }
+			}
+			if(int($j/2) +1 != $dest)
+			{
+			    $right .= 'p'.$dest;
+			}
+			$k += 2;
+		    }
+		    $cpt ++;
+		}
+		if($cpt > 1)
+		{
+		    $right = '['.$right.']';
+		}
+
+		$in = $matrix[$j+1][$i];
+		$cpt = 0;
+		for(my $k=0;$k<length($in);$k++)
+		{
+		    if($k+1 < length($in) && substr($in,$k+1,1) ne ':')
+		    {
+			$left .= substr($in,$k,1);
+		    }
+		    elsif($k+1 >= length($in))
+		    {
+			$left .= substr($in,$k,1);
+		    }
+		    else
+		    {
+			$left .= substr($in,$k,1);
+			my $dest = int(hex(substr($in,$k+2,1)) / 2) +1;
+			if(hex(substr($in,$k+2,1) %2 == 0))
+			{
+			    if(hex(substr($in,$k,1)) % 2 == 0 && substr($in,$k,1) ne '0' )
+			    {
+				$left .= 'x';			    
+			    }
+			}
+			else
+			{
+			    if(hex(substr($in,$k,1)) % 2 != 0)
+			    {
+				$left .= 'x';			    
+			    }
+			}
+			if(int($j/2) +1 != $dest)
+			{
+			    $left .= 'p'.$dest;
+			}
+			$k += 2;
+		    }
+		    $cpt ++;
+		}	    
+		if($cpt > 1)
+		{
+		    $left = '['.$left.']';
+		}
+
+		if($right eq '0' && $left eq '0')
+		{
+		    $mjn .= '0';
+		}
+		elsif($right ne '0' && $left eq '0')
+		{
+		    $mjn .= $right;
+		}
+		elsif($left ne '0' && $right eq '0')
+		{
+		    $mjn .= $left;
+		}
+		elsif($left ne '0' && $right ne '0')
+		{
+		    $mjn .= '('.$right.','.$left.')!';
+		}		
+		if($j + 2 < $nbhands)
+		{
+		    $mjn .= '|';
+		}
+	    }
+	    
+	    $mjn .= '>';
+	}
+    }
+    
+    # This Is a Sync Model MJN
+    elsif(($mode == 0 && &__isMJNasync($mhn,-1) == -1) || $mode == 2)
+    {
+	for(my $i=0; $i < $period; $i++)
+	{
+	    $mjn .= '<';
+	    
+	    for(my $j=0; $j < $nbhands; $j+=2)
+	    {
+		my $right = '';
+		my $left = '';
+		
+		my $in = $matrix[$j][$i];
+		my $cpt = 0;
+		for(my $k=0;$k<length($in);$k++)
+		{
+		    if($k+1 < length($in) && substr($in,$k+1,1) ne ':')
+		    {
+			$right .= substr($in,$k,1);
+		    }
+		    elsif($k+1 >= length($in))
+		    {
+			$right .= substr($in,$k,1);
+		    }
+		    else
+		    {
+			$right .= substr($in,$k,1);
+			my $dest = int(hex(substr($in,$k+2,1)) / 2) +1;
+			if(hex(substr($in,$k+2,1) %2 == 0))
+			{
+			    if(hex(substr($in,$k,1)) % 2 != 0)
+			    {
+				$right .= 'x';			    
+			    }
+			}
+			else
+			{
+			    if(hex(substr($in,$k,1)) % 2 == 0 && substr($in,$k,1) ne '0')
+			    {
+				$right .= 'x';			    
+			    }
+			}
+			if(int($j/2) +1 != $dest)
+			{
+			    $right .= 'p'.$dest;
+			}
+			$k += 2;
+		    }
+		    $cpt ++;
+		}
+		if($cpt > 1)
+		{
+		    $right = '['.$right.']';
+		}
+
+		$in = $matrix[$j+1][$i];
+		$cpt = 0;
+		for(my $k=0;$k<length($in);$k++)
+		{
+		    if($k+1 < length($in) && substr($in,$k+1,1) ne ':')
+		    {
+			$left .= substr($in,$k,1);
+		    }
+		    elsif($k+1 >= length($in))
+		    {
+			$left .= substr($in,$k,1);
+		    }
+		    else
+		    {
+			$left .= substr($in,$k,1);
+			my $dest = int(hex(substr($in,$k+2,1)) / 2) +1;
+			if(hex(substr($in,$k+2,1) %2 == 0))
+			{
+			    if(hex(substr($in,$k,1)) % 2 == 0 && substr($in,$k,1) ne '0' )
+			    {
+				$left .= 'x';			    
+			    }
+			}
+			else
+			{
+			    if(hex(substr($in,$k,1)) % 2 != 0)
+			    {
+				$left .= 'x';			    
+			    }
+			}
+			if(int($j/2) +1 != $dest)
+			{
+			    $left .= 'p'.$dest;
+			}
+			$k += 2;
+		    }
+		    $cpt ++;
+		}	    
+		if($cpt > 1)
+		{
+		    $left = '['.$left.']';
+		}
+		
+		$mjn .= '('.$right.','.$left.')!';
+		
+		if($j + 2 < $nbhands)
+		{
+		    $mjn .= '|';
+		}
+	    }
+	    
+	    $mjn .= '>';
+	}
+    }
+    
+    if ((scalar @_ <= 2) || ($_[2] ne "-1")) {
+	print colored [$common::COLOR_RESULT], $mjn."\n";
+    }
+    
+    return $mjn;					
     
 }
 

@@ -19,28 +19,28 @@ State 0:
 	$start -> . input $end	(Rule 0)
 
 	'('	shift, and go to state 4
-	lexerror	shift, and go to state 2
+	lexerror	shift, and go to state 3
 
-	MHN	go to state 1
-	input	go to state 3
+	MHN	go to state 2
+	input	go to state 1
 
 State 1:
+
+	$start -> input . $end	(Rule 0)
+
+	$end	shift, and go to state 5
+
+State 2:
 
 	input -> MHN .	(Rule 1)
 
 	$default	reduce using rule 1 (input)
 
-State 2:
+State 3:
 
 	input -> lexerror .	(Rule 2)
 
 	$default	reduce using rule 2 (input)
-
-State 3:
-
-	$start -> input . $end	(Rule 0)
-
-	$end	shift, and go to state 5
 
 State 4:
 
@@ -49,8 +49,8 @@ State 4:
 
 	digit	shift, and go to state 7
 
-	hand_throws	go to state 6
-	throw	go to state 8
+	throw	go to state 6
+	hand_throws	go to state 8
 
 State 5:
 
@@ -60,10 +60,12 @@ State 5:
 
 State 6:
 
-	MHN -> '(' hand_throws . ')'	(Rule 3)
-	MHN -> '(' hand_throws . ')' MHN	(Rule 4)
+	hand_throws -> throw .	(Rule 5)
+	hand_throws -> throw . ',' hand_throws	(Rule 6)
 
-	')'	shift, and go to state 9
+	','	shift, and go to state 9
+
+	$default	reduce using rule 5 (hand_throws)
 
 State 7:
 
@@ -81,23 +83,19 @@ State 7:
 
 State 8:
 
-	hand_throws -> throw .	(Rule 5)
-	hand_throws -> throw . ',' hand_throws	(Rule 6)
+	MHN -> '(' hand_throws . ')'	(Rule 3)
+	MHN -> '(' hand_throws . ')' MHN	(Rule 4)
 
-	','	shift, and go to state 12
-
-	$default	reduce using rule 5 (hand_throws)
+	')'	shift, and go to state 12
 
 State 9:
 
-	MHN -> '(' hand_throws ')' .	(Rule 3)
-	MHN -> '(' hand_throws ')' . MHN	(Rule 4)
+	hand_throws -> throw ',' . hand_throws	(Rule 6)
 
-	'('	shift, and go to state 4
+	digit	shift, and go to state 7
 
-	$default	reduce using rule 3 (MHN)
-
-	MHN	go to state 13
+	throw	go to state 6
+	hand_throws	go to state 13
 
 State 10:
 
@@ -114,18 +112,20 @@ State 11:
 
 State 12:
 
-	hand_throws -> throw ',' . hand_throws	(Rule 6)
+	MHN -> '(' hand_throws ')' .	(Rule 3)
+	MHN -> '(' hand_throws ')' . MHN	(Rule 4)
 
-	digit	shift, and go to state 7
+	'('	shift, and go to state 4
 
-	throw	go to state 8
-	hand_throws	go to state 15
+	$default	reduce using rule 3 (MHN)
+
+	MHN	go to state 15
 
 State 13:
 
-	MHN -> '(' hand_throws ')' MHN .	(Rule 4)
+	hand_throws -> throw ',' hand_throws .	(Rule 6)
 
-	$default	reduce using rule 4 (MHN)
+	$default	reduce using rule 6 (hand_throws)
 
 State 14:
 
@@ -140,9 +140,9 @@ State 14:
 
 State 15:
 
-	hand_throws -> throw ',' hand_throws .	(Rule 6)
+	MHN -> '(' hand_throws ')' MHN .	(Rule 4)
 
-	$default	reduce using rule 6 (hand_throws)
+	$default	reduce using rule 4 (MHN)
 
 State 16:
 

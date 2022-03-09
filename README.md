@@ -3,7 +3,7 @@
 Author : Frederic Roudaut  
 
 
-jugglingTB's goal is to provide an adaptative toolbox for different
+jugglingTB's goal is to provide an adaptive toolbox for different
 juggling notations. It is designed to be easily extended. It was for my own needs only first to understand some algorithms and to write articles.
 Thus do not expect some huge optimization ... I do it according to my needs ;-/
 
@@ -17,8 +17,11 @@ Currently it supports the following notations :
 - STACK: Stack Notation
 - HTN: 3-Layers Notation/Harmonic Throws Notation
 - SPYRO: Spyrograph for Spin/Antispin/Hybrids/Isolations ...
-- HSS: Object/Hand Siteswap Notationx
-- MHN: Multi-Hand Notation 
+- HSS: Object/Hand Siteswap Notation
+- MHN: Multi-Hand Notation
+- MJN: Multi-Juggler Notation as it is used in JugglingLab
+- MLHSS: Multi-Layer Hand Siteswap Notation : use HSS over MHN </li>
+
 
 The SSWAP module contains the great Tool JugglingLab from Jack Boyce.
 For my personal needs I added others tools:

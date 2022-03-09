@@ -1,11 +1,12 @@
 Config loaded : "conf.ini"
 BTN v1.2.2 loaded
 LADDER v2.2 loaded
-MHN v0.2 loaded
+MHN v0.3 loaded
 SSWAP v1.6 loaded
-No Excel licence detected. Some functions will not be available.
 HSS v0.3 loaded
 HTN v0.6 loaded
+MLHSS v0.2 loaded
+MJN v0.2 loaded
 MMSTD v1.4 loaded
 SOU v1.4 loaded
 SPYRO v0.4 loaded
@@ -90,7 +91,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
 
 ============ MODULES CONTEXT ============
 
-	Modules Available : SSWAP MMSTD STACK HTN HSS SPYRO MHN SOU LADDER BTN 
+	Modules Available : SSWAP STACK MMSTD HSS SPYRO HTN MLHSS MHN BTN LADDER SOU MJN 
 
 
   SSWAP  - SITESWAP juggling Notation (v1.6)
@@ -211,7 +212,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
       langage), plain , plain-ext (Output in plain text). 
       
-      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      	-q <y|n> : Quick drawing without quality respect (Default:n). 
       
       	-s <int> : Print or not the result (Default:0) 
       		'0' : print the result; 
@@ -416,7 +417,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
       langage), plain , plain-ext (Output in plain text). 
       
-      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      	-q <y|n> : Quick drawing without quality respect (Default:n). 
       
       	-s <int> : Print or not the result (Default:0) 
       		'0' : print the result; 
@@ -2029,7 +2030,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
       langage), plain , plain-ext (Output in plain text). 
       
-      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      	-q <y|n> : Quick drawing without quality respect (Default:n). 
       
       	-s <int> : Print or not the result (Default:0) 
       		'0' : print the result; 
@@ -2131,7 +2132,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
       langage), plain , plain-ext (Output in plain text). 
       
-      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      	-q <y|n> : Quick drawing without quality respect (Default:n). 
       
       	-s <int> : Print or not the result (Default:0) 
       		'0' : print the result; 
@@ -2240,7 +2241,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
       langage), plain , plain-ext (Output in plain text). 
       
-      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      	-q <y|n> : Quick drawing without quality respect (Default:n). 
       
       	-s <int> : Print or not the result (Default:0) 
       		'0' : print the result; 
@@ -2295,6 +2296,12 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       extension .xlsx. You must have Excel with a valid license prior !
       (Windows Only). 
 
+
+
+
+  STACK  - STACK juggling Notation (v0.0)
+-----------------------------------------
+     
 
 
 
@@ -2412,75 +2419,6 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
 
 
 
-  STACK  - STACK juggling Notation (v0.0)
------------------------------------------
-     
-
-
-
-  HTN  - Harmonic Throws Notation (3-Layers Notation) (v0.6)
------------------------------------------
-      Harmonic Throws Notation (3-Layers Notation). 
-
-
-  - HTNMaker :                HTNMaker made by Shawn Pinciara to
-                              build Harmonic Grids. 
-      Parameters : 
-      
-      - None. 
-
-
-  - drawGrid :                Draw the grid related to the given
-                              Siteswap. Gnuplot and eventually
-                              Ghostscript and ImageMagick
-                              (converter) have to be installed
-                              prior (images are only PostScript
-                              otherwise). 
-      Parameters : 
-      
-      - <"siteswap"> : Siteswap to draw. 
-      
-      - <"file"> : Image file for the result. 
-      
-      - ["options"] Several options among
-      -[a|b|c|d|e|h|l|p|r|s|t|u|v|y|z] : 
-      
-      	-a <dec> : Staple height for throw on same hand (Default:0.4). 
-      
-      	-b <color> : Staple color (Default:green). 
-      
-      	-c <color> : Circle color (Default:#a935bd). 
-      
-      	-d <color> : Sync color (Default:blue). 
-      
-      	-e <color> : Hand Mode color (Default:blue). 
-      
-      	-h <r|l> : Hand Mode (Default:r). 
-      
-      	-l <y|n> : Print Labels on axis (Default:y). 
-      
-      	-p <int> : Period to draw (Default:10). 
-      
-      	-r <dec> : Circles Radius (Default:0.2). 
-      
-      	-s <int> : Print the result (Default:0) 
-      		'0' : Print the result; 
-      		'1' : No printing. 
-      
-      	-t <y|n> : Print the title (Default:y). 
-      
-      	-u <y|n> : Print the Hand Mode in title (Default:y). 
-      
-      	-v <"string"> : Title Value to set. 
-      
-      	-y <dec> : Y Shift for overlapping throws (Default:0.25). 
-      
-      	-z <"string"> : Terminal Driver. Set Value to empty to see
-      possibilities (Default:auto). 
-
-
-
-
   HSS  - OSS/HSS juggling Notation (v0.3)
 -----------------------------------------
       Object Siteswap/Hand Siteswap Notation (OSS/HSS). 
@@ -2516,7 +2454,10 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       - <"file"> : image file for the result. 
       
       - ["options"] Several options among
-      -[a|b|c|d|e|g|h|i|l|m|n|o|p|q|s|t|v] : 
+      -[a|b|c|d|e|g|h|i|l|m|n|o|p|q|s|t|v|y] :-a <y|n> :  draw HSS
+      (Default:y). 
+      
+      	-b <"string"> :  naming core for hands (Default:M). 
       
       	-c <int> :  Colorization Model (Default:2) 
       		'0' : No colorization; 
@@ -2579,7 +2520,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
       langage), plain , plain-ext (Output in plain text). 
       
-      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      	-q <y|n> : Quick drawing without quality respect (Default:n). 
       
       	-s <int> : Print or not the result (Default:0) 
       		'0' : print the result; 
@@ -2587,14 +2528,13 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       
       	-t <y|n> : Draw the image title (Default:y) 
       
-      	-v <"string"> : Value to use for the title 
+      	-v <"string"> : Value to use for the title. 
       
-      	-a <y|n> :  draw HSS (Default:y). 
+      	-y <int> : HSS Style, 0: Dashed, 1: Dotted, 2 : Solid, 3: Bold, 4:
+      Invis (Default:0). 
       
-      	-b <"string"> :  naming core for hands (Default:M). 
       
-      
-      - [\%hash] : Optional, transitions hash. In this case the
+      - [\%hash] : Optional, transitions hash for OSS. In this case the
       Siteswap is used for the title only. Each key is Ri:j for a right
       transition or Li:j for a left one. i is the throw Beat and j is the
       numero of the thrown object (starting from 0) to help the
@@ -2674,14 +2614,192 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
 
 
 
-  MHN  - Multi-Hand Notation (v0.2)
+  HTN  - Harmonic Throws Notation (3-Layers Notation) (v0.6)
+-----------------------------------------
+      Harmonic Throws Notation (3-Layers Notation). 
+
+
+  - HTNMaker :                HTNMaker made by Shawn Pinciara to
+                              build Harmonic Grids. 
+      Parameters : 
+      
+      - None. 
+
+
+  - drawGrid :                Draw the grid related to the given
+                              Siteswap. Gnuplot and eventually
+                              Ghostscript and ImageMagick
+                              (converter) have to be installed
+                              prior (images are only PostScript
+                              otherwise). 
+      Parameters : 
+      
+      - <"siteswap"> : Siteswap to draw. 
+      
+      - <"file"> : Image file for the result. 
+      
+      - ["options"] Several options among
+      -[a|b|c|d|e|h|l|p|r|s|t|u|v|y|z] : 
+      
+      	-a <dec> : Staple height for throw on same hand (Default:0.4). 
+      
+      	-b <color> : Staple color (Default:green). 
+      
+      	-c <color> : Circle color (Default:#a935bd). 
+      
+      	-d <color> : Sync color (Default:blue). 
+      
+      	-e <color> : Hand Mode color (Default:blue). 
+      
+      	-h <r|l> : Hand Mode (Default:r). 
+      
+      	-l <y|n> : Print Labels on axis (Default:y). 
+      
+      	-p <int> : Period to draw (Default:10). 
+      
+      	-r <dec> : Circles Radius (Default:0.2). 
+      
+      	-s <int> : Print the result (Default:0) 
+      		'0' : Print the result; 
+      		'1' : No printing. 
+      
+      	-t <y|n> : Print the title (Default:y). 
+      
+      	-u <y|n> : Print the Hand Mode in title (Default:y). 
+      
+      	-v <"string"> : Title Value to set. 
+      
+      	-y <dec> : Y Shift for overlapping throws (Default:0.25). 
+      
+      	-z <"string"> : Terminal Driver. Set Value to empty to see
+      possibilities (Default:auto). 
+
+
+
+
+  MLHSS  - Multi-Layer Hand Siteswap Notation (v0.2)
+-----------------------------------------
+      Multi-Layer Hand Siteswap Notation (MLHSS). 
+      
+      Idea is to apply an HSS on each row of a MHN matrix. Each row
+      describes thus several hands throwing asynchronously. Format
+      used for MLHSS is : '('HSS1, ... HSSh')', each HSSi applies on row i
+      and is a Vanilla Siteswap. 
+
+
+  - draw :                    draw the Diagram of a given
+                              MHN/MLHSS. 
+      Parametres : 
+      
+      - <"mhn"> : MHN to draw. 
+      
+      - <"mlhss"> : corresponding MLHSS. 
+      
+      - <"file"> : image file for the result. 
+      
+      - ["options"] Several options among
+      -[a|b|c|d|e|f|g|h|j|k|l|n|o|p|q|s|t|v|y] : 
+      
+      	-a <y|n> : draw HSS (Default:y) 
+      
+      	-b <"string"> : naming core for MLHSS Layers (Default:J). 
+      
+      	-c <int> : Colorization Model for Asynchronous Drawing
+      (Default:2). Otherwise Colorization is done according to beats
+      and hands order. 
+      		'0' : No colorization; 
+      		'1' : Multiplex in increasing order of 
+      		 Siteswap values of previous throws; 
+      		'2' : Multiplexe in increasing order of 
+      		 Siteswap values of previous throws. 
+      
+      	-d <int> :  Synchronous Hack (Default:0) 
+      		'0' : Remove 0 in the drawing after sync throw since 
+      		it is catches beats; 
+      		'1' : No hack. 
+      
+      	-e <"string"> : Label Edge Color according to the Graphviz X11 
+      	scheme (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E for same as the arrow 
+      	(Default:E). 
+      
+      	-f <0|1|2> : Splines Mode : 0: spline, 1:curved, 2:line
+      (Defaut:2). 
+      
+      	-f <0|1|2> : Splines Mode : 0: spline, 1:curved, 2:line
+      (Defaut:2). 
+      
+      	-g <y|n> : Keep Graphviz File used for generating (Default:n). 
+      
+      	-h <y|n> : Print Hands (Default:y). 
+      
+      	-j <y|n> : Print Hand on each Beat (default:y). 
+      
+      	-k <"string"> : Naming core for Hands (Default:H). 
+      
+      	-l <pos> : Position of the Siteswap label 
+      		't': near arrow tail; 
+      		'h': near arrow head; 
+      		'm': middle of the arrow; 
+      		'x': middle of the arrow after drawing; 
+      		's': around the State; 
+      		'n': No Siteswap label. 
+      
+      	-n <y|n> : Draw negatives throws [Experimental] 
+      		(Default:n). 
+      
+      	-p : Periode min to draw (Default:25). 
+      
+      	-o <type> : image format (Default:png) through : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      
+      	-s <int> : Print or not the result (Default:0) 
+      		'0' : print the result; 
+      		'1' : Silence the result. 
+      
+      	-t <y|n> : Draw the image title (Default:y) 
+      
+      	-v <"string"> : Value to use for the title. 
+      
+      	-y <int> : HSS Style, 0: Dashed, 1: Dotted, 2 : Solid, 3: Bold, 4:
+      Invis (Default:0). 
+
+
+  - isValid :                 Check validity of MHN/MLHSS
+                              Combination. 
+      Parameters : 
+      
+      - <"mhn"> : MHN 
+      - <"mlhss"> : MLHSS 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+
+
+  MHN  - Multi-Hand Notation (v0.3)
 -----------------------------------------
       Multi-Hand Siteswap Notation (MHN). 
       
       Used format is the following : 
-      (Juggler 0)(Juggler 1)...(Juggler h-1) 
-      With for each Juggler the throws list on the different beats :
-      Juggler i => T0,T1,...,Tp-1 
+      (Hand 0)(Hand 1)...(Hand h-1) 
+      With for each Hand the throws list on the different beats : Hand i =>
+      T0,T1,...,Tp-1 
       Each throw is : Value:Hand. Throws are in hexadecimal. Hands
       start at number 0 and are in hexadecimal also. If destination hand
       is same than source hand, we do not have to precise it (i.e only
@@ -2702,7 +2820,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       - <"file"> : image file for the result. 
       
       - ["options"] Several options among
-      -[a|b|c|d|e|f|g|h|i|l|m|n|o|p|q|s|t|v|z] : 
+      -[a|b|c|d|e|f|g|h|j|k|l|m|n|o|p|q|s|t|v|z] : 
       
       	-a <y|n> : Asynchronous drawing (OSS/HSS) if possible
       (Default:n) 
@@ -2735,10 +2853,13 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       
       	-g <y|n> : Keep Graphviz File used for generating (Default:n). 
       
-      	-h <y|n> : Print Hands. 
+      	-h <y|n> : Print Hands (Default:y). 
       
-      	-i "list using ," : Print Hands Enumeration for Vanilla Flat
-      diagram. 
+      	-j <y|n> : Print Hand on each Beat, for MLHSS model. Ex
+      (H1,H2)(H3,H4). 
+      
+      	-k "list of lists using ( ) and ," : Print Hands Enumeration for
+      MLHSS Model (Default:n). 
       
       	-l <pos> : Position of the Siteswap label 
       		't': near arrow tail; 
@@ -2792,11 +2913,11 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       	-b <y|n> : naming core for hands (Default:M) 
       
       
-      - [\%hash] : Optional, transitions hash. In this case the
-      Siteswap is used for the title only. Each key is Ri:j for a right
-      transition or Li:j for a left one. i is the throw Beat and j is the
-      numero of the thrown object (starting from 0) to help the
-      colorization 
+      - [\%hash] : Optional, transitions hash in Asynchronous model.
+      In this case the Siteswap is used for the title only. Each key is
+      Ri:j for a right transition or Li:j for a left one. i is the throw
+      Beat and j is the numero of the thrown object (starting from 0) to
+      help the colorization 
       	Ex :  %hash = ( 
       		'L2:0' => 'R4:0', 
       		'R2:0' => 'R4:1', 
@@ -2863,6 +2984,16 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       - [-1] Optional, return the result, but do not print it. 
 
 
+  - toMJN :                   Give the corresponding MJN
+                              Notation. 
+      Parameters : 
+      
+      - <"mhn"> : MHN. 
+      - [int] Optional, MJN Model (0: auto, 1: async, 2: sync)
+      (Default:0). 
+      - [-1] Optional, return the result, but do not print it. 
+
+
   - toSS :                    Give the corresponding Siteswap
                               Notation when possible (i.e At most 2
                               Hands). 
@@ -2874,92 +3005,61 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
 
 
 
-  SOU  - Extended S,O,U juggling Notation (v1.4)
+  BTN  - BTN juggling Notation (v1.2.2)
 -----------------------------------------
-      In this module a SOU pattern will be made of a states (O, Ob, U, Ub, S,
-      Sb) and exchanges (<in>, <out>) sequence. 
+      In this module a BTN throw will be made of a list of holes AC, AL, BOL
+      and the OP operator (Uppercase/Lowercase). 
       
-      Example :
-      O<in>S<out>U<in>Ob<in>Sb<out>Ub<in>Sb<out>U<in>Ob<in>Sb 
+      	Examples : OPALAC, BOLAL, OPALOPAC ... 
 
 
-  - gen :                     Generation of all patterns with
-                              duplication removal. 
+  - BTNParity :               Give the BTN Parity. 
       Parameters : 
       
-      - <cpt> : Number of Passages per State 
-      - <pathLenMax> : Path Length Maximum (-1 : any length) 
+      - <Throw> : Throw. 
+      - [-1] Optional, return the result, but do not print it (0: even, 1:
+      odd) 
+
+
+  - gen :                     Give all BTN throws limited by the
+                              number of holes encountered. 
+      Parameters : 
+      
+      - <int> : Maximum number of holes to go through [>4 is for
+      Extra-Terrestrial ;-)]. 
       - ["file"] Optional, file to write results in. 
 
 
-  - genByState :              Generation of all patterns
-                              classified per state. 
+  - gen2 :                    Give all BTN throws, excepted throws
+                              that contains two same successive
+                              holes in the body. 
       Parameters : 
       
-      - <cpt> : Number of Passages per State 
-      - <pathLenMax> : Path Length Maximum (-1 : any length) 
+      - <int> : Maximum number of holes to go through [>4 is for
+      Extra-Terrestrial ;-)]. 
       - ["file"] Optional, file to write results in. 
 
 
-  - graph :                   Display the SOU Graph of valid
-                              transitions. 
+  - inv :                     Give the BTN Time Reversed throw
+                              related. 
       Parameters : 
       
-      - None. 
-
-
-  - inv :                     Compute inversion of a designated
-                              pattern. 
-      Parameters : 
-      
-      - <pattern> : pattern that we want to get the inversion 
+      - <Throw> : Throw to Time Reversered. 
+      - <Parity> : Siteswap parity (0: even, 1: odd). 
       - [-1] Optional, return the result, but do not print it. 
 
 
-  - isEquivalent :            Test equivalence between 2
-                              patterns. 
+  - isValid :                 Test if the BTN Throw is valid. 
       Parameters : 
       
-      - <pattern1> <pattern2> : patterns to compare. 
+      - <Throw> : Throw to check. 
       - [-1] Optional, return the result, but do not print it. 
 
 
-  - isSymetric :              Test if two patterns are symetric. 
+  - size :                    Give the Throw Length in Hole Unit. 
       Parameters : 
       
-      - <pattern1> <pattern2> : patterns to check. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - isValid :                 Test if the pattern is valid. 
-      Parameters : 
-      
-      - <pattern> : pattern to test. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - size :                    Give the Pattern Length in State
-                              Unit. 
-      Parameters : 
-      
-      - <pattern> : pattern that we want to get the length. One Unit is
-      considered only if it is composed of a State and a Transition. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - sym :                     Compute symetry of a designated
-                              pattern. 
-      Parameters : 
-      
-      - <pattern> : pattern that we want to get the symetry 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - toMMSTD :                 Give the corresponding MMSTD
-                              Notation. 
-      Parameters : 
-      
-      - <pattern> : pattern that we want to get the MMSTD Notation. 
+      - <Throw> : Throw that we want to get the length. 
       - [-1] Optional, return the result, but do not print it. 
 
 
@@ -3068,7 +3168,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
       langage), plain , plain-ext (Output in plain text). 
       
-      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      	-q <y|n> : Quick drawing without quality respect (Default:n). 
       
       	-s <int> : Print or not the result (Default:0) 
       		'0' : print the result; 
@@ -3168,7 +3268,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
       langage), plain , plain-ext (Output in plain text). 
       
-      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      	-q <y|n> : Quick drawing without quality respect (Default:n). 
       
       	-s <int> : Print or not the result (Default:0) 
       		'0' : print the result; 
@@ -3253,7 +3353,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
       langage), plain , plain-ext (Output in plain text). 
       
-      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      	-q <y|n> : Quick drawing without quality respect (Default:n). 
       
       	-s <int> : Print or not the result (Default:0) 
       		'0' : print the result; 
@@ -3343,7 +3443,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
       langage), plain , plain-ext (Output in plain text). 
       
-      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      	-q <y|n> : Quick drawing without quality respect (Default:n). 
       
       	-s <int> : Print or not the result (Default:0) 
       		'0' : print the result; 
@@ -3431,7 +3531,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
       langage), plain , plain-ext (Output in plain text). 
       
-      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      	-q <y|n> : Quick drawing without quality respect (Default:n). 
       
       	-s <int> : Print or not the result (Default:0) 
       		'0' : print the result; 
@@ -3514,7 +3614,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
       langage), plain , plain-ext (Output in plain text). 
       
-      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      	-q <y|n> : Quick drawing without quality respect (Default:n). 
       
       	-s <int> : Print or not the result (Default:0) 
       		'0' : print the result; 
@@ -3604,7 +3704,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
       langage), plain , plain-ext (Output in plain text). 
       
-      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      	-q <y|n> : Quick drawing without quality respect (Default:n). 
       
       	-s <int> : Print or not the result (Default:0) 
       		'0' : print the result; 
@@ -3617,61 +3717,277 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
 
 
 
-  BTN  - BTN juggling Notation (v1.2.2)
+  SOU  - Extended S,O,U juggling Notation (v1.4)
 -----------------------------------------
-      In this module a BTN throw will be made of a list of holes AC, AL, BOL
-      and the OP operator (Uppercase/Lowercase). 
+      In this module a SOU pattern will be made of a states (O, Ob, U, Ub, S,
+      Sb) and exchanges (<in>, <out>) sequence. 
       
-      	Examples : OPALAC, BOLAL, OPALOPAC ... 
+      Example :
+      O<in>S<out>U<in>Ob<in>Sb<out>Ub<in>Sb<out>U<in>Ob<in>Sb 
 
 
-  - BTNParity :               Give the BTN Parity. 
+  - gen :                     Generation of all patterns with
+                              duplication removal. 
       Parameters : 
       
-      - <Throw> : Throw. 
-      - [-1] Optional, return the result, but do not print it (0: even, 1:
-      odd) 
-
-
-  - gen :                     Give all BTN throws limited by the
-                              number of holes encountered. 
-      Parameters : 
-      
-      - <int> : Maximum number of holes to go through [>4 is for
-      Extra-Terrestrial ;-)]. 
+      - <cpt> : Number of Passages per State 
+      - <pathLenMax> : Path Length Maximum (-1 : any length) 
       - ["file"] Optional, file to write results in. 
 
 
-  - gen2 :                    Give all BTN throws, excepted throws
-                              that contains two same successive
-                              holes in the body. 
+  - genByState :              Generation of all patterns
+                              classified per state. 
       Parameters : 
       
-      - <int> : Maximum number of holes to go through [>4 is for
-      Extra-Terrestrial ;-)]. 
+      - <cpt> : Number of Passages per State 
+      - <pathLenMax> : Path Length Maximum (-1 : any length) 
       - ["file"] Optional, file to write results in. 
 
 
-  - inv :                     Give the BTN Time Reversed throw
-                              related. 
+  - graph :                   Display the SOU Graph of valid
+                              transitions. 
       Parameters : 
       
-      - <Throw> : Throw to Time Reversered. 
-      - <Parity> : Siteswap parity (0: even, 1: odd). 
+      - None. 
+
+
+  - inv :                     Compute inversion of a designated
+                              pattern. 
+      Parameters : 
+      
+      - <pattern> : pattern that we want to get the inversion 
       - [-1] Optional, return the result, but do not print it. 
 
 
-  - isValid :                 Test if the BTN Throw is valid. 
+  - isEquivalent :            Test equivalence between 2
+                              patterns. 
       Parameters : 
       
-      - <Throw> : Throw to check. 
+      - <pattern1> <pattern2> : patterns to compare. 
       - [-1] Optional, return the result, but do not print it. 
 
 
-  - size :                    Give the Throw Length in Hole Unit. 
+  - isSymetric :              Test if two patterns are symetric. 
       Parameters : 
       
-      - <Throw> : Throw that we want to get the length. 
+      - <pattern1> <pattern2> : patterns to check. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - isValid :                 Test if the pattern is valid. 
+      Parameters : 
+      
+      - <pattern> : pattern to test. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - size :                    Give the Pattern Length in State
+                              Unit. 
+      Parameters : 
+      
+      - <pattern> : pattern that we want to get the length. One Unit is
+      considered only if it is composed of a State and a Transition. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - sym :                     Compute symetry of a designated
+                              pattern. 
+      Parameters : 
+      
+      - <pattern> : pattern that we want to get the symetry 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - toMMSTD :                 Give the corresponding MMSTD
+                              Notation. 
+      Parameters : 
+      
+      - <pattern> : pattern that we want to get the MMSTD Notation. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+
+
+  MJN  - Multi-Juggler Notation (v0.2)
+-----------------------------------------
+      Multi-Juggler Notation (MJN) as used in JugglingLab. 
+      
+      The used format is the following for each Asynchroneous or
+      Synchroneous Beat : 
+      <Juggler 1|Juggler 2|...|Juggler j> 
+      In Synchroneous, the symbole ! is possible. We will refer to the
+      JugglingLab documentation if needed 
+      
+      Here are some possible example : <2|3p><2p|3><[3p/2]|3p><3|3>
+      ou encore <(2p3,4x)|(2xp3,4p1)|(2xp2,4xp2)>. 
+
+
+  - draw :                    draw the Diagram of a given MJN. 
+      Parametres : 
+      
+      - <"mjn"> : MJN to draw. 
+      
+      - <"file"> : image file for the result. 
+      
+      - ["options"] Several options among
+      -[a|b|c|d|e|f|g|h|j|k|l|m|n|o|p|q|s|t|v|z] : 
+      
+      	-a <y|n> : Asynchronous drawing (OSS/HSS) if possible
+      (Default:n) 
+      
+      	-b <"string"> : naming core for Jugglers (Default:J). 
+      
+      	-c <int> : Colorization Model for Asynchronous Drawing
+      (Default:2). Otherwise Colorization is done according to beats
+      and hands order. 
+      		'0' : No colorization; 
+      		'1' : Multiplex in increasing order of 
+      		 Siteswap values of previous throws; 
+      		'2' : Multiplexe in increasing order of 
+      		 Siteswap values of previous throws. 
+      
+      	-d <int> :  Synchronous Hack (Default:0) 
+      		'0' : Remove 0 in the drawing after sync throw since 
+      		it is catches beats; 
+      		'1' : No hack. 
+      
+      	-e <"string"> : Label Edge Color according to the Graphviz X11 
+      	scheme (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E for same as the arrow 
+      	(Default:E). 
+      
+      	-f <0|1|2> : Splines Mode : 0: spline, 1:curved, 2:line
+      (Defaut:2). 
+      
+      	-g <y|n> : Keep Graphviz File used for generating (Default:n). 
+      
+      	-h <y|n> : Print Jugglers (Default:y). 
+      
+      	-j <y|n> : Print Hand on each Beat, for MJHSS model. Ex
+      (H1,H2)(H3,H4). 
+      
+      	-k "list of lists using ( ) and ," : Print Hands Enumeration for
+      MJHSS Model (Default:n). 
+      
+      	-l <pos> : Position of the Siteswap label 
+      		't': near arrow tail; 
+      		'h': near arrow head; 
+      		'm': middle of the arrow; 
+      		'x': middle of the arrow after drawing; 
+      		's': around the State; 
+      		'n': No Siteswap label. 
+      
+      	-m <0|1|2> : Diagram Model (Default: According to the Siteswap
+      Type) 
+      		'0' : Ladder; 
+      		'1' : Flattened Ladder (Asynchronous Siteswap); 
+      		'2' : Ladder with odd Beats removed starting from 0 
+      			(Synchronous Siteswap). 
+      
+      	-n <y|n> : Draw negatives throws [Experimental] 
+      		(Default:n). 
+      
+      	-p : Periode min to draw (Default:25). 
+      
+      	-o <type> : image format (Default:png) through : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      
+      	-s <int> : Print or not the result (Default:0) 
+      		'0' : print the result; 
+      		'1' : Silence the result. 
+      
+      	-t <y|n> : Draw the image title (Default:y) 
+      
+      	-v <"string"> : Value to use for the title. 
+      
+      	-z <"y|n"> : possible Zero in HSS computation ((Default:y). 
+      
+      	-a <y|n> : draw HSS (Default:y) 
+      
+      	-b <y|n> : naming core for hands (Default:M) 
+      
+      
+      - [\%hash] : Optional, transitions hash in Asynchronous model.
+      In this case the Siteswap is used for the title only. Each key is
+      Ri:j for a right transition or Li:j for a left one. i is the throw
+      Beat and j is the numero of the thrown object (starting from 0) to
+      help the colorization 
+      	Ex :  %hash = ( 
+      		'L2:0' => 'R4:0', 
+      		'R2:0' => 'R4:1', 
+      		'L4:0' => 'R6:0', 
+      		'R4:0' => 'R5:0', 
+      		'R4:1' => 'L6:0', 
+      		'R6:0' => 'R6:0' 
+      		); 
+
+
+  - getJugglersNumber :       Give the number of jugglers needed
+                              for the MJN. 
+      Parameters : 
+      
+      - <"mjn"> : MJN to analyze. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - getObjNumber :            Give the number of objects needed for
+                              the MJN. 
+      Parameters : 
+      
+      - <"mjn"> : MJN to analyze. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - getPeriod :               Give the MJN Period 
+      Parameters : 
+      
+      - <"mjn"> : MJN to analyze. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - isAsync :                 Check if MJN is Asynchronous. 
+      Parameters : 
+      
+      - <"mjn"> : MJN to check. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - isSyntaxValid :           Check the MJN grammar syntax. 
+      Parameters : 
+      
+      - <"mjn"> : MJN to check. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - isValid :                 Check the MJN validity. 
+      Parameters : 
+      
+      - <"mjn"> : MJN to check. 
+      
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - toMHN :                   Give the corresponding MHN
+                              Notation. 
+      Parameters : 
+      
+      - <"mjn"> : MJN. 
       - [-1] Optional, return the result, but do not print it. 
 
 

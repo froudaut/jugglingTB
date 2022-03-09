@@ -27,31 +27,31 @@ sub new {
 	{#State 0
 		ACTIONS => {
 			"(" => 4,
-			'lexerror' => 2
+			'lexerror' => 3
 		},
 		GOTOS => {
-			'MHN' => 1,
-			'input' => 3
+			'MHN' => 2,
+			'input' => 1
 		}
 	},
 	{#State 1
-		DEFAULT => -1
-	},
-	{#State 2
-		DEFAULT => -2
-	},
-	{#State 3
 		ACTIONS => {
 			'' => 5
 		}
+	},
+	{#State 2
+		DEFAULT => -1
+	},
+	{#State 3
+		DEFAULT => -2
 	},
 	{#State 4
 		ACTIONS => {
 			'digit' => 7
 		},
 		GOTOS => {
-			'hand_throws' => 6,
-			'throw' => 8
+			'throw' => 6,
+			'hand_throws' => 8
 		}
 	},
 	{#State 5
@@ -59,8 +59,9 @@ sub new {
 	},
 	{#State 6
 		ACTIONS => {
-			")" => 9
-		}
+			"," => 9
+		},
+		DEFAULT => -5
 	},
 	{#State 7
 		ACTIONS => {
@@ -74,17 +75,16 @@ sub new {
 	},
 	{#State 8
 		ACTIONS => {
-			"," => 12
-		},
-		DEFAULT => -5
+			")" => 12
+		}
 	},
 	{#State 9
 		ACTIONS => {
-			"(" => 4
+			'digit' => 7
 		},
-		DEFAULT => -3,
 		GOTOS => {
-			'MHN' => 13
+			'throw' => 6,
+			'hand_throws' => 13
 		}
 	},
 	{#State 10
@@ -97,15 +97,15 @@ sub new {
 	},
 	{#State 12
 		ACTIONS => {
-			'digit' => 7
+			"(" => 4
 		},
+		DEFAULT => -3,
 		GOTOS => {
-			'throw' => 8,
-			'hand_throws' => 15
+			'MHN' => 15
 		}
 	},
 	{#State 13
-		DEFAULT => -4
+		DEFAULT => -6
 	},
 	{#State 14
 		ACTIONS => {
@@ -117,7 +117,7 @@ sub new {
 		}
 	},
 	{#State 15
-		DEFAULT => -6
+		DEFAULT => -4
 	},
 	{#State 16
 		DEFAULT => -10
@@ -276,7 +276,7 @@ sub yylex{
 	    return ("","") if $_ eq "";
 	# Tokens
 	    s!^([A-Fa-f0-9])!! and return ("digit", $1);
-	s!^([\[\]():,])!! and return ($1, $1);
+	s!^([():,])!! and return ($1, $1);
     	if($verbose ne "-1") {
 		print STDERR "Unexpected symbols: $Input\n" and return ("lexerror",$1);
 	}

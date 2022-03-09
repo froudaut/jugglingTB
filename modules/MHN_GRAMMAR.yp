@@ -116,7 +116,7 @@ sub yylex{
 	    return ("","") if $_ eq "";
 	# Tokens
 	    s!^([A-Fa-f0-9])!! and return ("digit", $1);
-	s!^([\[\]():,])!! and return ($1, $1);
+	s!^([():,])!! and return ($1, $1);
     	if($verbose ne "-1") {
 		print STDERR "Unexpected symbols: $Input\n" and return ("lexerror",$1);
 	}
