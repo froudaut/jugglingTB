@@ -20,6 +20,7 @@ Currently it supports the following notations :
 - HSS: Object/Hand Siteswap Notation
 - MHN: Multi-Hand Notation
 - MJN: Multi-Juggler Notation as it is used in JugglingLab
+- MJHSS: Multi-Juggler Hand Siteswap Notation : use HSS over MJN </li>
 - MLHSS: Multi-Layer Hand Siteswap Notation : use HSS over MHN </li>
 
 

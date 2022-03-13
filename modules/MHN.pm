@@ -441,7 +441,7 @@ sub draw
     my $inner_hands_seq_undef='R,L';
     my $inner_hands_seq = '';
     my $inner_hands = 'N';
-    my $link_hands = 0;          # To link hands by peer
+    my $link_hands = 0;          # To link hands by peer (not shown in doc)
     
     my $ret = &GetOptionsFromString(uc($_[2]),    
 				    "-O:s" => \$fileOutputType,
@@ -595,7 +595,7 @@ sub draw
 	    }
 	}
 	
-	my $opts="-H $hands -i $hands_seq ";
+	my $opts="-h $hands -i $hands_seq ";
 	# Remove Useless options
 	for (my $i=0; $i < length($_[2]); $i++)
 	{
@@ -603,6 +603,9 @@ sub draw
 	       && (uc(substr($_[2],$i+1,1)) eq 'A'
 		   || uc(substr($_[2],$i+1,1)) eq 'Z'
 		   || uc(substr($_[2],$i+1,1)) eq 'F'
+		   || uc(substr($_[2],$i+1,1)) eq 'I'
+		   || uc(substr($_[2],$i+1,1)) eq 'H'
+		   || uc(substr($_[2],$i+1,1)) eq 'B'
 		   || uc(substr($_[2],$i+1,1)) eq 'J'
 		   || uc(substr($_[2],$i+1,1)) eq 'K')
 		)
@@ -619,8 +622,15 @@ sub draw
 	    
 	}
 
-	
-	&SSWAP::draw($ss,$fileOutput,$opts, $_[3]);
+
+	if(scalar @_ <= 3)
+	{
+	    &SSWAP::draw($ss,$fileOutput,$opts);
+	}
+	else
+	{
+	    &SSWAP::draw($ss,$fileOutput,$opts, $_[3]);
+	}
 	print colored [$common::COLOR_RESULT], "OSS : $ss\n";
 	print colored [$common::COLOR_RESULT], "HSS : $hss\n\n";
 	

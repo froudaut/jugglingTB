@@ -7,6 +7,7 @@ HSS v0.3 loaded
 HTN v0.6 loaded
 MLHSS v0.2 loaded
 MJN v0.2 loaded
+MJHSS v0.2 loaded
 MMSTD v1.4 loaded
 SOU v1.4 loaded
 SPYRO v0.4 loaded
@@ -97,12 +98,285 @@ Differents parametres de configuration peuvent egalement etre positionnes dans <
 
 ============   CONTEXTE DES MODULES   ============
 
-	Modules disponibles : STACK SOU LADDER SSWAP MLHSS MHN SPYRO MJN MMSTD HSS HTN BTN 
+	Modules disponibles : HSS MMSTD SOU STACK MLHSS MJHSS SSWAP LADDER MJN SPYRO BTN HTN MHN 
 
 
-  STACK  - STACK juggling Notation (v0.0)
+  HSS  - OSS/HSS juggling Notation (v0.3)
 -----------------------------------------
-     
+      Object Siteswap/Hand Siteswap Notation (OSS/HSS). 
+
+
+  - basicMap :                Cartographie des types de Siteswaps
+                              Multi-Mains Asynchrone de Base,
+                              nombre Mains x Objets. 
+      Parametres : 
+      
+      - [int] : Nombre Max de Mains (Defaut:15). 
+      - [int] : Nombre Max d'Objets (Defaut:15). 
+
+
+  - changeHSS :               Donne l'OSS obtenu en changeant
+                              l'HSS a 2 mains mais en conservant les
+                              Mains pour les throws et catchs
+                              [Experimental]. 
+      Parametres : 
+      
+      - <"oss"> : Siteswap Asynchrone. 
+      - <"hss"> : Hand Siteswap Initial. 
+      - <"hss"> : Hand Siteswap Final. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - draw :                    Dessine le Diagramme associe au
+                              OSS/HSS. 
+      Parametres : 
+      
+      - <"oss"> : OSS a dessiner. 
+      
+      - <"hss"> : HSS a dessiner. 
+      
+      - <"fichier"> : fichier image de resultats. 
+      
+      - ["options"] Differentes options
+      -[a|b|c|d|e|g|h|i|l|m|n|o|p|q|s|t|v|y] precisees
+      ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2). 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+      
+      
+      - [\%hash] : Optionnel, hash des transitions pour OSS. Dans ce cas
+      le Siteswap n'est utilise que pour le titre. Chaque Cle/Valeur
+      est de la forme : Ri:j pour une transition amorcee a droite ou Li:j
+      lorsqu'il s'agit de la gauche. i correspond au Beat du lancer et j
+      est le numero de l'objet lors du lancer (en commençant a 0) pour
+      aider a la colorisation. 
+      	Ex :  %hash = ( 
+      		'L2:0' => 'R4:0', 
+      		'R2:0' => 'R4:1', 
+      		'L4:0' => 'R6:0', 
+      		'R4:0' => 'R5:0', 
+      		'R4:1' => 'L6:0', 
+      		'R6:0' => 'R6:0' 
+      		); 
+
+
+  - getHandsSeq :             Donne le sequencement des mains
+                              selon l'HSS d'entree. 
+      Parametres : 
+      
+      - <"hss"> : Hand Siteswap. 
+      - <"string"> : Mains impliquees separees par des , . 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isValid :                 Teste la validite de la combinaison
+                              OSS/HSS. 
+      Parametres : 
+      
+      - <"oss"> : OSS 
+      - <"hss"> : HSS 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - toMHN :                   Donne la Notation MHN
+                              correspondante. 
+      Parametres : 
+      
+      - <"oss"> : OSS. 
+      - <"hss"> : HSS. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - toSS :                    Donne la Notation Siteswap
+                              correspondante si possible (i.e au
+                              max 2 Mains). 
+      Parametres : 
+      
+      - <"oss"> : OSS. 
+      - <"hss"> : HSS. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+
+
+  MMSTD  - MMSTD (Mills Mess State Transition) juggling Notation (v1.4)
+-----------------------------------------
+      Dans ce module un pattern MMSTD sera compose d'une succession
+      d'etats (Ur, Ul, Rl, Rr, Lr, Lr) et d'echanges (-+->, -o->). 
+      
+      	Exemples : Ur -o-> Ll -+> Ur , Rr -+-> Ul -o-> 
+
+
+  - gen :                     Generation de tous les patterns avec
+                              suppression des redondances. 
+      Parametres : 
+      
+      - <cpt> : Nombre de Passages maximum par Etat 
+      - <pathLenMax> : Longueur du chemin maximum (-1 : toute longueur) 
+      - ["fichier"] Optionnel, fichier de resultats. 
+
+
+  - genByState :              Generation de tous les patterns avec
+                              classification par Etat. 
+      Parametres : 
+      
+      - <cpt> : Nombre de Passages maximum par Etat 
+      - <pathLenMax> : Longueur du chemin maximum (-1 : toute longueur) 
+      - ["fichier"] Optionnel, fichier de resultats. 
+
+
+  - graph :                   Affiche le Graphe MMSTD des
+                              transitions valides. 
+      Parametres : 
+      
+      - Aucun ou sinon Graphviz doit prealablement etre installe et son
+      Path correctement configure dans <conf.ini> 
+      
+      - <"fichier"> : fichier de resultats. 
+      
+      - ["Format"] Optionnel, format d'image (Defaut:png) parmi : bmp
+      (Windows Bitmap Format), cmapx (client-side imagemap for use in
+      html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain, plain-ext (Output in plain text) 
+      
+      - ["Generateur"] Optionnel, filtre generateur Graphviz
+      (Defaut:dot) parmi : circo (circular layout), dot(directed
+      graphs), neato (undirected graphs), twopi (radial layouts),
+      fdp (undirected graphs), sfdp (large undirected graphs), osage
+      (clustered graphs). 
+
+
+  - inv :                     Calcule l'inversion d'un pattern. 
+      Parametres : 
+      
+      - <pattern> : pattern 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isEquivalent :            Teste l'equivalence de 2 patterns. 
+      Parametres : 
+      
+      - <pattern1> <pattern2> : patterns a comparer. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isSymetric :              Teste la symetrie de 2 patterns. 
+      Parametres : 
+      
+      - <pattern1> <pattern2> : patterns a comparer. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isValid :                 Teste la validite d'un pattern. 
+      Parametres : 
+      
+      - <pattern> : pattern a tester. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - size :                    Donne la longueur du pattern en
+                              nombre d'Etats. 
+      Parametres : 
+      
+      - <pattern> : pattern. Une unite est consideree uniquement sur
+      composition d'un Etat et d'une transition. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - sym :                     Calcule la symetrie d'un pattern. 
+      Parametres : 
+      
+      - <pattern> : pattern 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - toSOU :                   Donne la notation SOU
+                              correspondante. 
+      Parametres : 
+      
+      - <pattern> : pattern. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
 
 
 
@@ -196,52 +470,44 @@ Differents parametres de configuration peuvent egalement etre positionnes dans <
 
 
 
-  LADDER  - LADDER juggling Notation (v2.2)
+  STACK  - STACK juggling Notation (v0.0)
 -----------------------------------------
-      La description des Diagrammes se fera en utilisant la notation
-      SITESWAP Classique telle qu'elle est utilisee par JugglingLab. 
-      
-      	Exemples : 534, (6x,4)*, (2x,[22x])(2,[22])(2,[22x])*. 
-      
-      On considerera en plus les symboles '!' et '*' que ce soit en
-      Synchrone ou en Asynchrone : 
-      
-      '!' : supprime un Beat de temps. Apres un Siteswap Synchrone il
-      indique que le lancer suivant se fait sur le Beat suivant cense
-      etre un Beat de recuperation (et non plus 2 Beats apres). Apres un
-      lancer Asynchrone, il indique que le lancer suivant se fait au
-      meme Beat. Il devient alors possible de representer un Siteswap
-      Synchrone par un Siteswap Asynchrone. Les Multiplexes peuvent
-      egalement etre adaptes selon ce schema 
-      
-      '*' : dans le cas d'un Siteswap Synchrone il indique un changement
-      de l'ordre des mains et n'est plus obligatoirement positionne a
-      la fin. Dans le cas d'un Siteswap Asynchrone, le prochain lancer
-      se fait par la meme main (Notion de Hurry). 
-      
-      
-      	Exemples : 4!40, 5!*4!*3, 6x0*, (6x,0)*, 51x*, (1x,3)!11x* ... 
-      
-      
-      Ce module differentie aussi la colorisation des multiplexes. 
-      
-      
-      	Exemples : 24[54] et 24[45] ont une colorisation differente. 
+     
 
 
-  - draw :                    Dessine le Diagramme en Echelle
-                              associe au Siteswap. Graphviz doit
-                              avoir ete installe au prealable. 
+
+  MLHSS  - Multi-Layer Hand Siteswap Notation (v0.2)
+-----------------------------------------
+      Multi-Layer Hand Siteswap Notation (MLHSS). 
+      
+      L'idee est d'appliquer un HSS sur chaque ligne d'une matrice MHN.
+      Chaque ligne MHN correspond donc a plusieurs mains lançant de
+      maniere asynchrone. Le format utilise pour le MLHSS est :
+      '('HSS1, ... HSSh')', chaque HSSi s'appliquant sur la ligne i et
+      etant un Siteswap Vanille. 
+
+
+  - draw :                    Dessine le Diagramme associe au
+                              MHN/MLHSS. 
       Parametres : 
       
-      - <"siteswap"> : Siteswap a dessiner. 
+      - <"mhn"> : MHN a dessiner. 
+      
+      - <"mlhss"> : MLHSS correspondant. 
       
       - <"fichier"> : fichier image de resultats. 
       
       - ["options"] Differentes options
-      -[c|d|e|g|h|i|l|m|n|o|p|q|s|t|v] precisees ci-dessous : 
+      -[a|b|c|d|e|f|g|h|j|k|l|n|o|p|q|s|t|v|y] precisees
+      ci-dessous : 
       
-      	-c <int> :  Mode de colorisation (Defaut:2). 
+      	-a <y|n> : Dessine HSS (Defaut:y). 
+      
+      	-b <"string"> : base de nommage des Layers MLHSS (Defaut:J). 
+      
+      	-c <int> : Mode de colorisation pour HSS (Defaut:2). Sinon la
+      colorisation est calculee selon le beat le plus petit et l'ordre
+      des Mains. 
       		'0' : pas de colorisation; 
       		'1' : Multiplexe dans l'ordre croissant des valeurs 
       		 Siteswap des lancers precedents; 
@@ -260,13 +526,17 @@ Differents parametres de configuration peuvent egalement etre positionnes dans <
       	mediumslateblue). E pour couleur identique a la fleche 
       	(Defaut:E). 
       
+      	-f <0|1|2> : Splines Mode : 0: spline, 1:curved, 2:line
+      (Defaut:2). 
+      
       	-g <y|n> : Conserve Fichier Graphviz pour generation
       (Defaut:n). 
       
-      	-h <y|n> : Affichage des Mains. 
+      	-h <y|n> : Affichage des Layers (Defaut:y). 
       
-      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
-      Vanille. 
+      	-j <y|n> : Affichage des Mains sur chaque Beat (Defaut:y). 
+      
+      	-k <"string"> : Base de nommage des Mains (Defaut:H). 
       
       	-l <pos> : Position du label de Siteswap 
       		't': tail, pres de la queue de la fleche; 
@@ -275,13 +545,6 @@ Differents parametres de configuration peuvent egalement etre positionnes dans <
       		'x': external, au centre de la fleche apres trace; 
       		's': state, pres de l'Etat; 
       		'n': Pas de label de Siteswap. 
-      
-      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
-      Siteswap) 
-      		'0' : Ladder; 
-      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
-      		'2' : Ladder avec suppression des Beats impairs en 
-      		commençant a 0 (Siteswap Synchrone). 
       
       	-n <y|n> : Affichage des lancers negatifs [Experimental] 
       		(Defaut:n). 
@@ -303,48 +566,62 @@ Differents parametres de configuration peuvent egalement etre positionnes dans <
       
       	-p <int> : Periode minimum a afficher (Defaut:25). 
       
-      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
-      
       	-s <int> : Affichage du resultat (Defaut:0) 
       		'0' : Affiche le resultat; 
       		'1' : Pas d'affichage. 
       
+      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
+      
       	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
       
-      	-v <"string"> : Force la valeur du Titre de l'image 
+      	-v <"string"> : Force la valeur du Titre de l'image. 
       
-      - [\%hash] : Optionnel, hash des transitions. Dans ce cas le
-      Siteswap n'est utilise que pour le titre. Chaque Cle/Valeur est
-      de la forme : Ri:j pour une transition amorcee a droite ou Li:j
-      lorsqu'il s'agit de la gauche. i correspond au Beat du lancer et j
-      est le numero de l'objet lors du lancer (en commençant a 0) pour
-      aider a la colorisation. 
-      	Ex :  %hash = ( 
-      		'L2:0' => 'R4:0', 
-      		'R2:0' => 'R4:1', 
-      		'L4:0' => 'R6:0', 
-      		'R4:0' => 'R5:0', 
-      		'R4:1' => 'L6:0', 
-      		'R6:0' => 'R6:0' 
-      		); 
+      	-y <int> : Style HSS, 0: Dashed, 1: Dotted, 2 : Solid, 3: Bold, 4:
+      Invis (Defaut:0). 
 
 
-  - inv :                     Dessine le Diagramme Time-Reversed
-                              du Diagramme en Echelle associe au
-                              Siteswap. 
-      Le Siteswap obtenu ne prend pas en compte la colorisation; le
-      diagramme la considere. 
-      
+  - isValid :                 Teste la validite de la combinaison
+                              MHN/MLHSS. 
       Parametres : 
       
-      - <"siteswap"> : Siteswap. 
+      - <"mhn"> : MHN 
+      - <"mlhss"> : MLHSS 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+
+
+  MJHSS  - Multi-Juggler Hand Siteswap Notation (v0.2)
+-----------------------------------------
+      Multi-Juggler Hand Siteswap Notation (MJHSS). 
+      
+      L'idee est d'appliquer un HSS sur chaque colonne d'une matrice
+      MJN en modele Siteswap Asynchrone.  Le format utilise pour le
+      MJHSS est : '('HSS1, ... HSSh')', chaque HSSi s'appliquant sur la
+      colonne i et etant un Siteswap Vanille. 
+
+
+  - draw :                    Dessine le Diagramme associe au
+                              MJN/MJHSS. 
+      Parametres : 
+      
+      - <"mjn"> : MJN a dessiner. 
+      
+      - <"mjhss"> : MJHSS correspondant. 
       
       - <"fichier"> : fichier image de resultats. 
       
       - ["options"] Differentes options
-      -[c|d|e|g|h|i|l|m|n|o|p|q|s|t|v] precisees ci-dessous : 
+      -[a|b|c|d|e|f|g|h|j|k|l|m|n|o|p|q|s|t|v|y|z] precisees
+      ci-dessous : 
       
-      	-c <int> :  Mode de colorisation (Defaut:2). 
+      	-a <y|n> : Dessine HSS (Defaut:y). 
+      
+      	-b <"string"> : base de nommage des jongleurs (Defaut:J). 
+      
+      	-c <int> : Mode de colorisation en Asynchrone (Defaut:2). Sinon
+      la colorisation est calculee selon le beat le plus petit et
+      l'ordre des Mains. 
       		'0' : pas de colorisation; 
       		'1' : Multiplexe dans l'ordre croissant des valeurs 
       		 Siteswap des lancers precedents; 
@@ -363,13 +640,18 @@ Differents parametres de configuration peuvent egalement etre positionnes dans <
       	mediumslateblue). E pour couleur identique a la fleche 
       	(Defaut:E). 
       
+      	-f <0|1|2> : Splines Mode : 0: spline, 1:curved, 2:line
+      (Defaut:2). 
+      
       	-g <y|n> : Conserve Fichier Graphviz pour generation
       (Defaut:n). 
       
-      	-h <y|n> : Affichage des Mains. 
+      	-h <y|n> : Affichage des Jongleurs (Defaut:y). 
       
-      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
-      Vanille. 
+      	-j <y|n> : Affichage des Mains sur chaque Beat, pour un Modele
+      MJHSS (Defaut:n). 
+      
+      	-k <"string"> : Base de nommage des Mains (Defaut:H). 
       
       	-l <pos> : Position du label de Siteswap 
       		't': tail, pres de la queue de la fleche; 
@@ -406,457 +688,30 @@ Differents parametres de configuration peuvent egalement etre positionnes dans <
       
       	-p <int> : Periode minimum a afficher (Defaut:25). 
       
-      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
-      
       	-s <int> : Affichage du resultat (Defaut:0) 
       		'0' : Affiche le resultat; 
       		'1' : Pas d'affichage. 
       
+      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
+      
       	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
       
-      	-v <"string"> : Force la valeur du Titre de l'image 
+      	-v <"string"> : Force la valeur du Titre de l'image. 
+      
+      	-y <int> : Style HSS, 0: Dashed, 1: Dotted, 2 : Solid, 3: Bold, 4:
+      Invis (Defaut:0). 
+      
+      	-z <"y|n"> : Zero possible dans la representation HSS
+      ((Defaut:y). 
 
 
-  - merge :                   Superpose 2 Siteswaps et dessine le
-                              Diagramme associe. 
+  - isValid :                 Teste la validite de la combinaison
+                              MJN/MJHSS. 
       Parametres : 
       
-      - <"siteswap1"> : Siteswap1. 
-      
-      - <"siteswap2"> : Siteswap2. 
-      
-      - <"fichier"> : fichier image de resultats. 
-      
-      - ["options"] Differentes options
-      -[c|d|h|l|m|n|o|p|q|r|s|t|v] precisees ci-dessous : 
-      
-      	-c <int> :  Mode de colorisation (Defaut:2). 
-      		'0' : pas de colorisation; 
-      		'1' : Multiplexe dans l'ordre croissant des valeurs 
-      		 Siteswap des lancers precedents; 
-      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
-      		 Siteswap des lancers precedents. 
-      
-      	-d <int> :  Synchronous Hack (Defaut:0) 
-      		'0' : Suppression des 0 dans le diagramme apres les lancers 
-      		synchrones puisqu'il s'agit des receptions; 
-      		'1' : Pas de hack. 
-      
-      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
-      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
-      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
-      	darkorange, olivedrab1, turquoise4, black, peru, 
-      	mediumslateblue). E pour couleur identique a la fleche 
-      	(Defaut:E). 
-      
-      	-g <y|n> : Conserve Fichier Graphviz pour generation
-      (Defaut:n). 
-      
-      	-h <y|n> : Affichage des Mains. 
-      
-      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
-      Vanille. 
-      
-      	-l <pos> : Position du label de Siteswap 
-      		't': tail, pres de la queue de la fleche; 
-      		'h': head, pres de la tete; 
-      		'm': middle, au centre de la fleche; 
-      		'x': external, au centre de la fleche apres trace; 
-      		's': state, pres de l'Etat; 
-      		'n': Pas de label de Siteswap. 
-      
-      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
-      Siteswap) 
-      		'0' : Ladder; 
-      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
-      		'2' : Ladder avec suppression des Beats impairs en 
-      		commençant a 0 (Siteswap Synchrone). 
-      
-      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
-      		(Defaut:n). 
-      
-      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
-      Bitmap Format), cmapx (client-side imagemap for use in html and
-      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
-      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
-      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
-      pcl (Laserjet printers), imap (imagemap files for httpd servers
-      for each node or edge that has a non-null "href" attribute.), jpg,
-      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
-      Document Format), png (Portable Network Graphics format), ps
-      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
-      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
-      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
-      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
-      langage), plain , plain-ext (Output in plain text). 
-      
-      	-p <int> : Periode minimum a afficher (Defaut:25). 
-      
-      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
-      
-      	-s <int> : Affichage du resultat (Defaut:0) 
-      		'0' : Affiche le resultat; 
-      		'1' : Pas d'affichage. 
-      
-      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
-      
-      	-v <"string"> : Force la valeur du Titre de l'image 
-      
-      	-r <int> : Suppression des 0 dans les Multiplexes (Defaut:0) 
-      		'0' : Suppression; 
-      		'1' : Conservation. 
-
-
-  - removeObj :               Dessine le Diagramme en Echelle
-                              associe au Siteswap apres
-                              suppression d'un ou plusieurs
-                              objets. 
-      Parametres : 
-      
-      - <"siteswap"> : Siteswap. 
-      
-      - <int ou "[list]"> : Numero de l'objet a supprimer (en commençant
-      a 0) ou liste d'objets separes par des ",". 
-      
-      - <"fichier"> : fichier image de resultats. 
-      
-      - ["options"] Differentes options
-      -[c|d|e|g|h|i|l|m|n|o|p|q|s|t|v] precisees ci-dessous : 
-      
-      	-c <int> :  Mode de colorisation (Defaut:2). 
-      		'0' : pas de colorisation; 
-      		'1' : Multiplexe dans l'ordre croissant des valeurs 
-      		 Siteswap des lancers precedents; 
-      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
-      		 Siteswap des lancers precedents. 
-      
-      	-d <int> :  Synchronous Hack (Defaut:0) 
-      		'0' : Suppression des 0 dans le diagramme apres les lancers 
-      		synchrones puisqu'il s'agit des receptions; 
-      		'1' : Pas de hack. 
-      
-      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
-      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
-      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
-      	darkorange, olivedrab1, turquoise4, black, peru, 
-      	mediumslateblue). E pour couleur identique a la fleche 
-      	(Defaut:E). 
-      
-      	-g <y|n> : Conserve Fichier Graphviz pour generation
-      (Defaut:n). 
-      
-      	-h <y|n> : Affichage des Mains. 
-      
-      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
-      Vanille. 
-      
-      	-l <pos> : Position du label de Siteswap 
-      		't': tail, pres de la queue de la fleche; 
-      		'h': head, pres de la tete; 
-      		'm': middle, au centre de la fleche; 
-      		'x': external, au centre de la fleche apres trace; 
-      		's': state, pres de l'Etat; 
-      		'n': Pas de label de Siteswap. 
-      
-      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
-      Siteswap) 
-      		'0' : Ladder; 
-      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
-      		'2' : Ladder avec suppression des Beats impairs en 
-      		commençant a 0 (Siteswap Synchrone). 
-      
-      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
-      		(Defaut:n). 
-      
-      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
-      Bitmap Format), cmapx (client-side imagemap for use in html and
-      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
-      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
-      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
-      pcl (Laserjet printers), imap (imagemap files for httpd servers
-      for each node or edge that has a non-null "href" attribute.), jpg,
-      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
-      Document Format), png (Portable Network Graphics format), ps
-      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
-      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
-      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
-      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
-      langage), plain , plain-ext (Output in plain text). 
-      
-      	-p <int> : Periode minimum a afficher (Defaut:25). 
-      
-      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
-      
-      	-s <int> : Affichage du resultat (Defaut:0) 
-      		'0' : Affiche le resultat; 
-      		'1' : Pas d'affichage. 
-      
-      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
-      
-      	-v <"string"> : Force la valeur du Titre de l'image 
-
-
-  - slide :                   Dessine le Diagramme en Echelle
-                              apres decalage(s) de la main droite
-                              ou gauche d'un Siteswap. 
-      Parametres : 
-      
-      - <"siteswap"> : Siteswap. 
-      
-      - <"main"> : Main a decaler (droite : "R" ou gauche : "L") 
-      
-      - <"dec"> : Valeur du decalage (ex : +1 , -2, 3) 
-      
-      - <"fichier"> : fichier image de resultats. 
-      
-      - ["options"] Differentes options
-      -[c|d|e|g|h|i|l|m|n|o|p|q|s|t|v] precisees ci-dessous : 
-      
-      	-c <int> :  Mode de colorisation (Defaut:2). 
-      		'0' : pas de colorisation; 
-      		'1' : Multiplexe dans l'ordre croissant des valeurs 
-      		 Siteswap des lancers precedents; 
-      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
-      		 Siteswap des lancers precedents. 
-      
-      	-d <int> :  Synchronous Hack (Defaut:0) 
-      		'0' : Suppression des 0 dans le diagramme apres les lancers 
-      		synchrones puisqu'il s'agit des receptions; 
-      		'1' : Pas de hack. 
-      
-      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
-      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
-      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
-      	darkorange, olivedrab1, turquoise4, black, peru, 
-      	mediumslateblue). E pour couleur identique a la fleche 
-      	(Defaut:E). 
-      
-      	-g <y|n> : Conserve Fichier Graphviz pour generation
-      (Defaut:n). 
-      
-      	-h <y|n> : Affichage des Mains. 
-      
-      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
-      Vanille. 
-      
-      	-l <pos> : Position du label de Siteswap 
-      		't': tail, pres de la queue de la fleche; 
-      		'h': head, pres de la tete; 
-      		'm': middle, au centre de la fleche; 
-      		'x': external, au centre de la fleche apres trace; 
-      		's': state, pres de l'Etat; 
-      		'n': Pas de label de Siteswap. 
-      
-      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
-      Siteswap) 
-      		'0' : Ladder; 
-      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
-      		'2' : Ladder avec suppression des Beats impairs en 
-      		commençant a 0 (Siteswap Synchrone). 
-      
-      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
-      		(Defaut:n). 
-      
-      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
-      Bitmap Format), cmapx (client-side imagemap for use in html and
-      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
-      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
-      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
-      pcl (Laserjet printers), imap (imagemap files for httpd servers
-      for each node or edge that has a non-null "href" attribute.), jpg,
-      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
-      Document Format), png (Portable Network Graphics format), ps
-      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
-      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
-      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
-      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
-      langage), plain , plain-ext (Output in plain text). 
-      
-      	-p <int> : Periode minimum a afficher (Defaut:25). 
-      
-      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
-      
-      	-s <int> : Affichage du resultat (Defaut:0) 
-      		'0' : Affiche le resultat; 
-      		'1' : Pas d'affichage. 
-      
-      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
-      
-      	-v <"string"> : Force la valeur du Titre de l'image 
-
-
-  - sym :                     Dessine le Symetrique du Diagramme
-                              en Echelle associe au Siteswap. 
-      Parametres : 
-      
-      - <"siteswap"> : Siteswap. 
-      - <"fichier"> : fichier image de resultats. 
-      
-      - ["options"] Differentes options
-      -[c|d|e|g|h|i|l|m|n|o|p|q|s|t|v] precisees ci-dessous : 
-      
-      	-c <int> :  Mode de colorisation (Defaut:2). 
-      		'0' : pas de colorisation; 
-      		'1' : Multiplexe dans l'ordre croissant des valeurs 
-      		 Siteswap des lancers precedents; 
-      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
-      		 Siteswap des lancers precedents. 
-      
-      	-d <int> :  Synchronous Hack (Defaut:0) 
-      		'0' : Suppression des 0 dans le diagramme apres les lancers 
-      		synchrones puisqu'il s'agit des receptions; 
-      		'1' : Pas de hack. 
-      
-      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
-      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
-      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
-      	darkorange, olivedrab1, turquoise4, black, peru, 
-      	mediumslateblue). E pour couleur identique a la fleche 
-      	(Defaut:E). 
-      
-      	-g <y|n> : Conserve Fichier Graphviz pour generation
-      (Defaut:n). 
-      
-      	-h <y|n> : Affichage des Mains. 
-      
-      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
-      Vanille. 
-      
-      	-l <pos> : Position du label de Siteswap 
-      		't': tail, pres de la queue de la fleche; 
-      		'h': head, pres de la tete; 
-      		'm': middle, au centre de la fleche; 
-      		'x': external, au centre de la fleche apres trace; 
-      		's': state, pres de l'Etat; 
-      		'n': Pas de label de Siteswap. 
-      
-      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
-      Siteswap) 
-      		'0' : Ladder; 
-      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
-      		'2' : Ladder avec suppression des Beats impairs en 
-      		commençant a 0 (Siteswap Synchrone). 
-      
-      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
-      		(Defaut:n). 
-      
-      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
-      Bitmap Format), cmapx (client-side imagemap for use in html and
-      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
-      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
-      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
-      pcl (Laserjet printers), imap (imagemap files for httpd servers
-      for each node or edge that has a non-null "href" attribute.), jpg,
-      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
-      Document Format), png (Portable Network Graphics format), ps
-      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
-      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
-      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
-      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
-      langage), plain , plain-ext (Output in plain text). 
-      
-      	-p <int> : Periode minimum a afficher (Defaut:25). 
-      
-      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
-      
-      	-s <int> : Affichage du resultat (Defaut:0) 
-      		'0' : Affiche le resultat; 
-      		'1' : Pas d'affichage. 
-      
-      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
-      
-      	-v <"string"> : Force la valeur du Titre de l'image 
-
-
-  - toMultiSync :             Donne le Siteswap MultiSynchrone
-                              correspondant (ie transformation
-                              des multiplexes, des lancers
-                              synchrones) 
-      Parametres : 
-      
-      - <"siteswap"> : Siteswap. 
-      
-      - <Type> : Type de MultiSynchrone (0: MultiSynchrone Reduit, 1:
-      Combinaison Synchrone/Asynchrone, 2: MultiSynchrone etendu
-      format Async, 3: MultiSynchrone etendu format Sync ) 
-      
-      - ["fichier"] Optionnel, fichier image de resultats au format
-      png. Si -1 pas d'image generee 
-      
-      - ["options"] Differentes options
-      -[c|d|e|g|h|i|l|m|n|o|p|q|s|t|v] precisees ci-dessous : 
-      
-      	-c <int> :  Mode de colorisation (Defaut:2). 
-      		'0' : pas de colorisation; 
-      		'1' : Multiplexe dans l'ordre croissant des valeurs 
-      		 Siteswap des lancers precedents; 
-      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
-      		 Siteswap des lancers precedents. 
-      
-      	-d <int> :  Synchronous Hack (Defaut:0) 
-      		'0' : Suppression des 0 dans le diagramme apres les lancers 
-      		synchrones puisqu'il s'agit des receptions; 
-      		'1' : Pas de hack. 
-      
-      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
-      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
-      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
-      	darkorange, olivedrab1, turquoise4, black, peru, 
-      	mediumslateblue). E pour couleur identique a la fleche 
-      	(Defaut:E). 
-      
-      	-g <y|n> : Conserve Fichier Graphviz pour generation
-      (Defaut:n). 
-      
-      	-h <y|n> : Affichage des Mains. 
-      
-      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
-      Vanille. 
-      
-      	-l <pos> : Position du label de Siteswap 
-      		't': tail, pres de la queue de la fleche; 
-      		'h': head, pres de la tete; 
-      		'm': middle, au centre de la fleche; 
-      		'x': external, au centre de la fleche apres trace; 
-      		's': state, pres de l'Etat; 
-      		'n': Pas de label de Siteswap. 
-      
-      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
-      Siteswap) 
-      		'0' : Ladder; 
-      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
-      		'2' : Ladder avec suppression des Beats impairs en 
-      		commençant a 0 (Siteswap Synchrone). 
-      
-      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
-      		(Defaut:n). 
-      
-      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
-      Bitmap Format), cmapx (client-side imagemap for use in html and
-      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
-      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
-      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
-      pcl (Laserjet printers), imap (imagemap files for httpd servers
-      for each node or edge that has a non-null "href" attribute.), jpg,
-      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
-      Document Format), png (Portable Network Graphics format), ps
-      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
-      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
-      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
-      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
-      langage), plain , plain-ext (Output in plain text). 
-      
-      	-p <int> : Periode minimum a afficher (Defaut:25). 
-      
-      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
-      
-      	-s <int> : Affichage du resultat (Defaut:0) 
-      		'0' : Affiche le resultat; 
-      		'1' : Pas d'affichage. 
-      
-      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
-      
-      	-v <"string"> : Force la valeur du Titre de l'image 
+      - <"mjn"> : MJN 
+      - <"mjhss"> : MJHSS 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
 
 
 
@@ -3156,38 +3011,705 @@ Differents parametres de configuration peuvent egalement etre positionnes dans <
 
 
 
-  MLHSS  - Multi-Layer Hand Siteswap Notation (v0.2)
+  LADDER  - LADDER juggling Notation (v2.2)
 -----------------------------------------
-      Multi-Layer Hand Siteswap Notation (MLHSS). 
+      La description des Diagrammes se fera en utilisant la notation
+      SITESWAP Classique telle qu'elle est utilisee par JugglingLab. 
       
-      L'idee est d'appliquer un HSS sur chaque ligne d'une matrice MHN.
-      Chaque ligne MHN correspond donc a plusieurs mains lançant de
-      maniere asynchrone. Le format utilise pour le MLHSS est :
-      '('HSS1, ... HSSh')', chaque HSSi s'appliquant sur la ligne i et
-      etant un Siteswap Vanille. 
+      	Exemples : 534, (6x,4)*, (2x,[22x])(2,[22])(2,[22x])*. 
+      
+      On considerera en plus les symboles '!' et '*' que ce soit en
+      Synchrone ou en Asynchrone : 
+      
+      '!' : supprime un Beat de temps. Apres un Siteswap Synchrone il
+      indique que le lancer suivant se fait sur le Beat suivant cense
+      etre un Beat de recuperation (et non plus 2 Beats apres). Apres un
+      lancer Asynchrone, il indique que le lancer suivant se fait au
+      meme Beat. Il devient alors possible de representer un Siteswap
+      Synchrone par un Siteswap Asynchrone. Les Multiplexes peuvent
+      egalement etre adaptes selon ce schema 
+      
+      '*' : dans le cas d'un Siteswap Synchrone il indique un changement
+      de l'ordre des mains et n'est plus obligatoirement positionne a
+      la fin. Dans le cas d'un Siteswap Asynchrone, le prochain lancer
+      se fait par la meme main (Notion de Hurry). 
+      
+      
+      	Exemples : 4!40, 5!*4!*3, 6x0*, (6x,0)*, 51x*, (1x,3)!11x* ... 
+      
+      
+      Ce module differentie aussi la colorisation des multiplexes. 
+      
+      
+      	Exemples : 24[54] et 24[45] ont une colorisation differente. 
 
 
-  - draw :                    Dessine le Diagramme associe au
-                              MHN/MLHSS. 
+  - draw :                    Dessine le Diagramme en Echelle
+                              associe au Siteswap. Graphviz doit
+                              avoir ete installe au prealable. 
       Parametres : 
       
-      - <"mhn"> : MHN a dessiner. 
-      
-      - <"mlhss"> : MLHSS correspondant. 
+      - <"siteswap"> : Siteswap a dessiner. 
       
       - <"fichier"> : fichier image de resultats. 
       
       - ["options"] Differentes options
-      -[a|b|c|d|e|f|g|h|j|k|l|n|o|p|q|s|t|v|y] precisees
+      -[c|d|e|g|h|i|l|m|n|o|p|q|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2). 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+      
+      - [\%hash] : Optionnel, hash des transitions. Dans ce cas le
+      Siteswap n'est utilise que pour le titre. Chaque Cle/Valeur est
+      de la forme : Ri:j pour une transition amorcee a droite ou Li:j
+      lorsqu'il s'agit de la gauche. i correspond au Beat du lancer et j
+      est le numero de l'objet lors du lancer (en commençant a 0) pour
+      aider a la colorisation. 
+      	Ex :  %hash = ( 
+      		'L2:0' => 'R4:0', 
+      		'R2:0' => 'R4:1', 
+      		'L4:0' => 'R6:0', 
+      		'R4:0' => 'R5:0', 
+      		'R4:1' => 'L6:0', 
+      		'R6:0' => 'R6:0' 
+      		); 
+
+
+  - inv :                     Dessine le Diagramme Time-Reversed
+                              du Diagramme en Echelle associe au
+                              Siteswap. 
+      Le Siteswap obtenu ne prend pas en compte la colorisation; le
+      diagramme la considere. 
+      
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap. 
+      
+      - <"fichier"> : fichier image de resultats. 
+      
+      - ["options"] Differentes options
+      -[c|d|e|g|h|i|l|m|n|o|p|q|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2). 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+
+
+  - merge :                   Superpose 2 Siteswaps et dessine le
+                              Diagramme associe. 
+      Parametres : 
+      
+      - <"siteswap1"> : Siteswap1. 
+      
+      - <"siteswap2"> : Siteswap2. 
+      
+      - <"fichier"> : fichier image de resultats. 
+      
+      - ["options"] Differentes options
+      -[c|d|h|l|m|n|o|p|q|r|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2). 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+      
+      	-r <int> : Suppression des 0 dans les Multiplexes (Defaut:0) 
+      		'0' : Suppression; 
+      		'1' : Conservation. 
+
+
+  - removeObj :               Dessine le Diagramme en Echelle
+                              associe au Siteswap apres
+                              suppression d'un ou plusieurs
+                              objets. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap. 
+      
+      - <int ou "[list]"> : Numero de l'objet a supprimer (en commençant
+      a 0) ou liste d'objets separes par des ",". 
+      
+      - <"fichier"> : fichier image de resultats. 
+      
+      - ["options"] Differentes options
+      -[c|d|e|g|h|i|l|m|n|o|p|q|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2). 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+
+
+  - slide :                   Dessine le Diagramme en Echelle
+                              apres decalage(s) de la main droite
+                              ou gauche d'un Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap. 
+      
+      - <"main"> : Main a decaler (droite : "R" ou gauche : "L") 
+      
+      - <"dec"> : Valeur du decalage (ex : +1 , -2, 3) 
+      
+      - <"fichier"> : fichier image de resultats. 
+      
+      - ["options"] Differentes options
+      -[c|d|e|g|h|i|l|m|n|o|p|q|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2). 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+
+
+  - sym :                     Dessine le Symetrique du Diagramme
+                              en Echelle associe au Siteswap. 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap. 
+      - <"fichier"> : fichier image de resultats. 
+      
+      - ["options"] Differentes options
+      -[c|d|e|g|h|i|l|m|n|o|p|q|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2). 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+
+
+  - toMultiSync :             Donne le Siteswap MultiSynchrone
+                              correspondant (ie transformation
+                              des multiplexes, des lancers
+                              synchrones) 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap. 
+      
+      - <Type> : Type de MultiSynchrone (0: MultiSynchrone Reduit, 1:
+      Combinaison Synchrone/Asynchrone, 2: MultiSynchrone etendu
+      format Async, 3: MultiSynchrone etendu format Sync ) 
+      
+      - ["fichier"] Optionnel, fichier image de resultats au format
+      png. Si -1 pas d'image generee 
+      
+      - ["options"] Differentes options
+      -[c|d|e|g|h|i|l|m|n|o|p|q|s|t|v] precisees ci-dessous : 
+      
+      	-c <int> :  Mode de colorisation (Defaut:2). 
+      		'0' : pas de colorisation; 
+      		'1' : Multiplexe dans l'ordre croissant des valeurs 
+      		 Siteswap des lancers precedents; 
+      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
+      		 Siteswap des lancers precedents. 
+      
+      	-d <int> :  Synchronous Hack (Defaut:0) 
+      		'0' : Suppression des 0 dans le diagramme apres les lancers 
+      		synchrones puisqu'il s'agit des receptions; 
+      		'1' : Pas de hack. 
+      
+      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
+      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E pour couleur identique a la fleche 
+      	(Defaut:E). 
+      
+      	-g <y|n> : Conserve Fichier Graphviz pour generation
+      (Defaut:n). 
+      
+      	-h <y|n> : Affichage des Mains. 
+      
+      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
+      Vanille. 
+      
+      	-l <pos> : Position du label de Siteswap 
+      		't': tail, pres de la queue de la fleche; 
+      		'h': head, pres de la tete; 
+      		'm': middle, au centre de la fleche; 
+      		'x': external, au centre de la fleche apres trace; 
+      		's': state, pres de l'Etat; 
+      		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
+      
+      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
+      		(Defaut:n). 
+      
+      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-p <int> : Periode minimum a afficher (Defaut:25). 
+      
+      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image 
+
+
+
+
+  MJN  - Multi-Juggler Notation (v0.2)
+-----------------------------------------
+      Multi-Juggler Notation (MJN) telle qu'utilisee dans
+      JugglingLab. 
+      
+      Le format utilise est le suivant pour chaque Beat Asynchrone ou
+      Synchrone : 
+      <Jongleur 1|Jongleur 2|...|Jongleur j> 
+      En mode Synchrone, le symbole ! est accepte. On se reportera a la
+      documentation de JugglingLab au besoin 
+      
+      Voici des exemples possibles : <2|3p><2p|3><[3p/2]|3p><3|3>
+      ou encore <(2p3,4x)|(2xp3,4p1)|(2xp2,4xp2)>. 
+
+
+  - draw :                    Dessine le Diagramme associe au MJN. 
+      Parametres : 
+      
+      - <"mjn"> : MJN a dessiner. 
+      
+      - <"fichier"> : fichier image de resultats. 
+      
+      - ["options"] Differentes options
+      -[a|b|c|d|e|f|g|h|j|k|l|m|n|o|p|q|s|t|v|z] precisees
       ci-dessous : 
       
-      	-a <y|n> : Dessine HSS (Defaut:y) 
+      	-a <y|n> : Representation Asynchrone (OSS/HSS) si possible
+      (Defaut:n) 
       
-      	-b <"string"> : base de nommage des Layers MLHSS (Defaut:J). 
+      	-b <"string"> : base de nommage des jongleurs (Defaut:J). 
       
-      	-c <int> : Mode de colorisation pour HSS (Defaut:2). Sinon la
-      colorisation est calculee selon le beat le plus petit et l'ordre
-      des Mains. 
+      	-c <int> : Mode de colorisation en Asynchrone (Defaut:2). Sinon
+      la colorisation est calculee selon le beat le plus petit et
+      l'ordre des Mains. 
       		'0' : pas de colorisation; 
       		'1' : Multiplexe dans l'ordre croissant des valeurs 
       		 Siteswap des lancers precedents; 
@@ -3212,11 +3734,13 @@ Differents parametres de configuration peuvent egalement etre positionnes dans <
       	-g <y|n> : Conserve Fichier Graphviz pour generation
       (Defaut:n). 
       
-      	-h <y|n> : Affichage des Mains (Defaut:y). 
+      	-h <y|n> : Affichage des Jongleurs (Defaut:y). 
       
-      	-j <y|n> : Affichage des Mains sur chaque Beat (Defaut:y). 
+      	-j <y|n> : Affichage des Mains sur chaque Beat, pour un Modele
+      MJHSS (Defaut:n). 
       
-      	-k <"string"> : Base de nommage des Mains (Defaut:H). 
+      	-k "liste de listes avec ( ) et ," : Enumeration des Mains pour un
+      modele MJHSS. Ex (M1,M2)(M3,M4) 
       
       	-l <pos> : Position du label de Siteswap 
       		't': tail, pres de la queue de la fleche; 
@@ -3225,6 +3749,13 @@ Differents parametres de configuration peuvent egalement etre positionnes dans <
       		'x': external, au centre de la fleche apres trace; 
       		's': state, pres de l'Etat; 
       		'n': Pas de label de Siteswap. 
+      
+      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
+      Siteswap) 
+      		'0' : Ladder; 
+      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
+      		'2' : Ladder avec suppression des Beats impairs en 
+      		commençant a 0 (Siteswap Synchrone). 
       
       	-n <y|n> : Affichage des lancers negatifs [Experimental] 
       		(Defaut:n). 
@@ -3256,17 +3787,230 @@ Differents parametres de configuration peuvent egalement etre positionnes dans <
       
       	-v <"string"> : Force la valeur du Titre de l'image. 
       
-      	-y <int> : Style HSS, 0: Dashed, 1: Dotted, 2 : Solid, 3: Bold, 4:
-      Invis (Defaut:0). 
+      	-z <"y|n"> : Zero possible dans la representation HSS
+      ((Defaut:y). 
+      
+      - [\%hash] : Optionnel, hash des transitions en Mode Asynchrone.
+      Dans ce cas le Siteswap n'est utilise que pour le titre. Chaque
+      Cle/Valeur est de la forme : Ri:j pour une transition amorcee a
+      droite ou Li:j lorsqu'il s'agit de la gauche. i correspond au Beat
+      du lancer et j est le numero de l'objet lors du lancer (en
+      commençant a 0) pour aider a la colorisation. 
+      	Ex :  %hash = ( 
+      		'L2:0' => 'R4:0', 
+      		'R2:0' => 'R4:1', 
+      		'L4:0' => 'R6:0', 
+      		'R4:0' => 'R5:0', 
+      		'R4:1' => 'L6:0', 
+      		'R6:0' => 'R6:0' 
+      		); 
 
 
-  - isValid :                 Teste la validite de la combinaison
-                              MHN/MLHSS. 
+  - getJugglersNumber :       Donne le nombre de jongleurs du MJN. 
       Parametres : 
       
-      - <"mhn"> : MHN 
-      - <"mlhss"> : MLHSS 
+      - <"mjn"> : MJN a analyser. 
       - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - getObjNumber :            Donne le nombre d'objets du MJN. 
+      Parametres : 
+      
+      - <"mjn"> : MJN a analyser. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - getPeriod :               Donne la Periode du MJN. 
+      Parametres : 
+      
+      - <"mjn"> : MJN a analyser. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isAsync :                 Teste le caractere Asynchrone du
+                              MJN. 
+      Parametres : 
+      
+      - <"mjn"> : MJN a tester 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isSyntaxValid :           Teste la syntaxe grammaticale du
+                              MJN. 
+      Parametres : 
+      
+      - <"mjn"> : MJN a tester 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isValid :                 Teste la validite du MJN. 
+      Parametres : 
+      
+      - <"mjn"> : MJN a tester 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - toMHN :                   Donne la Notation MHN
+                              correspondante. 
+      Parametres : 
+      
+      - <"mjn"> : MJN. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+
+
+  SPYRO  - Juggling SPYROGRAPH (v0.4)
+-----------------------------------------
+      SPYRO definit un spyrographe pour jongleur. Il permet la
+      modelisation des Spins, Antispins, Hybrides, Isolations,
+      Extensions dans un unique plan. 
+
+
+  - anim :                    Lance JuggleSpyro HTML5. 
+      Parametres : 
+      
+      - Aucun ou optionnellement le port du serveur HTTP. 
+
+
+  - poiFlowers :              Lance le Simulateur de Poï de David
+                              Lyons. 
+      Parametres : 
+      
+      - Aucun. 
+
+
+  - staffSimMCP :             Lance le Simulateur de Staffs de MCP. 
+      Parametres : 
+      
+      - Aucun. 
+
+
+
+
+  BTN  - BTN juggling Notation (v1.2.2)
+-----------------------------------------
+      Dans ce module un lancer BTN sera compose d'une succession de
+      trous pris parmi AC, AL, BOL ainsi que de l'operateur OP
+      (Minuscule ou Majuscule). 
+      
+      	Exemples : OPALAC, BOLAL, OPALOPAC ... 
+
+
+  - BTNParity :               Donne la parite BTN. 
+      Parametres : 
+      
+      - <Throw> : Lancer. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. En
+      retour 0 indique une parite Paire, 1 indique Impaire 
+
+
+  - gen :                     Donne les lancers BTN limites par le
+                              nombre de trous traverses. 
+      Parametres : 
+      
+      - <int> : Nombre maximum de trous traverses [>4 reserve aux
+      Extra-Terrestres ;-)]. 
+      - ["fichier"] Optionnel, fichier de resultats. 
+
+
+  - gen2 :                    Donne les lancers BTN sans les
+                              lancers dont le corps contient 2
+                              trous successifs identiques. 
+      Parametres : 
+      
+      - <int> : Nombre maximum de trous traverses [>4 reserve aux
+      Extra-Terrestres ;-)]. 
+      - ["fichier"] Optionnel, fichier de resultats. 
+
+
+  - inv :                     Donne le lancer BTN Time Reversed
+                              associe. 
+      Parametres : 
+      
+      - <Lancer> : Lancer dont on veut obtenir le Time Reversed. 
+      - <Parite> : Parite du lancer (0: paire, 1: impaire). 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - isValid :                 Teste la validite du lancer BTN. 
+      Parametres : 
+      
+      - <Lancer> : Lancer a valider. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+  - size :                    Donne la taille du lancer en nombre de
+                              trous traverses. 
+      Parametres : 
+      
+      - <Throw> : Lancer. 
+      - [-1] Optionnel, retourne le resultat sans l'afficher. 
+
+
+
+
+  HTN  - Harmonic Throws Notation (3-Layers Notation) (v0.6)
+-----------------------------------------
+      Harmonic Throws Notation (3-Layers Notation). 
+
+
+  - HTNMaker :                HTNMaker de Shawn Pinciara pour
+                              creer des Grilles Harmoniques. 
+      Parametres : 
+      
+      - Aucun. 
+
+
+  - drawGrid :                Dessine la Grille associee au
+                              Siteswap. Gnuplot et
+                              eventuellement Ghostscript et
+                              ImageMagick (converter) doivent
+                              avoir ete installes au prealable
+                              (Sinon les images sont PostScript
+                              uniquement). 
+      Parametres : 
+      
+      - <"siteswap"> : Siteswap a dessiner. 
+      
+      - <"fichier"> : fichier image de resultats. 
+      
+      - ["options"] Differentes options
+      -[a|b|c|d|e|h|l|p|r|s|t|u|v|y|z] precisees ci-dessous : 
+      
+      	-a <dec> : Hauteur Agrafe pour lancer depuis main identique
+      (Defaut:0.4). 
+      
+      	-b <color> : Couleur d'agrafe (Defaut:green). 
+      
+      	-c <color> : Couleur de cercle (Defaut:#a935bd). 
+      
+      	-d <color> : Couleur de sync (Defaut:blue). 
+      
+      	-e <color> : Couleur de Mode de Main (Defaut:blue). 
+      
+      	-h <r|l> : Mode des Mains (Defaut:r). 
+      
+      	-l <y|n> : Affichage des Labels (Defaut:y). 
+      
+      	-p <int> : Periode a afficher (Defaut:10). 
+      
+      	-r <dec> : Rayon des Cercles (Defaut:0.2). 
+      
+      	-s <int> : Affichage du resultat (Defaut:0) 
+      		'0' : Affiche le resultat; 
+      		'1' : Pas d'affichage. 
+      
+      	-t <y|n> : Affichage du titre (Defaut:y). 
+      
+      	-u <y|n> : Affichage du Mode des Mains dans le titre (Defaut:y). 
+      
+      	-v <"string"> : Force la valeur du Titre de l'image. 
+      
+      	-y <dec> : Decalage Y pour Lancers superposes (Defaut:0.25). 
+      
+      	-z <"string"> : Terminal Driver. Mettre une valeur vide pour
+      liste des possibilites (Defaut:auto). 
 
 
 
@@ -3480,624 +4224,6 @@ Differents parametres de configuration peuvent egalement etre positionnes dans <
       Parametres : 
       
       - <"mhn"> : MHN. 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-
-
-  SPYRO  - Juggling SPYROGRAPH (v0.4)
------------------------------------------
-      SPYRO definit un spyrographe pour jongleur. Il permet la
-      modelisation des Spins, Antispins, Hybrides, Isolations,
-      Extensions dans un unique plan. 
-
-
-  - anim :                    Lance JuggleSpyro HTML5. 
-      Parametres : 
-      
-      - Aucun ou optionnellement le port du serveur HTTP. 
-
-
-  - poiFlowers :              Lance le Simulateur de Poï de David
-                              Lyons. 
-      Parametres : 
-      
-      - Aucun. 
-
-
-  - staffSimMCP :             Lance le Simulateur de Staffs de MCP. 
-      Parametres : 
-      
-      - Aucun. 
-
-
-
-
-  MJN  - Multi-Juggler Notation (v0.2)
------------------------------------------
-      Multi-Juggler Notation (MJN) telle qu'utilisee dans
-      JugglingLab. 
-      
-      Le format utilise est le suivant pour chaque Beat Asynchrone ou
-      Synchrone : 
-      <Jongleur 1|Jongleur 2|...|Jongleur j> 
-      En mode Synchrone, le symbole ! est accepte. On se reportera a la
-      documentation de JugglingLab au besoin 
-      
-      Voici des exemples possibles : <2|3p><2p|3><[3p/2]|3p><3|3>
-      ou encore <(2p3,4x)|(2xp3,4p1)|(2xp2,4xp2)>. 
-
-
-  - draw :                    Dessine le Diagramme associe au MJN. 
-      Parametres : 
-      
-      - <"mjn"> : MJN a dessiner. 
-      
-      - <"fichier"> : fichier image de resultats. 
-      
-      - ["options"] Differentes options
-      -[a|b|c|d|e|f|g|h|j|k|l|m|n|o|p|q|s|t|v|z] precisees
-      ci-dessous : 
-      
-      	-a <y|n> : Representation Asynchrone (OSS/HSS) si possible
-      (Defaut:n) 
-      
-      	-b <"string"> : base de nommage des jongleurs (Defaut:J). 
-      
-      	-c <int> : Mode de colorisation en Asynchrone (Defaut:2). Sinon
-      la colorisation est calculee selon le beat le plus petit et
-      l'ordre des Mains. 
-      		'0' : pas de colorisation; 
-      		'1' : Multiplexe dans l'ordre croissant des valeurs 
-      		 Siteswap des lancers precedents; 
-      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
-      		 Siteswap des lancers precedents. 
-      
-      	-d <int> :  Synchronous Hack (Defaut:0) 
-      		'0' : Suppression des 0 dans le diagramme apres les lancers 
-      		synchrones puisqu'il s'agit des receptions; 
-      		'1' : Pas de hack. 
-      
-      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
-      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
-      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
-      	darkorange, olivedrab1, turquoise4, black, peru, 
-      	mediumslateblue). E pour couleur identique a la fleche 
-      	(Defaut:E). 
-      
-      	-f <0|1|2> : Splines Mode : 0: spline, 1:curved, 2:line
-      (Defaut:2). 
-      
-      	-g <y|n> : Conserve Fichier Graphviz pour generation
-      (Defaut:n). 
-      
-      	-h <y|n> : Affichage des Jongleurs (Defaut:y). 
-      
-      	-j <y|n> : Affichage des Mains sur chaque Beat, pour un Modele
-      MJHSS (Defaut:n). 
-      
-      	-k "liste de listes avec ( ) et ," : Enumeration des Mains pour un
-      modele MJHSS. Ex (M1,M2)(M3,M4) 
-      
-      	-l <pos> : Position du label de Siteswap 
-      		't': tail, pres de la queue de la fleche; 
-      		'h': head, pres de la tete; 
-      		'm': middle, au centre de la fleche; 
-      		'x': external, au centre de la fleche apres trace; 
-      		's': state, pres de l'Etat; 
-      		'n': Pas de label de Siteswap. 
-      
-      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
-      Siteswap) 
-      		'0' : Ladder; 
-      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
-      		'2' : Ladder avec suppression des Beats impairs en 
-      		commençant a 0 (Siteswap Synchrone). 
-      
-      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
-      		(Defaut:n). 
-      
-      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
-      Bitmap Format), cmapx (client-side imagemap for use in html and
-      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
-      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
-      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
-      pcl (Laserjet printers), imap (imagemap files for httpd servers
-      for each node or edge that has a non-null "href" attribute.), jpg,
-      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
-      Document Format), png (Portable Network Graphics format), ps
-      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
-      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
-      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
-      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
-      langage), plain , plain-ext (Output in plain text). 
-      
-      	-p <int> : Periode minimum a afficher (Defaut:25). 
-      
-      	-s <int> : Affichage du resultat (Defaut:0) 
-      		'0' : Affiche le resultat; 
-      		'1' : Pas d'affichage. 
-      
-      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
-      
-      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
-      
-      	-v <"string"> : Force la valeur du Titre de l'image. 
-      
-      	-z <"y|n"> : Zero possible dans la representation HSS
-      ((Defaut:y). 
-      
-      - [\%hash] : Optionnel, hash des transitions en Mode Asynchrone.
-      Dans ce cas le Siteswap n'est utilise que pour le titre. Chaque
-      Cle/Valeur est de la forme : Ri:j pour une transition amorcee a
-      droite ou Li:j lorsqu'il s'agit de la gauche. i correspond au Beat
-      du lancer et j est le numero de l'objet lors du lancer (en
-      commençant a 0) pour aider a la colorisation. 
-      	Ex :  %hash = ( 
-      		'L2:0' => 'R4:0', 
-      		'R2:0' => 'R4:1', 
-      		'L4:0' => 'R6:0', 
-      		'R4:0' => 'R5:0', 
-      		'R4:1' => 'L6:0', 
-      		'R6:0' => 'R6:0' 
-      		); 
-
-
-  - getJugglersNumber :       Donne le nombre de jongleurs du MJN. 
-      Parametres : 
-      
-      - <"mjn"> : MJN a analyser. 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - getObjNumber :            Donne le nombre d'objets du MJN. 
-      Parametres : 
-      
-      - <"mjn"> : MJN a analyser. 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - getPeriod :               Donne la Periode du MJN. 
-      Parametres : 
-      
-      - <"mjn"> : MJN a analyser. 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - isAsync :                 Teste le caractere Asynchrone du
-                              MJN. 
-      Parametres : 
-      
-      - <"mjn"> : MJN a tester 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - isSyntaxValid :           Teste la syntaxe grammaticale du
-                              MJN. 
-      Parametres : 
-      
-      - <"mjn"> : MJN a tester 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - isValid :                 Teste la validite du MJN. 
-      Parametres : 
-      
-      - <"mjn"> : MJN a tester 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - toMHN :                   Donne la Notation MHN
-                              correspondante. 
-      Parametres : 
-      
-      - <"mjn"> : MJN. 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-
-
-  MMSTD  - MMSTD (Mills Mess State Transition) juggling Notation (v1.4)
------------------------------------------
-      Dans ce module un pattern MMSTD sera compose d'une succession
-      d'etats (Ur, Ul, Rl, Rr, Lr, Lr) et d'echanges (-+->, -o->). 
-      
-      	Exemples : Ur -o-> Ll -+> Ur , Rr -+-> Ul -o-> 
-
-
-  - gen :                     Generation de tous les patterns avec
-                              suppression des redondances. 
-      Parametres : 
-      
-      - <cpt> : Nombre de Passages maximum par Etat 
-      - <pathLenMax> : Longueur du chemin maximum (-1 : toute longueur) 
-      - ["fichier"] Optionnel, fichier de resultats. 
-
-
-  - genByState :              Generation de tous les patterns avec
-                              classification par Etat. 
-      Parametres : 
-      
-      - <cpt> : Nombre de Passages maximum par Etat 
-      - <pathLenMax> : Longueur du chemin maximum (-1 : toute longueur) 
-      - ["fichier"] Optionnel, fichier de resultats. 
-
-
-  - graph :                   Affiche le Graphe MMSTD des
-                              transitions valides. 
-      Parametres : 
-      
-      - Aucun ou sinon Graphviz doit prealablement etre installe et son
-      Path correctement configure dans <conf.ini> 
-      
-      - <"fichier"> : fichier de resultats. 
-      
-      - ["Format"] Optionnel, format d'image (Defaut:png) parmi : bmp
-      (Windows Bitmap Format), cmapx (client-side imagemap for use in
-      html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated
-      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
-      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
-      pcl (Laserjet printers), imap (imagemap files for httpd servers
-      for each node or edge that has a non-null "href" attribute.), jpg,
-      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
-      Document Format), png (Portable Network Graphics format), ps
-      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
-      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
-      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
-      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
-      langage), plain, plain-ext (Output in plain text) 
-      
-      - ["Generateur"] Optionnel, filtre generateur Graphviz
-      (Defaut:dot) parmi : circo (circular layout), dot(directed
-      graphs), neato (undirected graphs), twopi (radial layouts),
-      fdp (undirected graphs), sfdp (large undirected graphs), osage
-      (clustered graphs). 
-
-
-  - inv :                     Calcule l'inversion d'un pattern. 
-      Parametres : 
-      
-      - <pattern> : pattern 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - isEquivalent :            Teste l'equivalence de 2 patterns. 
-      Parametres : 
-      
-      - <pattern1> <pattern2> : patterns a comparer. 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - isSymetric :              Teste la symetrie de 2 patterns. 
-      Parametres : 
-      
-      - <pattern1> <pattern2> : patterns a comparer. 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - isValid :                 Teste la validite d'un pattern. 
-      Parametres : 
-      
-      - <pattern> : pattern a tester. 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - size :                    Donne la longueur du pattern en
-                              nombre d'Etats. 
-      Parametres : 
-      
-      - <pattern> : pattern. Une unite est consideree uniquement sur
-      composition d'un Etat et d'une transition. 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - sym :                     Calcule la symetrie d'un pattern. 
-      Parametres : 
-      
-      - <pattern> : pattern 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - toSOU :                   Donne la notation SOU
-                              correspondante. 
-      Parametres : 
-      
-      - <pattern> : pattern. 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-
-
-  HSS  - OSS/HSS juggling Notation (v0.3)
------------------------------------------
-      Object Siteswap/Hand Siteswap Notation (OSS/HSS). 
-
-
-  - basicMap :                Cartographie des types de Siteswaps
-                              Multi-Mains Asynchrone de Base,
-                              nombre Mains x Objets. 
-      Parametres : 
-      
-      - [int] : Nombre Max de Mains (Defaut:15). 
-      - [int] : Nombre Max d'Objets (Defaut:15). 
-
-
-  - changeHSS :               Donne l'OSS obtenu en changeant
-                              l'HSS a 2 mains mais en conservant les
-                              Mains pour les throws et catchs
-                              [Experimental]. 
-      Parametres : 
-      
-      - <"oss"> : Siteswap Asynchrone. 
-      - <"hss"> : Hand Siteswap Initial. 
-      - <"hss"> : Hand Siteswap Final. 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - draw :                    Dessine le Diagramme associe au
-                              OSS/HSS. 
-      Parametres : 
-      
-      - <"oss"> : OSS a dessiner. 
-      
-      - <"hss"> : HSS a dessiner. 
-      
-      - <"fichier"> : fichier image de resultats. 
-      
-      - ["options"] Differentes options
-      -[a|b|c|d|e|g|h|i|l|m|n|o|p|q|s|t|v|y] precisees
-      ci-dessous : 
-      
-      	-c <int> :  Mode de colorisation (Defaut:2). 
-      		'0' : pas de colorisation; 
-      		'1' : Multiplexe dans l'ordre croissant des valeurs 
-      		 Siteswap des lancers precedents; 
-      		'2' : Multiplexe dans l'ordre decroissant des valeurs 
-      		 Siteswap des lancers precedents. 
-      
-      	-d <int> :  Synchronous Hack (Defaut:0) 
-      		'0' : Suppression des 0 dans le diagramme apres les lancers 
-      		synchrones puisqu'il s'agit des receptions; 
-      		'1' : Pas de hack. 
-      
-      	-e <"string"> : Couleur du Label de la fleche selon le codage X11 
-      	de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, 
-      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
-      	darkorange, olivedrab1, turquoise4, black, peru, 
-      	mediumslateblue). E pour couleur identique a la fleche 
-      	(Defaut:E). 
-      
-      	-g <y|n> : Conserve Fichier Graphviz pour generation
-      (Defaut:n). 
-      
-      	-h <y|n> : Affichage des Mains. 
-      
-      	-i "Liste avec ,": Enumeration des mains pour les diagrammes
-      Vanille. 
-      
-      	-l <pos> : Position du label de Siteswap 
-      		't': tail, pres de la queue de la fleche; 
-      		'h': head, pres de la tete; 
-      		'm': middle, au centre de la fleche; 
-      		'x': external, au centre de la fleche apres trace; 
-      		's': state, pres de l'Etat; 
-      		'n': Pas de label de Siteswap. 
-      
-      	-m <0|1|2> : Modele de diagramme (Defaut: selon le type de
-      Siteswap) 
-      		'0' : Ladder; 
-      		'1' : Applanissement de Ladder (Siteswap Asynchrone); 
-      		'2' : Ladder avec suppression des Beats impairs en 
-      		commençant a 0 (Siteswap Synchrone). 
-      
-      	-n <y|n> : Affichage des lancers negatifs [Experimental] 
-      		(Defaut:n). 
-      
-      	-o <type> : format d'image (Defaut:png) parmi : bmp (Windows
-      Bitmap Format), cmapx (client-side imagemap for use in html and
-      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
-      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
-      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
-      pcl (Laserjet printers), imap (imagemap files for httpd servers
-      for each node or edge that has a non-null "href" attribute.), jpg,
-      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
-      Document Format), png (Portable Network Graphics format), ps
-      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
-      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
-      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
-      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
-      langage), plain , plain-ext (Output in plain text). 
-      
-      	-p <int> : Periode minimum a afficher (Defaut:25). 
-      
-      	-q <y|n> : Trace Rapide au depend de la qualite (Defaut:n). 
-      
-      	-s <int> : Affichage du resultat (Defaut:0) 
-      		'0' : Affiche le resultat; 
-      		'1' : Pas d'affichage. 
-      
-      	-t <y|n> : Affichage du titre de l'image (Defaut:y). 
-      
-      	-v <"string"> : Force la valeur du Titre de l'image 
-      
-      
-      - [\%hash] : Optionnel, hash des transitions pour OSS. Dans ce cas
-      le Siteswap n'est utilise que pour le titre. Chaque Cle/Valeur
-      est de la forme : Ri:j pour une transition amorcee a droite ou Li:j
-      lorsqu'il s'agit de la gauche. i correspond au Beat du lancer et j
-      est le numero de l'objet lors du lancer (en commençant a 0) pour
-      aider a la colorisation. 
-      	Ex :  %hash = ( 
-      		'L2:0' => 'R4:0', 
-      		'R2:0' => 'R4:1', 
-      		'L4:0' => 'R6:0', 
-      		'R4:0' => 'R5:0', 
-      		'R4:1' => 'L6:0', 
-      		'R6:0' => 'R6:0' 
-      		); 
-
-
-  - getHandsSeq :             Donne le sequencement des mains
-                              selon l'HSS d'entree. 
-      Parametres : 
-      
-      - <"hss"> : Hand Siteswap. 
-      - <"string"> : Mains impliquees separees par des , . 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - isValid :                 Teste la validite de la combinaison
-                              OSS/HSS. 
-      Parametres : 
-      
-      - <"oss"> : OSS 
-      - <"hss"> : HSS 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - toMHN :                   Donne la Notation MHN
-                              correspondante. 
-      Parametres : 
-      
-      - <"oss"> : OSS. 
-      - <"hss"> : HSS. 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - toSS :                    Donne la Notation Siteswap
-                              correspondante si possible (i.e au
-                              max 2 Mains). 
-      Parametres : 
-      
-      - <"oss"> : OSS. 
-      - <"hss"> : HSS. 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-
-
-  HTN  - Harmonic Throws Notation (3-Layers Notation) (v0.6)
------------------------------------------
-      Harmonic Throws Notation (3-Layers Notation). 
-
-
-  - HTNMaker :                HTNMaker de Shawn Pinciara pour
-                              creer des Grilles Harmoniques. 
-      Parametres : 
-      
-      - Aucun. 
-
-
-  - drawGrid :                Dessine la Grille associee au
-                              Siteswap. Gnuplot et
-                              eventuellement Ghostscript et
-                              ImageMagick (converter) doivent
-                              avoir ete installes au prealable
-                              (Sinon les images sont PostScript
-                              uniquement). 
-      Parametres : 
-      
-      - <"siteswap"> : Siteswap a dessiner. 
-      
-      - <"fichier"> : fichier image de resultats. 
-      
-      - ["options"] Differentes options
-      -[a|b|c|d|e|h|l|p|r|s|t|u|v|y|z] precisees ci-dessous : 
-      
-      	-a <dec> : Hauteur Agrafe pour lancer depuis main identique
-      (Defaut:0.4). 
-      
-      	-b <color> : Couleur d'agrafe (Defaut:green). 
-      
-      	-c <color> : Couleur de cercle (Defaut:#a935bd). 
-      
-      	-d <color> : Couleur de sync (Defaut:blue). 
-      
-      	-e <color> : Couleur de Mode de Main (Defaut:blue). 
-      
-      	-h <r|l> : Mode des Mains (Defaut:r). 
-      
-      	-l <y|n> : Affichage des Labels (Defaut:y). 
-      
-      	-p <int> : Periode a afficher (Defaut:10). 
-      
-      	-r <dec> : Rayon des Cercles (Defaut:0.2). 
-      
-      	-s <int> : Affichage du resultat (Defaut:0) 
-      		'0' : Affiche le resultat; 
-      		'1' : Pas d'affichage. 
-      
-      	-t <y|n> : Affichage du titre (Defaut:y). 
-      
-      	-u <y|n> : Affichage du Mode des Mains dans le titre (Defaut:y). 
-      
-      	-v <"string"> : Force la valeur du Titre de l'image. 
-      
-      	-y <dec> : Decalage Y pour Lancers superposes (Defaut:0.25). 
-      
-      	-z <"string"> : Terminal Driver. Mettre une valeur vide pour
-      liste des possibilites (Defaut:auto). 
-
-
-
-
-  BTN  - BTN juggling Notation (v1.2.2)
------------------------------------------
-      Dans ce module un lancer BTN sera compose d'une succession de
-      trous pris parmi AC, AL, BOL ainsi que de l'operateur OP
-      (Minuscule ou Majuscule). 
-      
-      	Exemples : OPALAC, BOLAL, OPALOPAC ... 
-
-
-  - BTNParity :               Donne la parite BTN. 
-      Parametres : 
-      
-      - <Throw> : Lancer. 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. En
-      retour 0 indique une parite Paire, 1 indique Impaire 
-
-
-  - gen :                     Donne les lancers BTN limites par le
-                              nombre de trous traverses. 
-      Parametres : 
-      
-      - <int> : Nombre maximum de trous traverses [>4 reserve aux
-      Extra-Terrestres ;-)]. 
-      - ["fichier"] Optionnel, fichier de resultats. 
-
-
-  - gen2 :                    Donne les lancers BTN sans les
-                              lancers dont le corps contient 2
-                              trous successifs identiques. 
-      Parametres : 
-      
-      - <int> : Nombre maximum de trous traverses [>4 reserve aux
-      Extra-Terrestres ;-)]. 
-      - ["fichier"] Optionnel, fichier de resultats. 
-
-
-  - inv :                     Donne le lancer BTN Time Reversed
-                              associe. 
-      Parametres : 
-      
-      - <Lancer> : Lancer dont on veut obtenir le Time Reversed. 
-      - <Parite> : Parite du lancer (0: paire, 1: impaire). 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - isValid :                 Teste la validite du lancer BTN. 
-      Parametres : 
-      
-      - <Lancer> : Lancer a valider. 
-      - [-1] Optionnel, retourne le resultat sans l'afficher. 
-
-
-  - size :                    Donne la taille du lancer en nombre de
-                              trous traverses. 
-      Parametres : 
-      
-      - <Throw> : Lancer. 
       - [-1] Optionnel, retourne le resultat sans l'afficher. 
 
 

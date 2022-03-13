@@ -121,14 +121,14 @@ sub isValid
 		    }
 		    return -1;
 		}
-		    
+		
 		for(my $k=$j;$k < scalar @{$matrix[$i]}; $k+=length($mlhss_l[$i]))
 		{
 		    if($matrix[$i][$k] ne '0')
 		    {
 			if ((scalar @_ <= 2) || ($_[2] ne "-1")) {
 			    print $lang::MSG_MLHSS_ISVALID_ERR4." : ".$mlhss_l[$i]."\n";
-			    print colored [$common::COLOR_RESULT], $matrix[$i][$k]."False\n";
+			    print colored [$common::COLOR_RESULT], "False\n";
 			}
 			return -1;
 		    }
@@ -710,14 +710,14 @@ sub draw
 		
 		$css =~ s/x//g;
 		$css = hex($css);
-		if (substr($hss_hash{$k},0,1) eq '-')
+		if (substr($hss_hash{$k},0,1) eq '_')
 		{
 		    $css = -$css;
 		}
 		my $dest = $css + int($src);
 		$src="S".${i}."_".$src;
 		if (($css > 0 || ($hss_hash{$k} ne "0" && (uc($nullSS) eq "Y"  || uc($nullSS) eq "YES"))) && $dest < $period) {
-		    if ((uc($nullSS) eq "Y" || uc($nullSS) eq "YES") && $dest < $period && (substr($hss_hash{$k},0,1) eq '-')) {
+		    if ((uc($nullSS) eq "Y" || uc($nullSS) eq "YES") && $dest < $period && (substr($hss_hash{$k},0,1) eq '_')) {
 			$dest = int($src)+$css+1;
 			$dest = "S".${i}."_".$dest;
 		    }

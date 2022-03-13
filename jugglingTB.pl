@@ -196,6 +196,7 @@ use modules::HTN;
 use modules::LADDER;
 use modules::MLHSS;
 use modules::MJN;
+use modules::MJHSS;
 use modules::MHN;
 use modules::MMSTD;
 use modules::SOU;
@@ -204,7 +205,7 @@ use modules::SSWAP;
 use modules::STACK;
 #use modules::MODTEST;
 
-my @MODULES= ("BTN", "HSS", "HTN", "LADDER", "MHN", "MJN", "MLHSS", "MMSTD", "SOU", "SPYRO", "SSWAP", "STACK");
+my @MODULES= ("BTN", "HSS", "HTN", "LADDER", "MHN", "MJN", "MJHSS", "MLHSS", "MMSTD", "SOU", "SPYRO", "SSWAP", "STACK");
 ###########################################################################################################
 
 # Set the Debug Mode in each module

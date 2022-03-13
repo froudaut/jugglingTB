@@ -514,11 +514,11 @@ sub getHandsSeq
 	    }
 	    if($hands_seq eq '')
 	    {
-		$hands_seq .= '-';
+		$hands_seq .= '_';
 	    }
 	    else
 	    {
-		$hands_seq .= ',-';
+		$hands_seq .= ',_';
 	    }		
 	}
 	else
@@ -639,11 +639,11 @@ sub getHandsSeq_old
 	    }
 	    if($hands_seq eq '')
 	    {
-		$hands_seq .= '-';
+		$hands_seq .= '_';
 	    }
 	    else
 	    {
-		$hands_seq .= ',-';
+		$hands_seq .= ',_';
 	    }		
 	}
 	else
@@ -1062,7 +1062,7 @@ sub draw
 	    
 	    $css =~ s/x//g;
 	    $css = hex($css);
-	    if (substr($oss_hash{$k},0,1) eq '-')
+	    if (substr($oss_hash{$k},0,1) eq '_')
 	    {
 		$css = -$css;
 	    }
@@ -1071,7 +1071,7 @@ sub draw
 	    $dest = "N".$dest;
 	    if (($css > 0 || ($oss_hash{$k} ne "0" && (uc($nullSS) eq "Y"  || uc($nullSS) eq "YES"))) && int(substr($dest,1)) < $period) {
 
-		if ((uc($nullSS) eq "Y" || uc($nullSS) eq "YES") && (substr($dest,1)) < $period && (substr($oss_hash{$k},0,1) eq '-')) {
+		if ((uc($nullSS) eq "Y" || uc($nullSS) eq "YES") && (substr($dest,1)) < $period && (substr($oss_hash{$k},0,1) eq '_')) {
 		    $dest = int($src)+$css+1;
 		    $dest = "N".$dest;
 		}
@@ -1123,7 +1123,7 @@ sub draw
 	    
 	    $css =~ s/x//g;
 	    $css = hex($css);
-	    if (substr($hss_hash{$k},0,1) eq '-')
+	    if (substr($hss_hash{$k},0,1) eq '_')
 	    {
 		$css = -$css;
 	    }
@@ -1132,7 +1132,7 @@ sub draw
 	    $dest = "N".$dest;
 	    if (($css > 0 || ($hss_hash{$k} ne "0" && (uc($nullSS) eq "Y"  || uc($nullSS) eq "YES"))) && int(substr($dest,1)) < $period) {
 
-		if ((uc($nullSS) eq "Y" || uc($nullSS) eq "YES") && (substr($dest,1)) < $period && (substr($hss_hash{$k},0,1) eq '-')) {
+		if ((uc($nullSS) eq "Y" || uc($nullSS) eq "YES") && (substr($dest,1)) < $period && (substr($hss_hash{$k},0,1) eq '_')) {
 		    $dest = int($src)+$css+1;
 		    $dest = "N".$dest;
 		}

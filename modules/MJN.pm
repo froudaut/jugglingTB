@@ -318,8 +318,8 @@ sub getObjNumber
     
     return $res;
 }
-	
-    
+
+
 
 sub toMHN
 {
@@ -333,7 +333,10 @@ sub toMHN
     if ($period %2 != 0)
     {
 	$mjn .= $mjn;
+	@period_split= split(/</,$mjn);
+	$period = scalar @period_split -1;
     }
+
     
     my @res_t = ();
 
@@ -666,19 +669,8 @@ sub toMHN
 
 sub draw
 {
-    my $mjn = $_[0];   
-    my $opts = '';
-    
-    if (&isAsync($mjn,-1) == -1)
-    {
-	# Draw as MHN
-	$opts .= "-v \"$mjn\" -I 1 ".$_[2];
-	&MHN::draw(&toMHN($mjn,-1), $_[1], $opts);
-    }
-
-    else
-    {
-	my $fileOutput=$_[1];
+    my $mjn = $_[0];
+    	my $fileOutput=$_[1];
 	
 	# Drawing supports are the following :     
 	#     - bmp (Windows Bitmap Format),
@@ -761,6 +753,36 @@ sub draw
 					"-J:s" => \$hands,
 					"-K:s" => \$hands_seq,
 	    );
+    
+    if (&isAsync($mjn,-1) == -1 || (&isAsync($mjn,-1) == 1 && $async_mode eq 'Y'))
+    {
+	# Draw as MHN
+	my $opts = "-v \"$mjn\" -I 1 -B H -J N ";
+	
+	# Remove Useless options
+	for (my $i=0; $i < length($_[2]); $i++)
+	{
+	    if(substr($_[2],$i,1) eq '-' && $i < length($_[2])
+	       && (uc(substr($_[2],$i+1,1)) eq 'K'
+		    || (uc(substr($_[2],$i+1,1)) eq 'J')))
+	    {
+		$i++;
+		while($i+1 < length($_[2]) && substr($_[2],$i+1,1) ne '-')
+		{
+		    $i++;
+		}
+	    }
+	    else {		
+		$opts .= substr($_[2],$i,1);
+	    }	    	
+	}
+
+	&MHN::draw(&toMHN($mjn,-1), $_[1], $opts);
+    }
+
+    else
+    {
+
 
 	my @matrix=@{&__toMJNMatrixAsync($mjn)};
 	
