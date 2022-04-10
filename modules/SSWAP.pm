@@ -9709,6 +9709,7 @@ sub __genPolyrhythm
 
 sub genPolyrhythm
 {
+    # We do not consider Factor Polyrythms. If it has to be handled, you have to the factor division by yourselves
     my $nbObjects = $_[0];
     my $max_height = $_[1];
     my $right_ratio = $_[2];
@@ -10867,6 +10868,7 @@ sub __genPolyrhythmMult
 
 sub genPolyrhythmMult
 {
+    # We do not consider Factor Polyrythms. If it has to be handled, you have to the factor division by yourselves
     my $nbObjects = $_[0];
     my $max_height = $_[1];
     my $mult = $_[2];
@@ -12991,8 +12993,7 @@ sub printSSListHTML
 				    "-L:s" => \$lower_height_list,
 				    "-J:s" => \$lower_height_list_JL,
 				    "-F:i" => \$freeBeat,
-				    "-M:i" => \$min_heigh_same_hand,
-				    
+				    "-M:i" => \$min_heigh_same_hand,				    
 				    "-O:i" => \$order_list,
 				    "-R:i" => \$remove_redundancy,
 				    "-C:s" => \$color_check,

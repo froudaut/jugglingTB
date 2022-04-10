@@ -7,7 +7,7 @@
   <head>
     
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <meta name="KEYWORDS" content="BTN, SOU, MMSTD, MHN, MJN, HSS, OSS, Siteswap, juggling, notation, JugglingTB, Spyrograph, Harmonic, Ladder, 3-Layers" />
+    <meta name="KEYWORDS" content="BTN, SOU, MMSTD, MHN, MJN, HSS, OSS, MLHSS, MJHSS, stack, Siteswap, causal, juggling, notation, JugglingTB, Spyrograph, Harmonic, Ladder, 3-Layers" />
     <meta name="DESCRIPTION" content="Juggling Toolbox - README" />
     <meta name="Content-language" content="fr" />
     <meta name="Author" content="Frédéric Roudaut"/>
@@ -88,6 +88,7 @@
 	    &nbsp;&nbsp;&nbsp;<a href="#chapAnnexe1.11">A11 - MJN</a><br/>
 	    &nbsp;&nbsp;&nbsp;<a href="#chapAnnexe1.12">A12 - MJHSS</a><br/>
 	    &nbsp;&nbsp;&nbsp;<a href="#chapAnnexe1.13">A13 - MLHSS</a><br/>
+	    &nbsp;&nbsp;&nbsp;<a href="#chapAnnexe1.14">A14 - CAUSAL</a><br/>
 	    
 	    &nbsp;
 	  </p>
@@ -105,6 +106,7 @@
 	    Actuellement il contient des modules pour les notations : 
 	    <ul>
 	      <li>BTN: Body Trick Notation </li>
+	      <li>CAUSAL: Causal Diagrams</li>
 	      <li>SOU Etendue: Side-Over-Under Notation </li>
 	      <li>MMSTD: Mills Mess State Transition Diagram </li>
 	      <li>LADDER: Ladder Notation   </li>
@@ -117,7 +119,6 @@
 	      <li>MJN: Multi-Juggler Notation telle qu'utilisée dans JugglingLab  </li>
 	      <li>MJHSS: Multi-Juggler Hand Siteswap Notation : combine HSS sur une notation MJN </li>
 	      <li>MLHSS: Multi-Layer Hand Siteswap Notation : combine HSS sur une notation MHN </li>
-
 	    </ul>
 	  </p>
 	  
@@ -149,6 +150,9 @@
 	      <li>
 		Polyrhythm-Fountain de Josh Mermelstein
 	      </li>
+	      <li>
+		Causal Diagram Editor de The Juggling Edge
+	      </li>
 	    </ul>
 	    Ils sont tous exécutables depuis jugglingTB dans les Modules correspondants.
 	  </p>
@@ -161,7 +165,7 @@
 	      <li>Soit partir des sources, et installer les modules nécessaires.</li>
 	    </ul>
 	  </p>
-
+	  
 	  <h3>Binaires</h3>
 	  <p>
 	    Vous trouverez une version binaire pour Windows 64bits (packagée en perl v5.32.1 par pp (PAR::Packer)) 
@@ -543,7 +547,7 @@
 	  </p>
 	  
 	  <h3>5.1 LADDER NOTATION</h3><a name="chap5_1" id="chap5_1"></a>
-
+	  
 	  <p>	  
 	    Le Module <strong>LADDER</strong> vous permet de dessiner un diagramme en échelle à partir d'un Siteswap donné.
 	    Il est nécessaire de disposer au préalable de l'outil <a href="http://www.graphviz.org/">Graphviz</a> et d'avoir correctement renseigné son chemin dans &lt;conf.ini&gt;.
@@ -671,7 +675,7 @@
 	  
 	  <p>
 	    Pour un autre petit exemple concret, supposons à présent que vous voulez générer tous les Siteswaps Synchrones de 4 objets contenant 2 fois les valeurs 6,4,4,2 parce que vous avez en tête les Siteswaps bien connus à 4 balles (6x,4)(2,4x)*, (6x,4)(4,2x)* ... et que vous en cherchez d'autres assez proches. <br/>
-
+	    
 	    <table align="center">
 	      <tr align="center">
 		<td><a href="files_jtb/(4,6x)(4x,2)(6x,4)(2,4x).gif" target="_blank"><img src="files_jtb/(4,6x)(4x,2)(6x,4)(2,4x).gif" style="border:none" width="150" alt="(4,6x)(4x,2)(6x,4)(2,4x).gif"/><br/>(6x,4)(2,4x)*</a></td>
@@ -709,7 +713,7 @@
 	  <h3>5.3 OBJECT/HAND SITESWAP (OSS/HSS)</h3><a name="chap5_3" id="chap5_3"></a>
 	  <p>
 	    Le Module <strong>HSS</strong> s'intéresse à la notation Object/Hand Siteswap. Il est nécessaire de disposer au préalable de l'outil <a href="http://www.graphviz.org/">Graphviz</a> et d'avoir correctement renseigné son chemin dans &lt;conf.ini&gt;.
-
+	    
 	  </p>
 	  <p>
 	    Par exemple pour tracer l'objet Siteswap 3 sur le Hand Siteswap 13 on utilise la commande :
@@ -724,23 +728,26 @@
 		  </tr>
 		</tbody>
 	      </table>
-	    </div>
+	    </div>	    
 	  </p>
+	  
 	  <p>Le diagramme tracé est alors :<br/>
 	    <ul>
 	      <li>test9.png :  <br/><a href="files_jtb/test9.png" target="_blank"><img src="files_jtb/test9.png" style="border:none" width="600" alt="test9.png" /></a></li>
 	    </ul>
-	  </p>   
+	  </p>
+	  
 	  <p>En animation ce pattern OSS:3/HSS:13 donne : <br/><a href="files_jtb/test9.gif" target="_blank"><img src="files_jtb/test9.gif" style="border:none" width="150" alt="test9.gif"/></a>
 	  </p>
 	  <p>Pour connaître un équivalent Siteswap on peut utiliser :</p>
 	  <p>
-	    <a href="files_jtb/test9bcmd.png" target="_blank"><img src="files_jtb/test9bcmd.png" style="border:none" width="180" alt="test9bcmd.png" /></a></li>	    
-	</p>
-	<p>
-	  Le Diagramme Ladder associé est donc :<br/>
-	  <a href="files_jtb/test9b.png" target="_blank"><img src="files_jtb/test9b.png" style="border:none" width="600" alt="test9b.png" /></a></li>
-	</p>
+	    <a href="files_jtb/test9bcmd.png" target="_blank"><img src="files_jtb/test9bcmd.png" style="border:none" width="180" alt="test9bcmd.png" /></a>	    
+	  </p>
+	  
+	  <p>
+	    Le Diagramme Ladder associé est donc :<br/>
+	    <a href="files_jtb/test9b.png" target="_blank"><img src="files_jtb/test9b.png" style="border:none" width="600" alt="test9b.png" /></a>
+	  </p>
 	  
 	  <h3>5.4 MULTI-HAND NOTATION (MHN)</h3><a name="chap5_4" id="chap5_4"></a>
 	  <p>
@@ -865,7 +872,7 @@
 	  
 	  <p>
 	    Si on souhaite également tracer les composantes HSS on peut utiliser : 
-
+	    
 	    <div class="windowCode">
 	      <table>
 		<tbody>
@@ -887,7 +894,7 @@
 	  
 	  <p>
 	    En traçant les composantes HSS de manière invisible on peut éventuellement obtenir un graphe légéremment différent : 
-
+	    
 	    <div class="windowCode">
 	      <table>
 		<tbody>
@@ -910,7 +917,7 @@
 	  
 	  <h3>5.6 MULTI-JUGGLER NOTATION (MJN)</h3><a name="chap5_6" id="chap5_6"></a>
 	  <p>
-	    Le Module <strong>MJN</strong> s'intéresse à la notation Multi-Jongleur telle qu'elle est utilisée dans JugglingLab. Il est nécessaire de disposer au préalable de l'outil <a href="http://www.graphviz.org/">Graphviz</a> et d'avoir correctement renseigné son chemin dans &lt;conf.ini&gt;.
+	    Le Module <strong>MJN</strong> s'intéresse à la notation Multi-Jongleur telle qu'elle est utilisée dans JugglingLab ou JoePass. Il est nécessaire de disposer au préalable de l'outil <a href="http://www.graphviz.org/">Graphviz</a> et d'avoir correctement renseigné son chemin dans &lt;conf.ini&gt;.
 
 	  </p>
 	  <p>
@@ -964,7 +971,7 @@
 	  
 	  <p>Ce qui donne en animation : <br/><a href="files_jtb/test14.gif" target="_blank"><img src="files_jtb/test14.gif" style="border:none" width="150" alt="test14.gif"/></a>
 	  </p>
-
+	  
 	  
 	  <p>
 	    L'utilisation des Multiplexes est possible. Voici par exemple &lt;2|3p&gt;&lt;2p|3&gt;&lt;[3p/2]|3p&gt;&lt;3|3&gt; : 
@@ -992,7 +999,7 @@
 	  
 	  <p>Ce qui donne en animation : <br/><a href="files_jtb/test15.gif" target="_blank"><img src="files_jtb/test15.gif" style="border:none" width="150" alt="test15.gif"/></a>
 	  </p>
-
+	  
 	  <p>
 	    L'utilisation des lancers synchrones par jongleur est également possible. Voici par exemple le pattern synchrone à 3 jongleurs et 9 objets &lt;(2p3,4x)|(2xp3,4p1)|(2xp2,4xp2)&gt; : 
 	    
@@ -1044,14 +1051,14 @@
 	    </ul>
 	  </p>
 	  
-	  <p>On remarque que ce Pattern étant totalement Asynchrone, il peut être représenté sous un modèle OSS/HSS :</p>
+	  <p>On remarque que ce Pattern étant totalement Asynchrone, il peut être représenté sous un modèle OSS/HSS : </p>
 	  <p>
 	    <div class="windowCode">
 	      <table>
 		<tbody>
 		  <tr>
 		    <td>
-		      MJN::draw('&lt;5|0&gt;&lt;5p2|0&gt;&lt;0|5&gt;&lt;0|5p1&gt;','test17b.png','-a y -f 1 -j y')
+		      MJN::draw('&lt;5|0&gt;&lt;5p2|0&gt;&lt;0|5&gt;&lt;0|5p1&gt;','test17b.png','-a y -w y -f 1 -j y')
 		      <br/>
 		    </td> 
 		  </tr>
@@ -1059,13 +1066,59 @@
 	      </table>
 	    </div>
 	  </p>
-
-	  <p>Le diagramme tracé est alors :<br/>
+	  
+	  <p>L'option <em><strong>-w</strong></em> force une visualisation MHN, et <em><strong>-a</strong></em> un modèle OSS/HSS quand c'est possible depuis ce MHN.<br/>
+	    Le diagramme tracé est alors :<br/>
 	    <ul>
 	      <li>test17b.png :  <br/><a href="files_jtb/test17.png" target="_blank"><img src="files_jtb/test17b.png" style="border:none" width="600" alt="test17b.png" /></a></li>
 	    </ul>
 	  </p>
 	  
+
+	  <p>Si à présent l'un des jongleur amorce le pattern avec une main différente de la droite, ceci peut-être renseigné par l'option <em><strong>-u</strong></em>, avec R pour Right (Main Droite), L pour Left (Main Gauche).
+	    Prenons l'exemple de &lt;R|L&gt;&lt;4xp|3&gt;&lt;3|4xp&gt; <br/>
+	    <div class="windowCode">
+	      <table>
+		<tbody>
+		  <tr>
+		    <td>
+		      MJN::draw('&lt;4xp|3&gt;&lt;3|4xp&gt;','test19.png', '-u R,L -k (D,G)(G,D) -v &lt;R|L&gt;&lt;4xp|3&gt;&lt;3|4xp&gt; -f 0 -j y')
+		      <br/>
+		    </td> 
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>
+	  </p>
+	  
+	  <p>
+	    L'option <em><strong>-u</strong></em> indique les mains initiatrices par jongleur; l'option <em><strong>-k</strong></em> est simplement utilisée pour l'écriture sur le diagramme.<br/>
+	    <ul>
+	      <li>test19.png :  <br/><a href="files_jtb/test19.png" target="_blank"><img src="files_jtb/test19.png" style="border:none" width="600" alt="test19.png" /></a></li>
+	    </ul>
+	  </p>   
+
+	  <p>Si on cherche à représenter le diagramme précédent en le découpant par main, comme en notation MHN on peut utiliser :
+	    <div class="windowCode">
+	      <table>
+		<tbody>
+		  <tr>
+		    <td>
+		      MJN::draw('&lt;4xp|3&gt;&lt;3|4xp&gt;','test19b.png', '-u R,L -v &lt;R|L&gt;&lt;4xp|3&gt;&lt;3|4xp&gt; -f 1 -w y')
+		      <br/>
+		    </td> 
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>
+	  </p>
+	  
+	  <p>
+	    <ul>
+	      <li>test19b.png :  <br/><a href="files_jtb/test19b.png" target="_blank"><img src="files_jtb/test19b.png" style="border:none" width="600" alt="test19.png" /></a></li>
+	    </ul>
+	  </p>   
+
 	  <p>
 	    Si on veut obtenir la notation MHN équivalente à la notation MJN, on peut utiliser la fonction <em><strong>toMHN</strong></em>.  
 	  </p>
@@ -1076,8 +1129,7 @@
 	  <a href="files_jtb/testMJN2MHNCmd.png" target="_blank"><img src="files_jtb/testMJN2MHNCmd.png" style="border:none" width="630" 
 								      alt="Module MJN : toMHN" /></a>
 	  
-	  
-	  
+
 	  <h3>5.7 MULTI-JUGGLER HAND SITESWAP NOTATION (MJHSS)</h3><a name="chap5_7" id="chap5_7"></a>
 	  <p>
 	    Classiquement dans un MJN dont chaque jongleur effectue un Siteswap Asynchrone, on considère que les mains alternent. Le Module <strong>MJHSS</strong> permet d'appliquer des HSS sur les différents Siteswaps Asynchrones d'un MJN. 
@@ -1091,7 +1143,7 @@
 		<tbody>
 		  <tr>
 		    <td>
-		      MJHSS::draw('<4p|2><3|2><3|4p>','(31,13)','test18.png','-f 0')
+		      MJHSS::draw('&lt;4p|2&gt;&lt;3|2&gt;&lt;3|4p&gt;','(31,13)','test18.png','-f 0')
 		      <br/>
 		    </td> 
 		  </tr>
@@ -1099,20 +1151,20 @@
 	      </table>
 	    </div>
 	  </p>
-
+	  
 	  <p>Le diagramme tracé est alors :<br/>
 	    <ul>
 	      <li>test18.png :  <br/><a href="files_jtb/test18.png" target="_blank"><img src="files_jtb/test18.png" style="border:none" width="600" alt="test18.png" /></a></li>
 	    </ul>
 	  </p>   
-
+	  
 	  <p>Maintenant imaginons que le premier Siteswap n'est plus fait par un seul jongleur mais par 2 jongleurs et 3 mains avec un HSS 423. On peut représenter ce pattern par : <br/>
 	    <div class="windowCode">
 	      <table>
 		<tbody>
 		  <tr>
 		    <td>
-		      MJHSS::draw('<4p|2><3|2><3|4p>','(423,13)','test18b.png','-f 0 -b S')
+		      MJHSS::draw('&lt;4p|2&gt;&lt;3|2&gt;&lt;3|4p&gt;','(423,13)','test18b.png','-f 0 -b S')
 		      <br/>
 		    </td> 
 		  </tr>
@@ -1120,13 +1172,13 @@
 	      </table>
 	    </div>
 	  </p>
-
+	  
 	  <p>
 	    <ul>
 	      <li>test18b.png :  <br/><a href="files_jtb/test18b.png" target="_blank"><img src="files_jtb/test18b.png" style="border:none" width="600" alt="test18.png" /></a></li>
 	    </ul>
 	  </p>   
-	  
+
 	  
 	  <h3>5.8 HARMONIC THROWS NOTATION (NOTATION 3-COUCHES)</h3><a name="chap5_8" id="chap5_8"></a>
 	  <p>
@@ -1624,7 +1676,7 @@
 
 	    var options_print_b5 = "- [\"options\"] Différentes options -[a|b|c|d|e|f|g|h|j|k|l|n|o|p|q|s|t|v|y] précisées ci-dessous : <br/>-a &lt;y|n&gt; : dessine HSS (Défaut:y).<br/>-b &lt;\"string\"&gt; : base de nommage des Layers MLHSS (Défaut:J).<br/>-c &lt;int&gt; :  Mode de colorisation (Défaut:2) <br/>&nbsp;&nbsp;&nbsp;'0' : pas de colorisation; <br/>&nbsp;&nbsp;&nbsp;'1' : Multiplexe dans l'ordre croissant des valeurs Siteswap des lancers précédents; <br/>&nbsp;&nbsp;&nbsp;'2' : Multiplexe dans l'ordre décroissant des valeurs Siteswap des lancers précédents. <br/>-d &lt;int&gt; : Synchronous Hack (Défaut:0)<br/>&nbsp;&nbsp;&nbsp;'0' : Suppression des 0 dans le diagramme après les lancers synchrones puisqu'il s'agit des réceptions;<br/>&nbsp;&nbsp;&nbsp;'1' : Pas de hack.<br/>-e &lt;\"string\"&gt; : Couleur du Label de la flêche selon le codage X11de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, magenta, goldenrod, saddlebrown, azure4, khaki4, darkorange, olivedrab1, turquoise4, black, peru, mediumslateblue). E pour couleur identique à la flêche (Défaut:E).<br/>\n\n\t\-f &lt;0|1|2&gt; : Splines Mode : 0: spline, 1:curved, 2:line (Défaut:2).<br/>-g &lt;y|n&gt; : Conserve Fichier Graphviz pour génération (Défaut:n).<br/>-h &lt;y|n&gt; : Affichage des Layers (Défaut:y).<br/>-j &lt;y|n&gt; : Affichage des Mains sur chaque Beat (Défaut:y).<br/>-k &lt;\"string\"&gt; : Base de nommage des Mains (Défaut:H).<br/>-l &lt;pos&gt; : Position du label de Siteswap <br/>&nbsp;&nbsp;&nbsp;'t': tail, près de la queue de la flêche; <br/>&nbsp;&nbsp;&nbsp;'h': head, près de la tête; <br/>&nbsp;&nbsp;&nbsp;'m': middle, au centre de la flêche; <br/>&nbsp;&nbsp;&nbsp;'n': Pas de label de Siteswap. <br/>&nbsp;&nbsp;&nbsp;'x': external, au centre de la flêche après trace;<br/>&nbsp;&nbsp;&nbsp;'s': state, près de l'Etat;<br/>-n &lt;'y'|'n'&gt; : Affichage des lancers négatifs [Expérimental] (Défaut:n); <br/>-o &lt;type&gt; : format d'image (Défaut:png) parmi : bmp (Windows Bitmap Format),cmapx (client-side imagemap for use in html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and pcl (Laserjet printers), imap (imagemap files for httpd servers for each node or edge that has a non-null \"href\" attribute.), jpg, jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable Document Format), png (Portable Network Graphics format), ps (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap format), xlib (Xlib canvas), canon, dot, xdot : Output in DOT langage, plain , plain-ext : Output in plain text. <br/>-p : Période à afficher (Défaut:25). <br/>-q : Tracé Rapide au dépend de la qualité (Défaut:n). <br/>-s &lt;int&gt; : Affichage du résultat (Défaut:0)<br/>&nbsp;&nbsp;&nbsp;'0' : Affiche le résultat;<br/>&nbsp;&nbsp;&nbsp;'1' : Pas d'affichage.<br/>-t &lt;y|n&gt; : Affichage du titre de l'image (Défaut:y).<br/>-v &lt;\"string\"&gt; : Force la valeur du Titre de l'image.<br/>-y &lt;int&gt; : Style HSS, 0: Dashed, 1: Dotted, 2 : Solid, 3: Bold, 4: Invis (Défaut:0).<br/>";    
 
-	    var options_print_b6 = "- [\"options\"] Différentes options -[a|b|c|d|e|f|g|h|j|k|l|m|n|o|p|q|s|t|v|z] précisées ci-dessous : <br/>-a &lt;y|n&gt; : représentation asynchrone (OSS/HSS) si possible (Défaut:n).<br/>-b &lt;\"string\"&gt; : base de nommage des Jongleurs (Défaut:J).<br/>-c &lt;int&gt; :  Mode de colorisation (Défaut:2) <br/>&nbsp;&nbsp;&nbsp;'0' : pas de colorisation; <br/>&nbsp;&nbsp;&nbsp;'1' : Multiplexe dans l'ordre croissant des valeurs Siteswap des lancers précédents; <br/>&nbsp;&nbsp;&nbsp;'2' : Multiplexe dans l'ordre décroissant des valeurs Siteswap des lancers précédents. <br/>-d &lt;int&gt; :  Synchronous Hack (Défaut:0)<br/>&nbsp;&nbsp;&nbsp;'0' : Suppression des 0 dans le diagramme après les lancers synchrones puisqu'il s'agit des réceptions;<br/>&nbsp;&nbsp;&nbsp;'1' : Pas de hack.<br/>-e &lt;\"string\"&gt; : Couleur du Label de la flêche selon le codage X11de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, magenta, goldenrod, saddlebrown, azure4, khaki4, darkorange, olivedrab1, turquoise4, black, peru, mediumslateblue). E pour couleur identique à la flêche (Défaut:E).<br/>-f &lt;0|1|2&gt; : Splines Mode : 0: spline, 1:curved, 2:line (Défault:2).<br/>-g &lt;y|n&gt; : Conserve Fichier Graphviz pour génération (Défaut:n).<br/>-h &lt;y|n&gt; : Affichage des Jongleurs (Défaut:y).<br/>-j &lt;y|n&gt; : Affichage des Mains sur chaque Beat, pour un Modèle MJHSS (Défaut:n).<br/>-k \"liste de listes avec ( ) et ,\" : Enumération des Mains pour un modèle MJHSS. Ex (M1,M2)(M3,M4).<br/>-l &lt;pos&gt; : Position du label de Siteswap <br/>&nbsp;&nbsp;&nbsp;'t': tail, près de la queue de la flêche; <br/>&nbsp;&nbsp;&nbsp;'h': head, près de la tête; <br/>&nbsp;&nbsp;&nbsp;'m': middle, au centre de la flêche; <br/>&nbsp;&nbsp;&nbsp;'n': Pas de label de Siteswap. <br/>&nbsp;&nbsp;&nbsp;'x': external, au centre de la flêche après trace;<br/>&nbsp;&nbsp;&nbsp;'s': state, près de l'Etat;<br/>-m &lt;0|1|2&gt; : Modèle de diagramme (Défaut: selon le type de Siteswap)<br/>&nbsp;&nbsp;&nbsp;'0' : Ladder;<br/>&nbsp;&nbsp;&nbsp;'1' : Applanissement de Ladder (Siteswap Asynchrone);<br/>&nbsp;&nbsp;&nbsp;'2' : Ladder avec suppression des Beats impairs en commençant à 0 (Siteswap Synchrone).<br/>-n &lt;'y'|'n'&gt; : Affichage des lancers négatifs [Expérimental] (Défaut:n); <br/>-o &lt;type&gt; : format d'image (Défaut:png) parmi : bmp (Windows Bitmap Format),cmapx (client-side imagemap for use in html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and pcl (Laserjet printers), imap (imagemap files for httpd servers for each node or edge that has a non-null \"href\" attribute.), jpg, jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable Document Format), png (Portable Network Graphics format), ps (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap format), xlib (Xlib canvas), canon, dot, xdot : Output in DOT langage, plain , plain-ext : Output in plain text. <br/>-p : Période à afficher (Défaut:25). <br/>-q : Tracé Rapide au dépend de la qualité (Défaut:n).<br/>-s &lt;int&gt; : Affichage du résultat (Défaut:0)<br/>&nbsp;&nbsp;&nbsp;'0' : Affiche le résultat;<br/>&nbsp;&nbsp;&nbsp;'1' : Pas d'affichage.<br/>-t &lt;y|n&gt; : Affichage du titre de l'image (Défaut:y).<br/>-v &lt;\"string\"&gt; : Force la valeur du Titre de l'image.<br/>-z &lt;y|n&gt; :  Zéro possible dans la représentation HSS (Défaut:y).<br/>";
+	    var options_print_b6 = "- [\"options\"] Différentes options -[a|b|c|d|e|f|g|h|j|k|l|m|n|o|p|q|s|t|u|v|w|z] précisées ci-dessous : <br/>-a &lt;y|n&gt; : représentation asynchrone (OSS/HSS) si possible (Défaut:n).<br/>-b &lt;\"string\"&gt; : base de nommage des Jongleurs (Défaut:J).<br/>-c &lt;int&gt; :  Mode de colorisation (Défaut:2) <br/>&nbsp;&nbsp;&nbsp;'0' : pas de colorisation; <br/>&nbsp;&nbsp;&nbsp;'1' : Multiplexe dans l'ordre croissant des valeurs Siteswap des lancers précédents; <br/>&nbsp;&nbsp;&nbsp;'2' : Multiplexe dans l'ordre décroissant des valeurs Siteswap des lancers précédents. <br/>-d &lt;int&gt; :  Synchronous Hack (Défaut:0)<br/>&nbsp;&nbsp;&nbsp;'0' : Suppression des 0 dans le diagramme après les lancers synchrones puisqu'il s'agit des réceptions;<br/>&nbsp;&nbsp;&nbsp;'1' : Pas de hack.<br/>-e &lt;\"string\"&gt; : Couleur du Label de la flêche selon le codage X11de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, magenta, goldenrod, saddlebrown, azure4, khaki4, darkorange, olivedrab1, turquoise4, black, peru, mediumslateblue). E pour couleur identique à la flêche (Défaut:E).<br/>-f &lt;0|1|2&gt; : Splines Mode : 0: spline, 1:curved, 2:line (Défault:2).<br/>-g &lt;y|n&gt; : Conserve Fichier Graphviz pour génération (Défaut:n).<br/>-h &lt;y|n&gt; : Affichage des Jongleurs (Défaut:y).<br/>-j &lt;y|n&gt; : Affichage des Mains sur chaque Beat, pour un Modèle MJHSS (Défaut:n).<br/>-k \"liste de listes avec ( ) et ,\" : Enumération des Mains pour un modèle MJHSS. Ex (M1,M2)(M3,M4).<br/>-l &lt;pos&gt; : Position du label de Siteswap <br/>&nbsp;&nbsp;&nbsp;'t': tail, près de la queue de la flêche; <br/>&nbsp;&nbsp;&nbsp;'h': head, près de la tête; <br/>&nbsp;&nbsp;&nbsp;'m': middle, au centre de la flêche; <br/>&nbsp;&nbsp;&nbsp;'n': Pas de label de Siteswap. <br/>&nbsp;&nbsp;&nbsp;'x': external, au centre de la flêche après trace;<br/>&nbsp;&nbsp;&nbsp;'s': state, près de l'Etat;<br/>-m &lt;0|1|2&gt; : Modèle de diagramme (Défaut: selon le type de Siteswap)<br/>&nbsp;&nbsp;&nbsp;'0' : Ladder;<br/>&nbsp;&nbsp;&nbsp;'1' : Applanissement de Ladder (Siteswap Asynchrone);<br/>&nbsp;&nbsp;&nbsp;'2' : Ladder avec suppression des Beats impairs en commençant à 0 (Siteswap Synchrone).<br/>-n &lt;'y'|'n'&gt; : Affichage des lancers négatifs [Expérimental] (Défaut:n); <br/>-o &lt;type&gt; : format d'image (Défaut:png) parmi : bmp (Windows Bitmap Format),cmapx (client-side imagemap for use in html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and pcl (Laserjet printers), imap (imagemap files for httpd servers for each node or edge that has a non-null \"href\" attribute.), jpg, jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable Document Format), png (Portable Network Graphics format), ps (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap format), xlib (Xlib canvas), canon, dot, xdot : Output in DOT langage, plain , plain-ext : Output in plain text. <br/>-p : Période à afficher (Défaut:25). <br/>-q : Tracé Rapide au dépend de la qualité (Défaut:n).<br/>-s &lt;int&gt; : Affichage du résultat (Défaut:0)<br/>&nbsp;&nbsp;&nbsp;'0' : Affiche le résultat;<br/>&nbsp;&nbsp;&nbsp;'1' : Pas d'affichage.<br/>-t &lt;y|n&gt; : Affichage du titre de l'image (Défaut:y).<br/>-u &lt;\"List\"&gt; en Asynchrone, liste des Mains initiales des jongleurs séparée par , dans le cas où on ne commence pas par la main droite [ex: R,L,L]<br/>-v &lt;\"string\"&gt; : Force la valeur du Titre de l'image.<br/>-w &lt;y|n&gt; : Force MHN Modèle (Défaut:n).<br/>-z &lt;y|n&gt; :  Zéro possible dans la représentation HSS (Défaut:y).<br/>";
 
 	    var options_print_b7 = "- [\"options\"] Différentes options -[a|b|c|d|e|f|g|h|j|k|l|m|n|o|p|q|s|t|v|y|z] précisées ci-dessous : <br/>-a &lt;y|n&gt; : dessine HSS (Défaut:y).<br/>-b &lt;\"string\"&gt; : base de nommage des Jongleurs (Défaut:J).<br/>-c &lt;int&gt; :  Mode de colorisation (Défaut:2) <br/>&nbsp;&nbsp;&nbsp;'0' : pas de colorisation; <br/>&nbsp;&nbsp;&nbsp;'1' : Multiplexe dans l'ordre croissant des valeurs Siteswap des lancers précédents; <br/>&nbsp;&nbsp;&nbsp;'2' : Multiplexe dans l'ordre décroissant des valeurs Siteswap des lancers précédents. <br/>-d &lt;int&gt; :  Synchronous Hack (Défaut:0)<br/>&nbsp;&nbsp;&nbsp;'0' : Suppression des 0 dans le diagramme après les lancers synchrones puisqu'il s'agit des réceptions;<br/>&nbsp;&nbsp;&nbsp;'1' : Pas de hack.<br/>-e &lt;\"string\"&gt; : Couleur du Label de la flêche selon le codage X11de Graphviz (ex : dodgerblue, red, springgreen, darkviolet, magenta, goldenrod, saddlebrown, azure4, khaki4, darkorange, olivedrab1, turquoise4, black, peru, mediumslateblue). E pour couleur identique à la flêche (Défaut:E).<br/>-f &lt;0|1|2&gt; : Splines Mode : 0: spline, 1:curved, 2:line (Défault:2).<br/>-g &lt;y|n&gt; : Conserve Fichier Graphviz pour génération (Défaut:n).<br/>-h &lt;y|n&gt; : Affichage des Jongleurs (Défaut:y).<br/>-j &lt;y|n&gt; : Affichage des Mains sur chaque Beat, pour un Modèle MJHSS (Défaut:n).<br/>-k \"liste de listes avec ( ) et ,\" : Enumération des Mains pour un modèle MJHSS. Ex (M1,M2)(M3,M4).<br/>-l &lt;pos&gt; : Position du label de Siteswap <br/>&nbsp;&nbsp;&nbsp;'t': tail, près de la queue de la flêche; <br/>&nbsp;&nbsp;&nbsp;'h': head, près de la tête; <br/>&nbsp;&nbsp;&nbsp;'m': middle, au centre de la flêche; <br/>&nbsp;&nbsp;&nbsp;'n': Pas de label de Siteswap. <br/>&nbsp;&nbsp;&nbsp;'x': external, au centre de la flêche après trace;<br/>&nbsp;&nbsp;&nbsp;'s': state, près de l'Etat;<br/>-m &lt;0|1|2&gt; : Modèle de diagramme (Défaut: selon le type de Siteswap)<br/>&nbsp;&nbsp;&nbsp;'0' : Ladder;<br/>&nbsp;&nbsp;&nbsp;'1' : Applanissement de Ladder (Siteswap Asynchrone);<br/>&nbsp;&nbsp;&nbsp;'2' : Ladder avec suppression des Beats impairs en commençant à 0 (Siteswap Synchrone).<br/>-n &lt;'y'|'n'&gt; : Affichage des lancers négatifs [Expérimental] (Défaut:n); <br/>-o &lt;type&gt; : format d'image (Défaut:png) parmi : bmp (Windows Bitmap Format),cmapx (client-side imagemap for use in html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and pcl (Laserjet printers), imap (imagemap files for httpd servers for each node or edge that has a non-null \"href\" attribute.), jpg, jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable Document Format), png (Portable Network Graphics format), ps (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap format), xlib (Xlib canvas), canon, dot, xdot : Output in DOT langage, plain , plain-ext : Output in plain text. <br/>-p : Période à afficher (Défaut:25). <br/>-q : Tracé Rapide au dépend de la qualité (Défaut:n).<br/>-s &lt;int&gt; : Affichage du résultat (Défaut:0)<br/>&nbsp;&nbsp;&nbsp;'0' : Affiche le résultat;<br/>&nbsp;&nbsp;&nbsp;'1' : Pas d'affichage.<br/>-t &lt;y|n&gt; : Affichage du titre de l'image (Défaut:y).<br/>-v &lt;\"string\"&gt; : Force la valeur du Titre de l'image.<br/>-y &lt;int&gt; : Style HSS, 0: Dashed, 1: Dotted, 2 : Solid, 3: Bold, 4: Invis (Défaut:0)<br/>-z &lt;y|n&gt; :  Zéro possible dans la représentation HSS (Défaut:y).<br/>";
 																																																																																																																																																																																																																																																																																																																																																																																																																																																																																  </script>
@@ -3189,7 +3241,42 @@
 		    - &lt;mhn&gt; : MHN à analyser. 		    <br/>
 		    - [-1] Optionnel, retourne le résultat sans l'afficher. 		    <br/>
 		    <br/>
-		    
+
+		    <span class="Style1">genPolyrythm</span>   :          Generation de Polyrythmes 		    <br/>
+		    Paramètres : 		    <br/>
+		    - &lt;int&gt; : Nombre de mains.<br/>
+		    - &lt;int&gt; : Nombre d'objets.<br/>
+		    - &lt;int&gt; : Hauteur Max en hexa.<br/>
+		    - &lt;"List"&gt; : List de Ratios depuis la Main 1 séparés par , [ex: 1:2,1:3].<br/>
+		    - [\@List] Optionnel, Lancers à exclure.<br/>
+		    Ex: @List=('0','2','1x').<br/>
+		    Si non precisé, sans autre parametre optionnel, 0 est exclu; <br/>
+		    si '', pas d'exclusion.<br/>
+		    - ["options"] Différentes Options parmi -[b|f|j|lm|q]<br/>
+		    -b &lt;y|n&gt; : Affichage du MJN (Défaut:n).<br/>
+		    -f &lt;0|1|2&gt; : Splines Mode : 0: spline, 1:curved, 2:line
+		    (Défaut:2).<br/>
+		    -j &lt;y|n&gt; : Ajoute MHNs transformés pour des
+		    lancers plus bas mais en conservant le Tempo des lancers par le
+		    biais de Hold Times supplémentaires et adapté pour une
+		    visualisation JugglingLab. JugglingLab ne comprenant que des
+		    Hold Times sur des lancers 1x ou 2, les Hold Times de valeur
+		    supérieure seront donc convertis (Defaut:n).<br/>
+		    -l &lt;y|n&gt; : Ajoute MHNs transformés pour des
+		    lancers plus bas mais en conservant le Tempo des lancers par le
+		    biais de Hold Times supplémentaires (Defaut:n).<br/>
+		    -m &lt;y|n&gt; : Affichage du MJN et du MHN (Défaut:y).<br/>
+		    -q &lt;y|n&gt; : Tracé Rapide au depend de la qualité (Défaut:n).<br/>
+		    <br/>
+		    - ["fichier"] Optionnel, fichier de résultats.<br/>
+		    Si le fichier commence par :<br/>
+		    - 'JML:', génère un fichier pour une vue JugglingLab
+                    en JML en y ajoutant l'extension .jml.<br/>
+		    - 'HTML:', génère un fichier HTML, en y ajoutant l'extension
+                    .html et contenant les Diagrammes, les versions MJNs, les
+		    résumés JML/TXT.<br/>
+		    <br/>
+
 		    <span class="Style1">getObjNumber</span>   :          Donne le nombre d'objets du MHN 		    <br/>
 		    Paramètres : 		    <br/>
 		    - &lt;mhn&gt; : MHN à analyser. 		    <br/>
@@ -3220,6 +3307,55 @@
 		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
 		    <br/>
 
+		    <span class="Style1">lowerHeightOnTempo</span>  :         Transformation de MHNs pour des lancés plus bas en
+		    conservant le Tempo des lancés mais en ajoutant des temps
+		    supplémentaires de Hold Times. <br/>
+		    Particulièrement intéressant pour les Polyrythmes.<br/><br/>
+		    Paramètres : 		    <br/>
+		    - &lt;mhn&gt; : MHN à transformer. <br/><br/>
+		    - ["options"] Différentes options -[f|j|m] précisées
+		    ci-dessous:<br/>
+		    &nbsp;-f &lt;int&gt; : Nombre de Free Beats Minimums sur la transformation
+		    entre 2 lancers (Défaut:1). Comme l'objet est récupéré un peu
+		    avant son lancer, avec généralement un Dwell Time autour de 1, une
+		    valeur inférieure occasionne des squeezes.<br/>
+		    &nbsp;-j &lt;y|n&gt; : Adaptation JugglingLab. JugglingLab ne comprenant
+		    que des Hold Times sur des lancers 1x ou 2, les Holds Times de valeur
+		    supérieure seront donc convertis (Défaut:n).<br/>
+		    &nbsp;-m &lt;int&gt; : Valeur Minimum du lancé sur même main après transformation
+		    afin d'éviter par exemple une transformation d'un lancé en hold (Défaut:3)
+		    <br/><br/>
+		    [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    <br/>
+
+		    <span class="Style1">printMHNListHTML</span>  :                Cree un fichier HTML depuis une Liste de MHNs en ajoutant diagrammes, JML JugglingLab et listes TXT. <br/>
+		    Paramètres :<br/>
+		    <br/>
+		    - &lt;\@List&gt; : Input Liste contenant les MHNs ou -1 pour Liste Vide.<br/>
+		    - &lt;"fichierOutput"&gt; : Fichiers résultats (avec ajout
+		    extensions .html).<br/>
+		    - &lt;"string"&gt; : Titre.		   <br/>
+		    - ["options"] Différentes options -[b|f|j|l|m|q] :		    <br/>
+		    -b &lt;y|n&gt; : Affiche MHN et MJN (Default:n).<br/>
+		    -f &lt;0|1|2&gt; : Splines Mode pour affichage : 0: spline, 1:curved,
+		    2:line (Défaut:2)<br/>		  
+		    -j &lt;y|n&gt; : Ajoute une colonne avec MHNs transformés pour des
+		    lancers plus bas mais en conservant le Tempo des lancers par le
+		    biais de Hold Times supplémentaires et adapté pour une
+		    visualisation JugglingLab. JugglingLab ne comprenant que des
+		    Hold Times sur des lancers 1x ou 2, les Hold Times de valeur
+		    supérieure seront donc convertis (Defaut:n).<br/>
+		    -l &lt;y|n&gt; : Ajoute une colonne avec MHN transformés pour des
+		    lancers plus bas mais en conservant le Tempo des lancers par le
+		    biais de Hold Times supplémentaires (Defaut:n).<br/>
+		    -m &lt;y|n&gt; : MJN uniquement. Option surchargée par -b (Défaut:n).<br/>
+		    -q &lt;y|n&gt; : Affichage rapide au détriment de la qualite
+		    (Default:n).<br/>
+		    [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    - &lt;"inputFile"&gt; : Fichier contenant la liste de MHNs si la Liste
+		    input est vide.<br/>
+		    <br/>
+		    
 		    <span class="Style1">toHSS</span>  :                Donne la Notation OSS/HSS correspondante si possible (i.e Async. Transformation). <br/>
 		    Paramètres : 		    <br/>
 		    - &lt;mhn&gt; : MHN. 		    <br/>
@@ -3250,16 +3386,17 @@
 	  <h3>MJN</h3><a name="chapAnnexe1.11" id="chapAnnexe1.11"></a>
 	  <p>
 	    Multi-Juggler Notation (MJN) telle qu'utilisée dans
-	    JugglingLab.<br/>
+	    JugglingLab ou JoePass.<br/>
 	    <br/>
 	    Le format utilisé est le suivant pour chaque Beat Asynchrone ou
 	    Synchrone :
 	    &lt;Jongleur 1|Jongleur 2|...|Jongleur j&gt;. <br/>
 	    En mode Synchrone, le symbole ! est accepté. On se reportera à la
 	    documentation de JugglingLab au besoin. <br/>
-	    <br/>
 	    Voici des exemples possibles : &lt;2|3p&gt;&lt;2p|3&gt;&lt;[3p/2]|3p&gt;&lt;3|3&gt;
-	    ou encore &lt;(2p3,4x)|(2xp3,4p1)|(2xp2,4xp2)&gt;.
+	    ou encore &lt;(2p3,4x)|(2xp3,4p1)|(2xp2,4xp2)&gt;.<br/>
+	    Il est également possible de faire un découpage par jongleur : &lt;22p3p/23|3p33p3&gt;
+	    <br/>
 	  </p>
 
 	  <div class="windowCode">
@@ -3267,7 +3404,7 @@
 	      <tbody>
 		<tr>
 		  <td> 
-		    <span class="Style1">MJN  - Multi-juggler Notation (v0.2)</span><br/>
+		    <span class="Style1">MJN  - Multi-juggler Notation (v0.3)</span><br/>
 		    <span class="Style1">-----------------------------------------</span><br/>
 		    <br/>
 
@@ -3313,13 +3450,13 @@
 		    - &lt;mjn&gt; : MJN à analyser. 		    <br/>
 		    - [-1] Optionnel, retourne le résultat sans l'afficher. 		    <br/>
 		    <br/>
-
+		    
 		    <span class="Style1">isAsync</span>                    : Teste le caractère Asynchrone du MJN.<br/>
 		    Paramètres :<br/>
 		    - &lt;mjn&gt; : MJN à tester.<br/>
 		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
 		    <br/>
-
+		    
 		    <span class="Style1">isSyntaxValid</span>                    : Teste la syntaxe grammaticale du MJN.<br/>
 		    Paramètres :<br/>
 		    - &lt;mjn&gt; : MJN à tester.<br/>
@@ -3330,21 +3467,24 @@
 		    Paramètres :<br/>
 		    - &lt;mjn&gt; : MJN à tester.<br/>
 		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
+		    - [\"List\"] Optionnel, en Asynchrone, liste des Mains initiales des jongleurs séparée par , dans le cas où on ne commence pas par la main droite [ex: R,L,L]<br/>
 		    <br/>
-
+		    
 		    <span class="Style1">toMHN</span>  :                Donne la Notation MHN correspondante. <br/>
 		    Paramètres : 		    <br/>
 		    - &lt;mjn&gt; : MJN. 		    <br/>
 		    - [-1] Optionnel, retourne le résultat sans l'afficher.<br/>
-		    <br/>
+		    - [\"List\"] Optionnel, en Asynchrone, liste des Mains initiales des jongleurs séparée par , dans le cas où on ne commence pas par la main droite [ex: R,L,L]<br/>
 
+		    <br/>
+		    
 		  </td> 
 		</tr>
 	      </tbody>
 	    </table>
 	  </div>
-
-
+	  
+	  
 	  <h3>MJHSS</h3><a name="chapAnnexe1.12" id="chapAnnexe1.12"></a>
 	  <p>
 	    Multi-Juggler Hand Siteswap Notation (MJHSS). <br/><br/>
@@ -3423,7 +3563,7 @@
 		      document.write(options_print_b5);
 		    </script>
 		    <br/>
-
+		    
 		    <span class="Style1">isValid</span>                    : Teste la validité de la combinaison MHN/MLHSS.<br/>
 		    Paramètres :<br/>
 		    - &lt;mhn&gt; : MHN.<br/>
@@ -3436,6 +3576,33 @@
 	      </tbody>
 	    </table>
 	  </div>
+
+
+	  <h3>CAUSAL</h3><a name="chapAnnexe1.14" id="chapAnnexe1.14"></a>
+	  <p>
+	    Diagrammes de Cause.
+	  </p>
+	  
+	  <div class="windowCode">
+	    <table>
+	      <tbody>
+		<tr>
+		  <td> 
+		    <span class="Style1">CAUSAL  - Causal Diagrams (v0.1)</span><br/>
+		    <span class="Style1">-----------------------------------------</span><br/>
+		    <br/>
+		    <span class="Style1">causalEditor</span>             :  Causal Diagram Editor de The
+		    Juggling Edge.<br/>
+		    Paramètres :<br/>
+		    - Aucun.<br/>		    
+		    <br/>		    
+		  </td> 
+		</tr>
+	      </tbody>
+	    </table>
+	  </div>
+
+
 	  
 	  <div class="pied-canevas">	  
 	    

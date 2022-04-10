@@ -1,12 +1,13 @@
 Config loaded : "conf.ini"
 BTN v1.2.2 loaded
+CAUSAL v0.1 loaded
 LADDER v2.2 loaded
 MHN v0.3 loaded
 SSWAP v1.6 loaded
 HSS v0.3 loaded
 HTN v0.6 loaded
 MLHSS v0.2 loaded
-MJN v0.2 loaded
+MJN v0.3 loaded
 MJHSS v0.2 loaded
 MMSTD v1.4 loaded
 SOU v1.4 loaded
@@ -92,131 +93,15 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
 
 ============ MODULES CONTEXT ============
 
-	Modules Available : MLHSS SOU HTN SPYRO BTN MJN HSS MJHSS STACK LADDER MHN MMSTD SSWAP 
+	Modules Available : MMSTD CAUSAL LADDER MHN BTN STACK SOU HSS MJHSS SSWAP HTN SPYRO MLHSS MJN 
 
 
-  MLHSS  - Multi-Layer Hand Siteswap Notation (v0.2)
+  MMSTD  - MMSTD (Mills Mess State Transition) juggling Notation (v1.4)
 -----------------------------------------
-      Multi-Layer Hand Siteswap Notation (MLHSS). 
+      In this module a SOU pattern will be made of a states (Ur, Ul, Rl, Rr,
+      Lr, Lr) and exchanges (<in>, <out>) sequence. 
       
-      Idea is to apply an HSS on each row of a MHN matrix. Each row
-      describes thus several hands throwing asynchronously. Format
-      used for MLHSS is : '('HSS1, ... HSSh')', each HSSi applies on row i
-      and is a Vanilla Siteswap. 
-
-
-  - draw :                    draw the Diagram of a given
-                              MHN/MLHSS. 
-      Parametres : 
-      
-      - <"mhn"> : MHN to draw. 
-      
-      - <"mlhss"> : corresponding MLHSS. 
-      
-      - <"file"> : image file for the result. 
-      
-      - ["options"] Several options among
-      -[a|b|c|d|e|f|g|h|j|k|l|n|o|p|q|s|t|v|y] : 
-      
-      	-a <y|n> : draw HSS (Default:y) 
-      
-      	-b <"string"> : naming core for MLHSS Layers (Default:J). 
-      
-      	-c <int> : Colorization Model for Asynchronous Drawing
-      (Default:2). Otherwise Colorization is done according to beats
-      and hands order. 
-      		'0' : No colorization; 
-      		'1' : Multiplex in increasing order of 
-      		 Siteswap values of previous throws; 
-      		'2' : Multiplexe in increasing order of 
-      		 Siteswap values of previous throws. 
-      
-      	-d <int> :  Synchronous Hack (Default:0) 
-      		'0' : Remove 0 in the drawing after sync throw since 
-      		it is catches beats; 
-      		'1' : No hack. 
-      
-      	-e <"string"> : Label Edge Color according to the Graphviz X11 
-      	scheme (ex : dodgerblue, red, springgreen, darkviolet, 
-      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
-      	darkorange, olivedrab1, turquoise4, black, peru, 
-      	mediumslateblue). E for same as the arrow 
-      	(Default:E). 
-      
-      	-f <0|1|2> : Splines Mode : 0: spline, 1:curved, 2:line
-      (Defaut:2). 
-      
-      	-f <0|1|2> : Splines Mode : 0: spline, 1:curved, 2:line
-      (Defaut:2). 
-      
-      	-g <y|n> : Keep Graphviz File used for generating (Default:n). 
-      
-      	-h <y|n> : Print Layers (Default:y). 
-      
-      	-j <y|n> : Print Hand on each Beat (default:y). 
-      
-      	-k <"string"> : Naming core for Hands (Default:H). 
-      
-      	-l <pos> : Position of the Siteswap label 
-      		't': near arrow tail; 
-      		'h': near arrow head; 
-      		'm': middle of the arrow; 
-      		'x': middle of the arrow after drawing; 
-      		's': around the State; 
-      		'n': No Siteswap label. 
-      
-      	-n <y|n> : Draw negatives throws [Experimental] 
-      		(Default:n). 
-      
-      	-p : Periode min to draw (Default:25). 
-      
-      	-o <type> : image format (Default:png) through : bmp (Windows
-      Bitmap Format), cmapx (client-side imagemap for use in html and
-      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
-      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
-      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
-      pcl (Laserjet printers), imap (imagemap files for httpd servers
-      for each node or edge that has a non-null "href" attribute.), jpg,
-      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
-      Document Format), png (Portable Network Graphics format), ps
-      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
-      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
-      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
-      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
-      langage), plain , plain-ext (Output in plain text). 
-      
-      	-q <y|n> : Quick drawing without quality respect(Default:n). 
-      
-      	-s <int> : Print or not the result (Default:0) 
-      		'0' : print the result; 
-      		'1' : Silence the result. 
-      
-      	-t <y|n> : Draw the image title (Default:y) 
-      
-      	-v <"string"> : Value to use for the title. 
-      
-      	-y <int> : HSS Style, 0: Dashed, 1: Dotted, 2 : Solid, 3: Bold, 4:
-      Invis (Default:0). 
-
-
-  - isValid :                 Check validity of MHN/MLHSS
-                              Combination. 
-      Parameters : 
-      
-      - <"mhn"> : MHN 
-      - <"mlhss"> : MLHSS 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-
-
-  SOU  - Extended S,O,U juggling Notation (v1.4)
------------------------------------------
-      In this module a SOU pattern will be made of a states (O, Ob, U, Ub, S,
-      Sb) and exchanges (<in>, <out>) sequence. 
-      
-      Example :
-      O<in>S<out>U<in>Ob<in>Sb<out>Ub<in>Sb<out>U<in>Ob<in>Sb 
+      	Example : Ur -o-> Ll -+> Ur , Rr -+-> Ul -o-> 
 
 
   - gen :                     Generation of all patterns with
@@ -237,11 +122,35 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       - ["file"] Optional, file to write results in. 
 
 
-  - graph :                   Display the SOU Graph of valid
+  - graph :                   Display the MMSTD Graph of valid
                               transitions. 
       Parameters : 
       
-      - None. 
+      - None otherwise Graphviz MUST be installed prior and its Path
+      correctly set in <conf.ini>. 
+      
+      - <"file"> : file for results. 
+      
+      - ["Format"] Optional, image format (Default:png) through : bmp
+      (Windows Bitmap Format), cmapx (client-side imagemap for use in
+      html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text) 
+      
+      - ["Generator"] Optional, Graphviz generation filter
+      (Default:dot) through : circo (circular layout), dot(directed
+      graphs), neato (undirected graphs), twopi (radial layouts),
+      fdp (undirected graphs), sfdp (large undirected graphs), osage
+      (clustered graphs). 
 
 
   - inv :                     Compute inversion of a designated
@@ -291,7 +200,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       - [-1] Optional, return the result, but do not print it. 
 
 
-  - toMMSTD :                 Give the corresponding MMSTD
+  - toSOU :                   Give the corresponding SOU
                               Notation. 
       Parameters : 
       
@@ -301,633 +210,17 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
 
 
 
-  HTN  - Harmonic Throws Notation (3-Layers Notation) (v0.6)
+  CAUSAL  - Causal Diagram (v0.1)
 -----------------------------------------
-      Harmonic Throws Notation (3-Layers Notation). 
+      Causal Diagrams. 
 
 
-  - HTNMaker :                HTNMaker made by Shawn Pinciara to
-                              build Harmonic Grids. 
+  - causalEditor :            Causal Diagram Editor from The
+                              Juggling Edge. 
       Parameters : 
       
       - None. 
 
-
-  - drawGrid :                Draw the grid related to the given
-                              Siteswap. Gnuplot and eventually
-                              Ghostscript and ImageMagick
-                              (converter) have to be installed
-                              prior (images are only PostScript
-                              otherwise). 
-      Parameters : 
-      
-      - <"siteswap"> : Siteswap to draw. 
-      
-      - <"file"> : Image file for the result. 
-      
-      - ["options"] Several options among
-      -[a|b|c|d|e|h|l|p|r|s|t|u|v|y|z] : 
-      
-      	-a <dec> : Staple height for throw on same hand (Default:0.4). 
-      
-      	-b <color> : Staple color (Default:green). 
-      
-      	-c <color> : Circle color (Default:#a935bd). 
-      
-      	-d <color> : Sync color (Default:blue). 
-      
-      	-e <color> : Hand Mode color (Default:blue). 
-      
-      	-h <r|l> : Hand Mode (Default:r). 
-      
-      	-l <y|n> : Print Labels on axis (Default:y). 
-      
-      	-p <int> : Period to draw (Default:10). 
-      
-      	-r <dec> : Circles Radius (Default:0.2). 
-      
-      	-s <int> : Print the result (Default:0) 
-      		'0' : Print the result; 
-      		'1' : No printing. 
-      
-      	-t <y|n> : Print the title (Default:y). 
-      
-      	-u <y|n> : Print the Hand Mode in title (Default:y). 
-      
-      	-v <"string"> : Title Value to set. 
-      
-      	-y <dec> : Y Shift for overlapping throws (Default:0.25). 
-      
-      	-z <"string"> : Terminal Driver. Set Value to empty to see
-      possibilities (Default:auto). 
-
-
-
-
-  SPYRO  - Juggling SPYROGRAPH (v0.4)
------------------------------------------
-      SPYRO defines a Spyrograph for jugglers to model Spins,
-      Antispins, Hybrids, Extensions, Isolations in a single plane. 
-
-
-  - anim :                    Start JuggleSpyro HTML5. 
-      Parameters : 
-      
-      - None or optionaly the HTTP Server Port. 
-
-
-  - poiFlowers :              Start David Lyons's Poï Simulator. 
-      Parameters : 
-      
-      - None. 
-
-
-  - staffSimMCP :             Start the MCP's Staffs Simulator. 
-      Parameters : 
-      
-      - None. 
-
-
-
-
-  BTN  - BTN juggling Notation (v1.2.2)
------------------------------------------
-      In this module a BTN throw will be made of a list of holes AC, AL, BOL
-      and the OP operator (Uppercase/Lowercase). 
-      
-      	Examples : OPALAC, BOLAL, OPALOPAC ... 
-
-
-  - BTNParity :               Give the BTN Parity. 
-      Parameters : 
-      
-      - <Throw> : Throw. 
-      - [-1] Optional, return the result, but do not print it (0: even, 1:
-      odd) 
-
-
-  - gen :                     Give all BTN throws limited by the
-                              number of holes encountered. 
-      Parameters : 
-      
-      - <int> : Maximum number of holes to go through [>4 is for
-      Extra-Terrestrial ;-)]. 
-      - ["file"] Optional, file to write results in. 
-
-
-  - gen2 :                    Give all BTN throws, excepted throws
-                              that contains two same successive
-                              holes in the body. 
-      Parameters : 
-      
-      - <int> : Maximum number of holes to go through [>4 is for
-      Extra-Terrestrial ;-)]. 
-      - ["file"] Optional, file to write results in. 
-
-
-  - inv :                     Give the BTN Time Reversed throw
-                              related. 
-      Parameters : 
-      
-      - <Throw> : Throw to Time Reversered. 
-      - <Parity> : Siteswap parity (0: even, 1: odd). 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - isValid :                 Test if the BTN Throw is valid. 
-      Parameters : 
-      
-      - <Throw> : Throw to check. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - size :                    Give the Throw Length in Hole Unit. 
-      Parameters : 
-      
-      - <Throw> : Throw that we want to get the length. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-
-
-  MJN  - Multi-Juggler Notation (v0.2)
------------------------------------------
-      Multi-Juggler Notation (MJN) as used in JugglingLab. 
-      
-      The used format is the following for each Asynchroneous or
-      Synchroneous Beat : 
-      <Juggler 1|Juggler 2|...|Juggler j> 
-      In Synchroneous, the symbole ! is possible. We will refer to the
-      JugglingLab documentation if needed 
-      
-      Here are some possible example : <2|3p><2p|3><[3p/2]|3p><3|3>
-      ou encore <(2p3,4x)|(2xp3,4p1)|(2xp2,4xp2)>. 
-
-
-  - draw :                    draw the Diagram of a given MJN. 
-      Parametres : 
-      
-      - <"mjn"> : MJN to draw. 
-      
-      - <"file"> : image file for the result. 
-      
-      - ["options"] Several options among
-      -[a|b|c|d|e|f|g|h|j|k|l|m|n|o|p|q|s|t|v|z] : 
-      
-      	-a <y|n> : Asynchronous drawing (OSS/HSS) if possible
-      (Default:n) 
-      
-      	-b <"string"> : naming core for Jugglers (Default:J). 
-      
-      	-c <int> : Colorization Model for Asynchronous Drawing
-      (Default:2). Otherwise Colorization is done according to beats
-      and hands order. 
-      		'0' : No colorization; 
-      		'1' : Multiplex in increasing order of 
-      		 Siteswap values of previous throws; 
-      		'2' : Multiplexe in increasing order of 
-      		 Siteswap values of previous throws. 
-      
-      	-d <int> :  Synchronous Hack (Default:0) 
-      		'0' : Remove 0 in the drawing after sync throw since 
-      		it is catches beats; 
-      		'1' : No hack. 
-      
-      	-e <"string"> : Label Edge Color according to the Graphviz X11 
-      	scheme (ex : dodgerblue, red, springgreen, darkviolet, 
-      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
-      	darkorange, olivedrab1, turquoise4, black, peru, 
-      	mediumslateblue). E for same as the arrow 
-      	(Default:E). 
-      
-      	-f <0|1|2> : Splines Mode : 0: spline, 1:curved, 2:line
-      (Defaut:2). 
-      
-      	-g <y|n> : Keep Graphviz File used for generating (Default:n). 
-      
-      	-h <y|n> : Print Jugglers (Default:y). 
-      
-      	-j <y|n> : Print Hand on each Beat, for MJHSS model. 
-      
-      	-k "list of lists using ( ) and ," : Print Hands Enumeration for
-      MJHSS Model. Ex (H1,H2)(H3,H4). 
-      
-      	-l <pos> : Position of the Siteswap label 
-      		't': near arrow tail; 
-      		'h': near arrow head; 
-      		'm': middle of the arrow; 
-      		'x': middle of the arrow after drawing; 
-      		's': around the State; 
-      		'n': No Siteswap label. 
-      
-      	-m <0|1|2> : Diagram Model (Default: According to the Siteswap
-      Type) 
-      		'0' : Ladder; 
-      		'1' : Flattened Ladder (Asynchronous Siteswap); 
-      		'2' : Ladder with odd Beats removed starting from 0 
-      			(Synchronous Siteswap). 
-      
-      	-n <y|n> : Draw negatives throws [Experimental] 
-      		(Default:n). 
-      
-      	-p : Periode min to draw (Default:25). 
-      
-      	-o <type> : image format (Default:png) through : bmp (Windows
-      Bitmap Format), cmapx (client-side imagemap for use in html and
-      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
-      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
-      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
-      pcl (Laserjet printers), imap (imagemap files for httpd servers
-      for each node or edge that has a non-null "href" attribute.), jpg,
-      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
-      Document Format), png (Portable Network Graphics format), ps
-      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
-      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
-      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
-      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
-      langage), plain , plain-ext (Output in plain text). 
-      
-      	-q <y|n> : Quick drawing without quality respect(Default:n). 
-      
-      	-s <int> : Print or not the result (Default:0) 
-      		'0' : print the result; 
-      		'1' : Silence the result. 
-      
-      	-t <y|n> : Draw the image title (Default:y) 
-      
-      	-v <"string"> : Value to use for the title. 
-      
-      	-z <"y|n"> : possible Zero in HSS computation ((Default:y). 
-      
-      	-a <y|n> : draw HSS (Default:y) 
-      
-      	-b <y|n> : naming core for hands (Default:M) 
-      
-      
-      - [\%hash] : Optional, transitions hash in Asynchronous model.
-      In this case the Siteswap is used for the title only. Each key is
-      Ri:j for a right transition or Li:j for a left one. i is the throw
-      Beat and j is the numero of the thrown object (starting from 0) to
-      help the colorization 
-      	Ex :  %hash = ( 
-      		'L2:0' => 'R4:0', 
-      		'R2:0' => 'R4:1', 
-      		'L4:0' => 'R6:0', 
-      		'R4:0' => 'R5:0', 
-      		'R4:1' => 'L6:0', 
-      		'R6:0' => 'R6:0' 
-      		); 
-
-
-  - getJugglersNumber :       Give the number of jugglers needed
-                              for the MJN. 
-      Parameters : 
-      
-      - <"mjn"> : MJN to analyze. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - getObjNumber :            Give the number of objects needed for
-                              the MJN. 
-      Parameters : 
-      
-      - <"mjn"> : MJN to analyze. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - getPeriod :               Give the MJN Period 
-      Parameters : 
-      
-      - <"mjn"> : MJN to analyze. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - isAsync :                 Check if MJN is Asynchronous. 
-      Parameters : 
-      
-      - <"mjn"> : MJN to check. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - isSyntaxValid :           Check the MJN grammar syntax. 
-      Parameters : 
-      
-      - <"mjn"> : MJN to check. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - isValid :                 Check the MJN validity. 
-      Parameters : 
-      
-      - <"mjn"> : MJN to check. 
-      
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - toMHN :                   Give the corresponding MHN
-                              Notation. 
-      Parameters : 
-      
-      - <"mjn"> : MJN. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-
-
-  HSS  - OSS/HSS juggling Notation (v0.3)
------------------------------------------
-      Object Siteswap/Hand Siteswap Notation (OSS/HSS). 
-
-
-  - basicMap :                Map of Asynchronous MultiHand
-                              Siteswaps Basic types, Hands x
-                              Objects number. 
-      Parameters : 
-      
-      - [int] : Max number of Hands (Default:15). 
-      - [int] : Max number of Objects (Default:15). 
-
-
-  - changeHSS :               Give Siteswap get by swapping hands
-                              (HSS with 2 hands) but keeping throw
-                              and catch hands. [Experimental] 
-      Parameters : 
-      
-      - <"oss"> : Asynchronous Siteswap. 
-      - <"hss"> : Initial Hand Siteswap. 
-      - <"hss"> : Ending Hand Siteswap. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - draw :                    Draw the Diagram of a given OSS/HSS. 
-      Parameters : 
-      
-      - <"oss"> : OSS to draw. 
-      
-      - <"hss"> : HSS to draw. 
-      
-      - <"file"> : image file for the result. 
-      
-      - ["options"] Several options among
-      -[a|b|c|d|e|g|h|i|l|m|n|o|p|q|s|t|v|y] :-a <y|n> :  draw HSS
-      (Default:y). 
-      
-      	-b <"string"> :  naming core for hands (Default:M). 
-      
-      	-c <int> :  Colorization Model (Default:2) 
-      		'0' : No colorization; 
-      		'1' : Multiplex in increasing order of 
-      		 Siteswap values of previous throws; 
-      		'2' : Multiplexe in increasing order of 
-      		 Siteswap values of previous throws. 
-      
-      	-d <int> :  Synchronous Hack (Default:0) 
-      		'0' : Remove 0 in the drawing after sync throw since 
-      		it is catches beats; 
-      		'1' : No hack. 
-      
-      	-e <"string"> : Label Edge Color according to the Graphviz X11 
-      	scheme (ex : dodgerblue, red, springgreen, darkviolet, 
-      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
-      	darkorange, olivedrab1, turquoise4, black, peru, 
-      	mediumslateblue). E for same as the arrow 
-      	(Default:E). 
-      
-      	-g <y|n> : Keep Graphviz File used for generating (Default:n). 
-      
-      	-h <y|n> : Print Hands. 
-      
-      	-i "list using ," : Print Hands Enumeration for Vanilla Flat
-      diagram. 
-      
-      	-l <pos> : Position of the Siteswap label 
-      		't': near arrow tail; 
-      		'h': near arrow head; 
-      		'm': middle of the arrow; 
-      		'x': middle of the arrow after drawing; 
-      		's': around the State; 
-      		'n': No Siteswap label. 
-      
-      	-m <0|1|2> : Diagram Model (Default: According to the Siteswap
-      Type) 
-      		'0' : Ladder; 
-      		'1' : Flattened Ladder (Asynchronous Siteswap); 
-      		'2' : Ladder with odd Beats removed starting from 0 
-      			(Synchronous Siteswap). 
-      
-      	-n <y|n> : Draw negatives throws [Experimental] 
-      		(Default:n). 
-      
-      	-p : Periode min to draw (Default:25). 
-      
-      	-o <type> : image format (Default:png) through : bmp (Windows
-      Bitmap Format), cmapx (client-side imagemap for use in html and
-      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
-      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
-      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
-      pcl (Laserjet printers), imap (imagemap files for httpd servers
-      for each node or edge that has a non-null "href" attribute.), jpg,
-      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
-      Document Format), png (Portable Network Graphics format), ps
-      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
-      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
-      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
-      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
-      langage), plain , plain-ext (Output in plain text). 
-      
-      	-q <y|n> : Quick drawing without quality respect (Default:n). 
-      
-      	-s <int> : Print or not the result (Default:0) 
-      		'0' : print the result; 
-      		'1' : Silence the result. 
-      
-      	-t <y|n> : Draw the image title (Default:y) 
-      
-      	-v <"string"> : Value to use for the title. 
-      
-      	-y <int> : HSS Style, 0: Dashed, 1: Dotted, 2 : Solid, 3: Bold, 4:
-      Invis (Default:0). 
-      
-      
-      - [\%hash] : Optional, transitions hash for OSS. In this case the
-      Siteswap is used for the title only. Each key is Ri:j for a right
-      transition or Li:j for a left one. i is the throw Beat and j is the
-      numero of the thrown object (starting from 0) to help the
-      colorization 
-      	Ex :  %hash = ( 
-      		'L2:0' => 'R4:0', 
-      		'R2:0' => 'R4:1', 
-      		'L4:0' => 'R6:0', 
-      		'R4:0' => 'R5:0', 
-      		'R4:1' => 'L6:0', 
-      		'R6:0' => 'R6:0' 
-      		); 
-
-
-  - getHandsSeq :             Give Hands sequence according to
-                              input HSS. 
-      Parameters : 
-      
-      - <"hss"> : Hand Siteswap. 
-      - <"string"> : Hands involved separated by , . 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - isValid :                 Check OSS/HSS combination
-                              validity. 
-      Parameters : 
-      
-      - <"oss"> : OSS 
-      - <"hss"> : HSS 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - toMHN :                   Give the corresponding MHN
-                              Notation. 
-      Parameters : 
-      
-      - <"oss"> : OSS. 
-      - <"hss"> : HSS. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-  - toSS :                    Give the corresponding Siteswap
-                              Notation when possible (i.e At most 2
-                              Hands). 
-      Parameters : 
-      
-      - <"oss"> : OSS. 
-      - <"hss"> : HSS. 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-
-
-  MJHSS  - Multi-Juggler Hand Siteswap Notation (v0.2)
------------------------------------------
-      Multi-Juggler Hand Siteswap Notation (MJHSS). 
-      
-      Idea is to apply an HSS on each column of a MJN matrix in a Siteswap
-      Asynchroneous Model. Each row describes thus several hands
-      throwing asynchronously. Format used for MJHSS is : '('HSS1, ...
-      HSSh')', each HSSi applies on column i and is a Vanilla Siteswap. 
-
-
-  - draw :                    draw the Diagram of a given
-                              MJN/MJHSS. 
-      Parametres : 
-      
-      - <"mjn"> : MJN to draw. 
-      
-      - <"mjhss"> : corresponding MJHSS. 
-      
-      - <"file"> : image file for the result. 
-      
-      - ["options"] Several options among
-      -[a|b|c|d|e|f|g|h|j|k|l|m|n|o|p|q|s|t|v|y|z] : 
-      
-      	-a <y|n> : Asynchronous drawing (OSS/HSS) if possible
-      (Default:n) 
-      
-      	-b <"string"> : naming core for Jugglers (Default:J). 
-      
-      	-c <int> : Colorization Model for Asynchronous Drawing
-      (Default:2). Otherwise Colorization is done according to beats
-      and hands order. 
-      		'0' : No colorization; 
-      		'1' : Multiplex in increasing order of 
-      		 Siteswap values of previous throws; 
-      		'2' : Multiplexe in increasing order of 
-      		 Siteswap values of previous throws. 
-      
-      	-d <int> :  Synchronous Hack (Default:0) 
-      		'0' : Remove 0 in the drawing after sync throw since 
-      		it is catches beats; 
-      		'1' : No hack. 
-      
-      	-e <"string"> : Label Edge Color according to the Graphviz X11 
-      	scheme (ex : dodgerblue, red, springgreen, darkviolet, 
-      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
-      	darkorange, olivedrab1, turquoise4, black, peru, 
-      	mediumslateblue). E for same as the arrow 
-      	(Default:E). 
-      
-      	-f <0|1|2> : Splines Mode : 0: spline, 1:curved, 2:line
-      (Defaut:2). 
-      
-      	-g <y|n> : Keep Graphviz File used for generating (Default:n). 
-      
-      	-h <y|n> : Print Jugglers (Default:y). 
-      
-      	-j <y|n> : Print Hand on each Beat, for MJHSS model. 
-      
-      	-k <"string"> : Naming core for Hands (Default:H). 
-      
-      	-l <pos> : Position of the Siteswap label 
-      		't': near arrow tail; 
-      		'h': near arrow head; 
-      		'm': middle of the arrow; 
-      		'x': middle of the arrow after drawing; 
-      		's': around the State; 
-      		'n': No Siteswap label. 
-      
-      	-m <0|1|2> : Diagram Model (Default: According to the Siteswap
-      Type) 
-      		'0' : Ladder; 
-      		'1' : Flattened Ladder (Asynchronous Siteswap); 
-      		'2' : Ladder with odd Beats removed starting from 0 
-      			(Synchronous Siteswap). 
-      
-      	-n <y|n> : Draw negatives throws [Experimental] 
-      		(Default:n). 
-      
-      	-p : Periode min to draw (Default:25). 
-      
-      	-o <type> : image format (Default:png) through : bmp (Windows
-      Bitmap Format), cmapx (client-side imagemap for use in html and
-      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
-      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
-      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
-      pcl (Laserjet printers), imap (imagemap files for httpd servers
-      for each node or edge that has a non-null "href" attribute.), jpg,
-      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
-      Document Format), png (Portable Network Graphics format), ps
-      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
-      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
-      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
-      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
-      langage), plain , plain-ext (Output in plain text). 
-      
-      	-q <y|n> : Quick drawing without quality respect(Default:n). 
-      
-      	-s <int> : Print or not the result (Default:0) 
-      		'0' : print the result; 
-      		'1' : Silence the result. 
-      
-      	-t <y|n> : Draw the image title (Default:y) 
-      
-      	-v <"string"> : Value to use for the title. 
-      
-      	-y <int> : HSS Style, 0: Dashed, 1: Dotted, 2 : Solid, 3: Bold, 4:
-      Invis (Default:0). 
-      
-      	-z <"y|n"> : possible Zero in HSS computation ((Default:y). 
-
-
-  - isValid :                 Check validity of MJN/MJHSS
-                              Combination. 
-      Parameters : 
-      
-      - <"mjn"> : MJN 
-      - <"mjhss"> : MJHSS 
-      - [-1] Optional, return the result, but do not print it. 
-
-
-
-
-  STACK  - STACK juggling Notation (v0.0)
------------------------------------------
-     
 
 
 
@@ -1718,6 +1011,39 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       		); 
 
 
+  - genPolyrhythm :           Polyrhythms Generation. 
+      Parameters : 
+      
+      - <int> : Number of hands. 
+      - <int> : Number of objects. 
+      - <int> : Max height in hex. 
+      - <"list"> : Ratios List from Hand 1 separated by , [ex: 1:2,1:3]. 
+      - [\@List] Optional, Throws to exclude. 
+      	Ex: @List=('0','2','1x'). 
+      	 If not set, without other optional parameters, 0 is not used; 
+      	 if '', no exclusion. 
+      - ["options"] Several options among -[b|f|j|l|m|q] 
+      	-b <y|n> : print MJN (Default:n). 
+      	-f <0|1|2> : Splines Mode : 0: spline, 1:curved, 2:line
+      (Default:2). 
+      	-j <y|n> : Add modified MHNs with lower throws, keeping the
+      throws tempo thanks to extra Hold Times and usable on
+      JugglingLab. JugglingLab only handles Hold Times for throws 1x
+      or 2, Hold Times are then converted (Default:n). 
+      	-l <y|n> : Add modified MHNs with lower throws, keeping the
+      throws tempo thanks to extra Hold Times (Default:n). 
+      	-m <y|n> : print MJN and MHN (Default:y). 
+      	-q <y|n> : Quick drawing without quality respect (Default:n). 
+      
+      - ["file"] Optional, file to write results in. 
+      If the file starts with 
+      	- 'JML:', issue a JML file with extension .jml 
+      	for JugglingLab view. 
+      	- 'HTML:', issue an HTML file with extension 
+      		.html with Ladder Diagrams in it, MJNs version, JML/TXT
+      summary. 
+
+
   - getHandsNumber :          Give the number of hands needed for
                               the MHN. 
       Parameters : 
@@ -1763,6 +1089,63 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       - [-1] Optional, return the result, but do not print it. 
 
 
+  - lowerHeightOnTempo :      MHNs transformation for lower
+                              throws, keeping the Tempo of throws
+                              but adding extra Hold Times. 
+      Interesting to simplify Polyrhythms. 
+      
+      Parameters : 
+      
+      - <"mhn"> : MHN to adapt. 
+      
+      - ["options"] Several options -[f|j|m] described hereafter: 
+      	-f <int> : Number of Minimum Free Beats during transformation
+      between two consecutive throws (Default:1). As the object is
+      catch a small time before being throwed, with a Dwell time around 1
+      in general a lower value implies Squeezes. 
+      	-j <y|n> : JugglingLab Adaptation. JugglingLab only render
+      Hold Times for throws 1x or 2. It then convert Hold Times with
+      greater values. 
+      	-m <int> : Minimum value for throw on same hand after
+      transformation in order to avoid for example a transformation of
+      throw into hold (Default:3). 
+      
+      [-1] Optional, return the result, but do not print it
+      (Default:n). 
+
+
+  - printMHNListHTML :        HTML file creation from a MHN list,
+                              adding diagrams, JML JugglingLab
+                              file and TXT lists. 
+      Parameters : 
+      
+      - <\@List"> : Input List with the MHNs or -1 For empty InputList. 
+      
+      - <"outputFile"> : HTML Files for results (adding extension
+      .html). 
+      
+      - <"string"> : Title. 
+      
+      - ["options"] Several options -[b|f|j|l|m|q] : 
+      
+      	-b <y|n> : Print Both MHN and MJN (Default:n). 
+      
+      	-f <0|1|2> : Splines Mode for drawing : 0: spline, 1:curved,
+      2:line (Default:2). 
+      	-j <y|n> : Add a column with modified MHNs with lower throws,
+      keeping the throws tempo thanks to extra Hold Times and usable on
+      JugglingLab. JugglingLab only handles Hold Times for throws 1x
+      or 2, Hold Times are then converted (Default:n). 
+      	-l <y|n> : Add a column with modified MHNs with lower throws,
+      keeping the throws tempo thanks to extra Hold Times (Default:n). 
+      	-m <y|n> : Print MJN only. Option overwritten by -b (Default:n). 
+      	-q <y|n> : Quick drawing without quality respect (Default:n). 
+      
+      [-1] Optional, return the result, but do not print it
+      (Default:n). 
+      - <"inputFile"> : File with the MHN list if InputList is empty. 
+
+
   - toHSS :                   Give the corresponding OSS/HSS
                               Notation when possible (i.e Async.
                               Transform). 
@@ -1795,12 +1178,79 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
 
 
 
-  MMSTD  - MMSTD (Mills Mess State Transition) juggling Notation (v1.4)
+  BTN  - BTN juggling Notation (v1.2.2)
 -----------------------------------------
-      In this module a SOU pattern will be made of a states (Ur, Ul, Rl, Rr,
-      Lr, Lr) and exchanges (<in>, <out>) sequence. 
+      In this module a BTN throw will be made of a list of holes AC, AL, BOL
+      and the OP operator (Uppercase/Lowercase). 
       
-      	Example : Ur -o-> Ll -+> Ur , Rr -+-> Ul -o-> 
+      	Examples : OPALAC, BOLAL, OPALOPAC ... 
+
+
+  - BTNParity :               Give the BTN Parity. 
+      Parameters : 
+      
+      - <Throw> : Throw. 
+      - [-1] Optional, return the result, but do not print it (0: even, 1:
+      odd) 
+
+
+  - gen :                     Give all BTN throws limited by the
+                              number of holes encountered. 
+      Parameters : 
+      
+      - <int> : Maximum number of holes to go through [>4 is for
+      Extra-Terrestrial ;-)]. 
+      - ["file"] Optional, file to write results in. 
+
+
+  - gen2 :                    Give all BTN throws, excepted throws
+                              that contains two same successive
+                              holes in the body. 
+      Parameters : 
+      
+      - <int> : Maximum number of holes to go through [>4 is for
+      Extra-Terrestrial ;-)]. 
+      - ["file"] Optional, file to write results in. 
+
+
+  - inv :                     Give the BTN Time Reversed throw
+                              related. 
+      Parameters : 
+      
+      - <Throw> : Throw to Time Reversered. 
+      - <Parity> : Siteswap parity (0: even, 1: odd). 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - isValid :                 Test if the BTN Throw is valid. 
+      Parameters : 
+      
+      - <Throw> : Throw to check. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - size :                    Give the Throw Length in Hole Unit. 
+      Parameters : 
+      
+      - <Throw> : Throw that we want to get the length. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+
+
+  STACK  - STACK juggling Notation (v0.0)
+-----------------------------------------
+     
+
+
+
+  SOU  - Extended S,O,U juggling Notation (v1.4)
+-----------------------------------------
+      In this module a SOU pattern will be made of a states (O, Ob, U, Ub, S,
+      Sb) and exchanges (<in>, <out>) sequence. 
+      
+      Example :
+      O<in>S<out>U<in>Ob<in>Sb<out>Ub<in>Sb<out>U<in>Ob<in>Sb 
 
 
   - gen :                     Generation of all patterns with
@@ -1821,35 +1271,11 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       - ["file"] Optional, file to write results in. 
 
 
-  - graph :                   Display the MMSTD Graph of valid
+  - graph :                   Display the SOU Graph of valid
                               transitions. 
       Parameters : 
       
-      - None otherwise Graphviz MUST be installed prior and its Path
-      correctly set in <conf.ini>. 
-      
-      - <"file"> : file for results. 
-      
-      - ["Format"] Optional, image format (Default:png) through : bmp
-      (Windows Bitmap Format), cmapx (client-side imagemap for use in
-      html and xhtml), dia (GTK+ based diagrams), eps (Encapsulated
-      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
-      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
-      pcl (Laserjet printers), imap (imagemap files for httpd servers
-      for each node or edge that has a non-null "href" attribute.), jpg,
-      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
-      Document Format), png (Portable Network Graphics format), ps
-      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
-      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
-      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
-      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
-      langage), plain , plain-ext (Output in plain text) 
-      
-      - ["Generator"] Optional, Graphviz generation filter
-      (Default:dot) through : circo (circular layout), dot(directed
-      graphs), neato (undirected graphs), twopi (radial layouts),
-      fdp (undirected graphs), sfdp (large undirected graphs), osage
-      (clustered graphs). 
+      - None. 
 
 
   - inv :                     Compute inversion of a designated
@@ -1899,11 +1325,302 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       - [-1] Optional, return the result, but do not print it. 
 
 
-  - toSOU :                   Give the corresponding SOU
+  - toMMSTD :                 Give the corresponding MMSTD
                               Notation. 
       Parameters : 
       
       - <pattern> : pattern that we want to get the MMSTD Notation. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+
+
+  HSS  - OSS/HSS juggling Notation (v0.3)
+-----------------------------------------
+      Object Siteswap/Hand Siteswap Notation (OSS/HSS). 
+
+
+  - basicMap :                Map of Asynchronous MultiHand
+                              Siteswaps Basic types, Hands x
+                              Objects number. 
+      Parameters : 
+      
+      - [int] : Max number of Hands (Default:15). 
+      - [int] : Max number of Objects (Default:15). 
+
+
+  - changeHSS :               Give Siteswap get by swapping hands
+                              (HSS with 2 hands) but keeping throw
+                              and catch hands. [Experimental] 
+      Parameters : 
+      
+      - <"oss"> : Asynchronous Siteswap. 
+      - <"hss"> : Initial Hand Siteswap. 
+      - <"hss"> : Ending Hand Siteswap. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - draw :                    Draw the Diagram of a given OSS/HSS. 
+      Parameters : 
+      
+      - <"oss"> : OSS to draw. 
+      
+      - <"hss"> : HSS to draw. 
+      
+      - <"file"> : image file for the result. 
+      
+      - ["options"] Several options among
+      -[a|b|c|d|e|g|h|i|l|m|n|o|p|q|s|t|v|y] :-a <y|n> :  draw HSS
+      (Default:y). 
+      
+      	-b <"string"> :  naming core for hands (Default:M). 
+      
+      	-c <int> :  Colorization Model (Default:2) 
+      		'0' : No colorization; 
+      		'1' : Multiplex in increasing order of 
+      		 Siteswap values of previous throws; 
+      		'2' : Multiplexe in increasing order of 
+      		 Siteswap values of previous throws. 
+      
+      	-d <int> :  Synchronous Hack (Default:0) 
+      		'0' : Remove 0 in the drawing after sync throw since 
+      		it is catches beats; 
+      		'1' : No hack. 
+      
+      	-e <"string"> : Label Edge Color according to the Graphviz X11 
+      	scheme (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E for same as the arrow 
+      	(Default:E). 
+      
+      	-g <y|n> : Keep Graphviz File used for generating (Default:n). 
+      
+      	-h <y|n> : Print Hands. 
+      
+      	-i "list using ," : Print Hands Enumeration for Vanilla Flat
+      diagram. 
+      
+      	-l <pos> : Position of the Siteswap label 
+      		't': near arrow tail; 
+      		'h': near arrow head; 
+      		'm': middle of the arrow; 
+      		'x': middle of the arrow after drawing; 
+      		's': around the State; 
+      		'n': No Siteswap label. 
+      
+      	-m <0|1|2> : Diagram Model (Default: According to the Siteswap
+      Type) 
+      		'0' : Ladder; 
+      		'1' : Flattened Ladder (Asynchronous Siteswap); 
+      		'2' : Ladder with odd Beats removed starting from 0 
+      			(Synchronous Siteswap). 
+      
+      	-n <y|n> : Draw negatives throws [Experimental] 
+      		(Default:n). 
+      
+      	-p : Periode min to draw (Default:25). 
+      
+      	-o <type> : image format (Default:png) through : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-q <y|n> : Quick drawing without quality respect (Default:n). 
+      
+      	-s <int> : Print or not the result (Default:0) 
+      		'0' : print the result; 
+      		'1' : Silence the result. 
+      
+      	-t <y|n> : Draw the image title (Default:y) 
+      
+      	-v <"string"> : Value to use for the title. 
+      
+      	-y <int> : HSS Style, 0: Dashed, 1: Dotted, 2 : Solid, 3: Bold, 4:
+      Invis (Default:0). 
+      
+      
+      - [\%hash] : Optional, transitions hash for OSS. In this case the
+      Siteswap is used for the title only. Each key is Ri:j for a right
+      transition or Li:j for a left one. i is the throw Beat and j is the
+      numero of the thrown object (starting from 0) to help the
+      colorization 
+      	Ex :  %hash = ( 
+      		'L2:0' => 'R4:0', 
+      		'R2:0' => 'R4:1', 
+      		'L4:0' => 'R6:0', 
+      		'R4:0' => 'R5:0', 
+      		'R4:1' => 'L6:0', 
+      		'R6:0' => 'R6:0' 
+      		); 
+
+
+  - getHandsSeq :             Give Hands sequence according to
+                              input HSS. 
+      Parameters : 
+      
+      - <"hss"> : Hand Siteswap. 
+      - <"string"> : Hands involved separated by , . 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - isValid :                 Check OSS/HSS combination
+                              validity. 
+      Parameters : 
+      
+      - <"oss"> : OSS 
+      - <"hss"> : HSS 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - toMHN :                   Give the corresponding MHN
+                              Notation. 
+      Parameters : 
+      
+      - <"oss"> : OSS. 
+      - <"hss"> : HSS. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - toSS :                    Give the corresponding Siteswap
+                              Notation when possible (i.e At most 2
+                              Hands). 
+      Parameters : 
+      
+      - <"oss"> : OSS. 
+      - <"hss"> : HSS. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+
+
+  MJHSS  - Multi-Juggler Hand Siteswap Notation (v0.2)
+-----------------------------------------
+      Multi-Juggler Hand Siteswap Notation (MJHSS). 
+      
+      Idea is to apply an HSS on each column of a MJN matrix in a Siteswap
+      Asynchroneous Model. Each row describes thus several hands
+      throwing asynchronously. Format used for MJHSS is : '('HSS1, ...
+      HSSh')', each HSSi applies on column i and is a Vanilla Siteswap. 
+
+
+  - draw :                    draw the Diagram of a given
+                              MJN/MJHSS. 
+      Parametres : 
+      
+      - <"mjn"> : MJN to draw. 
+      
+      - <"mjhss"> : corresponding MJHSS. 
+      
+      - <"file"> : image file for the result. 
+      
+      - ["options"] Several options among
+      -[a|b|c|d|e|f|g|h|j|k|l|m|n|o|p|q|s|t|v|y|z] : 
+      
+      	-a <y|n> : Asynchronous drawing (OSS/HSS) if possible
+      (Default:n) 
+      
+      	-b <"string"> : naming core for Jugglers (Default:J). 
+      
+      	-c <int> : Colorization Model for Asynchronous Drawing
+      (Default:2). Otherwise Colorization is done according to beats
+      and hands order. 
+      		'0' : No colorization; 
+      		'1' : Multiplex in increasing order of 
+      		 Siteswap values of previous throws; 
+      		'2' : Multiplexe in increasing order of 
+      		 Siteswap values of previous throws. 
+      
+      	-d <int> :  Synchronous Hack (Default:0) 
+      		'0' : Remove 0 in the drawing after sync throw since 
+      		it is catches beats; 
+      		'1' : No hack. 
+      
+      	-e <"string"> : Label Edge Color according to the Graphviz X11 
+      	scheme (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E for same as the arrow 
+      	(Default:E). 
+      
+      	-f <0|1|2> : Splines Mode : 0: spline, 1:curved, 2:line
+      (Defaut:2). 
+      
+      	-g <y|n> : Keep Graphviz File used for generating (Default:n). 
+      
+      	-h <y|n> : Print Jugglers (Default:y). 
+      
+      	-j <y|n> : Print Hand on each Beat, for MJHSS model. 
+      
+      	-k <"string"> : Naming core for Hands (Default:H). 
+      
+      	-l <pos> : Position of the Siteswap label 
+      		't': near arrow tail; 
+      		'h': near arrow head; 
+      		'm': middle of the arrow; 
+      		'x': middle of the arrow after drawing; 
+      		's': around the State; 
+      		'n': No Siteswap label. 
+      
+      	-m <0|1|2> : Diagram Model (Default: According to the Siteswap
+      Type) 
+      		'0' : Ladder; 
+      		'1' : Flattened Ladder (Asynchronous Siteswap); 
+      		'2' : Ladder with odd Beats removed starting from 0 
+      			(Synchronous Siteswap). 
+      
+      	-n <y|n> : Draw negatives throws [Experimental] 
+      		(Default:n). 
+      
+      	-p : Periode min to draw (Default:25). 
+      
+      	-o <type> : image format (Default:png) through : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      
+      	-s <int> : Print or not the result (Default:0) 
+      		'0' : print the result; 
+      		'1' : Silence the result. 
+      
+      	-t <y|n> : Draw the image title (Default:y) 
+      
+      	-v <"string"> : Value to use for the title. 
+      
+      	-y <int> : HSS Style, 0: Dashed, 1: Dotted, 2 : Solid, 3: Bold, 4:
+      Invis (Default:0). 
+      
+      	-z <"y|n"> : possible Zero in HSS computation ((Default:y). 
+
+
+  - isValid :                 Check validity of MJN/MJHSS
+                              Combination. 
+      Parameters : 
+      
+      - <"mjn"> : MJN 
+      - <"mjhss"> : MJHSS 
       - [-1] Optional, return the result, but do not print it. 
 
 
@@ -3532,7 +3249,7 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
   - jdeep :                   Prime Siteswaps Generation (jdeep
                               de Jack Boyce). 
       jdeep version 5.1 by Jack Boyce 
-      (02/17/99) jboyce.sourceforge.net 
+      (02/17/99) jboyce@users.sourceforge.net 
       
       The purpose of this program is to search for long prime asynch
       siteswap patterns. 
@@ -4110,6 +3827,403 @@ Some configuration parameters may also be configured in <conf.ini> (such as the 
       - <"file"> : Excel Body file to write results in, without
       extension .xlsx. You must have Excel with a valid license prior !
       (Windows Only). 
+
+
+
+
+  HTN  - Harmonic Throws Notation (3-Layers Notation) (v0.6)
+-----------------------------------------
+      Harmonic Throws Notation (3-Layers Notation). 
+
+
+  - HTNMaker :                HTNMaker made by Shawn Pinciara to
+                              build Harmonic Grids. 
+      Parameters : 
+      
+      - None. 
+
+
+  - drawGrid :                Draw the grid related to the given
+                              Siteswap. Gnuplot and eventually
+                              Ghostscript and ImageMagick
+                              (converter) have to be installed
+                              prior (images are only PostScript
+                              otherwise). 
+      Parameters : 
+      
+      - <"siteswap"> : Siteswap to draw. 
+      
+      - <"file"> : Image file for the result. 
+      
+      - ["options"] Several options among
+      -[a|b|c|d|e|h|l|p|r|s|t|u|v|y|z] : 
+      
+      	-a <dec> : Staple height for throw on same hand (Default:0.4). 
+      
+      	-b <color> : Staple color (Default:green). 
+      
+      	-c <color> : Circle color (Default:#a935bd). 
+      
+      	-d <color> : Sync color (Default:blue). 
+      
+      	-e <color> : Hand Mode color (Default:blue). 
+      
+      	-h <r|l> : Hand Mode (Default:r). 
+      
+      	-l <y|n> : Print Labels on axis (Default:y). 
+      
+      	-p <int> : Period to draw (Default:10). 
+      
+      	-r <dec> : Circles Radius (Default:0.2). 
+      
+      	-s <int> : Print the result (Default:0) 
+      		'0' : Print the result; 
+      		'1' : No printing. 
+      
+      	-t <y|n> : Print the title (Default:y). 
+      
+      	-u <y|n> : Print the Hand Mode in title (Default:y). 
+      
+      	-v <"string"> : Title Value to set. 
+      
+      	-y <dec> : Y Shift for overlapping throws (Default:0.25). 
+      
+      	-z <"string"> : Terminal Driver. Set Value to empty to see
+      possibilities (Default:auto). 
+
+
+
+
+  SPYRO  - Juggling SPYROGRAPH (v0.4)
+-----------------------------------------
+      SPYRO defines a Spyrograph for jugglers to model Spins,
+      Antispins, Hybrids, Extensions, Isolations in a single plane. 
+
+
+  - anim :                    Start JuggleSpyro HTML5. 
+      Parameters : 
+      
+      - None or optionaly the HTTP Server Port. 
+
+
+  - poiFlowers :              Start David Lyons's Poï Simulator. 
+      Parameters : 
+      
+      - None. 
+
+
+  - staffSimMCP :             Start the MCP's Staffs Simulator. 
+      Parameters : 
+      
+      - None. 
+
+
+
+
+  MLHSS  - Multi-Layer Hand Siteswap Notation (v0.2)
+-----------------------------------------
+      Multi-Layer Hand Siteswap Notation (MLHSS). 
+      
+      Idea is to apply an HSS on each row of a MHN matrix. Each row
+      describes thus several hands throwing asynchronously. Format
+      used for MLHSS is : '('HSS1, ... HSSh')', each HSSi applies on row i
+      and is a Vanilla Siteswap. 
+
+
+  - draw :                    draw the Diagram of a given
+                              MHN/MLHSS. 
+      Parametres : 
+      
+      - <"mhn"> : MHN to draw. 
+      
+      - <"mlhss"> : corresponding MLHSS. 
+      
+      - <"file"> : image file for the result. 
+      
+      - ["options"] Several options among
+      -[a|b|c|d|e|f|g|h|j|k|l|n|o|p|q|s|t|v|y] : 
+      
+      	-a <y|n> : draw HSS (Default:y) 
+      
+      	-b <"string"> : naming core for MLHSS Layers (Default:J). 
+      
+      	-c <int> : Colorization Model for Asynchronous Drawing
+      (Default:2). Otherwise Colorization is done according to beats
+      and hands order. 
+      		'0' : No colorization; 
+      		'1' : Multiplex in increasing order of 
+      		 Siteswap values of previous throws; 
+      		'2' : Multiplexe in increasing order of 
+      		 Siteswap values of previous throws. 
+      
+      	-d <int> :  Synchronous Hack (Default:0) 
+      		'0' : Remove 0 in the drawing after sync throw since 
+      		it is catches beats; 
+      		'1' : No hack. 
+      
+      	-e <"string"> : Label Edge Color according to the Graphviz X11 
+      	scheme (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E for same as the arrow 
+      	(Default:E). 
+      
+      	-f <0|1|2> : Splines Mode : 0: spline, 1:curved, 2:line
+      (Defaut:2). 
+      
+      	-f <0|1|2> : Splines Mode : 0: spline, 1:curved, 2:line
+      (Defaut:2). 
+      
+      	-g <y|n> : Keep Graphviz File used for generating (Default:n). 
+      
+      	-h <y|n> : Print Layers (Default:y). 
+      
+      	-j <y|n> : Print Hand on each Beat (default:y). 
+      
+      	-k <"string"> : Naming core for Hands (Default:H). 
+      
+      	-l <pos> : Position of the Siteswap label 
+      		't': near arrow tail; 
+      		'h': near arrow head; 
+      		'm': middle of the arrow; 
+      		'x': middle of the arrow after drawing; 
+      		's': around the State; 
+      		'n': No Siteswap label. 
+      
+      	-n <y|n> : Draw negatives throws [Experimental] 
+      		(Default:n). 
+      
+      	-p : Periode min to draw (Default:25). 
+      
+      	-o <type> : image format (Default:png) through : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      
+      	-s <int> : Print or not the result (Default:0) 
+      		'0' : print the result; 
+      		'1' : Silence the result. 
+      
+      	-t <y|n> : Draw the image title (Default:y) 
+      
+      	-v <"string"> : Value to use for the title. 
+      
+      	-y <int> : HSS Style, 0: Dashed, 1: Dotted, 2 : Solid, 3: Bold, 4:
+      Invis (Default:0). 
+
+
+  - isValid :                 Check validity of MHN/MLHSS
+                              Combination. 
+      Parameters : 
+      
+      - <"mhn"> : MHN 
+      - <"mlhss"> : MLHSS 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+
+
+  MJN  - Multi-Juggler Notation (v0.3)
+-----------------------------------------
+      Multi-Juggler Notation (MJN) as used in JugglingLab or JoePass. 
+      
+      The used format is the following for each Asynchroneous or
+      Synchroneous Beat : 
+      <Juggler 1|Juggler 2|...|Juggler j> 
+      In Synchroneous, the symbole ! is possible. We will refer to the
+      JugglingLab documentation if needed 
+      
+      Here are some possible example : <2|3p><2p|3><[3p/2]|3p><3|3>
+      ou encore <(2p3,4x)|(2xp3,4p1)|(2xp2,4xp2)>. 
+      It is also possible to split per juggler : <22p3p/23|3p33p3> 
+
+
+  - draw :                    draw the Diagram of a given MJN. 
+      Parametres : 
+      
+      - <"mjn"> : MJN to draw. 
+      
+      - <"file"> : image file for the result. 
+      
+      - ["options"] Several options among
+      -[a|b|c|d|e|f|g|h|j|k|l|m|n|o|p|q|s|t|u|v|w|z] : 
+      
+      	-a <y|n> : Asynchronous drawing (OSS/HSS) if possible
+      (Default:n) 
+      
+      	-b <"string"> : naming core for Jugglers (Default:J). 
+      
+      	-c <int> : Colorization Model for Asynchronous Drawing
+      (Default:2). Otherwise Colorization is done according to beats
+      and hands order. 
+      		'0' : No colorization; 
+      		'1' : Multiplex in increasing order of 
+      		 Siteswap values of previous throws; 
+      		'2' : Multiplexe in increasing order of 
+      		 Siteswap values of previous throws. 
+      
+      	-d <int> :  Synchronous Hack (Default:0) 
+      		'0' : Remove 0 in the drawing after sync throw since 
+      		it is catches beats; 
+      		'1' : No hack. 
+      
+      	-e <"string"> : Label Edge Color according to the Graphviz X11 
+      	scheme (ex : dodgerblue, red, springgreen, darkviolet, 
+      	magenta, goldenrod, saddlebrown, azure4, khaki4, 
+      	darkorange, olivedrab1, turquoise4, black, peru, 
+      	mediumslateblue). E for same as the arrow 
+      	(Default:E). 
+      
+      	-f <0|1|2> : Splines Mode : 0: spline, 1:curved, 2:line
+      (Defaut:2). 
+      
+      	-g <y|n> : Keep Graphviz File used for generating (Default:n). 
+      
+      	-h <y|n> : Print Jugglers (Default:y). 
+      
+      	-j <y|n> : Print Hand on each Beat, for MJHSS model. 
+      
+      	-k "list of lists using ( ) and ," : Print Hands Enumeration for
+      MJHSS Model. Ex (H1,H2)(H3,H4). 
+      
+      	-l <pos> : Position of the Siteswap label 
+      		't': near arrow tail; 
+      		'h': near arrow head; 
+      		'm': middle of the arrow; 
+      		'x': middle of the arrow after drawing; 
+      		's': around the State; 
+      		'n': No Siteswap label. 
+      
+      	-m <0|1|2> : Diagram Model (Default: According to the Siteswap
+      Type) 
+      		'0' : Ladder; 
+      		'1' : Flattened Ladder (Asynchronous Siteswap); 
+      		'2' : Ladder with odd Beats removed starting from 0 
+      			(Synchronous Siteswap). 
+      
+      	-n <y|n> : Draw negatives throws [Experimental] 
+      		(Default:n). 
+      
+      	-p : Periode min to draw (Default:25). 
+      
+      	-o <type> : image format (Default:png) through : bmp (Windows
+      Bitmap Format), cmapx (client-side imagemap for use in html and
+      xhtml), dia (GTK+ based diagrams), eps (Encapsulated
+      PostScript), fig (XFIG graphics), gd, gd2 (GD/GD2 formats), gif
+      (bitmap graphics), gtk (GTK canvas), hpgl (HP pen plotters) and
+      pcl (Laserjet printers), imap (imagemap files for httpd servers
+      for each node or edge that has a non-null "href" attribute.), jpg,
+      jpeg, jpe (JPEG), mif (FrameMaker graphics), pdf (Portable
+      Document Format), png (Portable Network Graphics format), ps
+      (PostScript), ps2 (PostScript for PDF), svg, svgz (Structured
+      Vector Graphics), tif, tiff (Tag Image File Format), vml, vmlz
+      (Vector Markup Language), vrml (VRML), wbmp (Wireless BitMap
+      format), xlib (Xlib canvas), canon, dot, xdot (Output in DOT
+      langage), plain , plain-ext (Output in plain text). 
+      
+      	-q <y|n> : Quick drawing without quality respect(Default:n). 
+      
+      	-s <int> : Print or not the result (Default:0) 
+      		'0' : print the result; 
+      		'1' : Silence the result. 
+      
+      	-t <y|n> : Draw the image title (Default:y). 
+      
+      	-u <"List"> in Asynchroneous, list of initial jugglers hands
+      separated by , if the initial hand is not the right one [ex: R,L,L]. 
+      
+      	-v <"string"> : Value to use for the title. 
+      
+      	-w <y|n> : Force MHN Model (Default:n). 
+      
+      	-z <"y|n"> : possible Zero in HSS computation ((Default:y). 
+      
+      	-a <y|n> : draw HSS (Default:y) 
+      
+      	-b <y|n> : naming core for hands (Default:M) 
+      
+      
+      - [\%hash] : Optional, transitions hash in Asynchronous model.
+      In this case the Siteswap is used for the title only. Each key is
+      Ri:j for a right transition or Li:j for a left one. i is the throw
+      Beat and j is the numero of the thrown object (starting from 0) to
+      help the colorization 
+      	Ex :  %hash = ( 
+      		'L2:0' => 'R4:0', 
+      		'R2:0' => 'R4:1', 
+      		'L4:0' => 'R6:0', 
+      		'R4:0' => 'R5:0', 
+      		'R4:1' => 'L6:0', 
+      		'R6:0' => 'R6:0' 
+      		); 
+
+
+  - getJugglersNumber :       Give the number of jugglers needed
+                              for the MJN. 
+      Parameters : 
+      
+      - <"mjn"> : MJN to analyze. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - getObjNumber :            Give the number of objects needed for
+                              the MJN. 
+      Parameters : 
+      
+      - <"mjn"> : MJN to analyze. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - getPeriod :               Give the MJN Period 
+      Parameters : 
+      
+      - <"mjn"> : MJN to analyze. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - isAsync :                 Check if MJN is Asynchronous. 
+      Parameters : 
+      
+      - <"mjn"> : MJN to check. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - isSyntaxValid :           Check the MJN grammar syntax. 
+      Parameters : 
+      
+      - <"mjn"> : MJN to check. 
+      - [-1] Optional, return the result, but do not print it. 
+
+
+  - isValid :                 Check the MJN validity. 
+      Parameters : 
+      
+      - <"mjn"> : MJN to check. 
+      - [-1] Optional, return the result, but do not print it. 
+      - ["List"] in Asynchroneous, list of initial jugglers hands
+      separated by , if the initial hand is not the right one [ex: R,L,L]. 
+
+
+  - toMHN :                   Give the corresponding MHN
+                              Notation. 
+      Parameters : 
+      
+      - <"mjn"> : MJN. 
+      - [-1] Optional, return the result, but do not print it. 
+      - ["List"] in Asynchroneous, list of initial jugglers hands
+      separated by , if the initial hand is not the right one [ex: R,L,L]. 
 
 
 

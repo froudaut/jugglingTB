@@ -13,6 +13,7 @@ Currently it supports the following notations :
 - Extended SOU: Side-Over-Under Notation
 - MMSTD: Mills Mess State Transition Diagram
 - LADDER: Ladder Notation
+- CAUSAL: Causal Diagrams
 - SSWAP: Siteswap Notation
 - STACK: Stack Notation
 - HTN: 3-Layers Notation/Harmonic Throws Notation
@@ -34,6 +35,7 @@ For my personal needs I added others tools:
 - Poï Flowers from David Lyons
 - realsim from Pedro Teodoro
 - Polyrhythm-Fountain from Josh Mermelstein
+- Causal Diagram Editor from The Juggling Edge
 	      
 All of them may be launched from jugglingTB
 

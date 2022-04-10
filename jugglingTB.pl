@@ -191,6 +191,7 @@ BEGIN
 ###
 
 use modules::BTN;
+use modules::CAUSAL;
 use modules::HSS;
 use modules::HTN;
 use modules::LADDER;
@@ -205,11 +206,11 @@ use modules::SSWAP;
 use modules::STACK;
 #use modules::MODTEST;
 
-my @MODULES= ("BTN", "HSS", "HTN", "LADDER", "MHN", "MJN", "MJHSS", "MLHSS", "MMSTD", "SOU", "SPYRO", "SSWAP", "STACK");
+my @MODULES= ("BTN", "CAUSAL",  "HSS", "HTN", "LADDER", "MHN", "MJN", "MJHSS", "MLHSS", "MMSTD", "SOU", "SPYRO", "SSWAP", "STACK");
 ###########################################################################################################
 
 # Set the Debug Mode in each module
-foreach my $v (@MODULES)
+foreach my $v (sort @MODULES)
 {
     my $debug=eval("${v}::${v}_DEBUG");  	     
     ${$debug} = $conf::jtbOptions_d;   			
@@ -413,7 +414,7 @@ sub runEnv
 		# Go down into a module menu by autocompletion is the length is at least >=2
 		if(length($_)>=2)
 		{
-		    foreach my $v (@MODULES)
+		    foreach my $v (sort @MODULES)
 		    {
 			# Get help on the SubMenu
 			#my $in = $_;
@@ -883,7 +884,7 @@ sub help
 
 	}
 
-	foreach my $v (@MODULES)
+	foreach my $v (sort @MODULES)
 	{
 	    # Get basic help on the SubMenu
 	    if($v =~ $_[0])
@@ -1103,7 +1104,7 @@ sub help2
 	    }
 	    
 	}
-	foreach my $v (@MODULES)
+	foreach my $v (sort @MODULES)
 	{
 	    # Get Advanced help on the SubMenu
 	    if($v =~ $_[0])

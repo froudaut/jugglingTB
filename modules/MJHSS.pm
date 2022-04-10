@@ -59,7 +59,9 @@ my $RANKSEP = 1.0;
 sub isValid
 {
     my $mjn = $_[0];
+    $mjn =~ s/\s+//g;
     my $mjhss = $_[1];
+    $mjhss =~ s/\s+//g;
     $mjhss =~ s/\(//g;
     $mjhss =~ s/\)//g;
 
@@ -156,8 +158,10 @@ sub isValid
 sub draw
 {
     my $mjn = $_[0];
+    $mjn =~ s/\s+//g;
     my $mjhss = $_[1];
-    $mjhss =~ s/\(//g;
+    $mjhss =~ s/\s+//g;
+    $mjhss =~ s/\(//g;    
     $mjhss =~ s/\)//g;
 
     my $fileOutput=$_[2];

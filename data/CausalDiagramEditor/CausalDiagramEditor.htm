@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Juggling Edge - Causal Diagram editor</title><link type="text/css" rel="stylesheet" href="CausalDiagramEditor_fichiers/edge2.css"><style>.SettingsCol{width:25em;float:left;}</style>
+</head>
+<body>
+<h1>Causal Diagram editor (The Juggling Edge)</h1>
+<p id="JumpLink" style="display: block;"><a href="#Sandbox">Causal diagram sandbox</a></p>
+
+<p>You can write out a passing pattern in plain text using the following
+ format which will be converted into a causal diagram for those with a 
+sufficiently capable browser and the "Render causal diagrams" option 
+checked.</p>
+
+<p><b>Please Note!</b> If you are using the WYSIWYG editor you will 
+unfortunately just get what you see rather than a causal diagram (you 
+can get around this by clicking the source button <span class="Button" style="padding:.3em"><b>&lt; &gt;</b></span> which enables raw text input).</p>
+
+<p>The basic syntax is:</p>
+
+<pre>&lt;span class="CausalDiagram"&gt;
+3p 3 3 3p 3 3
+3p 3 3 3p 3 3
+&lt;/span&gt;
+</pre>
+
+<p>Which will be converted into:</p>
+
+<p><img src="CausalDiagramEditor_fichiers/causal01.png" alt="Causal diagram example" width="481" height="222"></p>
+
+<p>It accepts lines of Préchac notation (one line per juggler) with each throw separated by a space.</p>
+<p>You can alter the throwing sequence by including the sequence in brackets like so:</p>
+
+<pre>&lt;span class="CausalDiagram"&gt;
+3 3 3 3 3
+(LR) 3 3 3 3 3
+(LLRR) 3 3 3 3 3
+(WOMBLE) 3 3 3 3 3
+&lt;/span&gt;
+</pre>
+
+<p><img src="CausalDiagramEditor_fichiers/causal02.png" alt="Causal diagram example" width="421" height="370"></p>
+
+<p>You can offset the start like so (only 0, 0.5 &amp; 1 so far &amp; you also have to include the throwing sequence):</p>
+
+<pre>&lt;span class="CausalDiagram"&gt;
+(RL 0) 3 3 3 3 3 3
+(RL 0.5) 3 3 3 3 3 3
+(RL 1) 3 3 3 3 3 3
+&lt;/span&gt;
+</pre>
+<p><img src="CausalDiagramEditor_fichiers/causal03.png" alt="Causal diagram example" width="541" height="296"></p>
+
+<p>Jugglers are labeled ABC etc. for feeds passes are located by using the corresponding letter in place of p.</p>
+
+<pre>&lt;span class="CausalDiagram"&gt;
+3b 3b 3 3 3b 3b 3 3
+3a 3a 3c 3c 3a 3a 3c 3c
+3 3 3b 3b 3 3 3b 3b
+&lt;/span&gt;
+</pre>
+
+<p><img src="CausalDiagramEditor_fichiers/causal04.png" alt="Causal diagram example" width="601" height="296"></p>
+
+<p>Alternatively you can use a 4 handed siteswap instead of Préchac notation:</p>
+
+<pre>&lt;span class="CausalDiagram"&gt;
+825
+&lt;/span&gt;
+</pre>
+
+<p><img src="CausalDiagramEditor_fichiers/causal05.png" alt="Causal diagram example" width="331" height="222"></p>
+
+<p>If you want to provide alternative text use, " title:your text goes here " on one line like so:</p>
+
+<pre>&lt;span class="CausalDiagram"&gt;
+3p 3 3 4p 3 3 3p
+3p 3 3 3p 2 3 3p
+title: A late double in 3 count
+&lt;/span&gt;
+</pre>
+
+<p><img src="CausalDiagramEditor_fichiers/causal06.png" alt="Causal diagram example" width="541" height="222"></p>
+
+<p>You can add vertical bars at any point on the diagram to split the 
+diagram into sections (to highlight a trick or a cycle for example).</p>
+<p>Specify their position by using "bars:" followed by a comma separated list of numbers. Integers and decimals are both accepted.</p>
+<p>The numbers correspond to the position of nodes that have a delay of 
+0. For example 1 will pass through the first node, 2.5 will pass halfway
+ between the second and third nodes.</p>
+
+<pre>&lt;span class="CausalDiagram"&gt;
+3p 3 4p 2 3 3 3p
+3p 3 3 3p 2 3 3p
+title: An early double in 3 count
+bars:2.5,5.5
+&lt;/span&gt;
+</pre>
+
+<p><img src="CausalDiagramEditor_fichiers/causal07.png" alt="Causal diagram example" width="541" height="222"></p>
+
+<p>Finally you can highlight a throw by adding a comma ( , ) after it.</p>
+
+<pre>&lt;span class="CausalDiagram"&gt;
+3p 3 3 3p 4, 2 3p
+3p 3 3 3p 3 3 3p
+&lt;/span&gt;
+</pre>
+
+<p><img src="CausalDiagramEditor_fichiers/causal08.png" alt="Causal diagram example" width="541" height="222"></p>
+
+<p>For inspiration take a look at the following <a href="https://jugglingedge.com/search.php?SearchTerm=CausalDiagram">examples in the wild</a>.</p>
+
+<h2>Causal diagram sandbox</h2>
+
+<noscript>
+<p>Please enable javascript to use the causal diagram sandbox.</p>
+</noscript>
+
+<p id="NoCanvas" style="display:none">Your browser does not support the 
+&lt;canvas&gt; element. You'll need to use a different browser to use 
+the causal diagram sandbox.</p>
+
+<div id="Sandbox" style="display: block;">
+
+<p>Here, have a play.</p>
+
+<p><span id="Output" class="CausalDiagram"><canvas style="width: 541px; height: 222px;" width="676" height="277"></canvas></span></p>
+
+<p><textarea id="Input" rows="10" cols="60" required="required">&lt;span class="CausalDiagram"&gt;
+3p 3 3 3p 3 3 3p
+3p 3 3 3p 3 3 3p
+&lt;/span&gt;</textarea></p>
+
+<form action="/help/canvastopng.php" method="post">
+<input type="hidden" id="ImageData" name="ImageData" value="">
+<p><input class="Button" type="button" value="Redraw" onclick="Redraw()">
+<input class="Button" type="submit" value="Save as png" style="margin-right:1em">
+<a href="#" onclick="return ToggleSettings()">+/- diagram options</a></p>
+</form>
+
+
+<div id="ChartSettings" style="overflow: hidden; visibility: hidden; max-height: 509px; transition: all 0.3s ease 0s;" class="Hide">
+
+<div class="SettingsCol">
+<p><label for="HorizSplit">Horizontal distance between nodes</label><br><input type="number" id="HorizSplit" value="60" min="10"></p>
+<p><label for="VertSplit">Vertical distance between nodes</label><br><input type="number" id="VertSplit" value="60" min="10"></p>
+<p><label for="FontSize">Font size</label><br><input type="number" id="FontSize" value="14" min="8"></p>
+<p><label for="NodeRadius">Node radius</label><br><input type="number" id="NodeRadius" value="12" min="10"></p>
+<p><label for="LineWidth">Line width</label><br><input type="number" id="LineWidth" value="1" min="1"></p>
+<p><label for="ArrowHead">Arrow head</label><br><input type="number" id="ArrowHead" value="8" min="1"></p>
+<p>All units are measured in pixels.</p>
+</div>
+
+<div class="SettingsCol">
+<p><label for="BackgroundColour">Background colour</label><br><input type="color" id="BackgroundColour" value="#ffffff"></p>
+<p><label for="NodeColour">Node colour</label><br><input type="color" id="NodeColour" value="#ffffff"></p>
+<p><label for="TextColour">Text colour</label><br><input type="color" id="TextColour" value="#000000"></p>
+<p><label for="CauseColour">Cause colour</label><br><input type="color" id="CauseColour" value="#999999"></p>
+<p><label for="HighlightColour">Highlight colour</label><br><input type="color" id="HighlightColour" value="#ff0000"></p>
+<p><label for="BarColour">Bar colour</label><br><input type="color" id="BarColour" value="#cccccc"></p>
+</div>
+
+</div>
+
+
+</div>
+
+
+<h2>Can I have a look at the code?</h2>
+
+<p><a href="https://jugglingedge.com/js/Causals.js">Yep</a>.</p>
+
+<h2>Thanks to</h2>
+
+<p>The code behind the causal diagrams on the Edge was inspired by Christoph Loibl's <a href="https://passingwiki.org/wiki/Help:Causal_Generator">Causal Generator</a>.</p>
+
+<script src="CausalDiagramEditor_fichiers/Causals.js"></script>
+<script>
+
+var Sandbox=document.getElementById('Sandbox');
+Sandbox.style.display='block';
+
+
+if(document.getElementsByClassName && Canvas.getContext && Canvas.getContext('2d'))
+  {
+    document.getElementById('JumpLink').style.display='block';
+
+    var Input=document.getElementById('Input');
+    var Output=document.getElementById('Output');
+
+    var ChartSettings=document.getElementById('ChartSettings');
+    ChartSettings.style.overflow='hidden';
+    ChartSettings.style.visibility='hidden';
+    ChartSettings.style.maxHeight=(ChartSettings.clientHeight+50)+'px';
+    ChartSettings.className='Hide';
+    ChartSettings.style.webkitTransition='.3s';
+    ChartSettings.style.transition='.3s';
+
+    HorizSplitControl=document.getElementById('HorizSplit');
+    VertSplitControl=document.getElementById('VertSplit');
+    FontSizeControl=document.getElementById('FontSize');
+    NodeRadiusControl=document.getElementById('NodeRadius');
+    LineWidthControl=document.getElementById('LineWidth');
+    ArrowHeadControl=document.getElementById('ArrowHead');
+    BackgroundColourControl=document.getElementById('BackgroundColour');
+    NodeColourControl=document.getElementById('NodeColour');
+    TextColourControl=document.getElementById('TextColour');
+    CauseColourControl=document.getElementById('CauseColour');
+    HighlightColourControl=document.getElementById('HighlightColour');
+    BarColourControl=document.getElementById('BarColour');
+
+
+    var Controls=ChartSettings.getElementsByTagName('input'),b=Controls.length;
+    for(var a=0;a<b;++a)
+      Controls[a].addEventListener('change',UpdateSettings,false);
+
+  }
+else
+  {
+    document.getElementById('NoCanvas').style.display='block';
+  }
+
+function Redraw()
+{
+  var str=Input.value;
+  str=str.replace(/.*<span class="CausalDiagram">\s*/,'');
+  str=str.replace(/\s*<\/span>.*/,'');
+  str=str.replace(/^\s*/gm,'');
+  str=str.replace(/\s*$/gm,'');
+  Output.innerHTML=str;
+  Input.value='<span class="CausalDiagram">\n'+str.trim()+'\n</span>';
+  Draw(Output);
+}
+
+function ToggleSettings()
+{
+  if(ChartSettings.className==='Hide')
+    {
+      ChartSettings.style.visibility='visible';
+      ChartSettings.className='';
+    }
+  else
+    {
+      ChartSettings.className='Hide';
+      setTimeout(function(){ChartSettings.style.visibility='hidden';},300);
+    }
+
+  return false;
+}
+
+function UpdateSettings()
+{
+  HorizSplit=Number(HorizSplitControl.value);
+  VertSplit=Number(VertSplitControl.value);
+  FontSize=Number(FontSizeControl.value);
+  NodeRadius=Number(NodeRadiusControl.value);
+  LineWidth=Number(LineWidthControl.value);
+  ArrowHead=Number(ArrowHeadControl.value);
+  BackgroundColour=BackgroundColourControl.value;
+  NodeColour=NodeColourControl.value;
+  TextColour=TextColourControl.value;
+  CauseColour=CauseColourControl.value;
+  HighlightColour=HighlightColourControl.value;
+  BarColour=BarColourControl.value;
+
+  Redraw();
+}
+
+document.form.addEventListener('submit',function(evt){
+  var Canvas=Output.getElementsByTagName('canvas')[0];
+  var Data=Canvas.toDataURL('image/png');
+  Data=Data.substr(Data.indexOf(',')+1).toString();
+  document.getElementById('ImageData').value=Data;
+});
+</script>
+
+
+ 
+</body></html>
